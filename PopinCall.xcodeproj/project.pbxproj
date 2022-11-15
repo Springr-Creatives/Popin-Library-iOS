@@ -17,6 +17,10 @@
 		CFBBD58E2923EA8800D241A9 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = CFBBD58C2923EA8800D241A9 /* Main.storyboard */; };
 		CFBBD5902923EA8900D241A9 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = CFBBD58F2923EA8900D241A9 /* Assets.xcassets */; };
 		CFBBD5932923EA8900D241A9 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = CFBBD5912923EA8900D241A9 /* LaunchScreen.storyboard */; };
+		CFBBD5A02923EE7200D241A9 /* PopinCallViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CFBBD59E2923EE7200D241A9 /* PopinCallViewController.swift */; };
+		CFBBD5A12923EE7200D241A9 /* PopinCallViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = CFBBD59F2923EE7200D241A9 /* PopinCallViewController.xib */; };
+		CFBBD5A32923F08000D241A9 /* PopinCall.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CFBBD5662923EA3100D241A9 /* PopinCall.framework */; };
+		CFBBD5A42923F08100D241A9 /* PopinCall.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = CFBBD5662923EA3100D241A9 /* PopinCall.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -27,7 +31,28 @@
 			remoteGlobalIDString = CFBBD5652923EA3100D241A9;
 			remoteInfo = PopinCall;
 		};
+		CFBBD5A52923F08100D241A9 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = CFBBD55D2923EA3100D241A9 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = CFBBD5652923EA3100D241A9;
+			remoteInfo = PopinCall;
+		};
 /* End PBXContainerItemProxy section */
+
+/* Begin PBXCopyFilesBuildPhase section */
+		CFBBD5A72923F08100D241A9 /* Embed Frameworks */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 10;
+			files = (
+				CFBBD5A42923F08100D241A9 /* PopinCall.framework in Embed Frameworks */,
+			);
+			name = "Embed Frameworks";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
 		CFBBD5662923EA3100D241A9 /* PopinCall.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = PopinCall.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -43,6 +68,8 @@
 		CFBBD58F2923EA8900D241A9 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		CFBBD5922923EA8900D241A9 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		CFBBD5942923EA8900D241A9 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		CFBBD59E2923EE7200D241A9 /* PopinCallViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PopinCallViewController.swift; sourceTree = "<group>"; };
+		CFBBD59F2923EE7200D241A9 /* PopinCallViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = PopinCallViewController.xib; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -65,6 +92,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				CFBBD5A32923F08000D241A9 /* PopinCall.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -78,6 +106,7 @@
 				CFBBD5742923EA3100D241A9 /* PopinCallTests */,
 				CFBBD5852923EA8800D241A9 /* PopinCallExamples */,
 				CFBBD5672923EA3100D241A9 /* Products */,
+				CFBBD5A22923F08000D241A9 /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -96,6 +125,8 @@
 			children = (
 				CFBBD5692923EA3100D241A9 /* PopinCall.h */,
 				CFBBD56A2923EA3100D241A9 /* PopinCall.docc */,
+				CFBBD59E2923EE7200D241A9 /* PopinCallViewController.swift */,
+				CFBBD59F2923EE7200D241A9 /* PopinCallViewController.xib */,
 			);
 			path = PopinCall;
 			sourceTree = "<group>";
@@ -120,6 +151,13 @@
 				CFBBD5942923EA8900D241A9 /* Info.plist */,
 			);
 			path = PopinCallExamples;
+			sourceTree = "<group>";
+		};
+		CFBBD5A22923F08000D241A9 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			name = Frameworks;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -179,10 +217,12 @@
 				CFBBD5802923EA8800D241A9 /* Sources */,
 				CFBBD5812923EA8800D241A9 /* Frameworks */,
 				CFBBD5822923EA8800D241A9 /* Resources */,
+				CFBBD5A72923F08100D241A9 /* Embed Frameworks */,
 			);
 			buildRules = (
 			);
 			dependencies = (
+				CFBBD5A62923F08100D241A9 /* PBXTargetDependency */,
 			);
 			name = PopinCallExamples;
 			productName = PopinCallExamples;
@@ -235,6 +275,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				CFBBD5A12923EE7200D241A9 /* PopinCallViewController.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -263,6 +304,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				CFBBD56B2923EA3100D241A9 /* PopinCall.docc in Sources */,
+				CFBBD5A02923EE7200D241A9 /* PopinCallViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -291,6 +333,11 @@
 			isa = PBXTargetDependency;
 			target = CFBBD5652923EA3100D241A9 /* PopinCall */;
 			targetProxy = CFBBD5722923EA3100D241A9 /* PBXContainerItemProxy */;
+		};
+		CFBBD5A62923F08100D241A9 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = CFBBD5652923EA3100D241A9 /* PopinCall */;
+			targetProxy = CFBBD5A52923F08100D241A9 /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
 
@@ -493,6 +540,7 @@
 		CFBBD57E2923EA3100D241A9 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = 7GE5BSP5FH;
@@ -509,6 +557,7 @@
 		CFBBD57F2923EA3100D241A9 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = 7GE5BSP5FH;
