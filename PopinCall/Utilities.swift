@@ -20,9 +20,8 @@ class Utilities: NSObject {
         return UserDefaults.standard.string(forKey: "popinToken") ?? ""
     }
     
-    func saveChannel(token: String) {
-        print(token)
-        UserDefaults.standard.set(token, forKey: "popinChannel")
+    func saveChannel(channel: String) {
+        UserDefaults.standard.set(channel, forKey: "popinChannel")
     }
     
     func getChannel() -> String {

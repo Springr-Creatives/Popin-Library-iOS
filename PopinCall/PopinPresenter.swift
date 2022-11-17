@@ -28,5 +28,8 @@ class PopinPresenter {
         });
     }
     
+    func startConnection(seller_id: Int) {
+        popinInteractor.startConnection(seller_id: seller_id)
+    }
     
 }
