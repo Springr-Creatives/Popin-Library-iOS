@@ -16,8 +16,34 @@ class ViewController: UIViewController {
     }
 
     @IBAction func makeCall(_ sender: Any) {
-        present(PopinCallViewController(), animated: true, completion: nil)
+        Popin.connect(token: 51, delegate: self);
+       
+       
     }
     
+}
+
+extension ViewController : PopinCallDelegate {
+    func onConnectionEstablished() {
+        print("CONN_ESTA");
+    }
+    
+    func onAllExpertsBusy() {
+        print("EXPR_BUSY");
+    }
+    
+    func onCallConnected() {
+        print("CALL_CONNEC");
+       // present(PopinCallViewController(), animated: true, completion: nil)
+        
+    }
+    
+    func onCallDisconnected() {
+        print("CALL_DISCONN");
+    }
+    
+    func onCallFail() {
+        print("CALL_FAIL");
+    }
 }
 

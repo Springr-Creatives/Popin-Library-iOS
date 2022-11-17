@@ -1,0 +1,6 @@
+framework module Pods_PopinCallExamples {
+  umbrella header "Pods-PopinCallExamples-umbrella.h"
+
+  export *
+  module * { export * }
+}

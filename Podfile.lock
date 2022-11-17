@@ -1,0 +1,36 @@
+PODS:
+  - Alamofire (5.6.2)
+  - NWWebSocket (0.5.2)
+  - PusherSwift (10.1.2):
+    - NWWebSocket (~> 0.5.2)
+    - TweetNacl (~> 1.0.0)
+  - SwiftyJSON (4.3.0)
+  - TweetNacl (1.0.2)
+  - TwilioVideo (5.3.0)
+
+DEPENDENCIES:
+  - Alamofire
+  - PusherSwift (~> 10.1.0)
+  - SwiftyJSON (~> 4.0)
+  - TwilioVideo (~> 5)
+
+SPEC REPOS:
+  trunk:
+    - Alamofire
+    - NWWebSocket
+    - PusherSwift
+    - SwiftyJSON
+    - TweetNacl
+    - TwilioVideo
+
+SPEC CHECKSUMS:
+  Alamofire: d368e1ff8a298e6dde360e35a3e68e6c610e7204
+  NWWebSocket: 21f0c73639815da3272862c912275b26102aa80c
+  PusherSwift: fb30ba1dcbe09a6ca257ccb39dc2f84866e811b4
+  SwiftyJSON: 6faa0040f8b59dead0ee07436cbf76b73c08fd08
+  TweetNacl: 3abf4d1d2082b0114e7a67410e300892448951e6
+  TwilioVideo: a7bdb489205098d605b2769b3352e8a0b3e9527a
+
+PODFILE CHECKSUM: 1b2d6748f77f9bf85b29a2ed9bf74f67ca2b5115
+
+COCOAPODS: 1.11.3

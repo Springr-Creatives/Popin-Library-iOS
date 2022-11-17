@@ -1,0 +1,6 @@
+framework module Pods_PopinCall_PopinCallTests {
+  umbrella header "Pods-PopinCall-PopinCallTests-umbrella.h"
+
+  export *
+  module * { export * }
+}

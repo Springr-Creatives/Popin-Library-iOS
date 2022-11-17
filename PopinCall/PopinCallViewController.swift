@@ -7,11 +7,18 @@
 
 import UIKit
 
+protocol PopinCallView: NSObjectProtocol {
+        func startLoading()
+        func finishLoading()
+        func closeView()
+        func showMessage(title: String, message: String)
+    }
+
 public class PopinCallViewController: UIViewController {
 
     public override func viewDidLoad() {
         super.viewDidLoad()
-
+      
         // Do any additional setup after loading the view.
     }
 
