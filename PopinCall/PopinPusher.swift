@@ -13,7 +13,7 @@ class AuthRequestBuilder: AuthRequestBuilderProtocol {
     func requestFor(socketID: String, channelName: String) -> URLRequest? {
         var request = URLRequest(url: URL(string: serverURL + "/user/channel/authenticate")!)
         request.httpMethod = "POST"
-        request.addValue("Bearer " + Utilities().getUserToken(), forHTTPHeaderField: "Authorization")
+        request.addValue("Bearer " + Utilities.shared.getUserToken(), forHTTPHeaderField: "Authorization")
         request.addValue("application/x-www-form-urlencoded", forHTTPHeaderField: "Content-Type")
         request.addValue("application/json", forHTTPHeaderField: "Accept")
         request.httpBody = "socket_id=\(socketID)&channel_name=\(channelName)".data(using: String.Encoding.utf8)
@@ -40,7 +40,7 @@ class PopinPusher : PusherDelegate{
     public func connect() {
         pusher.connect()
        
-        let pusherChannel = pusher.subscribe(Utilities().getChannel())
+        let pusherChannel = pusher.subscribe(Utilities.shared.getChannel())
         pusherChannel.bind(eventName: "user.message", eventCallback: { (event: PusherEvent) -> Void in
             print("PUSHER_MESSAGE" + event.data!)
             if let data: String = event.data {

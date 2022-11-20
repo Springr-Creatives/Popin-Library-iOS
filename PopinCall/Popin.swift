@@ -28,6 +28,7 @@ open class Popin : PopinPusherDelegate {
         
     public  func connect(token: Int, popinDelegate: PopinCallDelegate) {
         self.delegate = popinDelegate;
+        Utilities.shared.saveSeller(seller_id: token);
         if (!self.popinPresenter.isUserRegistered()) {
             popinPresenter.registerUser(seller_id: token, onSucess: {
                 self.connectPusher(seller_id: token)

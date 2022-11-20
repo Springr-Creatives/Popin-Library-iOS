@@ -16,7 +16,7 @@ class PopinPresenter {
     
     
     func isUserRegistered() -> Bool {
-        return Utilities().getUserToken().count > 0;
+        return Utilities.shared.getUserToken().count > 0;
     }
     
     func registerUser(seller_id: Int, onSucess sucess: @escaping () -> Void) {

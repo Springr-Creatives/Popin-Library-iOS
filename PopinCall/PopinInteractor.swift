@@ -19,8 +19,8 @@ class PopinInteractor {
                 switch response.result {
                 case .success(let userModel):
                     if (userModel.status == "1") {
-                        Utilities().saveUserToken(token: userModel.token)
-                        Utilities().saveChannel(channel: userModel.channel)
+                        Utilities.shared.saveUserToken(token: userModel.token)
+                        Utilities.shared.saveChannel(channel: userModel.channel)
                         sucess()
                         return;
                     }
@@ -37,7 +37,7 @@ class PopinInteractor {
         let parameters: Parameters = ["seller_id":seller_id];
         let urlString = serverURL + "/user/connect";
         let headers: HTTPHeaders = [
-            "Authorization": "Bearer " + Utilities().getUserToken(),
+            "Authorization": "Bearer " + Utilities.shared.getUserToken(),
             "Accept": "application/json"
         ]
         AF.request(urlString, method: .post, parameters: parameters, encoding: URLEncoding.httpBody, headers: headers)
