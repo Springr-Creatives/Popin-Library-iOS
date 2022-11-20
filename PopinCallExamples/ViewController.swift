@@ -16,7 +16,7 @@ class ViewController: UIViewController {
     }
 
     @IBAction func makeCall(_ sender: Any) {
-        Popin.connect(token: 51, delegate: self);
+        Popin.shared.connect(token: 51, popinDelegate: self);
        
        
     }

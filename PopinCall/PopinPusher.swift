@@ -7,66 +7,61 @@
 
 import Foundation
 import PusherSwift
+import SwiftyJSON
 
 class AuthRequestBuilder: AuthRequestBuilderProtocol {
     func requestFor(socketID: String, channelName: String) -> URLRequest? {
-        var request = URLRequest(url: URL(string: "https://dev.popin.to/api/v1/user/channel/authenticate")!)
+        var request = URLRequest(url: URL(string: serverURL + "/user/channel/authenticate")!)
         request.httpMethod = "POST"
-        request.httpBody = "socket_id=\(socketID)&channel_name=\(Utilities().getChannel())".data(using: String.Encoding.utf8)
         request.addValue("Bearer " + Utilities().getUserToken(), forHTTPHeaderField: "Authorization")
         request.addValue("application/x-www-form-urlencoded", forHTTPHeaderField: "Content-Type")
         request.addValue("application/json", forHTTPHeaderField: "Accept")
+        request.httpBody = "socket_id=\(socketID)&channel_name=\(channelName)".data(using: String.Encoding.utf8)
         return request
     }
 }
 
 class PopinPusher : PusherDelegate{
     
+    private let pusher: Pusher
+    var delegate : PopinPusherDelegate?
     
-    public func connect(callDelegate: PopinCallDelegate) {
-        print("TOKEN>" + Utilities().getUserToken());
-        print("CHANNEL>" + Utilities().getChannel());
+    init() {
         let options = PusherClientOptions(
             authMethod: AuthMethod.authRequestBuilder(authRequestBuilder: AuthRequestBuilder()),
-            host: .cluster("ap2")
+            host: .cluster("ap2"),
+            activityTimeout: 10
+            
         )
-        
-        let pusher = Pusher(key: "b6cb0f549999df3d07a9", options: options)
+        pusher = Pusher(key: "b6cb0f549999df3d07a9", options: options)
         pusher.delegate = self;
-        pusher.connect()
-        
-        _ = pusher.bind(eventCallback: { (event: PusherEvent) in
-            var message = "Received event: '\(event.eventName)'"
-            print(message)
-        })
-        let pusherChannel = pusher.subscribe(Utilities().getChannel())
-        
-        
-        
     }
     
+    public func connect() {
+        pusher.connect()
+       
+        let pusherChannel = pusher.subscribe(Utilities().getChannel())
+        pusherChannel.bind(eventName: "user.message", eventCallback: { (event: PusherEvent) -> Void in
+            print("PUSHER_MESSAGE" + event.data!)
+            if let data: String = event.data {
+                let json = JSON.init(parseJSON:data)
+                let type = json["message"]["type"].intValue
+                if (type == 3) {
+                    self.delegate?.onAgentConnected()
+                } else if (type == 15) {
+                    self.delegate?.onAllExpertsBusy()
+                }
+            }
+        });
+        pusherChannel.bind(eventName: "user.call_cancel", eventCallback: { (event: PusherEvent) -> Void in
+            self.delegate?.onCallDisconnected();
+        });
+        
+    }
     
     func changedConnectionState(from old: ConnectionState, to new: ConnectionState) {
-        // print the old and new connection states
-        print("old: \(old.stringValue()) -> new: \(new.stringValue())")
-    }
-    
-    func subscribedToChannel(name: String) {
-        print("Subscribed to \(name)")
-    }
-    
-    func debugLog(message: String) {
-        print(message)
-    }
-    
-    func receivedError(error: PusherError) {
-        print(error);
-        if let code = error.code {
-            print("Received error: (\(code)) \(error.message)")
-        } else {
-            print("Received error: \(error.message)")
+        if (new.stringValue() == "connected") {
+            self.delegate?.onPusherConnected()
         }
     }
-    
-    
 }

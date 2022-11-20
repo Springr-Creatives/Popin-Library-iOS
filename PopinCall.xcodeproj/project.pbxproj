@@ -14,6 +14,8 @@
 		CFA556842923FDC1003453DF /* PopinCallInteractor.swift in Sources */ = {isa = PBXBuildFile; fileRef = CFA556832923FDC1003453DF /* PopinCallInteractor.swift */; };
 		CFA556862923FEA3003453DF /* PopinCallDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = CFA556852923FEA3003453DF /* PopinCallDelegate.swift */; };
 		CFA556882923FF4C003453DF /* Popin.swift in Sources */ = {isa = PBXBuildFile; fileRef = CFA556872923FF4C003453DF /* Popin.swift */; };
+		CFB63D8B2929045E005F265D /* PopinPusher.swift in Sources */ = {isa = PBXBuildFile; fileRef = CFB63D8A2929045E005F265D /* PopinPusher.swift */; };
+		CFB63D8D292908EF005F265D /* PopinPusherDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = CFB63D8C292908EF005F265D /* PopinPusherDelegate.swift */; };
 		CFBBD56B2923EA3100D241A9 /* PopinCall.docc in Sources */ = {isa = PBXBuildFile; fileRef = CFBBD56A2923EA3100D241A9 /* PopinCall.docc */; };
 		CFBBD5712923EA3100D241A9 /* PopinCall.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CFBBD5662923EA3100D241A9 /* PopinCall.framework */; };
 		CFBBD5762923EA3100D241A9 /* PopinCallTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = CFBBD5752923EA3100D241A9 /* PopinCallTests.swift */; };
@@ -31,7 +33,6 @@
 		CFF5FBD92925E4E500EADF2A /* Utilities.swift in Sources */ = {isa = PBXBuildFile; fileRef = CFF5FBD82925E4E500EADF2A /* Utilities.swift */; };
 		CFF5FBDB2925EDF000EADF2A /* PopinInteractor.swift in Sources */ = {isa = PBXBuildFile; fileRef = CFF5FBDA2925EDF000EADF2A /* PopinInteractor.swift */; };
 		CFF5FBDD2925EE7A00EADF2A /* PopinPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = CFF5FBDC2925EE7A00EADF2A /* PopinPresenter.swift */; };
-		CFF5FBDF2926083200EADF2A /* PopinPusher.swift in Sources */ = {isa = PBXBuildFile; fileRef = CFF5FBDE2926083200EADF2A /* PopinPusher.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -78,6 +79,8 @@
 		CFA556832923FDC1003453DF /* PopinCallInteractor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PopinCallInteractor.swift; sourceTree = "<group>"; };
 		CFA556852923FEA3003453DF /* PopinCallDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PopinCallDelegate.swift; sourceTree = "<group>"; };
 		CFA556872923FF4C003453DF /* Popin.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Popin.swift; sourceTree = "<group>"; };
+		CFB63D8A2929045E005F265D /* PopinPusher.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PopinPusher.swift; sourceTree = "<group>"; };
+		CFB63D8C292908EF005F265D /* PopinPusherDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PopinPusherDelegate.swift; sourceTree = "<group>"; };
 		CFBBD5662923EA3100D241A9 /* PopinCall.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = PopinCall.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		CFBBD5692923EA3100D241A9 /* PopinCall.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PopinCall.h; sourceTree = "<group>"; };
 		CFBBD56A2923EA3100D241A9 /* PopinCall.docc */ = {isa = PBXFileReference; lastKnownFileType = folder.documentationcatalog; path = PopinCall.docc; sourceTree = "<group>"; };
@@ -96,7 +99,6 @@
 		CFF5FBD82925E4E500EADF2A /* Utilities.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Utilities.swift; sourceTree = "<group>"; };
 		CFF5FBDA2925EDF000EADF2A /* PopinInteractor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PopinInteractor.swift; sourceTree = "<group>"; };
 		CFF5FBDC2925EE7A00EADF2A /* PopinPresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PopinPresenter.swift; sourceTree = "<group>"; };
-		CFF5FBDE2926083200EADF2A /* PopinPusher.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PopinPusher.swift; sourceTree = "<group>"; };
 		E3F74A3372ED619A04D4C869 /* Pods_PopinCall_PopinCallTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_PopinCall_PopinCallTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
@@ -175,8 +177,9 @@
 				CFA556832923FDC1003453DF /* PopinCallInteractor.swift */,
 				CFF5FBD82925E4E500EADF2A /* Utilities.swift */,
 				CFA556872923FF4C003453DF /* Popin.swift */,
-				CFF5FBDE2926083200EADF2A /* PopinPusher.swift */,
 				CFF5FBDC2925EE7A00EADF2A /* PopinPresenter.swift */,
+				CFB63D8A2929045E005F265D /* PopinPusher.swift */,
+				CFB63D8C292908EF005F265D /* PopinPusherDelegate.swift */,
 				CFF5FBDA2925EDF000EADF2A /* PopinInteractor.swift */,
 				CFA556852923FEA3003453DF /* PopinCallDelegate.swift */,
 				CFBBD59F2923EE7200D241A9 /* PopinCallViewController.xib */,
@@ -467,6 +470,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				CFB63D8D292908EF005F265D /* PopinPusherDelegate.swift in Sources */,
 				CFBBD56B2923EA3100D241A9 /* PopinCall.docc in Sources */,
 				CFF5FBDB2925EDF000EADF2A /* PopinInteractor.swift in Sources */,
 				CFA556842923FDC1003453DF /* PopinCallInteractor.swift in Sources */,
@@ -476,7 +480,7 @@
 				CFBBD5A02923EE7200D241A9 /* PopinCallViewController.swift in Sources */,
 				CFA556862923FEA3003453DF /* PopinCallDelegate.swift in Sources */,
 				CFA556822923FDB7003453DF /* PopinCallPresenter.swift in Sources */,
-				CFF5FBDF2926083200EADF2A /* PopinPusher.swift in Sources */,
+				CFB63D8B2929045E005F265D /* PopinPusher.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

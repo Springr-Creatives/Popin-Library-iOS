@@ -43,11 +43,11 @@ class PopinInteractor {
         AF.request(urlString, method: .post, parameters: parameters, encoding: URLEncoding.httpBody, headers: headers)
             .responseDecodable(of: StatusModel.self) { response in
                 switch response.result {
-                case .success(let userModel):
-                    print("success")
+                case .success(let statusModel):
+                    debugPrint(statusModel)
                     
                 case .failure(let error):
-                    print("fail")
+                    debugPrint("fail")
                 }
             }
     }

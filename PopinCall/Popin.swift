@@ -10,30 +10,68 @@ import Foundation
 
 let serverURL = "https://dev.popin.to/api/v1";
 
-public class Popin  {
+open class Popin : PopinPusherDelegate {
     
-    private static let popinPresenter = PopinPresenter(popinInteractor: PopinInteractor())
+    public static let shared = Popin()
     
-    private static let popinPusher = PopinPusher()
+    private var delegate : PopinCallDelegate?
+    
+    private init() {}
+    
+    private  let popinPresenter = PopinPresenter(popinInteractor: PopinInteractor())
+    
+    private  let popinPusher = PopinPusher()
+    
+    private var startCall : Bool = false;
+    
+    private var sellerToken : Int = 0;
         
-    public static func connect(token: Int, delegate: PopinCallDelegate) {
-        
+    public  func connect(token: Int, popinDelegate: PopinCallDelegate) {
+        self.delegate = popinDelegate;
         if (!self.popinPresenter.isUserRegistered()) {
             popinPresenter.registerUser(seller_id: token, onSucess: {
-                connectPusher(seller_id: token , delegate: delegate)
+                self.connectPusher(seller_id: token)
             })
         } else {
-            connectPusher(seller_id: token ,delegate: delegate)
+            self.connectPusher(seller_id: token)
         }
     }
     
-    public static func connectPusher(seller_id: Int, delegate: PopinCallDelegate) {
-        popinPusher.connect(callDelegate: delegate);
-        startConnect(seller_id: seller_id)
+    public  func connectPusher(seller_id: Int) {
+        startCall = true;
+        sellerToken = seller_id;
+        popinPusher.delegate = self;
+        popinPusher.connect()
+      //  startConnect(seller_id: seller_id)
+        
+       
     }
     
-    public static func startConnect(seller_id:Int) {
-     //   popinPresenter.startConnection(seller_id: seller_id);
+    
+    public func onPusherConnected() {
+        if (startCall && sellerToken > 0) {
+            popinPresenter.startConnection(seller_id: sellerToken);
+        }
     }
     
+    public func onAgentConnected() {
+        self.delegate?.onConnectionEstablished()
+    }
+    
+    public func onAllExpertsBusy() {
+        self.delegate?.onAllExpertsBusy()
+    }
+    
+    public func onCallConnected() {
+        
+    }
+    
+    public func onCallDisconnected() {
+        
+    }
+    
+    public func onCallFail() {
+        
+    }
 }
+
