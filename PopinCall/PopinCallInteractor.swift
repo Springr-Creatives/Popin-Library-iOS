@@ -13,10 +13,10 @@ import SwiftyJSON
 
 
 struct TalkModel : Codable{
-    let id: Int;
-    let token: String;
-    let room: String;
-    let status: String;
+    let id: Int?;
+    let token: String?;
+    let room: String?;
+    let status: Int;
 }
 
 class PopinCallInteractor {
@@ -35,6 +35,7 @@ class PopinCallInteractor {
                     sucess(talkModel);
                     break;
                 case .failure(let error):
+                    print(error)
                     failure();
                 }
             }

@@ -16,8 +16,9 @@ class ViewController: UIViewController {
     }
 
     @IBAction func makeCall(_ sender: Any) {
+        print("START CALL");
         Popin.shared.connect(token: 51, popinDelegate: self);
-       
+       // present(PopinCallViewController(), animated: true, completion: nil)
        
     }
     
@@ -26,6 +27,7 @@ class ViewController: UIViewController {
 extension ViewController : PopinCallDelegate {
     func onConnectionEstablished() {
         print("CONN_ESTA");
+        present(PopinCallViewController(), animated: true, completion: nil)
     }
     
     func onAllExpertsBusy() {
@@ -34,7 +36,7 @@ extension ViewController : PopinCallDelegate {
     
     func onCallConnected() {
         print("CALL_CONNEC");
-       // present(PopinCallViewController(), animated: true, completion: nil)
+       
         
     }
     

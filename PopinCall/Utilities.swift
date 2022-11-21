@@ -130,6 +130,8 @@ class Utilities: NSObject {
     }
     
     
+    
+    
 }
 extension UIColor {
     convenience init(red: Int, green: Int, blue: Int) {

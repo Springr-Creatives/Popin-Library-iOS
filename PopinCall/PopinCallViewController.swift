@@ -31,7 +31,7 @@ public class PopinCallViewController: UIViewController {
     var localVideoTrack: LocalVideoTrack?
     var localAudioTrack: LocalAudioTrack?
     var remoteParticipant: RemoteParticipant?
-    var remoteView: VideoView?
+  //  var remoteView: VideoView?
     
     deinit {
         // We are done with camera
@@ -43,7 +43,8 @@ public class PopinCallViewController: UIViewController {
     
     public override func viewDidLoad() {
         super.viewDidLoad()
-        
+        popinCallPresenter.attachView(popinCallView: self)
+        popinCallPresenter.createCall()
         // Do any additional setup after loading the view.
     }
     
@@ -72,10 +73,15 @@ extension PopinCallViewController: PopinCallView {
     }
     
     func showMessage(title: String, message: String) {
-        
+        DispatchQueue.main.async {
+            let alert = UIAlertController(title: title, message: message, preferredStyle: .alert)
+            alert.addAction(UIAlertAction(title: "OK", style: .destructive, handler: nil))
+            self.present(alert, animated: true, completion: nil)
+        }
     }
     
     func connectToRoom(twilioAccessToken: String, twilioRoom: String) {
+        print("Connect start");
         self.prepareLocalMedia()
         
         // Preparing the connect options with the access token that we fetched (or hardcoded).
@@ -116,7 +122,7 @@ extension PopinCallViewController: PopinCallView {
             builder.roomName =  twilioRoom
         }
         
-
+        
         self.room = TwilioVideoSDK.connect(options: connectOptions, delegate: self)
         
         self.showRoomUI(inRoom: true)
@@ -203,7 +209,7 @@ extension PopinCallViewController: PopinCallView {
             if let subscribedVideoTrack = publication.remoteTrack,
                publication.isTrackSubscribed {
                 setupRemoteVideoView()
-                subscribedVideoTrack.addRenderer(self.remoteView!)
+                subscribedVideoTrack.addRenderer(self.remoteMediaView!)
                 self.remoteParticipant = participant
                 return true
             }
@@ -222,54 +228,54 @@ extension PopinCallViewController: PopinCallView {
     }
     
     func cleanupRemoteParticipant() {
-        if self.remoteParticipant != nil {
-            self.remoteView?.removeFromSuperview()
-            self.remoteView = nil
-            self.remoteParticipant = nil
-        }
+//        if self.remoteParticipant != nil {
+//            self.remoteView?.removeFromSuperview()
+//            self.remoteView = nil
+//            self.remoteParticipant = nil
+//        }
     }
     func setupRemoteVideoView() {
         // Creating `VideoView` programmatically
-        self.remoteView = VideoView(frame: CGRect.zero, delegate: self)
-        
-        self.view.insertSubview(self.remoteView!, at: 0)
-        
-        // `VideoView` supports scaleToFill, scaleAspectFill and scaleAspectFit
-        // scaleAspectFit is the default mode when you create `VideoView` programmatically.
-        self.remoteView!.contentMode = .scaleAspectFit;
-        
-        let centerX = NSLayoutConstraint(item: self.remoteView!,
-                                         attribute: NSLayoutConstraint.Attribute.centerX,
-                                         relatedBy: NSLayoutConstraint.Relation.equal,
-                                         toItem: self.view,
-                                         attribute: NSLayoutConstraint.Attribute.centerX,
-                                         multiplier: 1,
-                                         constant: 0);
-        self.view.addConstraint(centerX)
-        let centerY = NSLayoutConstraint(item: self.remoteView!,
-                                         attribute: NSLayoutConstraint.Attribute.centerY,
-                                         relatedBy: NSLayoutConstraint.Relation.equal,
-                                         toItem: self.view,
-                                         attribute: NSLayoutConstraint.Attribute.centerY,
-                                         multiplier: 1,
-                                         constant: 0);
-        self.view.addConstraint(centerY)
-        let width = NSLayoutConstraint(item: self.remoteView!,
-                                       attribute: NSLayoutConstraint.Attribute.width,
-                                       relatedBy: NSLayoutConstraint.Relation.equal,
-                                       toItem: self.view,
-                                       attribute: NSLayoutConstraint.Attribute.width,
-                                       multiplier: 1,
-                                       constant: 0);
-        self.view.addConstraint(width)
-        let height = NSLayoutConstraint(item: self.remoteView!,
-                                        attribute: NSLayoutConstraint.Attribute.height,
-                                        relatedBy: NSLayoutConstraint.Relation.equal,
-                                        toItem: self.view,
-                                        attribute: NSLayoutConstraint.Attribute.height,
-                                        multiplier: 1,
-                                        constant: 0);
-        self.view.addConstraint(height)
+//        self.remoteView = VideoView(frame: CGRect.zero, delegate: self)
+//
+//        self.view.insertSubview(self.remoteView!, at: 0)
+//
+//        // `VideoView` supports scaleToFill, scaleAspectFill and scaleAspectFit
+//        // scaleAspectFit is the default mode when you create `VideoView` programmatically.
+//        self.remoteView!.contentMode = .scaleAspectFit;
+//
+//        let centerX = NSLayoutConstraint(item: self.remoteView!,
+//                                         attribute: NSLayoutConstraint.Attribute.centerX,
+//                                         relatedBy: NSLayoutConstraint.Relation.equal,
+//                                         toItem: self.view,
+//                                         attribute: NSLayoutConstraint.Attribute.centerX,
+//                                         multiplier: 1,
+//                                         constant: 0);
+//        self.view.addConstraint(centerX)
+//        let centerY = NSLayoutConstraint(item: self.remoteView!,
+//                                         attribute: NSLayoutConstraint.Attribute.centerY,
+//                                         relatedBy: NSLayoutConstraint.Relation.equal,
+//                                         toItem: self.view,
+//                                         attribute: NSLayoutConstraint.Attribute.centerY,
+//                                         multiplier: 1,
+//                                         constant: 0);
+//        self.view.addConstraint(centerY)
+//        let width = NSLayoutConstraint(item: self.remoteView!,
+//                                       attribute: NSLayoutConstraint.Attribute.width,
+//                                       relatedBy: NSLayoutConstraint.Relation.equal,
+//                                       toItem: self.view,
+//                                       attribute: NSLayoutConstraint.Attribute.width,
+//                                       multiplier: 1,
+//                                       constant: 0);
+//        self.view.addConstraint(width)
+//        let height = NSLayoutConstraint(item: self.remoteView!,
+//                                        attribute: NSLayoutConstraint.Attribute.height,
+//                                        relatedBy: NSLayoutConstraint.Relation.equal,
+//                                        toItem: self.view,
+//                                        attribute: NSLayoutConstraint.Attribute.height,
+//                                        multiplier: 1,
+//                                        constant: 0);
+//        self.view.addConstraint(height)
     }
 }
 extension PopinCallViewController : RoomDelegate {

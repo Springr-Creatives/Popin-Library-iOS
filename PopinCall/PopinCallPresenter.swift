@@ -24,9 +24,13 @@ class PopinCallPresenter {
     
     func createCall() {
         popinInteractor.getAccessToken(seller_id: Utilities.shared.getSeller(), onSucess: { (talkModel) in
-            print("SUCCES")
+            if (talkModel.status == 1) {
+                self.popinCallView?.connectToRoom(twilioAccessToken: talkModel.token!, twilioRoom: talkModel.room!)
+            } else {
+                self.popinCallView?.showMessage(title: "Error", message: "Unable to create call")
+            }
         }, onFailure: {
-            print("FAIL")
+            self.popinCallView?.showMessage(title: "Error", message: "Unable to create call")
         })
     }
     

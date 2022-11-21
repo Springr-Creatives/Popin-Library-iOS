@@ -50,9 +50,10 @@ open class Popin : PopinPusherDelegate {
     
     
     public func onPusherConnected() {
-        if (startCall && sellerToken > 0) {
-            popinPresenter.startConnection(seller_id: sellerToken);
-        }
+        self.delegate?.onConnectionEstablished()
+//        if (startCall && sellerToken > 0) {
+//            popinPresenter.startConnection(seller_id: sellerToken);
+//        }
     }
     
     public func onAgentConnected() {
