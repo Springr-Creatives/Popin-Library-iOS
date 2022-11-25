@@ -32,6 +32,9 @@ public class PopinCallViewController: UIViewController {
     var localAudioTrack: LocalAudioTrack?
     var remoteParticipant: RemoteParticipant?
   //  var remoteView: VideoView?
+    @IBAction func endCall(_ sender: Any) {
+        self.navigationController?.popViewController(animated: true)
+    }
     
     deinit {
         // We are done with camera
@@ -44,6 +47,7 @@ public class PopinCallViewController: UIViewController {
     public override func viewDidLoad() {
         super.viewDidLoad()
         popinCallPresenter.attachView(popinCallView: self)
+        self.navigationItem.setHidesBackButton(true, animated:false)
         popinCallPresenter.createCall()
         // Do any additional setup after loading the view.
     }

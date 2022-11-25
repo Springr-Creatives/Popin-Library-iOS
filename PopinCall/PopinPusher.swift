@@ -47,6 +47,7 @@ class PopinPusher : PusherDelegate{
                 let json = JSON.init(parseJSON:data)
                 let type = json["message"]["type"].intValue
                 if (type == 3) {
+                    Utilities.shared.saveConnected()
                     self.delegate?.onAgentConnected()
                 } else if (type == 15) {
                     self.delegate?.onAllExpertsBusy()

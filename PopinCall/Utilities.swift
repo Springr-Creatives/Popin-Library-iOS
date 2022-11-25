@@ -129,10 +129,25 @@ class Utilities: NSObject {
         return UserDefaults.standard.integer(forKey: "popinSeller");
     }
     
+    func isConnected() -> Bool {
+        let dateDouble=UserDefaults.standard.double(forKey: "agent_connect");
+        if (dateDouble > 0) {
+            let captureDate = Date(timeIntervalSince1970: dateDouble)
+            let difference = Int(Date().timeIntervalSince(captureDate))
+            if (difference < 3600)  { // 1 hour
+                return true;
+            }
+        }
+        return false;
+    }
     
+    func saveConnected() {
+        UserDefaults.standard.set(Date().timeIntervalSince1970, forKey: "agent_connect")
+    }
     
     
 }
+
 extension UIColor {
     convenience init(red: Int, green: Int, blue: Int) {
         assert(red >= 0 && red <= 255, "Invalid red component")

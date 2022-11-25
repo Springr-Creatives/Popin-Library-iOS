@@ -50,10 +50,16 @@ open class Popin : PopinPusherDelegate {
     
     
     public func onPusherConnected() {
-        self.delegate?.onConnectionEstablished()
-//        if (startCall && sellerToken > 0) {
-//            popinPresenter.startConnection(seller_id: sellerToken);
-//        }
+        print("PUSHER CONNECTED");
+        if (startCall && sellerToken > 0) {
+            if (Utilities.shared.isConnected()) {
+                print("AGENT_ALEADY CONNECTED");
+                self.delegate?.onConnectionEstablished()
+                return;
+            }
+            print("ATTEMPT AGENT CONNECT");
+            popinPresenter.startConnection(seller_id: sellerToken);
+        }
     }
     
     public func onAgentConnected() {
