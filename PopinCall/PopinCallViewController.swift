@@ -176,11 +176,11 @@ extension PopinCallViewController: PopinCallView {
         if (frontCamera != nil || backCamera != nil) {
             
             let options = CameraSourceOptions { (builder) in
-                if #available(iOS 13.0, *) {
-                    // Track UIWindowScene events for the key window's scene.
-                    // The example app disables multi-window support in the .plist (see UIApplicationSceneManifestKey).
-                    builder.orientationTracker = UserInterfaceTracker(scene: UIApplication.shared.keyWindow!.windowScene!)
-                }
+//                if #available(iOS 13.0, *) {
+//                    // Track UIWindowScene events for the key window's scene.
+//                    // The example app disables multi-window support in the .plist (see UIApplicationSceneManifestKey).
+//                    builder.orientationTracker = UserInterfaceTracker(scene: UIApplication.shared.keyWindow!.windowScene!)
+//                }
             }
             // Preview our local camera track in the local video preview view.
             camera = CameraSource(options: options, delegate: self)

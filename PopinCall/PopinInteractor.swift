@@ -46,7 +46,7 @@ class PopinInteractor {
                 case .success(let statusModel):
                     debugPrint(statusModel)
                     
-                case .failure(let error):
+                case .failure(_):
                     debugPrint("fail")
                 }
             }

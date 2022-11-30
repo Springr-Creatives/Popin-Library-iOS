@@ -53,10 +53,10 @@ class PopinCallInteractor {
         AF.request(urlString, method: .post, parameters: parameters, encoding: URLEncoding.httpBody, headers: headers)
             .responseDecodable(of: StatusModel.self) { response in
                 switch response.result {
-                case .success(let statusModel):
+                case .success(_):
                     sucess();
                     break;
-                case .failure(let error):
+                case .failure(_):
                     failure();
                     debugPrint("fail")
                 }
