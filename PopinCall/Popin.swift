@@ -30,6 +30,7 @@ open class Popin : PopinPusherDelegate {
         self.delegate = popinDelegate;
         Utilities.shared.saveSeller(seller_id: token);
         if (!self.popinPresenter.isUserRegistered()) {
+            print("REGISTER_USER");
             popinPresenter.registerUser(seller_id: token, onSucess: {
                 self.connectPusher(seller_id: token)
             })
@@ -46,6 +47,14 @@ open class Popin : PopinPusherDelegate {
       //  startConnect(seller_id: seller_id)
         
        
+    }
+    
+    public func getAvailableSchedules() {
+        
+    }
+    
+    public func setScheduledcall(scheduleTime: String) {
+        
     }
     
     

@@ -13,7 +13,6 @@
             <connections>
                 <outlet property="labelConnecting" destination="UX4-iV-Z5V" id="ht6-Hf-45d"/>
                 <outlet property="localMediaView" destination="4Yl-BG-5Ku" id="Oax-1D-ylv"/>
-                <outlet property="remoteMediaView" destination="hBY-Sf-vb9" id="Ep4-8v-kmk"/>
                 <outlet property="view" destination="i5M-Pr-FkT" id="sfx-zR-JGt"/>
             </connections>
         </placeholder>
@@ -22,10 +21,6 @@
             <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
-                <view contentMode="scaleAspectFill" insetsLayoutMarginsFromSafeArea="NO" translatesAutoresizingMaskIntoConstraints="NO" id="hBY-Sf-vb9" customClass="TVIVideoView">
-                    <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
-                    <color key="backgroundColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                </view>
                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="4Yl-BG-5Ku" customClass="TVIVideoView">
                     <rect key="frame" x="270" y="88" width="128" height="128"/>
                     <color key="backgroundColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
@@ -53,26 +48,19 @@
                 </label>
             </subviews>
             <viewLayoutGuide key="safeArea" id="fnl-2z-Ty3"/>
-            <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+            <color key="backgroundColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
             <constraints>
                 <constraint firstItem="fnl-2z-Ty3" firstAttribute="bottom" secondItem="J51-rZ-xg9" secondAttribute="bottom" constant="60" id="1f8-IP-PGr"/>
                 <constraint firstItem="UX4-iV-Z5V" firstAttribute="centerX" secondItem="fnl-2z-Ty3" secondAttribute="centerX" id="2Mb-hf-Twn"/>
-                <constraint firstAttribute="trailing" secondItem="hBY-Sf-vb9" secondAttribute="trailing" id="3EX-gs-rZV"/>
-                <constraint firstAttribute="bottom" secondItem="hBY-Sf-vb9" secondAttribute="bottom" id="9ay-VS-eyw"/>
                 <constraint firstItem="J51-rZ-xg9" firstAttribute="centerX" secondItem="fnl-2z-Ty3" secondAttribute="centerX" id="N5S-fF-dpr"/>
                 <constraint firstItem="UX4-iV-Z5V" firstAttribute="centerY" secondItem="fnl-2z-Ty3" secondAttribute="centerY" id="Vvm-Yz-M32"/>
                 <constraint firstItem="fnl-2z-Ty3" firstAttribute="trailing" secondItem="4Yl-BG-5Ku" secondAttribute="trailing" constant="16" id="bbg-mB-2JR"/>
-                <constraint firstItem="hBY-Sf-vb9" firstAttribute="top" secondItem="i5M-Pr-FkT" secondAttribute="top" id="gpM-wI-nhL"/>
                 <constraint firstItem="4Yl-BG-5Ku" firstAttribute="top" secondItem="fnl-2z-Ty3" secondAttribute="top" constant="40" id="ofX-xh-XkN"/>
-                <constraint firstItem="hBY-Sf-vb9" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" id="wqh-gy-BB7"/>
             </constraints>
             <point key="canvasLocation" x="-15.942028985507248" y="-11.383928571428571"/>
         </view>
     </objects>
     <resources>
-        <systemColor name="systemBackgroundColor">
-            <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-        </systemColor>
         <systemColor name="systemRedColor">
             <color red="1" green="0.23137254901960785" blue="0.18823529411764706" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </systemColor>

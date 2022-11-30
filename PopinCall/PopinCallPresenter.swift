@@ -24,6 +24,7 @@ class PopinCallPresenter {
     
     func createCall() {
         popinInteractor.getAccessToken(seller_id: Utilities.shared.getSeller(), onSucess: { (talkModel) in
+            print(talkModel);
             if (talkModel.status == 1) {
                 self.popinCallView?.connectToRoom(twilioAccessToken: talkModel.token!, twilioRoom: talkModel.room!)
             } else {

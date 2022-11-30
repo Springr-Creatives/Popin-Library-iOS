@@ -20,7 +20,7 @@ public class PopinCallViewController: UIViewController {
     
     private let popinCallPresenter = PopinCallPresenter(popinInteractor: PopinCallInteractor())
     
-    @IBOutlet weak var remoteMediaView: VideoView!
+   
     
     @IBOutlet weak var localMediaView: VideoView!
     
@@ -31,10 +31,12 @@ public class PopinCallViewController: UIViewController {
     var localVideoTrack: LocalVideoTrack?
     var localAudioTrack: LocalAudioTrack?
     var remoteParticipant: RemoteParticipant?
-  //  var remoteView: VideoView?
+    var remoteView: VideoView?
     @IBAction func endCall(_ sender: Any) {
-        self.navigationController?.popViewController(animated: true)
+        closeView()
     }
+    
+   
     
     deinit {
         // We are done with camera
@@ -73,7 +75,7 @@ extension PopinCallViewController: PopinCallView {
     }
     
     func closeView() {
-        
+        self.navigationController?.popViewController(animated: true)
     }
     
     func showMessage(title: String, message: String) {
@@ -213,7 +215,7 @@ extension PopinCallViewController: PopinCallView {
             if let subscribedVideoTrack = publication.remoteTrack,
                publication.isTrackSubscribed {
                 setupRemoteVideoView()
-                subscribedVideoTrack.addRenderer(self.remoteMediaView!)
+                subscribedVideoTrack.addRenderer(self.remoteView!)
                 self.remoteParticipant = participant
                 return true
             }
@@ -240,46 +242,46 @@ extension PopinCallViewController: PopinCallView {
     }
     func setupRemoteVideoView() {
         // Creating `VideoView` programmatically
-//        self.remoteView = VideoView(frame: CGRect.zero, delegate: self)
-//
-//        self.view.insertSubview(self.remoteView!, at: 0)
-//
-//        // `VideoView` supports scaleToFill, scaleAspectFill and scaleAspectFit
-//        // scaleAspectFit is the default mode when you create `VideoView` programmatically.
-//        self.remoteView!.contentMode = .scaleAspectFit;
-//
-//        let centerX = NSLayoutConstraint(item: self.remoteView!,
-//                                         attribute: NSLayoutConstraint.Attribute.centerX,
-//                                         relatedBy: NSLayoutConstraint.Relation.equal,
-//                                         toItem: self.view,
-//                                         attribute: NSLayoutConstraint.Attribute.centerX,
-//                                         multiplier: 1,
-//                                         constant: 0);
-//        self.view.addConstraint(centerX)
-//        let centerY = NSLayoutConstraint(item: self.remoteView!,
-//                                         attribute: NSLayoutConstraint.Attribute.centerY,
-//                                         relatedBy: NSLayoutConstraint.Relation.equal,
-//                                         toItem: self.view,
-//                                         attribute: NSLayoutConstraint.Attribute.centerY,
-//                                         multiplier: 1,
-//                                         constant: 0);
-//        self.view.addConstraint(centerY)
-//        let width = NSLayoutConstraint(item: self.remoteView!,
-//                                       attribute: NSLayoutConstraint.Attribute.width,
-//                                       relatedBy: NSLayoutConstraint.Relation.equal,
-//                                       toItem: self.view,
-//                                       attribute: NSLayoutConstraint.Attribute.width,
-//                                       multiplier: 1,
-//                                       constant: 0);
-//        self.view.addConstraint(width)
-//        let height = NSLayoutConstraint(item: self.remoteView!,
-//                                        attribute: NSLayoutConstraint.Attribute.height,
-//                                        relatedBy: NSLayoutConstraint.Relation.equal,
-//                                        toItem: self.view,
-//                                        attribute: NSLayoutConstraint.Attribute.height,
-//                                        multiplier: 1,
-//                                        constant: 0);
-//        self.view.addConstraint(height)
+        self.remoteView = VideoView(frame: CGRect.zero, delegate: self)
+
+        self.view.insertSubview(self.remoteView!, at: 0)
+
+        // `VideoView` supports scaleToFill, scaleAspectFill and scaleAspectFit
+        // scaleAspectFit is the default mode when you create `VideoView` programmatically.
+        self.remoteView!.contentMode = .scaleAspectFill;
+
+        let centerX = NSLayoutConstraint(item: self.remoteView!,
+                                         attribute: NSLayoutConstraint.Attribute.centerX,
+                                         relatedBy: NSLayoutConstraint.Relation.equal,
+                                         toItem: self.view,
+                                         attribute: NSLayoutConstraint.Attribute.centerX,
+                                         multiplier: 1,
+                                         constant: 0);
+        self.view.addConstraint(centerX)
+        let centerY = NSLayoutConstraint(item: self.remoteView!,
+                                         attribute: NSLayoutConstraint.Attribute.centerY,
+                                         relatedBy: NSLayoutConstraint.Relation.equal,
+                                         toItem: self.view,
+                                         attribute: NSLayoutConstraint.Attribute.centerY,
+                                         multiplier: 1,
+                                         constant: 0);
+        self.view.addConstraint(centerY)
+        let width = NSLayoutConstraint(item: self.remoteView!,
+                                       attribute: NSLayoutConstraint.Attribute.width,
+                                       relatedBy: NSLayoutConstraint.Relation.equal,
+                                       toItem: self.view,
+                                       attribute: NSLayoutConstraint.Attribute.width,
+                                       multiplier: 1,
+                                       constant: 0);
+        self.view.addConstraint(width)
+        let height = NSLayoutConstraint(item: self.remoteView!,
+                                        attribute: NSLayoutConstraint.Attribute.height,
+                                        relatedBy: NSLayoutConstraint.Relation.equal,
+                                        toItem: self.view,
+                                        attribute: NSLayoutConstraint.Attribute.height,
+                                        multiplier: 1,
+                                        constant: 0);
+        self.view.addConstraint(height)
     }
 }
 extension PopinCallViewController : RoomDelegate {
@@ -346,7 +348,7 @@ extension PopinCallViewController : RemoteParticipantDelegate {
     public func remoteParticipantDidUnpublishVideoTrack(participant: RemoteParticipant, publication: RemoteVideoTrackPublication) {
         // Remote Participant has stopped sharing the video Track.
         
-        logMessage(messageText: "Participant \(participant.identity) unpublished \(publication.trackName) video track")
+        //closeView();
     }
     
     public func remoteParticipantDidPublishAudioTrack(participant: RemoteParticipant, publication: RemoteAudioTrackPublication) {
@@ -387,6 +389,7 @@ extension PopinCallViewController : RemoteParticipantDelegate {
                 renderRemoteParticipants(participants: remainingParticipants)
             }
         }
+        closeView();
     }
     
     public func didSubscribeToAudioTrack(audioTrack: RemoteAudioTrack, publication: RemoteAudioTrackPublication, participant: RemoteParticipant) {
