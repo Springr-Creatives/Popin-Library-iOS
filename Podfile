@@ -6,7 +6,7 @@ target 'PopinCall' do
   use_frameworks!
 
   pod 'TwilioVideo', '~> 5'
-  pod 'Alamofire'
+  pod 'Alamofire', '~> 5'
   pod 'PusherSwift', '~> 10.1.0'
   pod 'SwiftyJSON', '~> 4.0'
 
