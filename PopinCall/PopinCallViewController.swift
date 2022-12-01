@@ -34,12 +34,13 @@ public class PopinCallViewController: UIViewController {
     var remoteView: VideoView?
     
     @IBAction func endCall(_ sender: Any) {
+        self.room!.disconnect()
         closeView()
     }
     
     @IBOutlet weak var micButton: UIButton!
     
-
+    
     
     @IBAction func switchCamera(_ sender: Any) {
         flipCamera();
@@ -83,6 +84,10 @@ public class PopinCallViewController: UIViewController {
         popinCallPresenter.attachView(popinCallView: self)
         self.navigationItem.setHidesBackButton(true, animated:false)
         popinCallPresenter.createCall()
+    
+        self.startPreview()
+        
+        
         // Do any additional setup after loading the view.
     }
     
@@ -214,7 +219,7 @@ extension PopinCallViewController: PopinCallView {
         //                self.micButton.isHidden = !inRoom
         //                self.disconnectButton.isHidden = !inRoom
         //                self.navigationController?.setNavigationBarHidden(inRoom, animated: true)
-        //                UIApplication.shared.isIdleTimerDisabled = inRoom
+        UIApplication.shared.isIdleTimerDisabled = inRoom
         
         // Show / hide the automatic home indicator on modern iPhones.
         self.setNeedsUpdateOfHomeIndicatorAutoHidden()
@@ -268,6 +273,7 @@ extension PopinCallViewController: PopinCallView {
         for publication in videoPublications {
             if let subscribedVideoTrack = publication.remoteTrack,
                publication.isTrackSubscribed {
+                self.labelConnecting.isHidden = true
                 setupRemoteVideoView()
                 subscribedVideoTrack.addRenderer(self.remoteView!)
                 self.remoteParticipant = participant

@@ -16,8 +16,8 @@ class ViewController: UIViewController {
     }
 
     @IBAction func makeCall(_ sender: Any) {
-        self.navigationController?.pushViewController(PopinCallViewController(), animated: true)
-       // Popin.shared.connect(token: 51, popinDelegate: self);
+        //self.navigationController?.pushViewController(PopinCallViewController(), animated: true)
+       Popin.shared.connect(token: 51, popinDelegate: self);
         
     }
     
