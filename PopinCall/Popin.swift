@@ -53,9 +53,14 @@ open class Popin : PopinPusherDelegate {
         
     }
     
-    public func setScheduledcall(scheduleTime: String) {
+    public func setScheduledCall(scheduleTime: String) {
         
     }
+    
+    public func setRating(rating: Int) {
+        
+    }
+    
     
     
     public func onPusherConnected() {

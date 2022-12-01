@@ -20,7 +20,7 @@ public class PopinCallViewController: UIViewController {
     
     private let popinCallPresenter = PopinCallPresenter(popinInteractor: PopinCallInteractor())
     
-   
+    
     
     @IBOutlet weak var localMediaView: VideoView!
     
@@ -32,11 +32,43 @@ public class PopinCallViewController: UIViewController {
     var localAudioTrack: LocalAudioTrack?
     var remoteParticipant: RemoteParticipant?
     var remoteView: VideoView?
+    
     @IBAction func endCall(_ sender: Any) {
         closeView()
     }
     
-   
+    @IBOutlet weak var micButton: UIButton!
+    
+
+    
+    @IBAction func switchCamera(_ sender: Any) {
+        flipCamera();
+    }
+    @IBAction func toggleCamera(_ sender: Any) {
+        if (self.localVideoTrack != nil) {
+            self.localVideoTrack?.isEnabled = !(self.localVideoTrack?.isEnabled)!
+            
+            // Update the button title
+            if (self.localVideoTrack?.isEnabled == true) {
+                self.micButton.setImage(UIImage(systemName: "video.slash.fill"), for: .normal)
+            } else {
+                self.micButton.setImage(UIImage(systemName: "video.fill"), for: .normal)
+            }
+        }
+    }
+    
+    @IBAction func toggleMic(_ sender: Any) {
+        if (self.localAudioTrack != nil) {
+            self.localAudioTrack?.isEnabled = !(self.localAudioTrack?.isEnabled)!
+            
+            // Update the button title
+            if (self.localAudioTrack?.isEnabled == true) {
+                self.micButton.setImage(UIImage(systemName: "mic.slash.fill"), for: .normal)
+            } else {
+                self.micButton.setImage(UIImage(systemName: "mic.fill"), for: .normal)
+            }
+        }
+    }
     
     deinit {
         // We are done with camera
@@ -61,6 +93,28 @@ public class PopinCallViewController: UIViewController {
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
         
+    }
+    
+    @objc func flipCamera() {
+        var newDevice: AVCaptureDevice?
+        
+        if let camera = self.camera, let captureDevice = camera.device {
+            if captureDevice.position == .front {
+                newDevice = CameraSource.captureDevice(position: .back)
+            } else {
+                newDevice = CameraSource.captureDevice(position: .front)
+            }
+            
+            if let newDevice = newDevice {
+                camera.selectCaptureDevice(newDevice) { (captureDevice, videoFormat, error) in
+                    if let error = error {
+                        self.logMessage(messageText: "Error selecting capture device.\ncode = \((error as NSError).code) error = \(error.localizedDescription)")
+                    } else {
+                        self.localMediaView.shouldMirror = (captureDevice.position == .front)
+                    }
+                }
+            }
+        }
     }
     
     
@@ -176,11 +230,11 @@ extension PopinCallViewController: PopinCallView {
         if (frontCamera != nil || backCamera != nil) {
             
             let options = CameraSourceOptions { (builder) in
-//                if #available(iOS 13.0, *) {
-//                    // Track UIWindowScene events for the key window's scene.
-//                    // The example app disables multi-window support in the .plist (see UIApplicationSceneManifestKey).
-//                    builder.orientationTracker = UserInterfaceTracker(scene: UIApplication.shared.keyWindow!.windowScene!)
-//                }
+                //                if #available(iOS 13.0, *) {
+                //                    // Track UIWindowScene events for the key window's scene.
+                //                    // The example app disables multi-window support in the .plist (see UIApplicationSceneManifestKey).
+                //                    builder.orientationTracker = UserInterfaceTracker(scene: UIApplication.shared.keyWindow!.windowScene!)
+                //                }
             }
             // Preview our local camera track in the local video preview view.
             camera = CameraSource(options: options, delegate: self)
@@ -234,22 +288,22 @@ extension PopinCallViewController: PopinCallView {
     }
     
     func cleanupRemoteParticipant() {
-//        if self.remoteParticipant != nil {
-//            self.remoteView?.removeFromSuperview()
-//            self.remoteView = nil
-//            self.remoteParticipant = nil
-//        }
+        //        if self.remoteParticipant != nil {
+        //            self.remoteView?.removeFromSuperview()
+        //            self.remoteView = nil
+        //            self.remoteParticipant = nil
+        //        }
     }
     func setupRemoteVideoView() {
         // Creating `VideoView` programmatically
         self.remoteView = VideoView(frame: CGRect.zero, delegate: self)
-
+        
         self.view.insertSubview(self.remoteView!, at: 0)
-
+        
         // `VideoView` supports scaleToFill, scaleAspectFill and scaleAspectFit
         // scaleAspectFit is the default mode when you create `VideoView` programmatically.
         self.remoteView!.contentMode = .scaleAspectFill;
-
+        
         let centerX = NSLayoutConstraint(item: self.remoteView!,
                                          attribute: NSLayoutConstraint.Attribute.centerX,
                                          relatedBy: NSLayoutConstraint.Relation.equal,

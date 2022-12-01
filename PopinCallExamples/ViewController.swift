@@ -16,7 +16,8 @@ class ViewController: UIViewController {
     }
 
     @IBAction func makeCall(_ sender: Any) {
-        Popin.shared.connect(token: 51, popinDelegate: self);
+        self.navigationController?.pushViewController(PopinCallViewController(), animated: true)
+       // Popin.shared.connect(token: 51, popinDelegate: self);
         
     }
     
@@ -24,7 +25,6 @@ class ViewController: UIViewController {
 
 extension ViewController : PopinCallDelegate {
     func onConnectionEstablished() {
-        print("CONN_ESTA");
         self.navigationController?.pushViewController(PopinCallViewController(), animated: true)
     }
     

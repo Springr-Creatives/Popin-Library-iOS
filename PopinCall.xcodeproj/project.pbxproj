@@ -14,6 +14,7 @@
 		CFA556842923FDC1003453DF /* PopinCallInteractor.swift in Sources */ = {isa = PBXBuildFile; fileRef = CFA556832923FDC1003453DF /* PopinCallInteractor.swift */; };
 		CFA556862923FEA3003453DF /* PopinCallDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = CFA556852923FEA3003453DF /* PopinCallDelegate.swift */; };
 		CFA556882923FF4C003453DF /* Popin.swift in Sources */ = {isa = PBXBuildFile; fileRef = CFA556872923FF4C003453DF /* Popin.swift */; };
+		CFB22035293846E200A95C97 /* View.xib in Resources */ = {isa = PBXBuildFile; fileRef = CFB22034293846E200A95C97 /* View.xib */; };
 		CFB63D8B2929045E005F265D /* PopinPusher.swift in Sources */ = {isa = PBXBuildFile; fileRef = CFB63D8A2929045E005F265D /* PopinPusher.swift */; };
 		CFB63D8D292908EF005F265D /* PopinPusherDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = CFB63D8C292908EF005F265D /* PopinPusherDelegate.swift */; };
 		CFBBD56B2923EA3100D241A9 /* PopinCall.docc in Sources */ = {isa = PBXBuildFile; fileRef = CFBBD56A2923EA3100D241A9 /* PopinCall.docc */; };
@@ -79,6 +80,7 @@
 		CFA556832923FDC1003453DF /* PopinCallInteractor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PopinCallInteractor.swift; sourceTree = "<group>"; };
 		CFA556852923FEA3003453DF /* PopinCallDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PopinCallDelegate.swift; sourceTree = "<group>"; };
 		CFA556872923FF4C003453DF /* Popin.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Popin.swift; sourceTree = "<group>"; };
+		CFB22034293846E200A95C97 /* View.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = View.xib; sourceTree = "<group>"; };
 		CFB63D8A2929045E005F265D /* PopinPusher.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PopinPusher.swift; sourceTree = "<group>"; };
 		CFB63D8C292908EF005F265D /* PopinPusherDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PopinPusherDelegate.swift; sourceTree = "<group>"; };
 		CFBBD5662923EA3100D241A9 /* PopinCall.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = PopinCall.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -183,6 +185,7 @@
 				CFF5FBDA2925EDF000EADF2A /* PopinInteractor.swift */,
 				CFA556852923FEA3003453DF /* PopinCallDelegate.swift */,
 				CFBBD59F2923EE7200D241A9 /* PopinCallViewController.xib */,
+				CFB22034293846E200A95C97 /* View.xib */,
 			);
 			path = PopinCall;
 			sourceTree = "<group>";
@@ -339,6 +342,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				CFB22035293846E200A95C97 /* View.xib in Resources */,
 				CFBBD5A12923EE7200D241A9 /* PopinCallViewController.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
