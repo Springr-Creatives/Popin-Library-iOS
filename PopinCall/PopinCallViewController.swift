@@ -19,7 +19,7 @@ protocol PopinCallView: NSObjectProtocol {
 public class PopinCallViewController: UIViewController {
     
     private let popinCallPresenter = PopinCallPresenter(popinInteractor: PopinCallInteractor())
-    
+    private let nibName: String = "PopinCallViewController"
     
     
     @IBOutlet weak var localMediaView: VideoView!
@@ -92,8 +92,11 @@ public class PopinCallViewController: UIViewController {
     }
     
     public init() {
+     //   let frameworkBundleID  = "to.popin.PopinCall";
+     //   let bundle = Bundle(identifier: frameworkBundleID)
         super.init(nibName: "PopinCallViewController", bundle: Bundle(for: PopinCallViewController.self))
     }
+    
     
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")

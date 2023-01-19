@@ -16,7 +16,7 @@ Pod::Spec.new do |spec|
   #
 
   spec.name         = "PopinCall"
-  spec.version      = "0.0.7"
+  spec.version      = "0.1.0"
   spec.summary      = "A CocoaPods library written in Swift"
 
   # This description is used to generate tags and improve search results.
@@ -92,7 +92,7 @@ This library helps you integrate Popin Call in your application.
   #  Not including the public_header_files will make all headers public.
   #
 
-  spec.source_files  = "PopinCall/**/*.{h,m,swift}"
+  spec.source_files  = "PopinCall/**/*.{swift,h,m,xib,storyboard}"
   # spec.source_files  = "Classes", "Classes/**/*.{h,m}"
   spec.exclude_files = "Classes/Exclude"
 

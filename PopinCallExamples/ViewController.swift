@@ -29,13 +29,11 @@ extension ViewController : PopinCallDelegate {
     }
     
     func onAllExpertsBusy() {
-        print("EXPR_BUSY");
+        print("All experts are busy");
     }
     
     func onCallConnected() {
         print("CALL_CONNEC");
-       
-        
     }
     
     func onCallDisconnected() {
