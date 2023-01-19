@@ -19,8 +19,7 @@ protocol PopinCallView: NSObjectProtocol {
 public class PopinCallViewController: UIViewController {
     
     private let popinCallPresenter = PopinCallPresenter(popinInteractor: PopinCallInteractor())
-    private let nibName: String = "PopinCallViewController"
-    
+       
     
     @IBOutlet weak var localMediaView: VideoView!
     
