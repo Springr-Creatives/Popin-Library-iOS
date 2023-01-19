@@ -38,14 +38,14 @@
                 </label>
                 <button opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Js1-wO-wDd">
                     <rect key="frame" x="24" y="787" width="40" height="40"/>
+                    <color key="backgroundColor" white="0.33333333329999998" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                     <constraints>
                         <constraint firstAttribute="height" constant="40" id="e0k-si-iTy"/>
                         <constraint firstAttribute="width" constant="40" id="hge-Vb-UkQ"/>
                     </constraints>
-                    <state key="normal" title="Button" image="arrow.triangle.2.circlepath.camera.fill" catalog="system"/>
-                    <buttonConfiguration key="configuration" style="filled" image="arrow.triangle.2.circlepath.camera.fill" catalog="system">
-                        <color key="baseBackgroundColor" white="0.33333333329999998" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                    </buttonConfiguration>
+                    <color key="tintColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                    <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
+                    <state key="normal" image="arrow.triangle.2.circlepath.camera.fill" catalog="system"/>
                     <userDefinedRuntimeAttributes>
                         <userDefinedRuntimeAttribute type="number" keyPath="layer.cornerRadius">
                             <integer key="value" value="20"/>
@@ -57,14 +57,14 @@
                 </button>
                 <button opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Rny-XO-NNo">
                     <rect key="frame" x="24" y="732" width="40" height="40"/>
+                    <color key="backgroundColor" white="0.33333333329999998" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                     <constraints>
                         <constraint firstAttribute="height" constant="40" id="NCy-AS-DJy"/>
                         <constraint firstAttribute="width" constant="40" id="SjK-KH-Rcc"/>
                     </constraints>
-                    <state key="normal" title="Button" image="arrow.triangle.2.circlepath.camera.fill" catalog="system"/>
-                    <buttonConfiguration key="configuration" style="filled" image="video.slash.fill" catalog="system">
-                        <color key="baseBackgroundColor" white="0.33333333329999998" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                    </buttonConfiguration>
+                    <color key="tintColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                    <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
+                    <state key="normal" image="video.slash.fill" catalog="system"/>
                     <userDefinedRuntimeAttributes>
                         <userDefinedRuntimeAttribute type="number" keyPath="layer.cornerRadius">
                             <integer key="value" value="20"/>
@@ -76,14 +76,14 @@
                 </button>
                 <button opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="z2x-wz-Vje">
                     <rect key="frame" x="24" y="677" width="40" height="40"/>
+                    <color key="backgroundColor" white="0.33333333329999998" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                     <constraints>
                         <constraint firstAttribute="height" constant="40" id="74K-U2-XYj"/>
                         <constraint firstAttribute="width" constant="40" id="JIQ-or-JiJ"/>
                     </constraints>
-                    <state key="normal" title="Button" image="arrow.triangle.2.circlepath.camera.fill" catalog="system"/>
-                    <buttonConfiguration key="configuration" style="filled" image="mic.slash.fill" catalog="system">
-                        <color key="baseBackgroundColor" white="0.33333333329999998" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                    </buttonConfiguration>
+                    <color key="tintColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                    <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
+                    <state key="normal" image="mic.slash.fill" catalog="system"/>
                     <userDefinedRuntimeAttributes>
                         <userDefinedRuntimeAttribute type="number" keyPath="layer.cornerRadius">
                             <integer key="value" value="20"/>
@@ -95,15 +95,14 @@
                 </button>
                 <button opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="P6m-xo-9E7">
                     <rect key="frame" x="177" y="777" width="60" height="60"/>
+                    <color key="backgroundColor" systemColor="systemRedColor"/>
                     <constraints>
                         <constraint firstAttribute="width" constant="60" id="0XV-De-cVc"/>
                         <constraint firstAttribute="height" constant="60" id="mbm-Sc-5HZ"/>
                     </constraints>
+                    <color key="tintColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                     <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
-                    <state key="normal" title="Button" image="phone.down.fill" catalog="system"/>
-                    <buttonConfiguration key="configuration" style="filled" image="phone.down.fill" catalog="system">
-                        <color key="baseBackgroundColor" systemColor="systemRedColor"/>
-                    </buttonConfiguration>
+                    <state key="normal" image="phone.down.fill" catalog="system"/>
                     <userDefinedRuntimeAttributes>
                         <userDefinedRuntimeAttribute type="number" keyPath="layer.cornerRadius">
                             <integer key="value" value="30"/>
