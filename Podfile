@@ -5,7 +5,7 @@ target 'PopinCall' do
   # Comment the next line if you don't want to use dynamic frameworks
   use_frameworks!
 
-  pod 'TwilioVideo', '~> 5'
+  pod 'Livekit', '~> 2.0.17'
   pod 'Alamofire', '~> 5'
   pod 'PusherSwift', '~> 10.1.0'
   pod 'SwiftyJSON', '~> 4.0'
