@@ -1,7 +1,13 @@
 ${PODS_ROOT}/Target Support Files/Pods-PopinCall-PopinCallTests/Pods-PopinCall-PopinCallTests-frameworks.sh
 ${BUILT_PRODUCTS_DIR}/Alamofire/Alamofire.framework
+${BUILT_PRODUCTS_DIR}/DequeModule/DequeModule.framework
+${BUILT_PRODUCTS_DIR}/InternalCollectionsUtilities/InternalCollectionsUtilities.framework
+${BUILT_PRODUCTS_DIR}/LiveKitClient/LiveKitClient.framework
+${BUILT_PRODUCTS_DIR}/Logging/Logging.framework
 ${BUILT_PRODUCTS_DIR}/NWWebSocket/NWWebSocket.framework
+${BUILT_PRODUCTS_DIR}/OrderedCollections/OrderedCollections.framework
 ${BUILT_PRODUCTS_DIR}/PusherSwift/PusherSwift.framework
+${BUILT_PRODUCTS_DIR}/SwiftProtobuf/SwiftProtobuf.framework
 ${BUILT_PRODUCTS_DIR}/SwiftyJSON/SwiftyJSON.framework
 ${BUILT_PRODUCTS_DIR}/TweetNacl/TweetNacl.framework
-${PODS_XCFRAMEWORKS_BUILD_DIR}/TwilioVideo/TwilioVideo.framework/TwilioVideo
+${PODS_XCFRAMEWORKS_BUILD_DIR}/LiveKitWebRTC/LiveKitWebRTC.framework/LiveKitWebRTC

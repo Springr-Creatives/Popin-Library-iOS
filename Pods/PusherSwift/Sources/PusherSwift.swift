@@ -2,14 +2,14 @@ import Foundation
 import NWWebSocket
 
 let PROTOCOL = 7
-let VERSION = "10.1.2"
+let VERSION = "10.1.6"
 // swiftlint:disable:next identifier_name
 let CLIENT_NAME = "pusher-websocket-swift"
 
 @objcMembers
 @objc open class Pusher: NSObject {
     public let connection: PusherConnection
-    open weak var delegate: PusherDelegate? = nil {
+    open weak var delegate: PusherDelegate? {
         willSet {
             self.connection.delegate = newValue
         }

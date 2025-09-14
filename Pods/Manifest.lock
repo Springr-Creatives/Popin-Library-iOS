@@ -1,36 +1,62 @@
 PODS:
-  - Alamofire (5.6.2)
-  - NWWebSocket (0.5.2)
-  - PusherSwift (10.1.2):
-    - NWWebSocket (~> 0.5.2)
+  - Alamofire (5.10.2)
+  - DequeModule (1.1.4):
+    - InternalCollectionsUtilities (= 1.1.4)
+  - InternalCollectionsUtilities (1.1.4)
+  - LiveKitClient (2.7.2):
+    - DequeModule (= 1.1.4)
+    - LiveKitWebRTC (= 137.7151.04)
+    - Logging (= 1.5.4)
+    - OrderedCollections (= 1.1.4)
+    - SwiftProtobuf
+  - LiveKitWebRTC (137.7151.04)
+  - Logging (1.5.4)
+  - NWWebSocket (0.5.7)
+  - OrderedCollections (1.1.4):
+    - InternalCollectionsUtilities (= 1.1.4)
+  - PusherSwift (10.1.6):
+    - NWWebSocket (~> 0.5.7)
     - TweetNacl (~> 1.0.0)
+  - SwiftProtobuf (1.31.0)
   - SwiftyJSON (4.3.0)
   - TweetNacl (1.0.2)
-  - TwilioVideo (5.3.0)
 
 DEPENDENCIES:
-  - Alamofire
+  - Alamofire (~> 5)
+  - LiveKitClient (~> 2.7.2)
   - PusherSwift (~> 10.1.0)
   - SwiftyJSON (~> 4.0)
-  - TwilioVideo (~> 5)
 
 SPEC REPOS:
+  https://github.com/livekit/podspecs.git:
+    - DequeModule
+    - InternalCollectionsUtilities
+    - LiveKitClient
+    - LiveKitWebRTC
+    - Logging
+    - OrderedCollections
   trunk:
     - Alamofire
     - NWWebSocket
     - PusherSwift
+    - SwiftProtobuf
     - SwiftyJSON
     - TweetNacl
-    - TwilioVideo
 
 SPEC CHECKSUMS:
-  Alamofire: d368e1ff8a298e6dde360e35a3e68e6c610e7204
-  NWWebSocket: 21f0c73639815da3272862c912275b26102aa80c
-  PusherSwift: fb30ba1dcbe09a6ca257ccb39dc2f84866e811b4
+  Alamofire: 7193b3b92c74a07f85569e1a6c4f4237291e7496
+  DequeModule: 646e2f186357734310ba696172d271f0988d3fb8
+  InternalCollectionsUtilities: c32aa362a8455b73c93cc941ac98f50c4e25ed0c
+  LiveKitClient: 12765695a1ac469e1b7608d1d3663db8ec5b524f
+  LiveKitWebRTC: c376f5ce67c46fc96b97db1489939a8823b36f85
+  Logging: b2531e476d82e63f657fc610379691ae44daa9f2
+  NWWebSocket: b4741420f1976e1dff4da3edad00c401e4f1d769
+  OrderedCollections: 68f29db2e771b704400ee1078ea34ef98a38e01f
+  PusherSwift: fa3d5f6587c20ad5790de87a5c9b150367b5f0f5
+  SwiftProtobuf: caa61117d9a5eeb60a52375f6685991a1fd4bd7b
   SwiftyJSON: 6faa0040f8b59dead0ee07436cbf76b73c08fd08
   TweetNacl: 3abf4d1d2082b0114e7a67410e300892448951e6
-  TwilioVideo: a7bdb489205098d605b2769b3352e8a0b3e9527a
 
-PODFILE CHECKSUM: 1b2d6748f77f9bf85b29a2ed9bf74f67ca2b5115
+PODFILE CHECKSUM: 382865d4a128e1023ec895c0aef8119ae82175b5
 
-COCOAPODS: 1.11.3
+COCOAPODS: 1.16.2

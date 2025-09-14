@@ -18,7 +18,7 @@ echo "mkdir -p ${CONFIGURATION_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}"
 mkdir -p "${CONFIGURATION_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}"
 
 COCOAPODS_PARALLEL_CODE_SIGN="${COCOAPODS_PARALLEL_CODE_SIGN:-false}"
-SWIFT_STDLIB_PATH="${DT_TOOLCHAIN_DIR}/usr/lib/swift/${PLATFORM_NAME}"
+SWIFT_STDLIB_PATH="${TOOLCHAIN_DIR}/usr/lib/swift/${PLATFORM_NAME}"
 BCSYMBOLMAP_DIR="BCSymbolMaps"
 
 
@@ -41,7 +41,7 @@ install_framework()
 
   if [ -L "${source}" ]; then
     echo "Symlinked..."
-    source="$(readlink "${source}")"
+    source="$(readlink -f "${source}")"
   fi
 
   if [ -d "${source}/${BCSYMBOLMAP_DIR}" ]; then
@@ -177,19 +177,31 @@ code_sign_if_enabled() {
 
 if [[ "$CONFIGURATION" == "Debug" ]]; then
   install_framework "${BUILT_PRODUCTS_DIR}/Alamofire/Alamofire.framework"
+  install_framework "${BUILT_PRODUCTS_DIR}/DequeModule/DequeModule.framework"
+  install_framework "${BUILT_PRODUCTS_DIR}/InternalCollectionsUtilities/InternalCollectionsUtilities.framework"
+  install_framework "${BUILT_PRODUCTS_DIR}/LiveKitClient/LiveKitClient.framework"
+  install_framework "${BUILT_PRODUCTS_DIR}/Logging/Logging.framework"
   install_framework "${BUILT_PRODUCTS_DIR}/NWWebSocket/NWWebSocket.framework"
+  install_framework "${BUILT_PRODUCTS_DIR}/OrderedCollections/OrderedCollections.framework"
   install_framework "${BUILT_PRODUCTS_DIR}/PusherSwift/PusherSwift.framework"
+  install_framework "${BUILT_PRODUCTS_DIR}/SwiftProtobuf/SwiftProtobuf.framework"
   install_framework "${BUILT_PRODUCTS_DIR}/SwiftyJSON/SwiftyJSON.framework"
   install_framework "${BUILT_PRODUCTS_DIR}/TweetNacl/TweetNacl.framework"
-  install_framework "${PODS_XCFRAMEWORKS_BUILD_DIR}/TwilioVideo/TwilioVideo.framework"
+  install_framework "${PODS_XCFRAMEWORKS_BUILD_DIR}/LiveKitWebRTC/LiveKitWebRTC.framework"
 fi
 if [[ "$CONFIGURATION" == "Release" ]]; then
   install_framework "${BUILT_PRODUCTS_DIR}/Alamofire/Alamofire.framework"
+  install_framework "${BUILT_PRODUCTS_DIR}/DequeModule/DequeModule.framework"
+  install_framework "${BUILT_PRODUCTS_DIR}/InternalCollectionsUtilities/InternalCollectionsUtilities.framework"
+  install_framework "${BUILT_PRODUCTS_DIR}/LiveKitClient/LiveKitClient.framework"
+  install_framework "${BUILT_PRODUCTS_DIR}/Logging/Logging.framework"
   install_framework "${BUILT_PRODUCTS_DIR}/NWWebSocket/NWWebSocket.framework"
+  install_framework "${BUILT_PRODUCTS_DIR}/OrderedCollections/OrderedCollections.framework"
   install_framework "${BUILT_PRODUCTS_DIR}/PusherSwift/PusherSwift.framework"
+  install_framework "${BUILT_PRODUCTS_DIR}/SwiftProtobuf/SwiftProtobuf.framework"
   install_framework "${BUILT_PRODUCTS_DIR}/SwiftyJSON/SwiftyJSON.framework"
   install_framework "${BUILT_PRODUCTS_DIR}/TweetNacl/TweetNacl.framework"
-  install_framework "${PODS_XCFRAMEWORKS_BUILD_DIR}/TwilioVideo/TwilioVideo.framework"
+  install_framework "${PODS_XCFRAMEWORKS_BUILD_DIR}/LiveKitWebRTC/LiveKitWebRTC.framework"
 fi
 if [ "${COCOAPODS_PARALLEL_CODE_SIGN}" == "true" ]; then
   wait

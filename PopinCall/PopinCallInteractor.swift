@@ -16,6 +16,7 @@ struct TalkModel : Codable{
     let id: Int?;
     let token: String?;
     let room: String?;
+    let websocket: String?; // LiveKit websocket URL
     let status: Int;
 }
 

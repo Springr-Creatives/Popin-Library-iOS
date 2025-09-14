@@ -26,7 +26,7 @@ class PopinCallPresenter {
         popinInteractor.getAccessToken(seller_id: Utilities.shared.getSeller(), onSucess: { (talkModel) in
             print(talkModel);
             if (talkModel.status == 1) {
-                self.popinCallView?.connectToRoom(twilioAccessToken: talkModel.token!, twilioRoom: talkModel.room!)
+                self.popinCallView?.connectToRoom(liveKitAccessToken: talkModel.token!, liveKitRoom: talkModel.room!, websocketUrl: talkModel.websocket!)
             } else {
                 self.popinCallView?.showMessage(title: "Error", message: "Unable to create call")
             }
