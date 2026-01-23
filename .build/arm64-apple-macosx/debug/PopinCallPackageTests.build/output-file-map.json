@@ -1,0 +1,12 @@
+{
+  "": {
+    "swift-dependencies": "/Users/ashwin/Developer/Popin-Library-iOS/.build/arm64-apple-macosx/debug/PopinCallPackageTests.build/master.swiftdeps"
+  },
+  "/Users/ashwin/Developer/Popin-Library-iOS/.build/arm64-apple-macosx/debug/PopinCallPackageTests.derived/runner.swift": {
+    "dependencies": "/Users/ashwin/Developer/Popin-Library-iOS/.build/arm64-apple-macosx/debug/PopinCallPackageTests.build/runner.d",
+    "object": "/Users/ashwin/Developer/Popin-Library-iOS/.build/arm64-apple-macosx/debug/PopinCallPackageTests.build/runner.swift.o",
+    "swiftmodule": "/Users/ashwin/Developer/Popin-Library-iOS/.build/arm64-apple-macosx/debug/PopinCallPackageTests.build/runner~partial.swiftmodule",
+    "swift-dependencies": "/Users/ashwin/Developer/Popin-Library-iOS/.build/arm64-apple-macosx/debug/PopinCallPackageTests.build/runner.swiftdeps",
+    "diagnostics": "/Users/ashwin/Developer/Popin-Library-iOS/.build/arm64-apple-macosx/debug/PopinCallPackageTests.build/runner.dia"
+  }
+}

@@ -1,0 +1,306 @@
+{
+  "": {
+    "swift-dependencies": "/Users/ashwin/Developer/Popin-Library-iOS/.build/arm64-apple-macosx/debug/PusherSwift.build/master.swiftdeps"
+  },
+  "/Users/ashwin/Developer/Popin-Library-iOS/.build/checkouts/pusher-websocket-swift/Sources/Extensions/PusherChannel+EncryptionHelpers.swift": {
+    "dependencies": "/Users/ashwin/Developer/Popin-Library-iOS/.build/arm64-apple-macosx/debug/PusherSwift.build/PusherChannel+EncryptionHelpers.d",
+    "object": "/Users/ashwin/Developer/Popin-Library-iOS/.build/arm64-apple-macosx/debug/PusherSwift.build/PusherChannel+EncryptionHelpers.swift.o",
+    "swiftmodule": "/Users/ashwin/Developer/Popin-Library-iOS/.build/arm64-apple-macosx/debug/PusherSwift.build/PusherChannel+EncryptionHelpers~partial.swiftmodule",
+    "swift-dependencies": "/Users/ashwin/Developer/Popin-Library-iOS/.build/arm64-apple-macosx/debug/PusherSwift.build/PusherChannel+EncryptionHelpers.swiftdeps",
+    "diagnostics": "/Users/ashwin/Developer/Popin-Library-iOS/.build/arm64-apple-macosx/debug/PusherSwift.build/PusherChannel+EncryptionHelpers.dia"
+  },
+  "/Users/ashwin/Developer/Popin-Library-iOS/.build/checkouts/pusher-websocket-swift/Sources/Extensions/PusherConnection+WebsocketDelegate.swift": {
+    "dependencies": "/Users/ashwin/Developer/Popin-Library-iOS/.build/arm64-apple-macosx/debug/PusherSwift.build/PusherConnection+WebsocketDelegate.d",
+    "object": "/Users/ashwin/Developer/Popin-Library-iOS/.build/arm64-apple-macosx/debug/PusherSwift.build/PusherConnection+WebsocketDelegate.swift.o",
+    "swiftmodule": "/Users/ashwin/Developer/Popin-Library-iOS/.build/arm64-apple-macosx/debug/PusherSwift.build/PusherConnection+WebsocketDelegate~partial.swiftmodule",
+    "swift-dependencies": "/Users/ashwin/Developer/Popin-Library-iOS/.build/arm64-apple-macosx/debug/PusherSwift.build/PusherConnection+WebsocketDelegate.swiftdeps",
+    "diagnostics": "/Users/ashwin/Developer/Popin-Library-iOS/.build/arm64-apple-macosx/debug/PusherSwift.build/PusherConnection+WebsocketDelegate.dia"
+  },
+  "/Users/ashwin/Developer/Popin-Library-iOS/.build/checkouts/pusher-websocket-swift/Sources/Extensions/URL+Pusher.swift": {
+    "dependencies": "/Users/ashwin/Developer/Popin-Library-iOS/.build/arm64-apple-macosx/debug/PusherSwift.build/URL+Pusher.d",
+    "object": "/Users/ashwin/Developer/Popin-Library-iOS/.build/arm64-apple-macosx/debug/PusherSwift.build/URL+Pusher.swift.o",
+    "swiftmodule": "/Users/ashwin/Developer/Popin-Library-iOS/.build/arm64-apple-macosx/debug/PusherSwift.build/URL+Pusher~partial.swiftmodule",
+    "swift-dependencies": "/Users/ashwin/Developer/Popin-Library-iOS/.build/arm64-apple-macosx/debug/PusherSwift.build/URL+Pusher.swiftdeps",
+    "diagnostics": "/Users/ashwin/Developer/Popin-Library-iOS/.build/arm64-apple-macosx/debug/PusherSwift.build/URL+Pusher.dia"
+  },
+  "/Users/ashwin/Developer/Popin-Library-iOS/.build/checkouts/pusher-websocket-swift/Sources/Helpers/Crypto.swift": {
+    "dependencies": "/Users/ashwin/Developer/Popin-Library-iOS/.build/arm64-apple-macosx/debug/PusherSwift.build/Crypto.d",
+    "object": "/Users/ashwin/Developer/Popin-Library-iOS/.build/arm64-apple-macosx/debug/PusherSwift.build/Crypto.swift.o",
+    "swiftmodule": "/Users/ashwin/Developer/Popin-Library-iOS/.build/arm64-apple-macosx/debug/PusherSwift.build/Crypto~partial.swiftmodule",
+    "swift-dependencies": "/Users/ashwin/Developer/Popin-Library-iOS/.build/arm64-apple-macosx/debug/PusherSwift.build/Crypto.swiftdeps",
+    "diagnostics": "/Users/ashwin/Developer/Popin-Library-iOS/.build/arm64-apple-macosx/debug/PusherSwift.build/Crypto.dia"
+  },
+  "/Users/ashwin/Developer/Popin-Library-iOS/.build/checkouts/pusher-websocket-swift/Sources/Helpers/EventParser.swift": {
+    "dependencies": "/Users/ashwin/Developer/Popin-Library-iOS/.build/arm64-apple-macosx/debug/PusherSwift.build/EventParser.d",
+    "object": "/Users/ashwin/Developer/Popin-Library-iOS/.build/arm64-apple-macosx/debug/PusherSwift.build/EventParser.swift.o",
+    "swiftmodule": "/Users/ashwin/Developer/Popin-Library-iOS/.build/arm64-apple-macosx/debug/PusherSwift.build/EventParser~partial.swiftmodule",
+    "swift-dependencies": "/Users/ashwin/Developer/Popin-Library-iOS/.build/arm64-apple-macosx/debug/PusherSwift.build/EventParser.swiftdeps",
+    "diagnostics": "/Users/ashwin/Developer/Popin-Library-iOS/.build/arm64-apple-macosx/debug/PusherSwift.build/EventParser.dia"
+  },
+  "/Users/ashwin/Developer/Popin-Library-iOS/.build/checkouts/pusher-websocket-swift/Sources/Helpers/Logger.swift": {
+    "dependencies": "/Users/ashwin/Developer/Popin-Library-iOS/.build/arm64-apple-macosx/debug/PusherSwift.build/Logger.d",
+    "object": "/Users/ashwin/Developer/Popin-Library-iOS/.build/arm64-apple-macosx/debug/PusherSwift.build/Logger.swift.o",
+    "swiftmodule": "/Users/ashwin/Developer/Popin-Library-iOS/.build/arm64-apple-macosx/debug/PusherSwift.build/Logger~partial.swiftmodule",
+    "swift-dependencies": "/Users/ashwin/Developer/Popin-Library-iOS/.build/arm64-apple-macosx/debug/PusherSwift.build/Logger.swiftdeps",
+    "diagnostics": "/Users/ashwin/Developer/Popin-Library-iOS/.build/arm64-apple-macosx/debug/PusherSwift.build/Logger.dia"
+  },
+  "/Users/ashwin/Developer/Popin-Library-iOS/.build/checkouts/pusher-websocket-swift/Sources/Models/AuthError.swift": {
+    "dependencies": "/Users/ashwin/Developer/Popin-Library-iOS/.build/arm64-apple-macosx/debug/PusherSwift.build/AuthError.d",
+    "object": "/Users/ashwin/Developer/Popin-Library-iOS/.build/arm64-apple-macosx/debug/PusherSwift.build/AuthError.swift.o",
+    "swiftmodule": "/Users/ashwin/Developer/Popin-Library-iOS/.build/arm64-apple-macosx/debug/PusherSwift.build/AuthError~partial.swiftmodule",
+    "swift-dependencies": "/Users/ashwin/Developer/Popin-Library-iOS/.build/arm64-apple-macosx/debug/PusherSwift.build/AuthError.swiftdeps",
+    "diagnostics": "/Users/ashwin/Developer/Popin-Library-iOS/.build/arm64-apple-macosx/debug/PusherSwift.build/AuthError.dia"
+  },
+  "/Users/ashwin/Developer/Popin-Library-iOS/.build/checkouts/pusher-websocket-swift/Sources/Models/AuthMethod.swift": {
+    "dependencies": "/Users/ashwin/Developer/Popin-Library-iOS/.build/arm64-apple-macosx/debug/PusherSwift.build/AuthMethod.d",
+    "object": "/Users/ashwin/Developer/Popin-Library-iOS/.build/arm64-apple-macosx/debug/PusherSwift.build/AuthMethod.swift.o",
+    "swiftmodule": "/Users/ashwin/Developer/Popin-Library-iOS/.build/arm64-apple-macosx/debug/PusherSwift.build/AuthMethod~partial.swiftmodule",
+    "swift-dependencies": "/Users/ashwin/Developer/Popin-Library-iOS/.build/arm64-apple-macosx/debug/PusherSwift.build/AuthMethod.swiftdeps",
+    "diagnostics": "/Users/ashwin/Developer/Popin-Library-iOS/.build/arm64-apple-macosx/debug/PusherSwift.build/AuthMethod.dia"
+  },
+  "/Users/ashwin/Developer/Popin-Library-iOS/.build/checkouts/pusher-websocket-swift/Sources/Models/ChannelsProtocolCloseCode.swift": {
+    "dependencies": "/Users/ashwin/Developer/Popin-Library-iOS/.build/arm64-apple-macosx/debug/PusherSwift.build/ChannelsProtocolCloseCode.d",
+    "object": "/Users/ashwin/Developer/Popin-Library-iOS/.build/arm64-apple-macosx/debug/PusherSwift.build/ChannelsProtocolCloseCode.swift.o",
+    "swiftmodule": "/Users/ashwin/Developer/Popin-Library-iOS/.build/arm64-apple-macosx/debug/PusherSwift.build/ChannelsProtocolCloseCode~partial.swiftmodule",
+    "swift-dependencies": "/Users/ashwin/Developer/Popin-Library-iOS/.build/arm64-apple-macosx/debug/PusherSwift.build/ChannelsProtocolCloseCode.swiftdeps",
+    "diagnostics": "/Users/ashwin/Developer/Popin-Library-iOS/.build/arm64-apple-macosx/debug/PusherSwift.build/ChannelsProtocolCloseCode.dia"
+  },
+  "/Users/ashwin/Developer/Popin-Library-iOS/.build/checkouts/pusher-websocket-swift/Sources/Models/ConnectionState.swift": {
+    "dependencies": "/Users/ashwin/Developer/Popin-Library-iOS/.build/arm64-apple-macosx/debug/PusherSwift.build/ConnectionState.d",
+    "object": "/Users/ashwin/Developer/Popin-Library-iOS/.build/arm64-apple-macosx/debug/PusherSwift.build/ConnectionState.swift.o",
+    "swiftmodule": "/Users/ashwin/Developer/Popin-Library-iOS/.build/arm64-apple-macosx/debug/PusherSwift.build/ConnectionState~partial.swiftmodule",
+    "swift-dependencies": "/Users/ashwin/Developer/Popin-Library-iOS/.build/arm64-apple-macosx/debug/PusherSwift.build/ConnectionState.swiftdeps",
+    "diagnostics": "/Users/ashwin/Developer/Popin-Library-iOS/.build/arm64-apple-macosx/debug/PusherSwift.build/ConnectionState.dia"
+  },
+  "/Users/ashwin/Developer/Popin-Library-iOS/.build/checkouts/pusher-websocket-swift/Sources/Models/Constants.swift": {
+    "dependencies": "/Users/ashwin/Developer/Popin-Library-iOS/.build/arm64-apple-macosx/debug/PusherSwift.build/Constants.d",
+    "object": "/Users/ashwin/Developer/Popin-Library-iOS/.build/arm64-apple-macosx/debug/PusherSwift.build/Constants.swift.o",
+    "swiftmodule": "/Users/ashwin/Developer/Popin-Library-iOS/.build/arm64-apple-macosx/debug/PusherSwift.build/Constants~partial.swiftmodule",
+    "swift-dependencies": "/Users/ashwin/Developer/Popin-Library-iOS/.build/arm64-apple-macosx/debug/PusherSwift.build/Constants.swiftdeps",
+    "diagnostics": "/Users/ashwin/Developer/Popin-Library-iOS/.build/arm64-apple-macosx/debug/PusherSwift.build/Constants.dia"
+  },
+  "/Users/ashwin/Developer/Popin-Library-iOS/.build/checkouts/pusher-websocket-swift/Sources/Models/EventError.swift": {
+    "dependencies": "/Users/ashwin/Developer/Popin-Library-iOS/.build/arm64-apple-macosx/debug/PusherSwift.build/EventError.d",
+    "object": "/Users/ashwin/Developer/Popin-Library-iOS/.build/arm64-apple-macosx/debug/PusherSwift.build/EventError.swift.o",
+    "swiftmodule": "/Users/ashwin/Developer/Popin-Library-iOS/.build/arm64-apple-macosx/debug/PusherSwift.build/EventError~partial.swiftmodule",
+    "swift-dependencies": "/Users/ashwin/Developer/Popin-Library-iOS/.build/arm64-apple-macosx/debug/PusherSwift.build/EventError.swiftdeps",
+    "diagnostics": "/Users/ashwin/Developer/Popin-Library-iOS/.build/arm64-apple-macosx/debug/PusherSwift.build/EventError.dia"
+  },
+  "/Users/ashwin/Developer/Popin-Library-iOS/.build/checkouts/pusher-websocket-swift/Sources/Models/EventHandler.swift": {
+    "dependencies": "/Users/ashwin/Developer/Popin-Library-iOS/.build/arm64-apple-macosx/debug/PusherSwift.build/EventHandler.d",
+    "object": "/Users/ashwin/Developer/Popin-Library-iOS/.build/arm64-apple-macosx/debug/PusherSwift.build/EventHandler.swift.o",
+    "swiftmodule": "/Users/ashwin/Developer/Popin-Library-iOS/.build/arm64-apple-macosx/debug/PusherSwift.build/EventHandler~partial.swiftmodule",
+    "swift-dependencies": "/Users/ashwin/Developer/Popin-Library-iOS/.build/arm64-apple-macosx/debug/PusherSwift.build/EventHandler.swiftdeps",
+    "diagnostics": "/Users/ashwin/Developer/Popin-Library-iOS/.build/arm64-apple-macosx/debug/PusherSwift.build/EventHandler.dia"
+  },
+  "/Users/ashwin/Developer/Popin-Library-iOS/.build/checkouts/pusher-websocket-swift/Sources/Models/PusherAuth.swift": {
+    "dependencies": "/Users/ashwin/Developer/Popin-Library-iOS/.build/arm64-apple-macosx/debug/PusherSwift.build/PusherAuth.d",
+    "object": "/Users/ashwin/Developer/Popin-Library-iOS/.build/arm64-apple-macosx/debug/PusherSwift.build/PusherAuth.swift.o",
+    "swiftmodule": "/Users/ashwin/Developer/Popin-Library-iOS/.build/arm64-apple-macosx/debug/PusherSwift.build/PusherAuth~partial.swiftmodule",
+    "swift-dependencies": "/Users/ashwin/Developer/Popin-Library-iOS/.build/arm64-apple-macosx/debug/PusherSwift.build/PusherAuth.swiftdeps",
+    "diagnostics": "/Users/ashwin/Developer/Popin-Library-iOS/.build/arm64-apple-macosx/debug/PusherSwift.build/PusherAuth.dia"
+  },
+  "/Users/ashwin/Developer/Popin-Library-iOS/.build/checkouts/pusher-websocket-swift/Sources/Models/PusherChannel.swift": {
+    "dependencies": "/Users/ashwin/Developer/Popin-Library-iOS/.build/arm64-apple-macosx/debug/PusherSwift.build/PusherChannel.d",
+    "object": "/Users/ashwin/Developer/Popin-Library-iOS/.build/arm64-apple-macosx/debug/PusherSwift.build/PusherChannel.swift.o",
+    "swiftmodule": "/Users/ashwin/Developer/Popin-Library-iOS/.build/arm64-apple-macosx/debug/PusherSwift.build/PusherChannel~partial.swiftmodule",
+    "swift-dependencies": "/Users/ashwin/Developer/Popin-Library-iOS/.build/arm64-apple-macosx/debug/PusherSwift.build/PusherChannel.swiftdeps",
+    "diagnostics": "/Users/ashwin/Developer/Popin-Library-iOS/.build/arm64-apple-macosx/debug/PusherSwift.build/PusherChannel.dia"
+  },
+  "/Users/ashwin/Developer/Popin-Library-iOS/.build/checkouts/pusher-websocket-swift/Sources/Models/PusherChannelType.swift": {
+    "dependencies": "/Users/ashwin/Developer/Popin-Library-iOS/.build/arm64-apple-macosx/debug/PusherSwift.build/PusherChannelType.d",
+    "object": "/Users/ashwin/Developer/Popin-Library-iOS/.build/arm64-apple-macosx/debug/PusherSwift.build/PusherChannelType.swift.o",
+    "swiftmodule": "/Users/ashwin/Developer/Popin-Library-iOS/.build/arm64-apple-macosx/debug/PusherSwift.build/PusherChannelType~partial.swiftmodule",
+    "swift-dependencies": "/Users/ashwin/Developer/Popin-Library-iOS/.build/arm64-apple-macosx/debug/PusherSwift.build/PusherChannelType.swiftdeps",
+    "diagnostics": "/Users/ashwin/Developer/Popin-Library-iOS/.build/arm64-apple-macosx/debug/PusherSwift.build/PusherChannelType.dia"
+  },
+  "/Users/ashwin/Developer/Popin-Library-iOS/.build/checkouts/pusher-websocket-swift/Sources/Models/PusherChannels.swift": {
+    "dependencies": "/Users/ashwin/Developer/Popin-Library-iOS/.build/arm64-apple-macosx/debug/PusherSwift.build/PusherChannels.d",
+    "object": "/Users/ashwin/Developer/Popin-Library-iOS/.build/arm64-apple-macosx/debug/PusherSwift.build/PusherChannels.swift.o",
+    "swiftmodule": "/Users/ashwin/Developer/Popin-Library-iOS/.build/arm64-apple-macosx/debug/PusherSwift.build/PusherChannels~partial.swiftmodule",
+    "swift-dependencies": "/Users/ashwin/Developer/Popin-Library-iOS/.build/arm64-apple-macosx/debug/PusherSwift.build/PusherChannels.swiftdeps",
+    "diagnostics": "/Users/ashwin/Developer/Popin-Library-iOS/.build/arm64-apple-macosx/debug/PusherSwift.build/PusherChannels.dia"
+  },
+  "/Users/ashwin/Developer/Popin-Library-iOS/.build/checkouts/pusher-websocket-swift/Sources/Models/PusherClientOptions.swift": {
+    "dependencies": "/Users/ashwin/Developer/Popin-Library-iOS/.build/arm64-apple-macosx/debug/PusherSwift.build/PusherClientOptions.d",
+    "object": "/Users/ashwin/Developer/Popin-Library-iOS/.build/arm64-apple-macosx/debug/PusherSwift.build/PusherClientOptions.swift.o",
+    "swiftmodule": "/Users/ashwin/Developer/Popin-Library-iOS/.build/arm64-apple-macosx/debug/PusherSwift.build/PusherClientOptions~partial.swiftmodule",
+    "swift-dependencies": "/Users/ashwin/Developer/Popin-Library-iOS/.build/arm64-apple-macosx/debug/PusherSwift.build/PusherClientOptions.swiftdeps",
+    "diagnostics": "/Users/ashwin/Developer/Popin-Library-iOS/.build/arm64-apple-macosx/debug/PusherSwift.build/PusherClientOptions.dia"
+  },
+  "/Users/ashwin/Developer/Popin-Library-iOS/.build/checkouts/pusher-websocket-swift/Sources/Models/PusherError.swift": {
+    "dependencies": "/Users/ashwin/Developer/Popin-Library-iOS/.build/arm64-apple-macosx/debug/PusherSwift.build/PusherError.d",
+    "object": "/Users/ashwin/Developer/Popin-Library-iOS/.build/arm64-apple-macosx/debug/PusherSwift.build/PusherError.swift.o",
+    "swiftmodule": "/Users/ashwin/Developer/Popin-Library-iOS/.build/arm64-apple-macosx/debug/PusherSwift.build/PusherError~partial.swiftmodule",
+    "swift-dependencies": "/Users/ashwin/Developer/Popin-Library-iOS/.build/arm64-apple-macosx/debug/PusherSwift.build/PusherError.swiftdeps",
+    "diagnostics": "/Users/ashwin/Developer/Popin-Library-iOS/.build/arm64-apple-macosx/debug/PusherSwift.build/PusherError.dia"
+  },
+  "/Users/ashwin/Developer/Popin-Library-iOS/.build/checkouts/pusher-websocket-swift/Sources/Models/PusherEvent.swift": {
+    "dependencies": "/Users/ashwin/Developer/Popin-Library-iOS/.build/arm64-apple-macosx/debug/PusherSwift.build/PusherEvent.d",
+    "object": "/Users/ashwin/Developer/Popin-Library-iOS/.build/arm64-apple-macosx/debug/PusherSwift.build/PusherEvent.swift.o",
+    "swiftmodule": "/Users/ashwin/Developer/Popin-Library-iOS/.build/arm64-apple-macosx/debug/PusherSwift.build/PusherEvent~partial.swiftmodule",
+    "swift-dependencies": "/Users/ashwin/Developer/Popin-Library-iOS/.build/arm64-apple-macosx/debug/PusherSwift.build/PusherEvent.swiftdeps",
+    "diagnostics": "/Users/ashwin/Developer/Popin-Library-iOS/.build/arm64-apple-macosx/debug/PusherSwift.build/PusherEvent.dia"
+  },
+  "/Users/ashwin/Developer/Popin-Library-iOS/.build/checkouts/pusher-websocket-swift/Sources/Models/PusherGlobalChannel.swift": {
+    "dependencies": "/Users/ashwin/Developer/Popin-Library-iOS/.build/arm64-apple-macosx/debug/PusherSwift.build/PusherGlobalChannel.d",
+    "object": "/Users/ashwin/Developer/Popin-Library-iOS/.build/arm64-apple-macosx/debug/PusherSwift.build/PusherGlobalChannel.swift.o",
+    "swiftmodule": "/Users/ashwin/Developer/Popin-Library-iOS/.build/arm64-apple-macosx/debug/PusherSwift.build/PusherGlobalChannel~partial.swiftmodule",
+    "swift-dependencies": "/Users/ashwin/Developer/Popin-Library-iOS/.build/arm64-apple-macosx/debug/PusherSwift.build/PusherGlobalChannel.swiftdeps",
+    "diagnostics": "/Users/ashwin/Developer/Popin-Library-iOS/.build/arm64-apple-macosx/debug/PusherSwift.build/PusherGlobalChannel.dia"
+  },
+  "/Users/ashwin/Developer/Popin-Library-iOS/.build/checkouts/pusher-websocket-swift/Sources/Models/PusherHost.swift": {
+    "dependencies": "/Users/ashwin/Developer/Popin-Library-iOS/.build/arm64-apple-macosx/debug/PusherSwift.build/PusherHost.d",
+    "object": "/Users/ashwin/Developer/Popin-Library-iOS/.build/arm64-apple-macosx/debug/PusherSwift.build/PusherHost.swift.o",
+    "swiftmodule": "/Users/ashwin/Developer/Popin-Library-iOS/.build/arm64-apple-macosx/debug/PusherSwift.build/PusherHost~partial.swiftmodule",
+    "swift-dependencies": "/Users/ashwin/Developer/Popin-Library-iOS/.build/arm64-apple-macosx/debug/PusherSwift.build/PusherHost.swiftdeps",
+    "diagnostics": "/Users/ashwin/Developer/Popin-Library-iOS/.build/arm64-apple-macosx/debug/PusherSwift.build/PusherHost.dia"
+  },
+  "/Users/ashwin/Developer/Popin-Library-iOS/.build/checkouts/pusher-websocket-swift/Sources/Models/PusherPresenceChannel.swift": {
+    "dependencies": "/Users/ashwin/Developer/Popin-Library-iOS/.build/arm64-apple-macosx/debug/PusherSwift.build/PusherPresenceChannel.d",
+    "object": "/Users/ashwin/Developer/Popin-Library-iOS/.build/arm64-apple-macosx/debug/PusherSwift.build/PusherPresenceChannel.swift.o",
+    "swiftmodule": "/Users/ashwin/Developer/Popin-Library-iOS/.build/arm64-apple-macosx/debug/PusherSwift.build/PusherPresenceChannel~partial.swiftmodule",
+    "swift-dependencies": "/Users/ashwin/Developer/Popin-Library-iOS/.build/arm64-apple-macosx/debug/PusherSwift.build/PusherPresenceChannel.swiftdeps",
+    "diagnostics": "/Users/ashwin/Developer/Popin-Library-iOS/.build/arm64-apple-macosx/debug/PusherSwift.build/PusherPresenceChannel.dia"
+  },
+  "/Users/ashwin/Developer/Popin-Library-iOS/.build/checkouts/pusher-websocket-swift/Sources/Models/PusherPresenceChannelMember.swift": {
+    "dependencies": "/Users/ashwin/Developer/Popin-Library-iOS/.build/arm64-apple-macosx/debug/PusherSwift.build/PusherPresenceChannelMember.d",
+    "object": "/Users/ashwin/Developer/Popin-Library-iOS/.build/arm64-apple-macosx/debug/PusherSwift.build/PusherPresenceChannelMember.swift.o",
+    "swiftmodule": "/Users/ashwin/Developer/Popin-Library-iOS/.build/arm64-apple-macosx/debug/PusherSwift.build/PusherPresenceChannelMember~partial.swiftmodule",
+    "swift-dependencies": "/Users/ashwin/Developer/Popin-Library-iOS/.build/arm64-apple-macosx/debug/PusherSwift.build/PusherPresenceChannelMember.swiftdeps",
+    "diagnostics": "/Users/ashwin/Developer/Popin-Library-iOS/.build/arm64-apple-macosx/debug/PusherSwift.build/PusherPresenceChannelMember.dia"
+  },
+  "/Users/ashwin/Developer/Popin-Library-iOS/.build/checkouts/pusher-websocket-swift/Sources/Models/QueuedClientEvent.swift": {
+    "dependencies": "/Users/ashwin/Developer/Popin-Library-iOS/.build/arm64-apple-macosx/debug/PusherSwift.build/QueuedClientEvent.d",
+    "object": "/Users/ashwin/Developer/Popin-Library-iOS/.build/arm64-apple-macosx/debug/PusherSwift.build/QueuedClientEvent.swift.o",
+    "swiftmodule": "/Users/ashwin/Developer/Popin-Library-iOS/.build/arm64-apple-macosx/debug/PusherSwift.build/QueuedClientEvent~partial.swiftmodule",
+    "swift-dependencies": "/Users/ashwin/Developer/Popin-Library-iOS/.build/arm64-apple-macosx/debug/PusherSwift.build/QueuedClientEvent.swiftdeps",
+    "diagnostics": "/Users/ashwin/Developer/Popin-Library-iOS/.build/arm64-apple-macosx/debug/PusherSwift.build/QueuedClientEvent.dia"
+  },
+  "/Users/ashwin/Developer/Popin-Library-iOS/.build/checkouts/pusher-websocket-swift/Sources/ObjC/AuthMethod+ObjectiveC.swift": {
+    "dependencies": "/Users/ashwin/Developer/Popin-Library-iOS/.build/arm64-apple-macosx/debug/PusherSwift.build/AuthMethod+ObjectiveC.d",
+    "object": "/Users/ashwin/Developer/Popin-Library-iOS/.build/arm64-apple-macosx/debug/PusherSwift.build/AuthMethod+ObjectiveC.swift.o",
+    "swiftmodule": "/Users/ashwin/Developer/Popin-Library-iOS/.build/arm64-apple-macosx/debug/PusherSwift.build/AuthMethod+ObjectiveC~partial.swiftmodule",
+    "swift-dependencies": "/Users/ashwin/Developer/Popin-Library-iOS/.build/arm64-apple-macosx/debug/PusherSwift.build/AuthMethod+ObjectiveC.swiftdeps",
+    "diagnostics": "/Users/ashwin/Developer/Popin-Library-iOS/.build/arm64-apple-macosx/debug/PusherSwift.build/AuthMethod+ObjectiveC.dia"
+  },
+  "/Users/ashwin/Developer/Popin-Library-iOS/.build/checkouts/pusher-websocket-swift/Sources/ObjC/OCAuthMethod.swift": {
+    "dependencies": "/Users/ashwin/Developer/Popin-Library-iOS/.build/arm64-apple-macosx/debug/PusherSwift.build/OCAuthMethod.d",
+    "object": "/Users/ashwin/Developer/Popin-Library-iOS/.build/arm64-apple-macosx/debug/PusherSwift.build/OCAuthMethod.swift.o",
+    "swiftmodule": "/Users/ashwin/Developer/Popin-Library-iOS/.build/arm64-apple-macosx/debug/PusherSwift.build/OCAuthMethod~partial.swiftmodule",
+    "swift-dependencies": "/Users/ashwin/Developer/Popin-Library-iOS/.build/arm64-apple-macosx/debug/PusherSwift.build/OCAuthMethod.swiftdeps",
+    "diagnostics": "/Users/ashwin/Developer/Popin-Library-iOS/.build/arm64-apple-macosx/debug/PusherSwift.build/OCAuthMethod.dia"
+  },
+  "/Users/ashwin/Developer/Popin-Library-iOS/.build/checkouts/pusher-websocket-swift/Sources/ObjC/OCPusherHost.swift": {
+    "dependencies": "/Users/ashwin/Developer/Popin-Library-iOS/.build/arm64-apple-macosx/debug/PusherSwift.build/OCPusherHost.d",
+    "object": "/Users/ashwin/Developer/Popin-Library-iOS/.build/arm64-apple-macosx/debug/PusherSwift.build/OCPusherHost.swift.o",
+    "swiftmodule": "/Users/ashwin/Developer/Popin-Library-iOS/.build/arm64-apple-macosx/debug/PusherSwift.build/OCPusherHost~partial.swiftmodule",
+    "swift-dependencies": "/Users/ashwin/Developer/Popin-Library-iOS/.build/arm64-apple-macosx/debug/PusherSwift.build/OCPusherHost.swiftdeps",
+    "diagnostics": "/Users/ashwin/Developer/Popin-Library-iOS/.build/arm64-apple-macosx/debug/PusherSwift.build/OCPusherHost.dia"
+  },
+  "/Users/ashwin/Developer/Popin-Library-iOS/.build/checkouts/pusher-websocket-swift/Sources/ObjC/Pusher+ObjectiveC.swift": {
+    "dependencies": "/Users/ashwin/Developer/Popin-Library-iOS/.build/arm64-apple-macosx/debug/PusherSwift.build/Pusher+ObjectiveC.d",
+    "object": "/Users/ashwin/Developer/Popin-Library-iOS/.build/arm64-apple-macosx/debug/PusherSwift.build/Pusher+ObjectiveC.swift.o",
+    "swiftmodule": "/Users/ashwin/Developer/Popin-Library-iOS/.build/arm64-apple-macosx/debug/PusherSwift.build/Pusher+ObjectiveC~partial.swiftmodule",
+    "swift-dependencies": "/Users/ashwin/Developer/Popin-Library-iOS/.build/arm64-apple-macosx/debug/PusherSwift.build/Pusher+ObjectiveC.swiftdeps",
+    "diagnostics": "/Users/ashwin/Developer/Popin-Library-iOS/.build/arm64-apple-macosx/debug/PusherSwift.build/Pusher+ObjectiveC.dia"
+  },
+  "/Users/ashwin/Developer/Popin-Library-iOS/.build/checkouts/pusher-websocket-swift/Sources/ObjC/PusherClientOptions+ObjectiveC.swift": {
+    "dependencies": "/Users/ashwin/Developer/Popin-Library-iOS/.build/arm64-apple-macosx/debug/PusherSwift.build/PusherClientOptions+ObjectiveC.d",
+    "object": "/Users/ashwin/Developer/Popin-Library-iOS/.build/arm64-apple-macosx/debug/PusherSwift.build/PusherClientOptions+ObjectiveC.swift.o",
+    "swiftmodule": "/Users/ashwin/Developer/Popin-Library-iOS/.build/arm64-apple-macosx/debug/PusherSwift.build/PusherClientOptions+ObjectiveC~partial.swiftmodule",
+    "swift-dependencies": "/Users/ashwin/Developer/Popin-Library-iOS/.build/arm64-apple-macosx/debug/PusherSwift.build/PusherClientOptions+ObjectiveC.swiftdeps",
+    "diagnostics": "/Users/ashwin/Developer/Popin-Library-iOS/.build/arm64-apple-macosx/debug/PusherSwift.build/PusherClientOptions+ObjectiveC.dia"
+  },
+  "/Users/ashwin/Developer/Popin-Library-iOS/.build/checkouts/pusher-websocket-swift/Sources/ObjC/PusherConnection+ObjectiveC.swift": {
+    "dependencies": "/Users/ashwin/Developer/Popin-Library-iOS/.build/arm64-apple-macosx/debug/PusherSwift.build/PusherConnection+ObjectiveC.d",
+    "object": "/Users/ashwin/Developer/Popin-Library-iOS/.build/arm64-apple-macosx/debug/PusherSwift.build/PusherConnection+ObjectiveC.swift.o",
+    "swiftmodule": "/Users/ashwin/Developer/Popin-Library-iOS/.build/arm64-apple-macosx/debug/PusherSwift.build/PusherConnection+ObjectiveC~partial.swiftmodule",
+    "swift-dependencies": "/Users/ashwin/Developer/Popin-Library-iOS/.build/arm64-apple-macosx/debug/PusherSwift.build/PusherConnection+ObjectiveC.swiftdeps",
+    "diagnostics": "/Users/ashwin/Developer/Popin-Library-iOS/.build/arm64-apple-macosx/debug/PusherSwift.build/PusherConnection+ObjectiveC.dia"
+  },
+  "/Users/ashwin/Developer/Popin-Library-iOS/.build/checkouts/pusher-websocket-swift/Sources/ObjC/PusherError+ObjectiveC.swift": {
+    "dependencies": "/Users/ashwin/Developer/Popin-Library-iOS/.build/arm64-apple-macosx/debug/PusherSwift.build/PusherError+ObjectiveC.d",
+    "object": "/Users/ashwin/Developer/Popin-Library-iOS/.build/arm64-apple-macosx/debug/PusherSwift.build/PusherError+ObjectiveC.swift.o",
+    "swiftmodule": "/Users/ashwin/Developer/Popin-Library-iOS/.build/arm64-apple-macosx/debug/PusherSwift.build/PusherError+ObjectiveC~partial.swiftmodule",
+    "swift-dependencies": "/Users/ashwin/Developer/Popin-Library-iOS/.build/arm64-apple-macosx/debug/PusherSwift.build/PusherError+ObjectiveC.swiftdeps",
+    "diagnostics": "/Users/ashwin/Developer/Popin-Library-iOS/.build/arm64-apple-macosx/debug/PusherSwift.build/PusherError+ObjectiveC.dia"
+  },
+  "/Users/ashwin/Developer/Popin-Library-iOS/.build/checkouts/pusher-websocket-swift/Sources/ObjC/PusherHost+ObjectiveC.swift": {
+    "dependencies": "/Users/ashwin/Developer/Popin-Library-iOS/.build/arm64-apple-macosx/debug/PusherSwift.build/PusherHost+ObjectiveC.d",
+    "object": "/Users/ashwin/Developer/Popin-Library-iOS/.build/arm64-apple-macosx/debug/PusherSwift.build/PusherHost+ObjectiveC.swift.o",
+    "swiftmodule": "/Users/ashwin/Developer/Popin-Library-iOS/.build/arm64-apple-macosx/debug/PusherSwift.build/PusherHost+ObjectiveC~partial.swiftmodule",
+    "swift-dependencies": "/Users/ashwin/Developer/Popin-Library-iOS/.build/arm64-apple-macosx/debug/PusherSwift.build/PusherHost+ObjectiveC.swiftdeps",
+    "diagnostics": "/Users/ashwin/Developer/Popin-Library-iOS/.build/arm64-apple-macosx/debug/PusherSwift.build/PusherHost+ObjectiveC.dia"
+  },
+  "/Users/ashwin/Developer/Popin-Library-iOS/.build/checkouts/pusher-websocket-swift/Sources/Protocols/AuthRequestBuilderProtocol.swift": {
+    "dependencies": "/Users/ashwin/Developer/Popin-Library-iOS/.build/arm64-apple-macosx/debug/PusherSwift.build/AuthRequestBuilderProtocol.d",
+    "object": "/Users/ashwin/Developer/Popin-Library-iOS/.build/arm64-apple-macosx/debug/PusherSwift.build/AuthRequestBuilderProtocol.swift.o",
+    "swiftmodule": "/Users/ashwin/Developer/Popin-Library-iOS/.build/arm64-apple-macosx/debug/PusherSwift.build/AuthRequestBuilderProtocol~partial.swiftmodule",
+    "swift-dependencies": "/Users/ashwin/Developer/Popin-Library-iOS/.build/arm64-apple-macosx/debug/PusherSwift.build/AuthRequestBuilderProtocol.swiftdeps",
+    "diagnostics": "/Users/ashwin/Developer/Popin-Library-iOS/.build/arm64-apple-macosx/debug/PusherSwift.build/AuthRequestBuilderProtocol.dia"
+  },
+  "/Users/ashwin/Developer/Popin-Library-iOS/.build/checkouts/pusher-websocket-swift/Sources/Protocols/Authorizer.swift": {
+    "dependencies": "/Users/ashwin/Developer/Popin-Library-iOS/.build/arm64-apple-macosx/debug/PusherSwift.build/Authorizer.d",
+    "object": "/Users/ashwin/Developer/Popin-Library-iOS/.build/arm64-apple-macosx/debug/PusherSwift.build/Authorizer.swift.o",
+    "swiftmodule": "/Users/ashwin/Developer/Popin-Library-iOS/.build/arm64-apple-macosx/debug/PusherSwift.build/Authorizer~partial.swiftmodule",
+    "swift-dependencies": "/Users/ashwin/Developer/Popin-Library-iOS/.build/arm64-apple-macosx/debug/PusherSwift.build/Authorizer.swiftdeps",
+    "diagnostics": "/Users/ashwin/Developer/Popin-Library-iOS/.build/arm64-apple-macosx/debug/PusherSwift.build/Authorizer.dia"
+  },
+  "/Users/ashwin/Developer/Popin-Library-iOS/.build/checkouts/pusher-websocket-swift/Sources/Protocols/EventFactory.swift": {
+    "dependencies": "/Users/ashwin/Developer/Popin-Library-iOS/.build/arm64-apple-macosx/debug/PusherSwift.build/EventFactory.d",
+    "object": "/Users/ashwin/Developer/Popin-Library-iOS/.build/arm64-apple-macosx/debug/PusherSwift.build/EventFactory.swift.o",
+    "swiftmodule": "/Users/ashwin/Developer/Popin-Library-iOS/.build/arm64-apple-macosx/debug/PusherSwift.build/EventFactory~partial.swiftmodule",
+    "swift-dependencies": "/Users/ashwin/Developer/Popin-Library-iOS/.build/arm64-apple-macosx/debug/PusherSwift.build/EventFactory.swiftdeps",
+    "diagnostics": "/Users/ashwin/Developer/Popin-Library-iOS/.build/arm64-apple-macosx/debug/PusherSwift.build/EventFactory.dia"
+  },
+  "/Users/ashwin/Developer/Popin-Library-iOS/.build/checkouts/pusher-websocket-swift/Sources/Protocols/EventQueue.swift": {
+    "dependencies": "/Users/ashwin/Developer/Popin-Library-iOS/.build/arm64-apple-macosx/debug/PusherSwift.build/EventQueue.d",
+    "object": "/Users/ashwin/Developer/Popin-Library-iOS/.build/arm64-apple-macosx/debug/PusherSwift.build/EventQueue.swift.o",
+    "swiftmodule": "/Users/ashwin/Developer/Popin-Library-iOS/.build/arm64-apple-macosx/debug/PusherSwift.build/EventQueue~partial.swiftmodule",
+    "swift-dependencies": "/Users/ashwin/Developer/Popin-Library-iOS/.build/arm64-apple-macosx/debug/PusherSwift.build/EventQueue.swiftdeps",
+    "diagnostics": "/Users/ashwin/Developer/Popin-Library-iOS/.build/arm64-apple-macosx/debug/PusherSwift.build/EventQueue.dia"
+  },
+  "/Users/ashwin/Developer/Popin-Library-iOS/.build/checkouts/pusher-websocket-swift/Sources/Protocols/EventQueueDelegate.swift": {
+    "dependencies": "/Users/ashwin/Developer/Popin-Library-iOS/.build/arm64-apple-macosx/debug/PusherSwift.build/EventQueueDelegate.d",
+    "object": "/Users/ashwin/Developer/Popin-Library-iOS/.build/arm64-apple-macosx/debug/PusherSwift.build/EventQueueDelegate.swift.o",
+    "swiftmodule": "/Users/ashwin/Developer/Popin-Library-iOS/.build/arm64-apple-macosx/debug/PusherSwift.build/EventQueueDelegate~partial.swiftmodule",
+    "swift-dependencies": "/Users/ashwin/Developer/Popin-Library-iOS/.build/arm64-apple-macosx/debug/PusherSwift.build/EventQueueDelegate.swiftdeps",
+    "diagnostics": "/Users/ashwin/Developer/Popin-Library-iOS/.build/arm64-apple-macosx/debug/PusherSwift.build/EventQueueDelegate.dia"
+  },
+  "/Users/ashwin/Developer/Popin-Library-iOS/.build/checkouts/pusher-websocket-swift/Sources/Protocols/PusherDelegate.swift": {
+    "dependencies": "/Users/ashwin/Developer/Popin-Library-iOS/.build/arm64-apple-macosx/debug/PusherSwift.build/PusherDelegate.d",
+    "object": "/Users/ashwin/Developer/Popin-Library-iOS/.build/arm64-apple-macosx/debug/PusherSwift.build/PusherDelegate.swift.o",
+    "swiftmodule": "/Users/ashwin/Developer/Popin-Library-iOS/.build/arm64-apple-macosx/debug/PusherSwift.build/PusherDelegate~partial.swiftmodule",
+    "swift-dependencies": "/Users/ashwin/Developer/Popin-Library-iOS/.build/arm64-apple-macosx/debug/PusherSwift.build/PusherDelegate.swiftdeps",
+    "diagnostics": "/Users/ashwin/Developer/Popin-Library-iOS/.build/arm64-apple-macosx/debug/PusherSwift.build/PusherDelegate.dia"
+  },
+  "/Users/ashwin/Developer/Popin-Library-iOS/.build/checkouts/pusher-websocket-swift/Sources/PusherSwift.swift": {
+    "dependencies": "/Users/ashwin/Developer/Popin-Library-iOS/.build/arm64-apple-macosx/debug/PusherSwift.build/PusherSwift.d",
+    "object": "/Users/ashwin/Developer/Popin-Library-iOS/.build/arm64-apple-macosx/debug/PusherSwift.build/PusherSwift.swift.o",
+    "swiftmodule": "/Users/ashwin/Developer/Popin-Library-iOS/.build/arm64-apple-macosx/debug/PusherSwift.build/PusherSwift~partial.swiftmodule",
+    "swift-dependencies": "/Users/ashwin/Developer/Popin-Library-iOS/.build/arm64-apple-macosx/debug/PusherSwift.build/PusherSwift.swiftdeps",
+    "diagnostics": "/Users/ashwin/Developer/Popin-Library-iOS/.build/arm64-apple-macosx/debug/PusherSwift.build/PusherSwift.dia"
+  },
+  "/Users/ashwin/Developer/Popin-Library-iOS/.build/checkouts/pusher-websocket-swift/Sources/Services/ChannelEventFactory.swift": {
+    "dependencies": "/Users/ashwin/Developer/Popin-Library-iOS/.build/arm64-apple-macosx/debug/PusherSwift.build/ChannelEventFactory.d",
+    "object": "/Users/ashwin/Developer/Popin-Library-iOS/.build/arm64-apple-macosx/debug/PusherSwift.build/ChannelEventFactory.swift.o",
+    "swiftmodule": "/Users/ashwin/Developer/Popin-Library-iOS/.build/arm64-apple-macosx/debug/PusherSwift.build/ChannelEventFactory~partial.swiftmodule",
+    "swift-dependencies": "/Users/ashwin/Developer/Popin-Library-iOS/.build/arm64-apple-macosx/debug/PusherSwift.build/ChannelEventFactory.swiftdeps",
+    "diagnostics": "/Users/ashwin/Developer/Popin-Library-iOS/.build/arm64-apple-macosx/debug/PusherSwift.build/ChannelEventFactory.dia"
+  },
+  "/Users/ashwin/Developer/Popin-Library-iOS/.build/checkouts/pusher-websocket-swift/Sources/Services/ChannelEventQueue.swift": {
+    "dependencies": "/Users/ashwin/Developer/Popin-Library-iOS/.build/arm64-apple-macosx/debug/PusherSwift.build/ChannelEventQueue.d",
+    "object": "/Users/ashwin/Developer/Popin-Library-iOS/.build/arm64-apple-macosx/debug/PusherSwift.build/ChannelEventQueue.swift.o",
+    "swiftmodule": "/Users/ashwin/Developer/Popin-Library-iOS/.build/arm64-apple-macosx/debug/PusherSwift.build/ChannelEventQueue~partial.swiftmodule",
+    "swift-dependencies": "/Users/ashwin/Developer/Popin-Library-iOS/.build/arm64-apple-macosx/debug/PusherSwift.build/ChannelEventQueue.swiftdeps",
+    "diagnostics": "/Users/ashwin/Developer/Popin-Library-iOS/.build/arm64-apple-macosx/debug/PusherSwift.build/ChannelEventQueue.dia"
+  },
+  "/Users/ashwin/Developer/Popin-Library-iOS/.build/checkouts/pusher-websocket-swift/Sources/Services/PusherConnection.swift": {
+    "dependencies": "/Users/ashwin/Developer/Popin-Library-iOS/.build/arm64-apple-macosx/debug/PusherSwift.build/PusherConnection.d",
+    "object": "/Users/ashwin/Developer/Popin-Library-iOS/.build/arm64-apple-macosx/debug/PusherSwift.build/PusherConnection.swift.o",
+    "swiftmodule": "/Users/ashwin/Developer/Popin-Library-iOS/.build/arm64-apple-macosx/debug/PusherSwift.build/PusherConnection~partial.swiftmodule",
+    "swift-dependencies": "/Users/ashwin/Developer/Popin-Library-iOS/.build/arm64-apple-macosx/debug/PusherSwift.build/PusherConnection.swiftdeps",
+    "diagnostics": "/Users/ashwin/Developer/Popin-Library-iOS/.build/arm64-apple-macosx/debug/PusherSwift.build/PusherConnection.dia"
+  }
+}

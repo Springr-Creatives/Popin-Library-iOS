@@ -1,0 +1,4 @@
+module CTweetNacl {
+    umbrella header "/Users/ashwin/Developer/Popin-Library-iOS/.build/checkouts/tweetnacl-swiftwrap/Sources/CTweetNacl/include/CTweetNacl.h"
+    export *
+}

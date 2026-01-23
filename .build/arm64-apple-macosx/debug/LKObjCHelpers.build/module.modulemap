@@ -1,0 +1,4 @@
+module LKObjCHelpers {
+    umbrella header "/Users/ashwin/Developer/Popin-Library-iOS/.build/checkouts/client-sdk-swift/Sources/LKObjCHelpers/include/LKObjCHelpers.h"
+    export *
+}
