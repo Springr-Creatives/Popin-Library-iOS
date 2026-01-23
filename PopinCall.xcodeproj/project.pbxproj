@@ -7,26 +7,44 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		6331656492F6ACA3D9695BC0 /* Pods_PopinCall_PopinCallTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E3F74A3372ED619A04D4C869 /* Pods_PopinCall_PopinCallTests.framework */; };
-		65AE8F9EC9E9FF65E6AA2616 /* Pods_PopinCallExamples.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7CA7F3AC314C5F58CA18AA74 /* Pods_PopinCallExamples.framework */; };
-		A7DCB96F5187C6A3235B43EB /* Pods_PopinCall.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 032F31849EB42899D3A2A182 /* Pods_PopinCall.framework */; };
+		CF1092E02F23749A00459F51 /* VideoCallInteractor.swift in Sources */ = {isa = PBXBuildFile; fileRef = CF1092DB2F23749A00459F51 /* VideoCallInteractor.swift */; };
+		CF1092E12F23749A00459F51 /* MyCustomRendererView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CF1092D02F23749A00459F51 /* MyCustomRendererView.swift */; };
+		CF1092E22F23749A00459F51 /* PopinCallViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CF1092DE2F23749A00459F51 /* PopinCallViewController.swift */; };
+		CF1092E32F23749A00459F51 /* PopinConnectedView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CF1092D72F23749A00459F51 /* PopinConnectedView.swift */; };
+		CF1092E42F23749A00459F51 /* ParticipantCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = CF1092D22F23749A00459F51 /* ParticipantCell.swift */; };
+		CF1092E52F23749A00459F51 /* VideoCall.swift in Sources */ = {isa = PBXBuildFile; fileRef = CF1092DA2F23749A00459F51 /* VideoCall.swift */; };
+		CF1092E62F23749A00459F51 /* VideoCallSwiftUIView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CF1092DD2F23749A00459F51 /* VideoCallSwiftUIView.swift */; };
+		CF1092E72F23749A00459F51 /* PopinConference.swift in Sources */ = {isa = PBXBuildFile; fileRef = CF1092D62F23749A00459F51 /* PopinConference.swift */; };
+		CF1092E82F23749A00459F51 /* ParticipantTile.swift in Sources */ = {isa = PBXBuildFile; fileRef = CF1092D42F23749A00459F51 /* ParticipantTile.swift */; };
+		CF1092E92F23749A00459F51 /* PiPSupport.swift in Sources */ = {isa = PBXBuildFile; fileRef = CF1092D52F23749A00459F51 /* PiPSupport.swift */; };
+		CF1092EA2F23749A00459F51 /* TopControls.swift in Sources */ = {isa = PBXBuildFile; fileRef = CF1092D92F23749A00459F51 /* TopControls.swift */; };
+		CF1092EB2F23749A00459F51 /* CallManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = CF1092CE2F23749A00459F51 /* CallManager.swift */; };
+		CF1092EC2F23749A00459F51 /* DarwinNotificationCenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = CF1092CF2F23749A00459F51 /* DarwinNotificationCenter.swift */; };
+		CF1092ED2F23749A00459F51 /* NotConnectedView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CF1092D12F23749A00459F51 /* NotConnectedView.swift */; };
+		CF1092EE2F23749A00459F51 /* AudienceRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = CF1092CC2F23749A00459F51 /* AudienceRow.swift */; };
+		CF1092EF2F23749A00459F51 /* ParticipantLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = CF1092D32F23749A00459F51 /* ParticipantLayout.swift */; };
+		CF1092F02F23749A00459F51 /* SideControls.swift in Sources */ = {isa = PBXBuildFile; fileRef = CF1092D82F23749A00459F51 /* SideControls.swift */; };
+		CF1092F12F23749A00459F51 /* VideoCallPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = CF1092DC2F23749A00459F51 /* VideoCallPresenter.swift */; };
+		CF1092F22F23749A00459F51 /* VideoCallViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = CF1092DF2F23749A00459F51 /* VideoCallViewModel.swift */; };
+		CF1092F32F23749A00459F51 /* BroadcastPickerWrapper.swift in Sources */ = {isa = PBXBuildFile; fileRef = CF1092CD2F23749A00459F51 /* BroadcastPickerWrapper.swift */; };
+		CF1092F62F237B9900459F51 /* LiveKitComponents in Frameworks */ = {isa = PBXBuildFile; productRef = CF1092F52F237B9900459F51 /* LiveKitComponents */; };
+		CF1092F92F23912B00459F51 /* Alamofire in Frameworks */ = {isa = PBXBuildFile; productRef = CF1092F82F23912B00459F51 /* Alamofire */; };
+		CF1092FC2F23914900459F51 /* SwiftyJSON in Frameworks */ = {isa = PBXBuildFile; productRef = CF1092FB2F23914900459F51 /* SwiftyJSON */; };
+		CF1092FF2F23918900459F51 /* PusherSwift in Frameworks */ = {isa = PBXBuildFile; productRef = CF1092FE2F23918900459F51 /* PusherSwift */; };
 		CFA556822923FDB7003453DF /* PopinCallPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = CFA556812923FDB7003453DF /* PopinCallPresenter.swift */; };
 		CFA556842923FDC1003453DF /* PopinCallInteractor.swift in Sources */ = {isa = PBXBuildFile; fileRef = CFA556832923FDC1003453DF /* PopinCallInteractor.swift */; };
 		CFA556862923FEA3003453DF /* PopinCallDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = CFA556852923FEA3003453DF /* PopinCallDelegate.swift */; };
 		CFA556882923FF4C003453DF /* Popin.swift in Sources */ = {isa = PBXBuildFile; fileRef = CFA556872923FF4C003453DF /* Popin.swift */; };
 		CFB63D8B2929045E005F265D /* PopinPusher.swift in Sources */ = {isa = PBXBuildFile; fileRef = CFB63D8A2929045E005F265D /* PopinPusher.swift */; };
 		CFB63D8D292908EF005F265D /* PopinPusherDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = CFB63D8C292908EF005F265D /* PopinPusherDelegate.swift */; };
-		CFBBD56B2923EA3100D241A9 /* PopinCall.docc in Sources */ = {isa = PBXBuildFile; fileRef = CFBBD56A2923EA3100D241A9 /* PopinCall.docc */; };
 		CFBBD5712923EA3100D241A9 /* PopinCall.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CFBBD5662923EA3100D241A9 /* PopinCall.framework */; };
 		CFBBD5762923EA3100D241A9 /* PopinCallTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = CFBBD5752923EA3100D241A9 /* PopinCallTests.swift */; };
-		CFBBD5772923EA3100D241A9 /* PopinCall.h in Headers */ = {isa = PBXBuildFile; fileRef = CFBBD5692923EA3100D241A9 /* PopinCall.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		CFBBD5872923EA8800D241A9 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = CFBBD5862923EA8800D241A9 /* AppDelegate.swift */; };
 		CFBBD5892923EA8800D241A9 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = CFBBD5882923EA8800D241A9 /* SceneDelegate.swift */; };
 		CFBBD58B2923EA8800D241A9 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CFBBD58A2923EA8800D241A9 /* ViewController.swift */; };
 		CFBBD58E2923EA8800D241A9 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = CFBBD58C2923EA8800D241A9 /* Main.storyboard */; };
 		CFBBD5902923EA8900D241A9 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = CFBBD58F2923EA8900D241A9 /* Assets.xcassets */; };
 		CFBBD5932923EA8900D241A9 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = CFBBD5912923EA8900D241A9 /* LaunchScreen.storyboard */; };
-		CFBBD5A02923EE7200D241A9 /* PopinCallViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CFBBD59E2923EE7200D241A9 /* PopinCallViewController.swift */; };
 		CFBBD5A32923F08000D241A9 /* PopinCall.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CFBBD5662923EA3100D241A9 /* PopinCall.framework */; };
 		CFBBD5A42923F08100D241A9 /* PopinCall.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = CFBBD5662923EA3100D241A9 /* PopinCall.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		CFF5FBD92925E4E500EADF2A /* Utilities.swift in Sources */ = {isa = PBXBuildFile; fileRef = CFF5FBD82925E4E500EADF2A /* Utilities.swift */; };
@@ -67,13 +85,27 @@
 
 /* Begin PBXFileReference section */
 		032F31849EB42899D3A2A182 /* Pods_PopinCall.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_PopinCall.framework; sourceTree = BUILT_PRODUCTS_DIR; };
-		0BCC9E1AAE294140859CBA94 /* Pods-PopinCall-PopinCallTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-PopinCall-PopinCallTests.debug.xcconfig"; path = "Target Support Files/Pods-PopinCall-PopinCallTests/Pods-PopinCall-PopinCallTests.debug.xcconfig"; sourceTree = "<group>"; };
-		0EF651D75BE74C9E0AC825D6 /* Pods-PopinCall-PopinCallTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-PopinCall-PopinCallTests.release.xcconfig"; path = "Target Support Files/Pods-PopinCall-PopinCallTests/Pods-PopinCall-PopinCallTests.release.xcconfig"; sourceTree = "<group>"; };
-		527A8E57E817C9EFD829F0BF /* Pods-PopinCall.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-PopinCall.debug.xcconfig"; path = "Target Support Files/Pods-PopinCall/Pods-PopinCall.debug.xcconfig"; sourceTree = "<group>"; };
-		5AC7D8C4B324EB1DDC02E700 /* Pods-PopinCallExamples.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-PopinCallExamples.debug.xcconfig"; path = "Target Support Files/Pods-PopinCallExamples/Pods-PopinCallExamples.debug.xcconfig"; sourceTree = "<group>"; };
 		7CA7F3AC314C5F58CA18AA74 /* Pods_PopinCallExamples.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_PopinCallExamples.framework; sourceTree = BUILT_PRODUCTS_DIR; };
-		87CA74832874DF71A542E446 /* Pods-PopinCallExamples.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-PopinCallExamples.release.xcconfig"; path = "Target Support Files/Pods-PopinCallExamples/Pods-PopinCallExamples.release.xcconfig"; sourceTree = "<group>"; };
-		9CC880864910BC64A25CB781 /* Pods-PopinCall.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-PopinCall.release.xcconfig"; path = "Target Support Files/Pods-PopinCall/Pods-PopinCall.release.xcconfig"; sourceTree = "<group>"; };
+		CF1092CC2F23749A00459F51 /* AudienceRow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AudienceRow.swift; sourceTree = "<group>"; };
+		CF1092CD2F23749A00459F51 /* BroadcastPickerWrapper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BroadcastPickerWrapper.swift; sourceTree = "<group>"; };
+		CF1092CE2F23749A00459F51 /* CallManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CallManager.swift; sourceTree = "<group>"; };
+		CF1092CF2F23749A00459F51 /* DarwinNotificationCenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DarwinNotificationCenter.swift; sourceTree = "<group>"; };
+		CF1092D02F23749A00459F51 /* MyCustomRendererView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyCustomRendererView.swift; sourceTree = "<group>"; };
+		CF1092D12F23749A00459F51 /* NotConnectedView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotConnectedView.swift; sourceTree = "<group>"; };
+		CF1092D22F23749A00459F51 /* ParticipantCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ParticipantCell.swift; sourceTree = "<group>"; };
+		CF1092D32F23749A00459F51 /* ParticipantLayout.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ParticipantLayout.swift; sourceTree = "<group>"; };
+		CF1092D42F23749A00459F51 /* ParticipantTile.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ParticipantTile.swift; sourceTree = "<group>"; };
+		CF1092D52F23749A00459F51 /* PiPSupport.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PiPSupport.swift; sourceTree = "<group>"; };
+		CF1092D62F23749A00459F51 /* PopinConference.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PopinConference.swift; sourceTree = "<group>"; };
+		CF1092D72F23749A00459F51 /* PopinConnectedView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PopinConnectedView.swift; sourceTree = "<group>"; };
+		CF1092D82F23749A00459F51 /* SideControls.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SideControls.swift; sourceTree = "<group>"; };
+		CF1092D92F23749A00459F51 /* TopControls.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TopControls.swift; sourceTree = "<group>"; };
+		CF1092DA2F23749A00459F51 /* VideoCall.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VideoCall.swift; sourceTree = "<group>"; };
+		CF1092DB2F23749A00459F51 /* VideoCallInteractor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VideoCallInteractor.swift; sourceTree = "<group>"; };
+		CF1092DC2F23749A00459F51 /* VideoCallPresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VideoCallPresenter.swift; sourceTree = "<group>"; };
+		CF1092DD2F23749A00459F51 /* VideoCallSwiftUIView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VideoCallSwiftUIView.swift; sourceTree = "<group>"; };
+		CF1092DE2F23749A00459F51 /* PopinCallViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PopinCallViewController.swift; sourceTree = "<group>"; };
+		CF1092DF2F23749A00459F51 /* VideoCallViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VideoCallViewModel.swift; sourceTree = "<group>"; };
 		CFA556812923FDB7003453DF /* PopinCallPresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PopinCallPresenter.swift; sourceTree = "<group>"; };
 		CFA556832923FDC1003453DF /* PopinCallInteractor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PopinCallInteractor.swift; sourceTree = "<group>"; };
 		CFA556852923FEA3003453DF /* PopinCallDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PopinCallDelegate.swift; sourceTree = "<group>"; };
@@ -81,8 +113,6 @@
 		CFB63D8A2929045E005F265D /* PopinPusher.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PopinPusher.swift; sourceTree = "<group>"; };
 		CFB63D8C292908EF005F265D /* PopinPusherDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PopinPusherDelegate.swift; sourceTree = "<group>"; };
 		CFBBD5662923EA3100D241A9 /* PopinCall.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = PopinCall.framework; sourceTree = BUILT_PRODUCTS_DIR; };
-		CFBBD5692923EA3100D241A9 /* PopinCall.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PopinCall.h; sourceTree = "<group>"; };
-		CFBBD56A2923EA3100D241A9 /* PopinCall.docc */ = {isa = PBXFileReference; lastKnownFileType = folder.documentationcatalog; path = PopinCall.docc; sourceTree = "<group>"; };
 		CFBBD5702923EA3100D241A9 /* PopinCallTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = PopinCallTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		CFBBD5752923EA3100D241A9 /* PopinCallTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PopinCallTests.swift; sourceTree = "<group>"; };
 		CFBBD5842923EA8800D241A9 /* PopinCallExamples.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = PopinCallExamples.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -93,7 +123,6 @@
 		CFBBD58F2923EA8900D241A9 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		CFBBD5922923EA8900D241A9 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		CFBBD5942923EA8900D241A9 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		CFBBD59E2923EE7200D241A9 /* PopinCallViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PopinCallViewController.swift; sourceTree = "<group>"; };
 		CFF5FBD82925E4E500EADF2A /* Utilities.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Utilities.swift; sourceTree = "<group>"; };
 		CFF5FBDA2925EDF000EADF2A /* PopinInteractor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PopinInteractor.swift; sourceTree = "<group>"; };
 		CFF5FBDC2925EE7A00EADF2A /* PopinPresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PopinPresenter.swift; sourceTree = "<group>"; };
@@ -105,7 +134,10 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				A7DCB96F5187C6A3235B43EB /* Pods_PopinCall.framework in Frameworks */,
+				CF1092FC2F23914900459F51 /* SwiftyJSON in Frameworks */,
+				CF1092F62F237B9900459F51 /* LiveKitComponents in Frameworks */,
+				CF1092F92F23912B00459F51 /* Alamofire in Frameworks */,
+				CF1092FF2F23918900459F51 /* PusherSwift in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -114,7 +146,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				CFBBD5712923EA3100D241A9 /* PopinCall.framework in Frameworks */,
-				6331656492F6ACA3D9695BC0 /* Pods_PopinCall_PopinCallTests.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -123,26 +154,12 @@
 			buildActionMask = 2147483647;
 			files = (
 				CFBBD5A32923F08000D241A9 /* PopinCall.framework in Frameworks */,
-				65AE8F9EC9E9FF65E6AA2616 /* Pods_PopinCallExamples.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		43B52AE950059A97FE3CA365 /* Pods */ = {
-			isa = PBXGroup;
-			children = (
-				527A8E57E817C9EFD829F0BF /* Pods-PopinCall.debug.xcconfig */,
-				9CC880864910BC64A25CB781 /* Pods-PopinCall.release.xcconfig */,
-				0BCC9E1AAE294140859CBA94 /* Pods-PopinCall-PopinCallTests.debug.xcconfig */,
-				0EF651D75BE74C9E0AC825D6 /* Pods-PopinCall-PopinCallTests.release.xcconfig */,
-				5AC7D8C4B324EB1DDC02E700 /* Pods-PopinCallExamples.debug.xcconfig */,
-				87CA74832874DF71A542E446 /* Pods-PopinCallExamples.release.xcconfig */,
-			);
-			path = Pods;
-			sourceTree = "<group>";
-		};
 		CFBBD55C2923EA3100D241A9 = {
 			isa = PBXGroup;
 			children = (
@@ -151,7 +168,6 @@
 				CFBBD5852923EA8800D241A9 /* PopinCallExamples */,
 				CFBBD5672923EA3100D241A9 /* Products */,
 				CFBBD5A22923F08000D241A9 /* Frameworks */,
-				43B52AE950059A97FE3CA365 /* Pods */,
 			);
 			sourceTree = "<group>";
 		};
@@ -168,9 +184,26 @@
 		CFBBD5682923EA3100D241A9 /* PopinCall */ = {
 			isa = PBXGroup;
 			children = (
-				CFBBD5692923EA3100D241A9 /* PopinCall.h */,
-				CFBBD56A2923EA3100D241A9 /* PopinCall.docc */,
-				CFBBD59E2923EE7200D241A9 /* PopinCallViewController.swift */,
+				CF1092CC2F23749A00459F51 /* AudienceRow.swift */,
+				CF1092CD2F23749A00459F51 /* BroadcastPickerWrapper.swift */,
+				CF1092CE2F23749A00459F51 /* CallManager.swift */,
+				CF1092CF2F23749A00459F51 /* DarwinNotificationCenter.swift */,
+				CF1092D02F23749A00459F51 /* MyCustomRendererView.swift */,
+				CF1092D12F23749A00459F51 /* NotConnectedView.swift */,
+				CF1092D22F23749A00459F51 /* ParticipantCell.swift */,
+				CF1092D32F23749A00459F51 /* ParticipantLayout.swift */,
+				CF1092D42F23749A00459F51 /* ParticipantTile.swift */,
+				CF1092D52F23749A00459F51 /* PiPSupport.swift */,
+				CF1092D62F23749A00459F51 /* PopinConference.swift */,
+				CF1092D72F23749A00459F51 /* PopinConnectedView.swift */,
+				CF1092D82F23749A00459F51 /* SideControls.swift */,
+				CF1092D92F23749A00459F51 /* TopControls.swift */,
+				CF1092DA2F23749A00459F51 /* VideoCall.swift */,
+				CF1092DB2F23749A00459F51 /* VideoCallInteractor.swift */,
+				CF1092DC2F23749A00459F51 /* VideoCallPresenter.swift */,
+				CF1092DD2F23749A00459F51 /* VideoCallSwiftUIView.swift */,
+				CF1092DE2F23749A00459F51 /* PopinCallViewController.swift */,
+				CF1092DF2F23749A00459F51 /* VideoCallViewModel.swift */,
 				CFA556812923FDB7003453DF /* PopinCallPresenter.swift */,
 				CFA556832923FDC1003453DF /* PopinCallInteractor.swift */,
 				CFF5FBD82925E4E500EADF2A /* Utilities.swift */,
@@ -223,7 +256,6 @@
 			isa = PBXHeadersBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				CFBBD5772923EA3100D241A9 /* PopinCall.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -234,7 +266,6 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = CFBBD57A2923EA3100D241A9 /* Build configuration list for PBXNativeTarget "PopinCall" */;
 			buildPhases = (
-				D2B07E5A2B084D371C82B126 /* [CP] Check Pods Manifest.lock */,
 				CFBBD5612923EA3100D241A9 /* Headers */,
 				CFBBD5622923EA3100D241A9 /* Sources */,
 				CFBBD5632923EA3100D241A9 /* Frameworks */,
@@ -253,7 +284,6 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = CFBBD57D2923EA3100D241A9 /* Build configuration list for PBXNativeTarget "PopinCallTests" */;
 			buildPhases = (
-				3B514C045AE5A688A837F683 /* [CP] Check Pods Manifest.lock */,
 				CFBBD56C2923EA3100D241A9 /* Sources */,
 				CFBBD56D2923EA3100D241A9 /* Frameworks */,
 				CFBBD56E2923EA3100D241A9 /* Resources */,
@@ -273,12 +303,10 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = CFBBD5952923EA8900D241A9 /* Build configuration list for PBXNativeTarget "PopinCallExamples" */;
 			buildPhases = (
-				59E7D5FACCD4E8EB861E3B99 /* [CP] Check Pods Manifest.lock */,
 				CFBBD5802923EA8800D241A9 /* Sources */,
 				CFBBD5812923EA8800D241A9 /* Frameworks */,
 				CFBBD5822923EA8800D241A9 /* Resources */,
 				CFBBD5A72923F08100D241A9 /* Embed Frameworks */,
-				E19D4AB668D5E8B972526A57 /* [CP] Embed Pods Frameworks */,
 			);
 			buildRules = (
 			);
@@ -298,7 +326,7 @@
 			attributes = {
 				BuildIndependentTargetsInParallel = 1;
 				LastSwiftUpdateCheck = 1410;
-				LastUpgradeCheck = 1410;
+				LastUpgradeCheck = 2620;
 				TargetAttributes = {
 					CFBBD5652923EA3100D241A9 = {
 						CreatedOnToolsVersion = 14.1;
@@ -320,6 +348,12 @@
 				Base,
 			);
 			mainGroup = CFBBD55C2923EA3100D241A9;
+			packageReferences = (
+				CF1092F42F237B9900459F51 /* XCRemoteSwiftPackageReference "components-swift" */,
+				CF1092F72F23912B00459F51 /* XCRemoteSwiftPackageReference "Alamofire" */,
+				CF1092FA2F23914900459F51 /* XCRemoteSwiftPackageReference "SwiftyJSON" */,
+				CF1092FD2F23918900459F51 /* XCRemoteSwiftPackageReference "pusher-websocket-swift" */,
+			);
 			productRefGroup = CFBBD5672923EA3100D241A9 /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
@@ -359,50 +393,6 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXShellScriptBuildPhase section */
-		3B514C045AE5A688A837F683 /* [CP] Check Pods Manifest.lock */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputFileListPaths = (
-			);
-			inputPaths = (
-				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
-				"${PODS_ROOT}/Manifest.lock",
-			);
-			name = "[CP] Check Pods Manifest.lock";
-			outputFileListPaths = (
-			);
-			outputPaths = (
-				"$(DERIVED_FILE_DIR)/Pods-PopinCall-PopinCallTests-checkManifestLockResult.txt",
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
-			showEnvVarsInLog = 0;
-		};
-		59E7D5FACCD4E8EB861E3B99 /* [CP] Check Pods Manifest.lock */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputFileListPaths = (
-			);
-			inputPaths = (
-				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
-				"${PODS_ROOT}/Manifest.lock",
-			);
-			name = "[CP] Check Pods Manifest.lock";
-			outputFileListPaths = (
-			);
-			outputPaths = (
-				"$(DERIVED_FILE_DIR)/Pods-PopinCallExamples-checkManifestLockResult.txt",
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
-			showEnvVarsInLog = 0;
-		};
 		A6CDF4B3613BEE9ED7563808 /* [CP] Embed Pods Frameworks */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
@@ -424,49 +414,6 @@
 			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-PopinCall-PopinCallTests/Pods-PopinCall-PopinCallTests-frameworks.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
-		D2B07E5A2B084D371C82B126 /* [CP] Check Pods Manifest.lock */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputFileListPaths = (
-			);
-			inputPaths = (
-				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
-				"${PODS_ROOT}/Manifest.lock",
-			);
-			name = "[CP] Check Pods Manifest.lock";
-			outputFileListPaths = (
-			);
-			outputPaths = (
-				"$(DERIVED_FILE_DIR)/Pods-PopinCall-checkManifestLockResult.txt",
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
-			showEnvVarsInLog = 0;
-		};
-		E19D4AB668D5E8B972526A57 /* [CP] Embed Pods Frameworks */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-PopinCallExamples/Pods-PopinCallExamples-frameworks-${CONFIGURATION}-input-files.xcfilelist",
-			);
-			inputPaths = (
-			);
-			name = "[CP] Embed Pods Frameworks";
-			outputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-PopinCallExamples/Pods-PopinCallExamples-frameworks-${CONFIGURATION}-output-files.xcfilelist",
-			);
-			outputPaths = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-PopinCallExamples/Pods-PopinCallExamples-frameworks.sh\"\n";
-			showEnvVarsInLog = 0;
-		};
 /* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
@@ -475,14 +422,32 @@
 			buildActionMask = 2147483647;
 			files = (
 				CFB63D8D292908EF005F265D /* PopinPusherDelegate.swift in Sources */,
-				CFBBD56B2923EA3100D241A9 /* PopinCall.docc in Sources */,
 				CFF5FBDB2925EDF000EADF2A /* PopinInteractor.swift in Sources */,
 				CFA556842923FDC1003453DF /* PopinCallInteractor.swift in Sources */,
 				CFF5FBDD2925EE7A00EADF2A /* PopinPresenter.swift in Sources */,
 				CFF5FBD92925E4E500EADF2A /* Utilities.swift in Sources */,
 				CFA556882923FF4C003453DF /* Popin.swift in Sources */,
-				CFBBD5A02923EE7200D241A9 /* PopinCallViewController.swift in Sources */,
 				CFA556862923FEA3003453DF /* PopinCallDelegate.swift in Sources */,
+				CF1092E02F23749A00459F51 /* VideoCallInteractor.swift in Sources */,
+				CF1092E12F23749A00459F51 /* MyCustomRendererView.swift in Sources */,
+				CF1092E22F23749A00459F51 /* PopinCallViewController.swift in Sources */,
+				CF1092E32F23749A00459F51 /* PopinConnectedView.swift in Sources */,
+				CF1092E42F23749A00459F51 /* ParticipantCell.swift in Sources */,
+				CF1092E52F23749A00459F51 /* VideoCall.swift in Sources */,
+				CF1092E62F23749A00459F51 /* VideoCallSwiftUIView.swift in Sources */,
+				CF1092E72F23749A00459F51 /* PopinConference.swift in Sources */,
+				CF1092E82F23749A00459F51 /* ParticipantTile.swift in Sources */,
+				CF1092E92F23749A00459F51 /* PiPSupport.swift in Sources */,
+				CF1092EA2F23749A00459F51 /* TopControls.swift in Sources */,
+				CF1092EB2F23749A00459F51 /* CallManager.swift in Sources */,
+				CF1092EC2F23749A00459F51 /* DarwinNotificationCenter.swift in Sources */,
+				CF1092ED2F23749A00459F51 /* NotConnectedView.swift in Sources */,
+				CF1092EE2F23749A00459F51 /* AudienceRow.swift in Sources */,
+				CF1092EF2F23749A00459F51 /* ParticipantLayout.swift in Sources */,
+				CF1092F02F23749A00459F51 /* SideControls.swift in Sources */,
+				CF1092F12F23749A00459F51 /* VideoCallPresenter.swift in Sources */,
+				CF1092F22F23749A00459F51 /* VideoCallViewModel.swift in Sources */,
+				CF1092F32F23749A00459F51 /* BroadcastPickerWrapper.swift in Sources */,
 				CFA556822923FDB7003453DF /* PopinCallPresenter.swift in Sources */,
 				CFB63D8B2929045E005F265D /* PopinPusher.swift in Sources */,
 			);
@@ -578,6 +543,7 @@
 				DEBUG_INFORMATION_FORMAT = dwarf;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				ENABLE_TESTABILITY = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu11;
 				GCC_DYNAMIC_NO_PIC = NO;
 				GCC_NO_COMMON_BLOCKS = YES;
@@ -597,6 +563,7 @@
 				MTL_FAST_MATH = YES;
 				ONLY_ACTIVE_ARCH = YES;
 				SDKROOT = iphoneos;
+				STRING_CATALOG_GENERATE_SYMBOLS = YES;
 				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				VERSIONING_SYSTEM = "apple-generic";
@@ -641,6 +608,7 @@
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				ENABLE_NS_ASSERTIONS = NO;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu11;
 				GCC_NO_COMMON_BLOCKS = YES;
 				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
@@ -653,6 +621,7 @@
 				MTL_ENABLE_DEBUG_INFO = NO;
 				MTL_FAST_MATH = YES;
 				SDKROOT = iphoneos;
+				STRING_CATALOG_GENERATE_SYMBOLS = YES;
 				SWIFT_COMPILATION_MODE = wholemodule;
 				SWIFT_OPTIMIZATION_LEVEL = "-O";
 				VALIDATE_PRODUCT = YES;
@@ -663,8 +632,8 @@
 		};
 		CFBBD57B2923EA3100D241A9 /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 527A8E57E817C9EFD829F0BF /* Pods-PopinCall.debug.xcconfig */;
 			buildSettings = {
+				CODE_SIGN_IDENTITY = "";
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEFINES_MODULE = YES;
@@ -672,6 +641,7 @@
 				DYLIB_COMPATIBILITY_VERSION = 1;
 				DYLIB_CURRENT_VERSION = 1;
 				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				ENABLE_MODULE_VERIFIER = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_KEY_NSHumanReadableCopyright = "";
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
@@ -682,6 +652,7 @@
 					"@loader_path/Frameworks",
 				);
 				MARKETING_VERSION = 1.0;
+				MODULE_VERIFIER_SUPPORTED_LANGUAGE_STANDARDS = "gnu11 gnu++20";
 				PRODUCT_BUNDLE_IDENTIFIER = to.popin.PopinCall;
 				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
 				SKIP_INSTALL = YES;
@@ -693,8 +664,8 @@
 		};
 		CFBBD57C2923EA3100D241A9 /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 9CC880864910BC64A25CB781 /* Pods-PopinCall.release.xcconfig */;
 			buildSettings = {
+				CODE_SIGN_IDENTITY = "";
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEFINES_MODULE = YES;
@@ -702,6 +673,7 @@
 				DYLIB_COMPATIBILITY_VERSION = 1;
 				DYLIB_CURRENT_VERSION = 1;
 				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				ENABLE_MODULE_VERIFIER = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_KEY_NSHumanReadableCopyright = "";
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
@@ -712,6 +684,7 @@
 					"@loader_path/Frameworks",
 				);
 				MARKETING_VERSION = 1.0;
+				MODULE_VERIFIER_SUPPORTED_LANGUAGE_STANDARDS = "gnu11 gnu++20";
 				PRODUCT_BUNDLE_IDENTIFIER = to.popin.PopinCall;
 				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
 				SKIP_INSTALL = YES;
@@ -723,9 +696,7 @@
 		};
 		CFBBD57E2923EA3100D241A9 /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 0BCC9E1AAE294140859CBA94 /* Pods-PopinCall-PopinCallTests.debug.xcconfig */;
 			buildSettings = {
-				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = 7GE5BSP5FH;
@@ -741,9 +712,7 @@
 		};
 		CFBBD57F2923EA3100D241A9 /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 0EF651D75BE74C9E0AC825D6 /* Pods-PopinCall-PopinCallTests.release.xcconfig */;
 			buildSettings = {
-				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = 7GE5BSP5FH;
@@ -759,7 +728,6 @@
 		};
 		CFBBD5962923EA8900D241A9 /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 5AC7D8C4B324EB1DDC02E700 /* Pods-PopinCallExamples.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
@@ -789,7 +757,6 @@
 		};
 		CFBBD5972923EA8900D241A9 /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 87CA74832874DF71A542E446 /* Pods-PopinCallExamples.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
@@ -857,6 +824,64 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		CF1092F42F237B9900459F51 /* XCRemoteSwiftPackageReference "components-swift" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/livekit/components-swift";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 0.1.6;
+			};
+		};
+		CF1092F72F23912B00459F51 /* XCRemoteSwiftPackageReference "Alamofire" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/Alamofire/Alamofire.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 5.11.0;
+			};
+		};
+		CF1092FA2F23914900459F51 /* XCRemoteSwiftPackageReference "SwiftyJSON" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/SwiftyJSON/SwiftyJSON.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 5.0.2;
+			};
+		};
+		CF1092FD2F23918900459F51 /* XCRemoteSwiftPackageReference "pusher-websocket-swift" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/pusher/pusher-websocket-swift.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 10.1.9;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		CF1092F52F237B9900459F51 /* LiveKitComponents */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = CF1092F42F237B9900459F51 /* XCRemoteSwiftPackageReference "components-swift" */;
+			productName = LiveKitComponents;
+		};
+		CF1092F82F23912B00459F51 /* Alamofire */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = CF1092F72F23912B00459F51 /* XCRemoteSwiftPackageReference "Alamofire" */;
+			productName = Alamofire;
+		};
+		CF1092FB2F23914900459F51 /* SwiftyJSON */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = CF1092FA2F23914900459F51 /* XCRemoteSwiftPackageReference "SwiftyJSON" */;
+			productName = SwiftyJSON;
+		};
+		CF1092FE2F23918900459F51 /* PusherSwift */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = CF1092FD2F23918900459F51 /* XCRemoteSwiftPackageReference "pusher-websocket-swift" */;
+			productName = PusherSwift;
+		};
+/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = CFBBD55D2923EA3100D241A9 /* Project object */;
 }

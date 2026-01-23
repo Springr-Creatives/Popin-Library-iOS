@@ -1,0 +1,3 @@
+module NWWebSocket {
+    header "/Users/ashwin/Developer/Popin-Library-iOS/.build/arm64-apple-macosx/debug/NWWebSocket.build/include/NWWebSocket-Swift.h"
+}

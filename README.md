@@ -15,10 +15,16 @@ PopinCall is an iOS library that enables seamless integration of video calling f
 ## Requirements
 
 - iOS 13.0+
-- Swift 4.2+
-- Xcode 12.0+
+- Swift 5.7+
+- Xcode 14.0+
 
 ## Installation
+
+### Swift Package Manager
+
+1. In Xcode, select File > Add Packages...
+2. Enter the package URL: `https://github.com/Springr-Creatives/Popin-Library-iOS.git`
+3. Select the version you want to use.
 
 ### CocoaPods
 
@@ -184,6 +190,7 @@ Check out the `PopinCallExamples` target in the project for a complete implement
 ## Dependencies
 
 This library uses the following dependencies:
+- **LiveKit** (~> 2.7.2) - Video conferencing
 - **Alamofire** (~> 5) - HTTP networking
 - **PusherSwift** (~> 10.1.0) - Real-time messaging
 - **SwiftyJSON** (~> 4.0) - JSON parsing

@@ -1,0 +1,19 @@
+{
+  "": {
+    "swift-dependencies": "/Users/ashwin/Developer/Popin-Library-iOS/.build/arm64-apple-macosx/debug/TweetNacl.build/master.swiftdeps"
+  },
+  "/Users/ashwin/Developer/Popin-Library-iOS/.build/checkouts/tweetnacl-swiftwrap/Sources/TweetNacl/Constant.swift": {
+    "dependencies": "/Users/ashwin/Developer/Popin-Library-iOS/.build/arm64-apple-macosx/debug/TweetNacl.build/Constant.d",
+    "object": "/Users/ashwin/Developer/Popin-Library-iOS/.build/arm64-apple-macosx/debug/TweetNacl.build/Constant.swift.o",
+    "swiftmodule": "/Users/ashwin/Developer/Popin-Library-iOS/.build/arm64-apple-macosx/debug/TweetNacl.build/Constant~partial.swiftmodule",
+    "swift-dependencies": "/Users/ashwin/Developer/Popin-Library-iOS/.build/arm64-apple-macosx/debug/TweetNacl.build/Constant.swiftdeps",
+    "diagnostics": "/Users/ashwin/Developer/Popin-Library-iOS/.build/arm64-apple-macosx/debug/TweetNacl.build/Constant.dia"
+  },
+  "/Users/ashwin/Developer/Popin-Library-iOS/.build/checkouts/tweetnacl-swiftwrap/Sources/TweetNacl/TweetNacl.swift": {
+    "dependencies": "/Users/ashwin/Developer/Popin-Library-iOS/.build/arm64-apple-macosx/debug/TweetNacl.build/TweetNacl.d",
+    "object": "/Users/ashwin/Developer/Popin-Library-iOS/.build/arm64-apple-macosx/debug/TweetNacl.build/TweetNacl.swift.o",
+    "swiftmodule": "/Users/ashwin/Developer/Popin-Library-iOS/.build/arm64-apple-macosx/debug/TweetNacl.build/TweetNacl~partial.swiftmodule",
+    "swift-dependencies": "/Users/ashwin/Developer/Popin-Library-iOS/.build/arm64-apple-macosx/debug/TweetNacl.build/TweetNacl.swiftdeps",
+    "diagnostics": "/Users/ashwin/Developer/Popin-Library-iOS/.build/arm64-apple-macosx/debug/TweetNacl.build/TweetNacl.dia"
+  }
+}

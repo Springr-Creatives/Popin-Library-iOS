@@ -1,0 +1,12 @@
+{
+  "": {
+    "swift-dependencies": "/Users/ashwin/Developer/Popin-Library-iOS/.build/arm64-apple-macosx/debug/LiveKitUniFFI.build/master.swiftdeps"
+  },
+  "/Users/ashwin/Developer/Popin-Library-iOS/.build/checkouts/livekit-uniffi-xcframework/Sources/LiveKitUniFFI/livekit_uniffi.swift": {
+    "dependencies": "/Users/ashwin/Developer/Popin-Library-iOS/.build/arm64-apple-macosx/debug/LiveKitUniFFI.build/livekit_uniffi.d",
+    "object": "/Users/ashwin/Developer/Popin-Library-iOS/.build/arm64-apple-macosx/debug/LiveKitUniFFI.build/livekit_uniffi.swift.o",
+    "swiftmodule": "/Users/ashwin/Developer/Popin-Library-iOS/.build/arm64-apple-macosx/debug/LiveKitUniFFI.build/livekit_uniffi~partial.swiftmodule",
+    "swift-dependencies": "/Users/ashwin/Developer/Popin-Library-iOS/.build/arm64-apple-macosx/debug/LiveKitUniFFI.build/livekit_uniffi.swiftdeps",
+    "diagnostics": "/Users/ashwin/Developer/Popin-Library-iOS/.build/arm64-apple-macosx/debug/LiveKitUniFFI.build/livekit_uniffi.dia"
+  }
+}

@@ -1,0 +1,173 @@
+{
+  "": {
+    "swift-dependencies": "/Users/ashwin/Developer/Popin-Library-iOS/.build/arm64-apple-macosx/debug/LiveKitComponents.build/master.swiftdeps"
+  },
+  "/Users/ashwin/Developer/Popin-Library-iOS/.build/checkouts/components-swift/Sources/LiveKitComponents/Audio/AudioProcessor.swift": {
+    "dependencies": "/Users/ashwin/Developer/Popin-Library-iOS/.build/arm64-apple-macosx/debug/LiveKitComponents.build/AudioProcessor.d",
+    "object": "/Users/ashwin/Developer/Popin-Library-iOS/.build/arm64-apple-macosx/debug/LiveKitComponents.build/AudioProcessor.swift.o",
+    "swiftmodule": "/Users/ashwin/Developer/Popin-Library-iOS/.build/arm64-apple-macosx/debug/LiveKitComponents.build/AudioProcessor~partial.swiftmodule",
+    "swift-dependencies": "/Users/ashwin/Developer/Popin-Library-iOS/.build/arm64-apple-macosx/debug/LiveKitComponents.build/AudioProcessor.swiftdeps",
+    "diagnostics": "/Users/ashwin/Developer/Popin-Library-iOS/.build/arm64-apple-macosx/debug/LiveKitComponents.build/AudioProcessor.dia"
+  },
+  "/Users/ashwin/Developer/Popin-Library-iOS/.build/checkouts/components-swift/Sources/LiveKitComponents/Components.swift": {
+    "dependencies": "/Users/ashwin/Developer/Popin-Library-iOS/.build/arm64-apple-macosx/debug/LiveKitComponents.build/Components.d",
+    "object": "/Users/ashwin/Developer/Popin-Library-iOS/.build/arm64-apple-macosx/debug/LiveKitComponents.build/Components.swift.o",
+    "swiftmodule": "/Users/ashwin/Developer/Popin-Library-iOS/.build/arm64-apple-macosx/debug/LiveKitComponents.build/Components~partial.swiftmodule",
+    "swift-dependencies": "/Users/ashwin/Developer/Popin-Library-iOS/.build/arm64-apple-macosx/debug/LiveKitComponents.build/Components.swiftdeps",
+    "diagnostics": "/Users/ashwin/Developer/Popin-Library-iOS/.build/arm64-apple-macosx/debug/LiveKitComponents.build/Components.dia"
+  },
+  "/Users/ashwin/Developer/Popin-Library-iOS/.build/checkouts/components-swift/Sources/LiveKitComponents/ForEach/ForEachParticipant.swift": {
+    "dependencies": "/Users/ashwin/Developer/Popin-Library-iOS/.build/arm64-apple-macosx/debug/LiveKitComponents.build/ForEachParticipant.d",
+    "object": "/Users/ashwin/Developer/Popin-Library-iOS/.build/arm64-apple-macosx/debug/LiveKitComponents.build/ForEachParticipant.swift.o",
+    "swiftmodule": "/Users/ashwin/Developer/Popin-Library-iOS/.build/arm64-apple-macosx/debug/LiveKitComponents.build/ForEachParticipant~partial.swiftmodule",
+    "swift-dependencies": "/Users/ashwin/Developer/Popin-Library-iOS/.build/arm64-apple-macosx/debug/LiveKitComponents.build/ForEachParticipant.swiftdeps",
+    "diagnostics": "/Users/ashwin/Developer/Popin-Library-iOS/.build/arm64-apple-macosx/debug/LiveKitComponents.build/ForEachParticipant.dia"
+  },
+  "/Users/ashwin/Developer/Popin-Library-iOS/.build/checkouts/components-swift/Sources/LiveKitComponents/ForEach/ForEachTrack.swift": {
+    "dependencies": "/Users/ashwin/Developer/Popin-Library-iOS/.build/arm64-apple-macosx/debug/LiveKitComponents.build/ForEachTrack.d",
+    "object": "/Users/ashwin/Developer/Popin-Library-iOS/.build/arm64-apple-macosx/debug/LiveKitComponents.build/ForEachTrack.swift.o",
+    "swiftmodule": "/Users/ashwin/Developer/Popin-Library-iOS/.build/arm64-apple-macosx/debug/LiveKitComponents.build/ForEachTrack~partial.swiftmodule",
+    "swift-dependencies": "/Users/ashwin/Developer/Popin-Library-iOS/.build/arm64-apple-macosx/debug/LiveKitComponents.build/ForEachTrack.swiftdeps",
+    "diagnostics": "/Users/ashwin/Developer/Popin-Library-iOS/.build/arm64-apple-macosx/debug/LiveKitComponents.build/ForEachTrack.dia"
+  },
+  "/Users/ashwin/Developer/Popin-Library-iOS/.build/checkouts/components-swift/Sources/LiveKitComponents/Scopes/ComponentsScope.swift": {
+    "dependencies": "/Users/ashwin/Developer/Popin-Library-iOS/.build/arm64-apple-macosx/debug/LiveKitComponents.build/ComponentsScope.d",
+    "object": "/Users/ashwin/Developer/Popin-Library-iOS/.build/arm64-apple-macosx/debug/LiveKitComponents.build/ComponentsScope.swift.o",
+    "swiftmodule": "/Users/ashwin/Developer/Popin-Library-iOS/.build/arm64-apple-macosx/debug/LiveKitComponents.build/ComponentsScope~partial.swiftmodule",
+    "swift-dependencies": "/Users/ashwin/Developer/Popin-Library-iOS/.build/arm64-apple-macosx/debug/LiveKitComponents.build/ComponentsScope.swiftdeps",
+    "diagnostics": "/Users/ashwin/Developer/Popin-Library-iOS/.build/arm64-apple-macosx/debug/LiveKitComponents.build/ComponentsScope.dia"
+  },
+  "/Users/ashwin/Developer/Popin-Library-iOS/.build/checkouts/components-swift/Sources/LiveKitComponents/Scopes/RoomScope.swift": {
+    "dependencies": "/Users/ashwin/Developer/Popin-Library-iOS/.build/arm64-apple-macosx/debug/LiveKitComponents.build/RoomScope.d",
+    "object": "/Users/ashwin/Developer/Popin-Library-iOS/.build/arm64-apple-macosx/debug/LiveKitComponents.build/RoomScope.swift.o",
+    "swiftmodule": "/Users/ashwin/Developer/Popin-Library-iOS/.build/arm64-apple-macosx/debug/LiveKitComponents.build/RoomScope~partial.swiftmodule",
+    "swift-dependencies": "/Users/ashwin/Developer/Popin-Library-iOS/.build/arm64-apple-macosx/debug/LiveKitComponents.build/RoomScope.swiftdeps",
+    "diagnostics": "/Users/ashwin/Developer/Popin-Library-iOS/.build/arm64-apple-macosx/debug/LiveKitComponents.build/RoomScope.dia"
+  },
+  "/Users/ashwin/Developer/Popin-Library-iOS/.build/checkouts/components-swift/Sources/LiveKitComponents/Support/Extensions/GeometryProxy.swift": {
+    "dependencies": "/Users/ashwin/Developer/Popin-Library-iOS/.build/arm64-apple-macosx/debug/LiveKitComponents.build/GeometryProxy.d",
+    "object": "/Users/ashwin/Developer/Popin-Library-iOS/.build/arm64-apple-macosx/debug/LiveKitComponents.build/GeometryProxy.swift.o",
+    "swiftmodule": "/Users/ashwin/Developer/Popin-Library-iOS/.build/arm64-apple-macosx/debug/LiveKitComponents.build/GeometryProxy~partial.swiftmodule",
+    "swift-dependencies": "/Users/ashwin/Developer/Popin-Library-iOS/.build/arm64-apple-macosx/debug/LiveKitComponents.build/GeometryProxy.swiftdeps",
+    "diagnostics": "/Users/ashwin/Developer/Popin-Library-iOS/.build/arm64-apple-macosx/debug/LiveKitComponents.build/GeometryProxy.dia"
+  },
+  "/Users/ashwin/Developer/Popin-Library-iOS/.build/checkouts/components-swift/Sources/LiveKitComponents/Support/HorVStack.swift": {
+    "dependencies": "/Users/ashwin/Developer/Popin-Library-iOS/.build/arm64-apple-macosx/debug/LiveKitComponents.build/HorVStack.d",
+    "object": "/Users/ashwin/Developer/Popin-Library-iOS/.build/arm64-apple-macosx/debug/LiveKitComponents.build/HorVStack.swift.o",
+    "swiftmodule": "/Users/ashwin/Developer/Popin-Library-iOS/.build/arm64-apple-macosx/debug/LiveKitComponents.build/HorVStack~partial.swiftmodule",
+    "swift-dependencies": "/Users/ashwin/Developer/Popin-Library-iOS/.build/arm64-apple-macosx/debug/LiveKitComponents.build/HorVStack.swiftdeps",
+    "diagnostics": "/Users/ashwin/Developer/Popin-Library-iOS/.build/arm64-apple-macosx/debug/LiveKitComponents.build/HorVStack.dia"
+  },
+  "/Users/ashwin/Developer/Popin-Library-iOS/.build/checkouts/components-swift/Sources/LiveKitComponents/Support/LazyHorVGrid.swift": {
+    "dependencies": "/Users/ashwin/Developer/Popin-Library-iOS/.build/arm64-apple-macosx/debug/LiveKitComponents.build/LazyHorVGrid.d",
+    "object": "/Users/ashwin/Developer/Popin-Library-iOS/.build/arm64-apple-macosx/debug/LiveKitComponents.build/LazyHorVGrid.swift.o",
+    "swiftmodule": "/Users/ashwin/Developer/Popin-Library-iOS/.build/arm64-apple-macosx/debug/LiveKitComponents.build/LazyHorVGrid~partial.swiftmodule",
+    "swift-dependencies": "/Users/ashwin/Developer/Popin-Library-iOS/.build/arm64-apple-macosx/debug/LiveKitComponents.build/LazyHorVGrid.swiftdeps",
+    "diagnostics": "/Users/ashwin/Developer/Popin-Library-iOS/.build/arm64-apple-macosx/debug/LiveKitComponents.build/LazyHorVGrid.dia"
+  },
+  "/Users/ashwin/Developer/Popin-Library-iOS/.build/checkouts/components-swift/Sources/LiveKitComponents/Types/TrackReference.swift": {
+    "dependencies": "/Users/ashwin/Developer/Popin-Library-iOS/.build/arm64-apple-macosx/debug/LiveKitComponents.build/TrackReference.d",
+    "object": "/Users/ashwin/Developer/Popin-Library-iOS/.build/arm64-apple-macosx/debug/LiveKitComponents.build/TrackReference.swift.o",
+    "swiftmodule": "/Users/ashwin/Developer/Popin-Library-iOS/.build/arm64-apple-macosx/debug/LiveKitComponents.build/TrackReference~partial.swiftmodule",
+    "swift-dependencies": "/Users/ashwin/Developer/Popin-Library-iOS/.build/arm64-apple-macosx/debug/LiveKitComponents.build/TrackReference.swiftdeps",
+    "diagnostics": "/Users/ashwin/Developer/Popin-Library-iOS/.build/arm64-apple-macosx/debug/LiveKitComponents.build/TrackReference.dia"
+  },
+  "/Users/ashwin/Developer/Popin-Library-iOS/.build/checkouts/components-swift/Sources/LiveKitComponents/Types/UIOptions.swift": {
+    "dependencies": "/Users/ashwin/Developer/Popin-Library-iOS/.build/arm64-apple-macosx/debug/LiveKitComponents.build/UIOptions.d",
+    "object": "/Users/ashwin/Developer/Popin-Library-iOS/.build/arm64-apple-macosx/debug/LiveKitComponents.build/UIOptions.swift.o",
+    "swiftmodule": "/Users/ashwin/Developer/Popin-Library-iOS/.build/arm64-apple-macosx/debug/LiveKitComponents.build/UIOptions~partial.swiftmodule",
+    "swift-dependencies": "/Users/ashwin/Developer/Popin-Library-iOS/.build/arm64-apple-macosx/debug/LiveKitComponents.build/UIOptions.swiftdeps",
+    "diagnostics": "/Users/ashwin/Developer/Popin-Library-iOS/.build/arm64-apple-macosx/debug/LiveKitComponents.build/UIOptions.dia"
+  },
+  "/Users/ashwin/Developer/Popin-Library-iOS/.build/checkouts/components-swift/Sources/LiveKitComponents/UI/Buttons/AsyncButton.swift": {
+    "dependencies": "/Users/ashwin/Developer/Popin-Library-iOS/.build/arm64-apple-macosx/debug/LiveKitComponents.build/AsyncButton.d",
+    "object": "/Users/ashwin/Developer/Popin-Library-iOS/.build/arm64-apple-macosx/debug/LiveKitComponents.build/AsyncButton.swift.o",
+    "swiftmodule": "/Users/ashwin/Developer/Popin-Library-iOS/.build/arm64-apple-macosx/debug/LiveKitComponents.build/AsyncButton~partial.swiftmodule",
+    "swift-dependencies": "/Users/ashwin/Developer/Popin-Library-iOS/.build/arm64-apple-macosx/debug/LiveKitComponents.build/AsyncButton.swiftdeps",
+    "diagnostics": "/Users/ashwin/Developer/Popin-Library-iOS/.build/arm64-apple-macosx/debug/LiveKitComponents.build/AsyncButton.dia"
+  },
+  "/Users/ashwin/Developer/Popin-Library-iOS/.build/checkouts/components-swift/Sources/LiveKitComponents/UI/Buttons/CameraToggleButton.swift": {
+    "dependencies": "/Users/ashwin/Developer/Popin-Library-iOS/.build/arm64-apple-macosx/debug/LiveKitComponents.build/CameraToggleButton.d",
+    "object": "/Users/ashwin/Developer/Popin-Library-iOS/.build/arm64-apple-macosx/debug/LiveKitComponents.build/CameraToggleButton.swift.o",
+    "swiftmodule": "/Users/ashwin/Developer/Popin-Library-iOS/.build/arm64-apple-macosx/debug/LiveKitComponents.build/CameraToggleButton~partial.swiftmodule",
+    "swift-dependencies": "/Users/ashwin/Developer/Popin-Library-iOS/.build/arm64-apple-macosx/debug/LiveKitComponents.build/CameraToggleButton.swiftdeps",
+    "diagnostics": "/Users/ashwin/Developer/Popin-Library-iOS/.build/arm64-apple-macosx/debug/LiveKitComponents.build/CameraToggleButton.dia"
+  },
+  "/Users/ashwin/Developer/Popin-Library-iOS/.build/checkouts/components-swift/Sources/LiveKitComponents/UI/Buttons/DisconnectRoomButton.swift": {
+    "dependencies": "/Users/ashwin/Developer/Popin-Library-iOS/.build/arm64-apple-macosx/debug/LiveKitComponents.build/DisconnectRoomButton.d",
+    "object": "/Users/ashwin/Developer/Popin-Library-iOS/.build/arm64-apple-macosx/debug/LiveKitComponents.build/DisconnectRoomButton.swift.o",
+    "swiftmodule": "/Users/ashwin/Developer/Popin-Library-iOS/.build/arm64-apple-macosx/debug/LiveKitComponents.build/DisconnectRoomButton~partial.swiftmodule",
+    "swift-dependencies": "/Users/ashwin/Developer/Popin-Library-iOS/.build/arm64-apple-macosx/debug/LiveKitComponents.build/DisconnectRoomButton.swiftdeps",
+    "diagnostics": "/Users/ashwin/Developer/Popin-Library-iOS/.build/arm64-apple-macosx/debug/LiveKitComponents.build/DisconnectRoomButton.dia"
+  },
+  "/Users/ashwin/Developer/Popin-Library-iOS/.build/checkouts/components-swift/Sources/LiveKitComponents/UI/Buttons/MicrophoneToggleButton.swift": {
+    "dependencies": "/Users/ashwin/Developer/Popin-Library-iOS/.build/arm64-apple-macosx/debug/LiveKitComponents.build/MicrophoneToggleButton.d",
+    "object": "/Users/ashwin/Developer/Popin-Library-iOS/.build/arm64-apple-macosx/debug/LiveKitComponents.build/MicrophoneToggleButton.swift.o",
+    "swiftmodule": "/Users/ashwin/Developer/Popin-Library-iOS/.build/arm64-apple-macosx/debug/LiveKitComponents.build/MicrophoneToggleButton~partial.swiftmodule",
+    "swift-dependencies": "/Users/ashwin/Developer/Popin-Library-iOS/.build/arm64-apple-macosx/debug/LiveKitComponents.build/MicrophoneToggleButton.swiftdeps",
+    "diagnostics": "/Users/ashwin/Developer/Popin-Library-iOS/.build/arm64-apple-macosx/debug/LiveKitComponents.build/MicrophoneToggleButton.dia"
+  },
+  "/Users/ashwin/Developer/Popin-Library-iOS/.build/checkouts/components-swift/Sources/LiveKitComponents/UI/Chat/ChatScrollView.swift": {
+    "dependencies": "/Users/ashwin/Developer/Popin-Library-iOS/.build/arm64-apple-macosx/debug/LiveKitComponents.build/ChatScrollView.d",
+    "object": "/Users/ashwin/Developer/Popin-Library-iOS/.build/arm64-apple-macosx/debug/LiveKitComponents.build/ChatScrollView.swift.o",
+    "swiftmodule": "/Users/ashwin/Developer/Popin-Library-iOS/.build/arm64-apple-macosx/debug/LiveKitComponents.build/ChatScrollView~partial.swiftmodule",
+    "swift-dependencies": "/Users/ashwin/Developer/Popin-Library-iOS/.build/arm64-apple-macosx/debug/LiveKitComponents.build/ChatScrollView.swiftdeps",
+    "diagnostics": "/Users/ashwin/Developer/Popin-Library-iOS/.build/arm64-apple-macosx/debug/LiveKitComponents.build/ChatScrollView.dia"
+  },
+  "/Users/ashwin/Developer/Popin-Library-iOS/.build/checkouts/components-swift/Sources/LiveKitComponents/UI/LocalCameraPreview.swift": {
+    "dependencies": "/Users/ashwin/Developer/Popin-Library-iOS/.build/arm64-apple-macosx/debug/LiveKitComponents.build/LocalCameraPreview.d",
+    "object": "/Users/ashwin/Developer/Popin-Library-iOS/.build/arm64-apple-macosx/debug/LiveKitComponents.build/LocalCameraPreview.swift.o",
+    "swiftmodule": "/Users/ashwin/Developer/Popin-Library-iOS/.build/arm64-apple-macosx/debug/LiveKitComponents.build/LocalCameraPreview~partial.swiftmodule",
+    "swift-dependencies": "/Users/ashwin/Developer/Popin-Library-iOS/.build/arm64-apple-macosx/debug/LiveKitComponents.build/LocalCameraPreview.swiftdeps",
+    "diagnostics": "/Users/ashwin/Developer/Popin-Library-iOS/.build/arm64-apple-macosx/debug/LiveKitComponents.build/LocalCameraPreview.dia"
+  },
+  "/Users/ashwin/Developer/Popin-Library-iOS/.build/checkouts/components-swift/Sources/LiveKitComponents/UI/Participant/ConnectionQualityIndicatorView.swift": {
+    "dependencies": "/Users/ashwin/Developer/Popin-Library-iOS/.build/arm64-apple-macosx/debug/LiveKitComponents.build/ConnectionQualityIndicatorView.d",
+    "object": "/Users/ashwin/Developer/Popin-Library-iOS/.build/arm64-apple-macosx/debug/LiveKitComponents.build/ConnectionQualityIndicatorView.swift.o",
+    "swiftmodule": "/Users/ashwin/Developer/Popin-Library-iOS/.build/arm64-apple-macosx/debug/LiveKitComponents.build/ConnectionQualityIndicatorView~partial.swiftmodule",
+    "swift-dependencies": "/Users/ashwin/Developer/Popin-Library-iOS/.build/arm64-apple-macosx/debug/LiveKitComponents.build/ConnectionQualityIndicatorView.swiftdeps",
+    "diagnostics": "/Users/ashwin/Developer/Popin-Library-iOS/.build/arm64-apple-macosx/debug/LiveKitComponents.build/ConnectionQualityIndicatorView.dia"
+  },
+  "/Users/ashwin/Developer/Popin-Library-iOS/.build/checkouts/components-swift/Sources/LiveKitComponents/UI/Participant/ParticipantInformationView.swift": {
+    "dependencies": "/Users/ashwin/Developer/Popin-Library-iOS/.build/arm64-apple-macosx/debug/LiveKitComponents.build/ParticipantInformationView.d",
+    "object": "/Users/ashwin/Developer/Popin-Library-iOS/.build/arm64-apple-macosx/debug/LiveKitComponents.build/ParticipantInformationView.swift.o",
+    "swiftmodule": "/Users/ashwin/Developer/Popin-Library-iOS/.build/arm64-apple-macosx/debug/LiveKitComponents.build/ParticipantInformationView~partial.swiftmodule",
+    "swift-dependencies": "/Users/ashwin/Developer/Popin-Library-iOS/.build/arm64-apple-macosx/debug/LiveKitComponents.build/ParticipantInformationView.swiftdeps",
+    "diagnostics": "/Users/ashwin/Developer/Popin-Library-iOS/.build/arm64-apple-macosx/debug/LiveKitComponents.build/ParticipantInformationView.dia"
+  },
+  "/Users/ashwin/Developer/Popin-Library-iOS/.build/checkouts/components-swift/Sources/LiveKitComponents/UI/Participant/ParticipantView.swift": {
+    "dependencies": "/Users/ashwin/Developer/Popin-Library-iOS/.build/arm64-apple-macosx/debug/LiveKitComponents.build/ParticipantView.d",
+    "object": "/Users/ashwin/Developer/Popin-Library-iOS/.build/arm64-apple-macosx/debug/LiveKitComponents.build/ParticipantView.swift.o",
+    "swiftmodule": "/Users/ashwin/Developer/Popin-Library-iOS/.build/arm64-apple-macosx/debug/LiveKitComponents.build/ParticipantView~partial.swiftmodule",
+    "swift-dependencies": "/Users/ashwin/Developer/Popin-Library-iOS/.build/arm64-apple-macosx/debug/LiveKitComponents.build/ParticipantView.swiftdeps",
+    "diagnostics": "/Users/ashwin/Developer/Popin-Library-iOS/.build/arm64-apple-macosx/debug/LiveKitComponents.build/ParticipantView.dia"
+  },
+  "/Users/ashwin/Developer/Popin-Library-iOS/.build/checkouts/components-swift/Sources/LiveKitComponents/UI/Room/ControlsView.swift": {
+    "dependencies": "/Users/ashwin/Developer/Popin-Library-iOS/.build/arm64-apple-macosx/debug/LiveKitComponents.build/ControlsView.d",
+    "object": "/Users/ashwin/Developer/Popin-Library-iOS/.build/arm64-apple-macosx/debug/LiveKitComponents.build/ControlsView.swift.o",
+    "swiftmodule": "/Users/ashwin/Developer/Popin-Library-iOS/.build/arm64-apple-macosx/debug/LiveKitComponents.build/ControlsView~partial.swiftmodule",
+    "swift-dependencies": "/Users/ashwin/Developer/Popin-Library-iOS/.build/arm64-apple-macosx/debug/LiveKitComponents.build/ControlsView.swiftdeps",
+    "diagnostics": "/Users/ashwin/Developer/Popin-Library-iOS/.build/arm64-apple-macosx/debug/LiveKitComponents.build/ControlsView.dia"
+  },
+  "/Users/ashwin/Developer/Popin-Library-iOS/.build/checkouts/components-swift/Sources/LiveKitComponents/UI/Room/LocalCameraVideoView.swift": {
+    "dependencies": "/Users/ashwin/Developer/Popin-Library-iOS/.build/arm64-apple-macosx/debug/LiveKitComponents.build/LocalCameraVideoView.d",
+    "object": "/Users/ashwin/Developer/Popin-Library-iOS/.build/arm64-apple-macosx/debug/LiveKitComponents.build/LocalCameraVideoView.swift.o",
+    "swiftmodule": "/Users/ashwin/Developer/Popin-Library-iOS/.build/arm64-apple-macosx/debug/LiveKitComponents.build/LocalCameraVideoView~partial.swiftmodule",
+    "swift-dependencies": "/Users/ashwin/Developer/Popin-Library-iOS/.build/arm64-apple-macosx/debug/LiveKitComponents.build/LocalCameraVideoView.swiftdeps",
+    "diagnostics": "/Users/ashwin/Developer/Popin-Library-iOS/.build/arm64-apple-macosx/debug/LiveKitComponents.build/LocalCameraVideoView.dia"
+  },
+  "/Users/ashwin/Developer/Popin-Library-iOS/.build/checkouts/components-swift/Sources/LiveKitComponents/UI/TrackPublication/VideoTrackView.swift": {
+    "dependencies": "/Users/ashwin/Developer/Popin-Library-iOS/.build/arm64-apple-macosx/debug/LiveKitComponents.build/VideoTrackView.d",
+    "object": "/Users/ashwin/Developer/Popin-Library-iOS/.build/arm64-apple-macosx/debug/LiveKitComponents.build/VideoTrackView.swift.o",
+    "swiftmodule": "/Users/ashwin/Developer/Popin-Library-iOS/.build/arm64-apple-macosx/debug/LiveKitComponents.build/VideoTrackView~partial.swiftmodule",
+    "swift-dependencies": "/Users/ashwin/Developer/Popin-Library-iOS/.build/arm64-apple-macosx/debug/LiveKitComponents.build/VideoTrackView.swiftdeps",
+    "diagnostics": "/Users/ashwin/Developer/Popin-Library-iOS/.build/arm64-apple-macosx/debug/LiveKitComponents.build/VideoTrackView.dia"
+  },
+  "/Users/ashwin/Developer/Popin-Library-iOS/.build/checkouts/components-swift/Sources/LiveKitComponents/UI/Visualizer/BarAudioVisualizer.swift": {
+    "dependencies": "/Users/ashwin/Developer/Popin-Library-iOS/.build/arm64-apple-macosx/debug/LiveKitComponents.build/BarAudioVisualizer.d",
+    "object": "/Users/ashwin/Developer/Popin-Library-iOS/.build/arm64-apple-macosx/debug/LiveKitComponents.build/BarAudioVisualizer.swift.o",
+    "swiftmodule": "/Users/ashwin/Developer/Popin-Library-iOS/.build/arm64-apple-macosx/debug/LiveKitComponents.build/BarAudioVisualizer~partial.swiftmodule",
+    "swift-dependencies": "/Users/ashwin/Developer/Popin-Library-iOS/.build/arm64-apple-macosx/debug/LiveKitComponents.build/BarAudioVisualizer.swiftdeps",
+    "diagnostics": "/Users/ashwin/Developer/Popin-Library-iOS/.build/arm64-apple-macosx/debug/LiveKitComponents.build/BarAudioVisualizer.dia"
+  }
+}
