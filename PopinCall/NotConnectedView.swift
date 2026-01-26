@@ -6,6 +6,7 @@
 //
 import SwiftUI
 
+#if canImport(UIKit)
 public struct NotConnectedView: View {
     // Call information
     let callerName: String
@@ -319,3 +320,4 @@ struct NotConnectedView_Previews: PreviewProvider {
         )
     }
 }
+#endif

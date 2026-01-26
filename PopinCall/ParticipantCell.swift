@@ -1,4 +1,5 @@
 import LiveKit
+#if canImport(UIKit)
 import UIKit
 
 class ParticipantCell: UICollectionViewCell {
@@ -142,3 +143,4 @@ extension ParticipantCell: ParticipantDelegate {
         }
     }
 }
+#endif

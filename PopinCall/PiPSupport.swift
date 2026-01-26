@@ -9,6 +9,7 @@ import AVKit
 import LiveKit
 import SwiftUI
 
+#if canImport(UIKit)
 // MARK: - PiP View Controllers
 
 final class PiPPreviewViewController: UIViewController, VideoRenderer {
@@ -276,3 +277,5 @@ struct PiPView: UIViewControllerRepresentable {
         }
     }
 }
+#endif
+

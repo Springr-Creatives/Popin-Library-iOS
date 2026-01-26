@@ -1,3 +1,4 @@
+#if canImport(UIKit)
 //
 //  SideControls.swift
 //  Popin
@@ -144,3 +145,4 @@ struct SideControls: View {
         .buttonStyle(.plain)
     }
 }
+#endif

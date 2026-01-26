@@ -10,6 +10,7 @@ import AVKit
 import LiveKit
 import SwiftUI
 
+#if canImport(UIKit)
 class MyCustomRendererView: NativeView {
     public let sampleBufferDisplayLayer: AVSampleBufferDisplayLayer
     public lazy var pipController: AVPictureInPictureController = {
@@ -91,3 +92,4 @@ extension MyCustomRendererView: AVPictureInPictureSampleBufferPlaybackDelegate {
         completionHandler()
     }
 }
+#endif

@@ -4133,12 +4133,12 @@
           "name" : "/Users/ashwin/Developer/Popin-Library-iOS/.build/arm64-apple-macosx/debug/Modules/OrderedCollections.swiftmodule"
         },
         {
-          "kind" : "directory",
-          "name" : "/Users/ashwin/Developer/Popin-Library-iOS/.build/arm64-apple-macosx/debug/LiveKitWebRTC.framework"
-        },
-        {
           "kind" : "file",
           "name" : "/Users/ashwin/Developer/Popin-Library-iOS/.build/arm64-apple-macosx/debug/liblivekit_uniffi.a"
+        },
+        {
+          "kind" : "directory",
+          "name" : "/Users/ashwin/Developer/Popin-Library-iOS/.build/arm64-apple-macosx/debug/LiveKitWebRTC.framework"
         },
         {
           "kind" : "file",
@@ -7223,12 +7223,12 @@
           "name" : "/Users/ashwin/Developer/Popin-Library-iOS/.build/arm64-apple-macosx/debug/Modules/LiveKitComponents.swiftmodule"
         },
         {
-          "kind" : "file",
-          "name" : "/Users/ashwin/Developer/Popin-Library-iOS/.build/arm64-apple-macosx/debug/liblivekit_uniffi.a"
-        },
-        {
           "kind" : "directory",
           "name" : "/Users/ashwin/Developer/Popin-Library-iOS/.build/arm64-apple-macosx/debug/LiveKitWebRTC.framework"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/ashwin/Developer/Popin-Library-iOS/.build/arm64-apple-macosx/debug/liblivekit_uniffi.a"
         },
         {
           "kind" : "file",
@@ -7525,12 +7525,12 @@
           "name" : "/Users/ashwin/Developer/Popin-Library-iOS/.build/arm64-apple-macosx/debug/Modules/PopinCallTests.swiftmodule"
         },
         {
-          "kind" : "directory",
-          "name" : "/Users/ashwin/Developer/Popin-Library-iOS/.build/arm64-apple-macosx/debug/LiveKitWebRTC.framework"
-        },
-        {
           "kind" : "file",
           "name" : "/Users/ashwin/Developer/Popin-Library-iOS/.build/arm64-apple-macosx/debug/liblivekit_uniffi.a"
+        },
+        {
+          "kind" : "directory",
+          "name" : "/Users/ashwin/Developer/Popin-Library-iOS/.build/arm64-apple-macosx/debug/LiveKitWebRTC.framework"
         },
         {
           "kind" : "file",
@@ -7659,12 +7659,12 @@
           "name" : "/Users/ashwin/Developer/Popin-Library-iOS/.build/arm64-apple-macosx/debug/Modules/PopinCall.swiftmodule"
         },
         {
-          "kind" : "file",
-          "name" : "/Users/ashwin/Developer/Popin-Library-iOS/.build/arm64-apple-macosx/debug/liblivekit_uniffi.a"
-        },
-        {
           "kind" : "directory",
           "name" : "/Users/ashwin/Developer/Popin-Library-iOS/.build/arm64-apple-macosx/debug/LiveKitWebRTC.framework"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/ashwin/Developer/Popin-Library-iOS/.build/arm64-apple-macosx/debug/liblivekit_uniffi.a"
         },
         {
           "kind" : "file",

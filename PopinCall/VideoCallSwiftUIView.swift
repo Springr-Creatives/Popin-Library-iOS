@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+#if canImport(UIKit)
 import LiveKit
 import LiveKitComponents
 import Combine
@@ -59,11 +60,11 @@ public struct VideoCallSwiftUIView: View {
                           let token = call.access_token else { return }
                     do {
                         try await _room.connect(url: websocket, token: token)
-                        bfprint("Connected to room")
+                        print("Connected to room")
                         try await _room.localParticipant.setMicrophone(enabled: true)
-                        bfprint("Microphone enabled")
+                        print("Microphone enabled")
                         try await _room.localParticipant.setCamera(enabled: true)
-                        bfprint("Camera enabled")
+                        print("Camera enabled")
 
 //                        // Enable multitasking camera access for PiP immediately after enabling camera
 //                        // This must be set before the AVCaptureSession starts
@@ -82,7 +83,7 @@ public struct VideoCallSwiftUIView: View {
                                         cameraCapturer.captureSession.beginConfiguration()
                                         cameraCapturer.captureSession.isMultitaskingCameraAccessEnabled = true
                                         cameraCapturer.captureSession.commitConfiguration()
-                                        bfprint("Enabled multitasking camera access via AVCaptureSession")
+                                        print("Enabled multitasking camera access via AVCaptureSession")
                                     }
                                 }
                             }
@@ -92,7 +93,7 @@ public struct VideoCallSwiftUIView: View {
                         
 
                     } catch {
-                        bfprint("Failed to connect or set media: \(error.localizedDescription)")
+                        print("Failed to connect or set media: \(error.localizedDescription)")
                     }
                 }
             }
@@ -166,5 +167,6 @@ public struct VideoCallSwiftUIView: View {
         )
     }
 }
+#endif
 #endif
 

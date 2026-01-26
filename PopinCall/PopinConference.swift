@@ -18,6 +18,7 @@ import LiveKit
 import LiveKitComponents
 import SwiftUI
 
+#if canImport(UIKit)
 public struct PopinConference: View {
     @EnvironmentObject private var _room: Room
     @Environment(\.liveKitUIOptions) private var _ui: UIOptions
@@ -126,3 +127,4 @@ public struct PopinConference: View {
         }
     }
 }
+#endif

@@ -1,6 +1,7 @@
 
 import SwiftUI
 
+#if canImport(UIKit)
 public struct ParticipantLayout<Data: RandomAccessCollection, Content: View>: View where Data.Element: Identifiable, Data.Index: Hashable {
     private let _data: Data
     private let _spacing: CGFloat?
@@ -58,3 +59,4 @@ public struct ParticipantLayout<Data: RandomAccessCollection, Content: View>: Vi
         return (columns: columns, rows: rows)
     }
 }
+#endif

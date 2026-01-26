@@ -8,13 +8,13 @@
 import Foundation
 class PopinCallPresenter {
     private let popinInteractor: PopinCallInteractor
-    weak private var popinCallView: PopinCallView?
+    weak private var popinCallView: VideoCallView?
     
     init(popinInteractor: PopinCallInteractor) {
         self.popinInteractor = popinInteractor
     }
     
-    func attachView(popinCallView: PopinCallView) {
+    func attachView(popinCallView: VideoCallView) {
         self.popinCallView = popinCallView
     }
     
@@ -26,7 +26,7 @@ class PopinCallPresenter {
         popinInteractor.getAccessToken(seller_id: Utilities.shared.getSeller(), onSucess: { (talkModel) in
             print(talkModel);
             if (talkModel.status == 1) {
-                self.popinCallView?.connectToRoom(liveKitAccessToken: talkModel.token!, liveKitRoom: talkModel.room!, websocketUrl: talkModel.websocket!)
+                self.popinCallView?.loadCall(call: talkModel)
             } else {
                 self.popinCallView?.showMessage(title: "Error", message: "Unable to create call")
             }

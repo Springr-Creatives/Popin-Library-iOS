@@ -204,38 +204,38 @@ extension CallManager: CXProviderDelegate {
     func provider(_ provider: CXProvider, didActivate audioSession: AVAudioSession) {
         // Configure audio session for LiveKit video calls
         do {
-            bfprint("did_activate_audio_session")
-            bfprint("AudioSession Category: \(audioSession.category.rawValue), Mode: \(audioSession.mode.rawValue), Options: \(audioSession.categoryOptions.rawValue)")
+            print("did_activate_audio_session")
+            print("AudioSession Category: \(audioSession.category.rawValue), Mode: \(audioSession.mode.rawValue), Options: \(audioSession.categoryOptions.rawValue)")
             
             // WebRTC generally prefers 48kHz and NO mixWithOthers for VoiceProcessingIO
             try audioSession.setPreferredSampleRate(48000.0)
             try audioSession.setCategory(.playAndRecord, mode: .videoChat, options: [.allowBluetooth, .allowBluetoothA2DP, .defaultToSpeaker, .allowAirPlay])
             // CallKit activates the session for us, but we set the category.
             
-            bfprint("AudioSession Configured - Category: \(audioSession.category.rawValue), Mode: \(audioSession.mode.rawValue), Options: \(audioSession.categoryOptions.rawValue)")
+            print("AudioSession Configured - Category: \(audioSession.category.rawValue), Mode: \(audioSession.mode.rawValue), Options: \(audioSession.categoryOptions.rawValue)")
 
             // Enable speaker by default for video calls
             try audioSession.overrideOutputAudioPort(.speaker)
-            bfprint("AudioSession overrideOutputAudioPort(.speaker) success")
+            print("AudioSession overrideOutputAudioPort(.speaker) success")
 
             // Activate LiveKit audio engine
             try AudioManager.shared.setEngineAvailability(.default)
-            bfprint("AudioManager engine availability set to .default")
+            print("AudioManager engine availability set to .default")
 
             delegate?.callManager(self, didActivateAudioSession: audioSession)
         } catch {
-            bfprint("CallManager: Failed to activate audio session: \(error)")
+            print("CallManager: Failed to activate audio session: \(error)")
         }
     }
 
     func provider(_ provider: CXProvider, didDeactivate audioSession: AVAudioSession) {
-        bfprint("did_deactivate_audio_session")
+        print("did_deactivate_audio_session")
         // Deactivate LiveKit audio session
         do {
             try AudioManager.shared.setEngineAvailability(.none)
-            bfprint("AudioManager engine availability set to .none")
+            print("AudioManager engine availability set to .none")
         } catch {
-             bfprint("CallManager: Failed to deactivate audio session: \(error)")
+             print("CallManager: Failed to deactivate audio session: \(error)")
         }
 
         delegate?.callManager(self, didDeactivateAudioSession: audioSession)
@@ -262,6 +262,15 @@ extension CallManager: PKPushRegistryDelegate {
             Utilities().sendPushToken(token: token)
         }
     }
+    
+    func savePushToken(token: String) {
+          UserDefaults.standard.set(token, forKey: "push_token")
+      }
+      
+      func getPushToken() -> String {
+          return UserDefaults.standard.string(forKey: "push_token") ?? ""
+      }
+      
 
     func pushRegistry(
         _ registry: PKPushRegistry,
@@ -336,7 +345,6 @@ extension CallManager: CXCallObserverDelegate {
 //
 
 import Foundation
-import UIKit
 
 // MARK: - Models
 

@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+#if canImport(UIKit)
 import LiveKit
 import LiveKitComponents
 import AVKit
@@ -214,7 +215,7 @@ public struct PopinConnectedView: View {
             syncParticipantOrder()
         }
         .onChange(of: _room.connectionState) { newState in
-            bfprint("ROOM CHANGE -> \(newState)")
+            print("ROOM CHANGE -> \(newState)")
             
             if newState == .connected {
                 syncParticipantOrder()
@@ -222,7 +223,7 @@ public struct PopinConnectedView: View {
             
             // Handle room disconnection (when not user-initiated)
             if newState == .disconnected && !viewModel.isUserEndingCall {
-                bfprint("Room disconnected externally - closing without end API")
+                print("Room disconnected externally - closing without end API")
                 viewModel.onRoomDisconnected?()
             }
         }
@@ -363,3 +364,4 @@ extension Color {
         )
     }
 }
+#endif

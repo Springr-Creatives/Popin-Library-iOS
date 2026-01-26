@@ -19,8 +19,7 @@ class PopinInteractor {
                 switch response.result {
                 case .success(let userModel):
                     if (userModel.status == "1") {
-                        Utilities.shared.saveUserToken(token: userModel.token)
-                        Utilities.shared.saveChannel(channel: userModel.channel)
+                        Utilities.shared.saveUser(user: userModel)
                         sucess()
                         return;
                     }
@@ -36,11 +35,8 @@ class PopinInteractor {
     func startConnection(seller_id: Int) {
         let parameters: Parameters = ["seller_id":seller_id];
         let urlString = serverURL + "/user/connect";
-        let headers: HTTPHeaders = [
-            "Authorization": "Bearer " + Utilities.shared.getUserToken(),
-            "Accept": "application/json"
-        ]
-        AF.request(urlString, method: .post, parameters: parameters, encoding: URLEncoding.httpBody, headers: headers)
+    
+        AF.request(urlString, method: .post, parameters: parameters, encoding: URLEncoding.httpBody, headers: Utilities.shared.getHeaders())
             .responseDecodable(of: StatusModel.self) { response in
                 switch response.result {
                 case .success(let statusModel):

@@ -7,7 +7,9 @@
 
 import Foundation
 
+#if canImport(UIKit)
 import UIKit
+#endif
 import Alamofire
 
 class Utilities: NSObject {
@@ -20,27 +22,43 @@ class Utilities: NSObject {
     static let shared = Utilities()
     
     func getHeaders() -> HTTPHeaders {
-        return [
-            "Authorization": "Bearer " + getUserToken(),
-            "Accept": "application/json"
-        ]
+        var headers: HTTPHeaders = []
+        
+        if let token = getUser()?.token {
+            headers["Accept"] = "application/json"
+            headers["Authorization"] = "Bearer" + " " + token
+        }
+        
+        return headers
+    }
+    
+    func saveUser(user: UserModel?) {
+        let userDefaults = UserDefaults.standard
+        do {
+            try userDefaults.setObject(user, forKey: "authenticatedUser")
+        } catch {
+            print(error.localizedDescription)
+        }
+    }
+    
+    func getUser() -> UserModel? {
+        let userDefaults = UserDefaults.standard
+        do {
+            let user = try userDefaults.getObject(forKey: "authenticatedUser", castTo: User.self)
+            return user
+        } catch {
+            print(error.localizedDescription)
+        }
+        return nil;
     }
     
     
-    func saveUserToken(token: String) {
-        UserDefaults.standard.set(token, forKey: "popinToken")
+    func savePushToken(token: String) {
+        UserDefaults.standard.set(token, forKey: "push_token")
     }
     
-    func getUserToken() -> String {
-        return UserDefaults.standard.string(forKey: "popinToken") ?? ""
-    }
-    
-    func saveChannel(channel: String) {
-        UserDefaults.standard.set(channel, forKey: "popinChannel")
-    }
-    
-    func getChannel() -> String {
-        return UserDefaults.standard.string(forKey: "popinChannel") ?? ""
+    func getPushToken() -> String {
+        return UserDefaults.standard.string(forKey: "push_token") ?? ""
     }
     
     func saveSeller(seller_id: Int) {
@@ -70,6 +88,7 @@ class Utilities: NSObject {
     
 }
 
+#if canImport(UIKit)
 extension UIColor {
     convenience init(red: Int, green: Int, blue: Int) {
         assert(red >= 0 && red <= 255, "Invalid red component")
@@ -131,3 +150,4 @@ extension UITextField {
         }
     }
 }
+#endif
