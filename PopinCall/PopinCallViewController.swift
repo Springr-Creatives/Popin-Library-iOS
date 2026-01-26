@@ -6,7 +6,7 @@
 //
 
 import Foundation
-#if canImport(UIKit)
+import UIKit
 import LiveKit
 import AVFAudio
 import UIKit
@@ -24,7 +24,7 @@ protocol VideoCallView: NSObjectProtocol {
     func closeCall(message: String)
 }
 
-class PopinCallViewController: UIViewController {
+public class PopinCallViewController: UIViewController {
 
     // PushKit call data
     var pushCallData: PushCallData?
@@ -68,10 +68,9 @@ class PopinCallViewController: UIViewController {
     
     
     
-    
-    
-    
-   
+    public init() {
+        super.init(nibName: nil, bundle: nil)
+    }
     
     @IBAction func acceptClick(_ sender: Any) {
         print("accept_click - answering call via CallKit")
@@ -416,5 +415,4 @@ extension PopinCallViewController: CallManagerDelegate {
         // LiveKit audio session is already deactivated
     }
 }
-#endif
 

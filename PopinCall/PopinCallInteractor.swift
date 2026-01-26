@@ -12,13 +12,17 @@ import Alamofire
 import SwiftyJSON
 
 
-struct TalkModel : Codable{
-    let id: Int?;
-    let user_id: Int?;
-    let token: String?;
-    let room: String?;
-    let websocket: String?; // LiveKit websocket URL
-    let status: Int;
+public struct TalkModel : Codable{
+    public let id: Int?;
+    public let user_id: Int?;
+    public let token: String?;
+    public let room: String?;
+    public let websocket: String?; // LiveKit websocket URL
+    public let status: Int;
+    
+    public var access_token: String? {
+        return token
+    }
 }
 
 class PopinCallInteractor {
