@@ -1,5 +1,5 @@
 {
-  "originHash" : "e23a247ab13f5433a2d9088e971767416e40565c0a03014c27182aa87ac13f3d",
+  "originHash" : "6859ee056f749b0c8c29923e395866ba5f68a35d49b21d0e68b7b565b3494600",
   "pins" : [
     {
       "identity" : "alamofire",
@@ -8,6 +8,15 @@
       "state" : {
         "revision" : "7be73f6c2b5cd90e40798b06ebd5da8f9f79cf88",
         "version" : "5.11.0"
+      }
+    },
+    {
+      "identity" : "bugfendersdk-ios",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/bugfender/BugfenderSDK-iOS",
+      "state" : {
+        "revision" : "70b30ee31f962e3d380dc6e6da86a4d67a87a50c",
+        "version" : "2.2.0"
       }
     },
     {

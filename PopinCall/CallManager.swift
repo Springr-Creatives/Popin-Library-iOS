@@ -328,3 +328,119 @@ extension CallManager: CXCallObserverDelegate {
         }
     }
 }
+//
+//  PopinCallManager.swift
+//  Popin
+//
+//  Created by Ashwin Nath on 26/01/26.
+//
+
+import Foundation
+import UIKit
+
+// MARK: - Models
+
+public struct Product: Codable {
+    public let id: Int?
+    public let externalId: String?
+    public let name: String?
+    public let image: String?
+    
+    enum CodingKeys: String, CodingKey {
+        case id
+        case externalId = "external_id"
+        case name
+        case image
+    }
+}
+
+public struct PushCallData: Codable {
+    public let callId: Int
+    public let callComponentId: Int
+    public let role: Int
+    public let displayName: String
+    public let primaryProductInfo: String
+    public let artifact: String?
+    public let productId: String?
+    public let productName: String?
+    public let productImage: String?
+    public let product: Product?
+    public let timeout: Int?
+    public let start: Int?
+    
+    enum CodingKeys: String, CodingKey {
+        case callId = "call_id"
+        case callComponentId = "component_id"
+        case role
+        case displayName = "display_name"
+        case primaryProductInfo = "primary_product_info"
+        case artifact
+        case productId = "product_id"
+        case productName = "product_name"
+        case productImage = "product_image"
+        case product
+        case timeout
+        case start
+    }
+}
+
+// MARK: - PopinCallManager
+
+public class PopinCallManager {
+    public static let shared = PopinCallManager()
+    
+    public var callData: PushCallData?
+    public var callUUID: UUID?
+    
+    private init() {}
+    
+    public func handleIncomingPush(payload: [AnyHashable: Any], completion: @escaping () -> Void) {
+        // Attempt to decode the payload into PushCallData
+        // Note: Payload structure from PushKit/APNs might differ from internal JSON.
+        // We'll try to convert the dictionary to JSON data and decode it.
+        
+        do {
+            let data = try JSONSerialization.data(withJSONObject: payload, options: [])
+            let decoder = JSONDecoder()
+            self.callData = try decoder.decode(PushCallData.self, from: data)
+            
+            // Generate a UUID for this call
+            let uuid = UUID()
+            self.callUUID = uuid
+            
+            // Report to CallManager (CallKit)
+            let handle = self.callData?.displayName ?? "Incoming Call"
+            CallManager.shared.reportIncomingCall(uuid: uuid, handle: handle) { error in
+                if let error = error {
+                    print("Error reporting incoming call: \(error)")
+                }
+                completion()
+            }
+        } catch {
+            print("Failed to decode push payload: \(error)")
+            // Fallback manual parsing if needed, or just fail
+            completion()
+        }
+    }
+    
+    public func clearCallState() {
+        self.callData = nil
+        self.callUUID = nil
+    }
+    
+    public func callAnswered() {
+        print("PopinCallManager: Call answered")
+    }
+    
+    public func stopStatusChecking() {
+        print("PopinCallManager: Stop status checking")
+    }
+    
+    public func enterPiPMode() {
+        print("PopinCallManager: Enter PiP Mode")
+    }
+    
+    public func exitPiPMode() {
+        print("PopinCallManager: Exit PiP Mode")
+    }
+}
