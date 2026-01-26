@@ -21,16 +21,10 @@ public struct PopinConnectedView: View {
     @State private var primaryParticipantId: String?
     @StateObject private var pipHandler = PiPHandler()
     @State private var pipSupported = AVPictureInPictureController.isPictureInPictureSupported()
-    @State private var showManagerView = false
-    @State private var showShoppingView = false
-    
+
     // Maintain a persistent order of participant SIDs to prevents random shifting
     @State private var participantOrder: [String] = []
 
-    // Call data
-    public var callId: Int?
-    public var userId: Int?
-    
     // Get view model from environment
     @EnvironmentObject private var viewModel: VideoCallViewModel
     
@@ -119,7 +113,73 @@ public struct PopinConnectedView: View {
         
         return ordered
     }
-    
+
+    @ViewBuilder
+    private var overlayControls: some View {
+        VStack(spacing: 0) {
+            // Top controls with PiP button and product details
+            TopControls(
+                onPipClick: {
+                    // Enable PiP when PiP button is clicked
+                    pipHandler.startPictureInPicture()
+                },
+                productId: PopinCallManager.shared.callData?.productId,
+                productName: PopinCallManager.shared.callData?.productName,
+                productUrl: nil,
+                productImageUrl: PopinCallManager.shared.callData?.productImage,
+                productDescription: nil,
+                productExtra: nil
+            )
+
+            Spacer()
+
+            // Remote participants and controls at bottom
+            HStack(alignment: .bottom, spacing: 0) {
+                // Side controls on the left
+                SideControls()
+                    .environmentObject(_room)
+
+                Spacer()
+
+                // Remote participants to the right of side controls
+                if sortedParticipants.count > 1 {
+                    AudienceRow(
+                        participants: Array(sortedParticipants.dropFirst()),
+                        primaryParticipantId: $primaryParticipantId
+                    )
+                }
+            }
+            .padding(.bottom, 16)
+
+            // Centered disconnect button overlay
+            Button(action: {
+                // Mark that user is ending the call
+                viewModel.isUserEndingCall = true
+
+                // Call the end API
+                viewModel.onEndCall?()
+
+                // Disconnect from the room
+                Task {
+                    await _room.disconnect()
+                }
+            }) {
+                ZStack {
+                    Circle()
+                        .fill(Color.red)
+                        .frame(width: 60, height: 60)
+
+                    Image(systemName: "phone.down.fill")
+                        .font(.system(size: 24))
+                        .foregroundColor(.white)
+                }
+            }
+            .frame(width: 60, height: 60)
+            .padding(.bottom, 48)
+            .buttonStyle(.plain)
+        }
+    }
+
     public var body: some View {
         ZStack {
             // Primary participant view (full screen) with PiP support
@@ -134,71 +194,7 @@ public struct PopinConnectedView: View {
             }
 
             // Overlay for remote participants and controls
-            VStack(spacing: 0) {
-                // Top controls with PiP button and product details
-                TopControls(
-                    onPipClick: {
-                        // Enable PiP when PiP button is clicked
-                        pipHandler.startPictureInPicture()
-                    },
-                    productId: PopinCallManager.shared.callData?.productId,
-                    productName: PopinCallManager.shared.callData?.productName,
-                    productUrl: PopinCallManager.shared.callData?.productURL,
-                    productImageUrl: PopinCallManager.shared.callData?.productImage,
-                    productDescription: PopinCallManager.shared.callData?.productDescription,
-                    productExtra: PopinCallManager.shared.callData?.productExtra
-                )
-
-                Spacer()
-
-                // Remote participants and controls at bottom
-                HStack(alignment: .bottom, spacing: 0) {
-                    // Side controls on the left
-                    SideControls(
-                        showManagerView: $showManagerView,
-                        showShoppingView: $showShoppingView
-                    )
-                    .environmentObject(_room)
-
-                    Spacer()
-
-                    // Remote participants to the right of side controls
-                    if sortedParticipants.count > 1 {
-                        AudienceRow(
-                            participants: Array(sortedParticipants.dropFirst()),
-                            primaryParticipantId: $primaryParticipantId
-                        )
-                    }
-                }
-                .padding(.bottom, 16)
-
-                // Centered disconnect button overlay
-                Button(action: {
-                    // Mark that user is ending the call
-                    viewModel.isUserEndingCall = true
-
-                    // Call the end API
-                    viewModel.onEndCall?()
-
-                    // Disconnect from the room
-                    Task {
-                        await _room.disconnect()
-                    }
-                }) {
-                    ZStack {
-                        Circle()
-                            .fill(Color.red)
-                            .frame(width: 60, height: 60)
-
-                        Image(systemName: "phone.down.fill")
-                            .font(.system(size: 24))
-                            .foregroundColor(.white)
-                    }
-                }
-                .frame(width: 60, height: 60)
-                .padding(.bottom, 48)
-                .buttonStyle(.plain)
-            }
+            overlayControls
         }
         .ignoresSafeArea(.all, edges: .bottom)
         .task {
@@ -246,16 +242,6 @@ public struct PopinConnectedView: View {
                 pipHandler.startPictureInPicture()
             }
         }
-        .sheet(isPresented: $showManagerView) {
-            if let callId = callId {
-                ManagerViewControllerWrapper(callId: callId)
-            }
-        }
-        .sheet(isPresented: $showShoppingView) {
-            if let userId = userId {
-                ShoppingViewControllerWrapper(userId: userId, fromMessages: false)
-            }
-        }
     }
 }
 
@@ -301,9 +287,6 @@ struct PrimaryParticipantView: View {
         }
     }
 }
-
-// MARK: - UIKit View Controller Wrappers
-
 
 // MARK: - Color Extension for Hex Support
 

@@ -103,7 +103,7 @@ public class PopinCallViewController: UIViewController {
         }
     }
     
-    override func viewDidLoad() {
+    public override func viewDidLoad() {
         super.viewDidLoad()
 
         self.view.backgroundColor = .black
@@ -189,19 +189,19 @@ public class PopinCallViewController: UIViewController {
     
 
     
-    override func viewDidAppear(_ animated: Bool) {
+    public override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         checkCameraAndMicrophonePermissions(presentingViewController: self)
     }
     
     
-    override func viewWillAppear(_ animated: Bool) {
+    public override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         // Disable idle timer to prevent screen from locking
         UIApplication.shared.isIdleTimerDisabled = true
     }
     
-    override func viewWillDisappear(_ animated: Bool) {
+    public override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
         // Re-enable idle timer to allow screen to lock again
         UIApplication.shared.isIdleTimerDisabled = false

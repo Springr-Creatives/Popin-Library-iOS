@@ -12,44 +12,9 @@ import LiveKitComponents
 
 struct SideControls: View {
     @EnvironmentObject private var room: Room
-    @Binding var showManagerView: Bool
-    @Binding var showShoppingView: Bool
-    
+
     var body: some View {
         VStack(spacing: 12) {
-            // Shopping Button
-            Button {
-                print("shopping_clicked")
-                showShoppingView = true
-            } label: {
-                ZStack {
-                    Circle()
-                        .fill(Color(hex: "433F40").opacity(0.8))
-                        .frame(width: 44, height: 44)
-                    
-                    Image(systemName: "cart.fill")
-                        .font(.system(size: 18))
-                        .foregroundColor(.white)
-                }
-            }
-            .frame(width: 44, height: 44)
-            
-            // Add Agent Button
-            Button {
-                showManagerView = true
-            } label: {
-                ZStack {
-                    Circle()
-                        .fill(Color(hex: "433F40").opacity(0.8))
-                        .frame(width: 44, height: 44)
-                    
-                    Image(systemName: "person.fill.badge.plus")
-                        .font(.system(size: 18))
-                        .foregroundColor(.white)
-                }
-            }
-            .frame(width: 44, height: 44)
-            
             // Swap Camera Button
             Button {
                 Task {

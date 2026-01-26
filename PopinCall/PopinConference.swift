@@ -93,7 +93,7 @@ public struct PopinConference: View {
              }
         } else if [.reconnecting, .connected].contains(_room.connectionState) {
             // Fully connected - show the connected view
-            PopinConnectedView(callId: callId, userId: userId)
+            PopinConnectedView()
                 .environmentObject(viewModel)
                 .onAppear {
                     hasConnected = true
