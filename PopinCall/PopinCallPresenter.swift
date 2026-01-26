@@ -6,6 +6,8 @@
 //
 
 import Foundation
+
+#if canImport(UIKit)
 class PopinCallPresenter {
     private let popinInteractor: PopinCallInteractor
     weak private var popinCallView: VideoCallView?
@@ -36,3 +38,4 @@ class PopinCallPresenter {
     }
     
 }
+#endif

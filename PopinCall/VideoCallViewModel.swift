@@ -9,7 +9,7 @@ import Foundation
 import Combine
 
 public final class VideoCallViewModel: ObservableObject {
-    @Published var call: VideoCall?
+    @Published var call: TalkModel?
     @Published var callAccepted: Bool = false
     @Published var isUserEndingCall: Bool = false
     @Published var isOnHold: Bool = false

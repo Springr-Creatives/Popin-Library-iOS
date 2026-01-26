@@ -282,26 +282,7 @@ class PopinCallViewController: UIViewController {
             hostingController.removeFromParent()
             self.hostingController = nil
         }
-
-        DispatchQueue.main.async {
-            let mainStoryboard: UIStoryboard = UIStoryboard(name: "Main", bundle: nil)
-            let mainViewController = mainStoryboard.instantiateViewController(withIdentifier: "MainTabBarController") as! MainTabBarController
-
-            mainViewController.view.frame = UIScreen.main.bounds
-            let scene = UIApplication.shared.connectedScenes.first
-            if let sceneDelegate = scene?.delegate as? SceneDelegate {
-                sceneDelegate.window?.rootViewController = mainViewController
-                if Utilities().getUser()?.remark == 1 && self.callRole != 2 && self.callConnected {
-                    let remarkViewController = mainStoryboard.instantiateViewController(withIdentifier: "RemarkViewController") as! RemarkViewController
-                    remarkViewController.call_id = self.callId
-                    mainViewController.present(remarkViewController, animated: true, completion: {
-                        self.dismiss(animated: false, completion: nil)
-                    })
-                } else {
-                    self.dismiss(animated: false, completion: nil)
-                }
-            }
-        }
+        
     }
    
 }
@@ -329,11 +310,11 @@ extension PopinCallViewController: VideoCallView {
     }
     
     func startLoading() {
-        self.startIndicatingActivity()
+        //self.startIndicatingActivity()
     }
     
     func finishLoading() {
-        self.stopIndicatingActivity()
+        //self.stopIndicatingActivity()
     }
     
     func showMessage(title: String, message: String) {
@@ -349,7 +330,7 @@ extension PopinCallViewController {
     /// Called when CallKit answers the call (from PopinCallManager delegation)
     func handleCallKitAnswerCall() {
         print("handleCallKitAnswerCall - starting")
-        videoCallPresenter.acceptCall(callComponentId: self.callComponentId, callRole: self.callRole)
+       // videoCallPresenter.acceptCall(callComponentId: self.callComponentId, callRole: self.callRole)
         callConnected = true
         viewModel.callAccepted = true
         print("handleCallKitAnswerCall - completed")

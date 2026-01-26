@@ -44,7 +44,7 @@ class Utilities: NSObject {
     func getUser() -> UserModel? {
         let userDefaults = UserDefaults.standard
         do {
-            let user = try userDefaults.getObject(forKey: "authenticatedUser", castTo: User.self)
+            let user = try userDefaults.getObject(forKey: "authenticatedUser", castTo: UserModel.self)
             return user
         } catch {
             print(error.localizedDescription)
@@ -52,6 +52,13 @@ class Utilities: NSObject {
         return nil;
     }
     
+    func getUserToken() -> String {
+        return getUser()?.token ?? ""
+    }
+    
+    func getChannel() -> String {
+        return getUser()?.channel ?? ""
+    }
     
     func savePushToken(token: String) {
         UserDefaults.standard.set(token, forKey: "push_token")
@@ -59,6 +66,18 @@ class Utilities: NSObject {
     
     func getPushToken() -> String {
         return UserDefaults.standard.string(forKey: "push_token") ?? ""
+    }
+    
+    func sendPushToken(token: String) {
+        // Implementation stub or copied from working example if needed
+        // Assuming serverURL is globally available
+        let urlString = serverURL + "/v1/seller/fcm/update";
+        let parameters: Parameters = ["push_token": token];
+        
+        AF.request(urlString, method: .post,  parameters: parameters, encoding: URLEncoding.httpBody, headers: getHeaders())
+            .responseString() { response in
+                
+            }
     }
     
     func saveSeller(seller_id: Int) {

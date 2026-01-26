@@ -304,37 +304,6 @@ struct PrimaryParticipantView: View {
 
 // MARK: - UIKit View Controller Wrappers
 
-struct ManagerViewControllerWrapper: UIViewControllerRepresentable {
-    let callId: Int
-
-    func makeUIViewController(context: Context) -> UINavigationController {
-        let storyboard = UIStoryboard(name: "Main", bundle: nil)
-        let vc = storyboard.instantiateViewController(withIdentifier: "ManagerViewController") as! ManagerViewController
-        vc.call_id = callId
-        let navigationController = UINavigationController(rootViewController: vc)
-        return navigationController
-    }
-
-    func updateUIViewController(_ uiViewController: UINavigationController, context: Context) {
-        // No updates needed
-    }
-}
-
-struct ShoppingViewControllerWrapper: UIViewControllerRepresentable {
-    let userId: Int
-    let fromMessages: Bool
-
-    func makeUIViewController(context: Context) -> ShoppingViewController {
-        let shoppingViewController = ShoppingViewController()
-        shoppingViewController.userId = userId
-        shoppingViewController.fromMessages = fromMessages
-        return shoppingViewController
-    }
-
-    func updateUIViewController(_ uiViewController: ShoppingViewController, context: Context) {
-        // No updates needed
-    }
-}
 
 // MARK: - Color Extension for Hex Support
 

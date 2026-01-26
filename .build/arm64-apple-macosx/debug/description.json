@@ -4133,12 +4133,12 @@
           "name" : "/Users/ashwin/Developer/Popin-Library-iOS/.build/arm64-apple-macosx/debug/Modules/OrderedCollections.swiftmodule"
         },
         {
-          "kind" : "directory",
-          "name" : "/Users/ashwin/Developer/Popin-Library-iOS/.build/arm64-apple-macosx/debug/LiveKitWebRTC.framework"
-        },
-        {
           "kind" : "file",
           "name" : "/Users/ashwin/Developer/Popin-Library-iOS/.build/arm64-apple-macosx/debug/liblivekit_uniffi.a"
+        },
+        {
+          "kind" : "directory",
+          "name" : "/Users/ashwin/Developer/Popin-Library-iOS/.build/arm64-apple-macosx/debug/LiveKitWebRTC.framework"
         },
         {
           "kind" : "file",
@@ -5890,12 +5890,12 @@
           "name" : "/Users/ashwin/Developer/Popin-Library-iOS/.build/arm64-apple-macosx/debug/Modules/LiveKit.swiftmodule"
         },
         {
-          "kind" : "file",
-          "name" : "/Users/ashwin/Developer/Popin-Library-iOS/.build/arm64-apple-macosx/debug/liblivekit_uniffi.a"
-        },
-        {
           "kind" : "directory",
           "name" : "/Users/ashwin/Developer/Popin-Library-iOS/.build/arm64-apple-macosx/debug/LiveKitWebRTC.framework"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/ashwin/Developer/Popin-Library-iOS/.build/arm64-apple-macosx/debug/liblivekit_uniffi.a"
         },
         {
           "kind" : "file",
@@ -7108,6 +7108,10 @@
         },
         {
           "kind" : "file",
+          "name" : "/Users/ashwin/Developer/Popin-Library-iOS/PopinCall/ObjectSavable.swift"
+        },
+        {
+          "kind" : "file",
           "name" : "/Users/ashwin/Developer/Popin-Library-iOS/PopinCall/ParticipantCell.swift"
         },
         {
@@ -7245,6 +7249,7 @@
         "/Users/ashwin/Developer/Popin-Library-iOS/.build/arm64-apple-macosx/debug/PopinCall.build/DarwinNotificationCenter.swift.o",
         "/Users/ashwin/Developer/Popin-Library-iOS/.build/arm64-apple-macosx/debug/PopinCall.build/MyCustomRendererView.swift.o",
         "/Users/ashwin/Developer/Popin-Library-iOS/.build/arm64-apple-macosx/debug/PopinCall.build/NotConnectedView.swift.o",
+        "/Users/ashwin/Developer/Popin-Library-iOS/.build/arm64-apple-macosx/debug/PopinCall.build/ObjectSavable.swift.o",
         "/Users/ashwin/Developer/Popin-Library-iOS/.build/arm64-apple-macosx/debug/PopinCall.build/ParticipantCell.swift.o",
         "/Users/ashwin/Developer/Popin-Library-iOS/.build/arm64-apple-macosx/debug/PopinCall.build/ParticipantLayout.swift.o",
         "/Users/ashwin/Developer/Popin-Library-iOS/.build/arm64-apple-macosx/debug/PopinCall.build/ParticipantTile.swift.o",
@@ -7377,6 +7382,10 @@
         },
         {
           "kind" : "file",
+          "name" : "/Users/ashwin/Developer/Popin-Library-iOS/.build/arm64-apple-macosx/debug/PopinCall.build/ObjectSavable.swift.o"
+        },
+        {
+          "kind" : "file",
           "name" : "/Users/ashwin/Developer/Popin-Library-iOS/.build/arm64-apple-macosx/debug/PopinCall.build/ParticipantCell.swift.o"
         },
         {
@@ -7480,6 +7489,7 @@
         "/Users/ashwin/Developer/Popin-Library-iOS/PopinCall/DarwinNotificationCenter.swift",
         "/Users/ashwin/Developer/Popin-Library-iOS/PopinCall/MyCustomRendererView.swift",
         "/Users/ashwin/Developer/Popin-Library-iOS/PopinCall/NotConnectedView.swift",
+        "/Users/ashwin/Developer/Popin-Library-iOS/PopinCall/ObjectSavable.swift",
         "/Users/ashwin/Developer/Popin-Library-iOS/PopinCall/ParticipantCell.swift",
         "/Users/ashwin/Developer/Popin-Library-iOS/PopinCall/ParticipantLayout.swift",
         "/Users/ashwin/Developer/Popin-Library-iOS/PopinCall/ParticipantTile.swift",
@@ -7525,12 +7535,12 @@
           "name" : "/Users/ashwin/Developer/Popin-Library-iOS/.build/arm64-apple-macosx/debug/Modules/PopinCallTests.swiftmodule"
         },
         {
-          "kind" : "directory",
-          "name" : "/Users/ashwin/Developer/Popin-Library-iOS/.build/arm64-apple-macosx/debug/LiveKitWebRTC.framework"
-        },
-        {
           "kind" : "file",
           "name" : "/Users/ashwin/Developer/Popin-Library-iOS/.build/arm64-apple-macosx/debug/liblivekit_uniffi.a"
+        },
+        {
+          "kind" : "directory",
+          "name" : "/Users/ashwin/Developer/Popin-Library-iOS/.build/arm64-apple-macosx/debug/LiveKitWebRTC.framework"
         },
         {
           "kind" : "file",
@@ -7659,12 +7669,12 @@
           "name" : "/Users/ashwin/Developer/Popin-Library-iOS/.build/arm64-apple-macosx/debug/Modules/PopinCall.swiftmodule"
         },
         {
-          "kind" : "file",
-          "name" : "/Users/ashwin/Developer/Popin-Library-iOS/.build/arm64-apple-macosx/debug/liblivekit_uniffi.a"
-        },
-        {
           "kind" : "directory",
           "name" : "/Users/ashwin/Developer/Popin-Library-iOS/.build/arm64-apple-macosx/debug/LiveKitWebRTC.framework"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/ashwin/Developer/Popin-Library-iOS/.build/arm64-apple-macosx/debug/liblivekit_uniffi.a"
         },
         {
           "kind" : "file",
@@ -14356,6 +14366,7 @@
       "/Users/ashwin/Developer/Popin-Library-iOS/PopinCall/DarwinNotificationCenter.swift",
       "/Users/ashwin/Developer/Popin-Library-iOS/PopinCall/MyCustomRendererView.swift",
       "/Users/ashwin/Developer/Popin-Library-iOS/PopinCall/NotConnectedView.swift",
+      "/Users/ashwin/Developer/Popin-Library-iOS/PopinCall/ObjectSavable.swift",
       "/Users/ashwin/Developer/Popin-Library-iOS/PopinCall/ParticipantCell.swift",
       "/Users/ashwin/Developer/Popin-Library-iOS/PopinCall/ParticipantLayout.swift",
       "/Users/ashwin/Developer/Popin-Library-iOS/PopinCall/ParticipantTile.swift",
@@ -18186,6 +18197,10 @@
         },
         {
           "kind" : "file",
+          "name" : "/Users/ashwin/Developer/Popin-Library-iOS/PopinCall/ObjectSavable.swift"
+        },
+        {
+          "kind" : "file",
           "name" : "/Users/ashwin/Developer/Popin-Library-iOS/PopinCall/ParticipantCell.swift"
         },
         {
@@ -20007,6 +20022,10 @@
         {
           "kind" : "file",
           "name" : "/Users/ashwin/Developer/Popin-Library-iOS/.build/arm64-apple-macosx/debug/PopinCall.build/NotConnectedView.swift.o"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/ashwin/Developer/Popin-Library-iOS/.build/arm64-apple-macosx/debug/PopinCall.build/ObjectSavable.swift.o"
         },
         {
           "kind" : "file",

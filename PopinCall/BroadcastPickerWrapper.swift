@@ -1,3 +1,4 @@
+#if canImport(UIKit)
 //
 //  BroadcastPickerWrapper.swift
 //  Popin
@@ -68,3 +69,4 @@ struct BroadcastPickerWrapper: UIViewRepresentable {
         }
     }
 }
+#endif

@@ -7,6 +7,7 @@
 
 import Foundation
 
+#if canImport(UIKit)
 class VideoCallPresenter {
     
     private let videoCallInteractor: VideoCallInteractor
@@ -48,3 +49,4 @@ class VideoCallPresenter {
     }
 
 }
+#endif

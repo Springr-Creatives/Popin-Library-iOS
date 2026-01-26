@@ -5,11 +5,15 @@
 //  Created by Ashwin Nath on 25/05/25.
 //
 
+import Foundation
+
+#if canImport(UIKit)
 import CallKit
 import AVFoundation
 import LiveKitWebRTC
 import LiveKit
 import PushKit
+import UIKit
 
 // MARK: - Call State
 
@@ -257,9 +261,9 @@ extension CallManager: PKPushRegistryDelegate {
         voipToken = token
 
         // Save and send token to server
-        Utilities().savePushToken(token: token)
-        if Utilities().getUser() != nil {
-            Utilities().sendPushToken(token: token)
+        Utilities.shared.savePushToken(token: token)
+        if Utilities.shared.getUser() != nil {
+            Utilities.shared.sendPushToken(token: token)
         }
     }
     
@@ -293,7 +297,7 @@ extension CallManager: PKPushRegistryDelegate {
         }
 
         // Ensure user is logged in
-        guard Utilities().getUser() != nil else {
+        guard Utilities.shared.getUser() != nil else {
             completion()
             return
         }
@@ -337,14 +341,6 @@ extension CallManager: CXCallObserverDelegate {
         }
     }
 }
-//
-//  PopinCallManager.swift
-//  Popin
-//
-//  Created by Ashwin Nath on 26/01/26.
-//
-
-import Foundation
 
 // MARK: - Models
 
@@ -452,3 +448,4 @@ public class PopinCallManager {
         print("PopinCallManager: Exit PiP Mode")
     }
 }
+#endif

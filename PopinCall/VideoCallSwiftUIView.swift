@@ -52,7 +52,7 @@ public struct VideoCallSwiftUIView: View {
             .environmentObject(viewModel)
             .onReceive(viewModel.$call.compactMap { $0 }) { call in
                 // Update call data for the UI
-                videoCallId = call.connect_request_id
+                videoCallId = call.id
                 videoUserId = call.user_id
 
                 Task {

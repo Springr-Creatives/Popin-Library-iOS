@@ -44,6 +44,13 @@
     "swift-dependencies": "/Users/ashwin/Developer/Popin-Library-iOS/.build/arm64-apple-macosx/debug/PopinCall.build/NotConnectedView.swiftdeps",
     "diagnostics": "/Users/ashwin/Developer/Popin-Library-iOS/.build/arm64-apple-macosx/debug/PopinCall.build/NotConnectedView.dia"
   },
+  "/Users/ashwin/Developer/Popin-Library-iOS/PopinCall/ObjectSavable.swift": {
+    "dependencies": "/Users/ashwin/Developer/Popin-Library-iOS/.build/arm64-apple-macosx/debug/PopinCall.build/ObjectSavable.d",
+    "object": "/Users/ashwin/Developer/Popin-Library-iOS/.build/arm64-apple-macosx/debug/PopinCall.build/ObjectSavable.swift.o",
+    "swiftmodule": "/Users/ashwin/Developer/Popin-Library-iOS/.build/arm64-apple-macosx/debug/PopinCall.build/ObjectSavable~partial.swiftmodule",
+    "swift-dependencies": "/Users/ashwin/Developer/Popin-Library-iOS/.build/arm64-apple-macosx/debug/PopinCall.build/ObjectSavable.swiftdeps",
+    "diagnostics": "/Users/ashwin/Developer/Popin-Library-iOS/.build/arm64-apple-macosx/debug/PopinCall.build/ObjectSavable.dia"
+  },
   "/Users/ashwin/Developer/Popin-Library-iOS/PopinCall/ParticipantCell.swift": {
     "dependencies": "/Users/ashwin/Developer/Popin-Library-iOS/.build/arm64-apple-macosx/debug/PopinCall.build/ParticipantCell.d",
     "object": "/Users/ashwin/Developer/Popin-Library-iOS/.build/arm64-apple-macosx/debug/PopinCall.build/ParticipantCell.swift.o",

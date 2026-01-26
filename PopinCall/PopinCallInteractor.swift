@@ -14,6 +14,7 @@ import SwiftyJSON
 
 struct TalkModel : Codable{
     let id: Int?;
+    let user_id: Int?;
     let token: String?;
     let room: String?;
     let websocket: String?; // LiveKit websocket URL
