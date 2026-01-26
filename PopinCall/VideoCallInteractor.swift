@@ -14,7 +14,7 @@ class VideoCallInteractor {
         let urlString = serverURL + "v1/seller/connection/details";
         let parameters: Parameters = ["connect_request_id": callId];
         
-        AF.request(urlString, method: .post,  parameters: parameters, encoding: URLEncoding.httpBody, headers: Utilities().getHeaders())
+        AF.request(urlString, method: .post,  parameters: parameters, encoding: URLEncoding.httpBody, headers: Utilities.shared.getHeaders())
 //            .responseString() { response in
 //                print(response)
 //            }
@@ -35,7 +35,7 @@ class VideoCallInteractor {
         let urlString = serverURL + "v1/seller/connection/reject";
         let parameters: Parameters = ["connect_request_component_id": callComponentId];
         
-        AF.request(urlString, method: .post,  parameters: parameters, encoding: URLEncoding.httpBody, headers: Utilities().getHeaders())
+        AF.request(urlString, method: .post,  parameters: parameters, encoding: URLEncoding.httpBody, headers: Utilities.shared.getHeaders())
             .responseString() { response in
                 
             }
@@ -49,7 +49,7 @@ class VideoCallInteractor {
             parameters = ["call_participant_id": callComponentId];
         }
 
-        AF.request(urlString, method: .post,  parameters: parameters, encoding: URLEncoding.httpBody, headers: Utilities().getHeaders())
+        AF.request(urlString, method: .post,  parameters: parameters, encoding: URLEncoding.httpBody, headers: Utilities.shared.getHeaders())
 //            .responseString() { response in
 //                print(response)
 //            }
@@ -70,7 +70,7 @@ class VideoCallInteractor {
         let urlString = serverURL + "v1/seller/connection/end"
         let parameters: Parameters = ["call_id": callId]
 
-        AF.request(urlString, method: .post, parameters: parameters, encoding: URLEncoding.httpBody, headers: Utilities().getHeaders())
+        AF.request(urlString, method: .post, parameters: parameters, encoding: URLEncoding.httpBody, headers: Utilities.shared.getHeaders())
             .responseDecodable(of: StatusModel.self) { response in
                 switch response.result {
                 case .success(let value):

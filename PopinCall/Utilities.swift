@@ -8,6 +8,7 @@
 import Foundation
 
 import UIKit
+import Alamofire
 
 class Utilities: NSObject {
     
@@ -18,6 +19,12 @@ class Utilities: NSObject {
     // MARK:- Shared Instance
     static let shared = Utilities()
     
+    func getHeaders() -> HTTPHeaders {
+        return [
+            "Authorization": "Bearer " + getUserToken(),
+            "Accept": "application/json"
+        ]
+    }
     
     
     func saveUserToken(token: String) {

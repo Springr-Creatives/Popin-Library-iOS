@@ -60,4 +60,5 @@ struct UserModel : Codable{
 }
 struct StatusModel : Codable{
     let status: Int;
+    let message: String;
 }
