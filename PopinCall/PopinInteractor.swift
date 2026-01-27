@@ -14,19 +14,25 @@ class PopinInteractor {
     func registerUser(seller_id: Int, onSucess sucess: @escaping () -> Void, onFailure failure: @escaping () -> Void) {
         let parameters: Parameters = ["seller_id":seller_id,"is_mobile" : 1, "device": "iosSdk"];
         let urlString = serverURL + "/website/user/login";
+        print("[DEBUG registerUser] URL: \(urlString), params: \(parameters)")
         AF.request(urlString, method: .post, parameters: parameters, encoding: URLEncoding.httpBody)
             .responseDecodable(of: UserModel.self) { response in
+                print("[DEBUG registerUser] HTTP status: \(response.response?.statusCode ?? -1)")
+                if let data = response.data, let raw = String(data: data, encoding: .utf8) {
+                    print("[DEBUG registerUser] Raw response: \(raw)")
+                }
                 switch response.result {
                 case .success(let userModel):
-                    if (userModel.status == "1") {
+                    print("[DEBUG registerUser] Decoded: status=\(userModel.status), token=\(userModel.token), channel=\(userModel.channel)")
+                    if (userModel.status == 1) {
                         Utilities.shared.saveUser(user: userModel)
                         sucess()
                         return;
                     }
-                    
+
                     failure();
                 case .failure(let error):
-                    print(error)
+                    print("[DEBUG registerUser] FAILURE: \(error)")
                     failure();
                 }
             }
@@ -35,14 +41,22 @@ class PopinInteractor {
     func startConnection(seller_id: Int) {
         let parameters: Parameters = ["seller_id":seller_id];
         let urlString = serverURL + "/user/connect";
-    
-        AF.request(urlString, method: .post, parameters: parameters, encoding: URLEncoding.httpBody, headers: Utilities.shared.getHeaders())
+        let headers = Utilities.shared.getHeaders()
+        print("[DEBUG startConnection] URL: \(urlString), params: \(parameters)")
+        print("[DEBUG startConnection] Headers: \(headers)")
+        AF.request(urlString, method: .post, parameters: parameters, encoding: URLEncoding.httpBody, headers: headers)
             .responseDecodable(of: StatusModel.self) { response in
+                print("[DEBUG startConnection] HTTP status: \(response.response?.statusCode ?? -1)")
+                if let data = response.data, let raw = String(data: data, encoding: .utf8) {
+                    print("[DEBUG startConnection] Raw response: \(raw)")
+                }
                 switch response.result {
                 case .success(let statusModel):
+                    print("[DEBUG startConnection] Decoded: status=\(statusModel.status), message=\(statusModel.message)")
                     debugPrint(statusModel)
-                    
-                case .failure(_):
+
+                case .failure(let error):
+                    print("[DEBUG startConnection] FAILURE: \(error)")
                     debugPrint("fail")
                 }
             }
@@ -50,11 +64,14 @@ class PopinInteractor {
 }
 
 struct UserModel : Codable{
-    let status: String;
+    let status: Int;
     let token: String;
     let channel: String;
 }
 struct StatusModel : Codable{
     let status: Int;
-    let message: String;
+    let call_id: Int?;
+    let call_queue_id: Int?;
+    let position: Int?;
+    let message: String?;
 }

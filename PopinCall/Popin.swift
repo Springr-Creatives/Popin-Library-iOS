@@ -8,7 +8,7 @@
 import Foundation
 
 
-let serverURL = "https://widget01.popin.to/api/v1";
+let serverURL = "https://widget01.popin-sandbox.com/api/v1";
 
 open class Popin : PopinPusherDelegate {
     
