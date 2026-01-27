@@ -31,7 +31,8 @@ public class PopinCallViewController: UIViewController {
     var callUUID : UUID? = nil;
 
     // Computed properties for backward compatibility
-    var callId: Int { pushCallData?.callId ?? 0 }
+    private var _sdkCallId: Int?
+    var callId: Int { _sdkCallId ?? pushCallData?.callId ?? 0 }
     var callComponentId: Int { pushCallData?.callComponentId ?? 0 }
     var callRole: Int { pushCallData?.role ?? 0 }
     var customerName: String { pushCallData?.displayName ?? "" }
@@ -48,6 +49,7 @@ public class PopinCallViewController: UIViewController {
     private var timer: Timer?
     
     private let videoCallPresenter = VideoCallPresenter(videoCallInteractor: VideoCallInteractor())
+    private let popinCallInteractor = PopinCallInteractor()
     var videoCall : VideoCall? = nil
     
     var isAudioEnabled = true, isVideoEnabled = true, isScreenSharing = false
@@ -125,9 +127,22 @@ public class PopinCallViewController: UIViewController {
 
         // Set up end call callback
         viewModel.onEndCall = { [weak self] in
-            self?.isAppInitiatedDisconnect = true
-            print("End call button clicked - requesting CallKit end")
-            CallManager.shared.endCall()
+            guard let self = self else { return }
+            self.isAppInitiatedDisconnect = true
+            print("End call button clicked")
+            self.videoCallPresenter.endCall(callId: self.callId, onSuccess: {
+                print("End call API success")
+                DispatchQueue.main.async {
+                    self.closeViewController(shouldNotEndCX: true)
+                    self.dismiss(animated: true)
+                }
+            }, onFailure: { error in
+                print("End call API failed: \(error)")
+                DispatchQueue.main.async {
+                    self.closeViewController(shouldNotEndCX: true)
+                    self.dismiss(animated: true)
+                }
+            })
         }
 
         // Set up room disconnected callback (room ended externally)
@@ -305,6 +320,7 @@ extension PopinCallViewController: VideoCallView {
     }
     
     func loadCall(call: TalkModel) {
+        _sdkCallId = call.id
         callConnected = true
         viewModel.callAccepted = true
         viewModel.call = call
