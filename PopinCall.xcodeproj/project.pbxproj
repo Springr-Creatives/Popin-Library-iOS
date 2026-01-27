@@ -35,6 +35,7 @@
 		CF1742932F27407B00AE48E7 /* PopinConnectedView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CF1742712F27407B00AE48E7 /* PopinConnectedView.swift */; };
 		CF1742942F27407B00AE48E7 /* TopControls.swift in Sources */ = {isa = PBXBuildFile; fileRef = CF1742772F27407B00AE48E7 /* TopControls.swift */; };
 		CF1742952F27407B00AE48E7 /* CallManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = CF1742632F27407B00AE48E7 /* CallManager.swift */; };
+		CF174AA02F27407B00AE48E7 /* CallAcceptanceWaitHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = CF174AA12F27407B00AE48E7 /* CallAcceptanceWaitHandler.swift */; };
 		CF1742962F27407B00AE48E7 /* PopinCallPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = CF17426E2F27407B00AE48E7 /* PopinCallPresenter.swift */; };
 		CF1742972F27407B00AE48E7 /* Utilities.swift in Sources */ = {isa = PBXBuildFile; fileRef = CF1742782F27407B00AE48E7 /* Utilities.swift */; };
 		CF1742982F27407B00AE48E7 /* PopinPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = CF1742732F27407B00AE48E7 /* PopinPresenter.swift */; };
@@ -95,6 +96,7 @@
 		CF1742612F27407B00AE48E7 /* AudienceRow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AudienceRow.swift; sourceTree = "<group>"; };
 		CF1742622F27407B00AE48E7 /* BroadcastPickerWrapper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BroadcastPickerWrapper.swift; sourceTree = "<group>"; };
 		CF1742632F27407B00AE48E7 /* CallManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CallManager.swift; sourceTree = "<group>"; };
+		CF174AA12F27407B00AE48E7 /* CallAcceptanceWaitHandler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CallAcceptanceWaitHandler.swift; sourceTree = "<group>"; };
 		CF1742642F27407B00AE48E7 /* DarwinNotificationCenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DarwinNotificationCenter.swift; sourceTree = "<group>"; };
 		CF1742652F27407B00AE48E7 /* MyCustomRendererView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyCustomRendererView.swift; sourceTree = "<group>"; };
 		CF1742662F27407B00AE48E7 /* NotConnectedView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotConnectedView.swift; sourceTree = "<group>"; };
@@ -198,6 +200,7 @@
 			children = (
 				CF1742612F27407B00AE48E7 /* AudienceRow.swift */,
 				CF1742622F27407B00AE48E7 /* BroadcastPickerWrapper.swift */,
+				CF174AA12F27407B00AE48E7 /* CallAcceptanceWaitHandler.swift */,
 				CF1742632F27407B00AE48E7 /* CallManager.swift */,
 				CF1742642F27407B00AE48E7 /* DarwinNotificationCenter.swift */,
 				CF1742652F27407B00AE48E7 /* MyCustomRendererView.swift */,
@@ -440,6 +443,7 @@
 				CF1742932F27407B00AE48E7 /* PopinConnectedView.swift in Sources */,
 				CF1742942F27407B00AE48E7 /* TopControls.swift in Sources */,
 				CF1742952F27407B00AE48E7 /* CallManager.swift in Sources */,
+				CF174AA02F27407B00AE48E7 /* CallAcceptanceWaitHandler.swift in Sources */,
 				CF1742962F27407B00AE48E7 /* PopinCallPresenter.swift in Sources */,
 				CF1742972F27407B00AE48E7 /* Utilities.swift in Sources */,
 				CF1742982F27407B00AE48E7 /* PopinPresenter.swift in Sources */,

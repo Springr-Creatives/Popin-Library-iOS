@@ -38,26 +38,24 @@ class PopinInteractor {
             }
     }
     
-    func startConnection(seller_id: Int) {
+    func startConnection(seller_id: Int, onSuccess success: @escaping (Int) -> Void, onFailure failure: @escaping () -> Void) {
         let parameters: Parameters = ["seller_id":seller_id];
         let urlString = serverURL + "/user/connect";
         let headers = Utilities.shared.getHeaders()
         print("[DEBUG startConnection] URL: \(urlString), params: \(parameters)")
-        print("[DEBUG startConnection] Headers: \(headers)")
         AF.request(urlString, method: .post, parameters: parameters, encoding: URLEncoding.httpBody, headers: headers)
             .responseDecodable(of: StatusModel.self) { response in
-                print("[DEBUG startConnection] HTTP status: \(response.response?.statusCode ?? -1)")
-                if let data = response.data, let raw = String(data: data, encoding: .utf8) {
-                    print("[DEBUG startConnection] Raw response: \(raw)")
-                }
                 switch response.result {
                 case .success(let statusModel):
-                    print("[DEBUG startConnection] Decoded: status=\(statusModel.status), message=\(statusModel.message)")
-                    debugPrint(statusModel)
-
+                    print("[DEBUG startConnection] status=\(statusModel.status), call_queue_id=\(statusModel.call_queue_id ?? -1)")
+                    if statusModel.status == 1, let callQueueId = statusModel.call_queue_id {
+                        success(callQueueId)
+                    } else {
+                        failure()
+                    }
                 case .failure(let error):
                     print("[DEBUG startConnection] FAILURE: \(error)")
-                    debugPrint("fail")
+                    failure()
                 }
             }
     }

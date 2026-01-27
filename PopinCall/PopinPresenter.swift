@@ -28,8 +28,8 @@ class PopinPresenter {
         });
     }
     
-    func startConnection(seller_id: Int) {
-        popinInteractor.startConnection(seller_id: seller_id)
+    func startConnection(seller_id: Int, onSuccess success: @escaping (Int) -> Void, onFailure failure: @escaping () -> Void) {
+        popinInteractor.startConnection(seller_id: seller_id, onSuccess: success, onFailure: failure)
     }
     
 }

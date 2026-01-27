@@ -34,7 +34,19 @@ extension ViewController : PopinCallDelegate {
     func onAllExpertsBusy() {
         print("All experts are busy");
     }
-    
+
+    func onQueuePositionChanged(position: Int) {
+        print("Queue position: \(position)");
+    }
+
+    func onCallAccepted(callId: Int) {
+        print("Call accepted: \(callId)");
+    }
+
+    func onCallMissed() {
+        print("Call missed");
+    }
+
     func onCallConnected() {
         print("CALL_CONNEC");
     }

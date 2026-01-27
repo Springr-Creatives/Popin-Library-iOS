@@ -10,7 +10,7 @@ import Foundation
 
 let serverURL = "https://widget01.popin-sandbox.com/api/v1";
 
-open class Popin : PopinPusherDelegate {
+open class Popin : PopinPusherDelegate, CallAcceptanceListener {
     
     public static let shared = Popin()
     
@@ -25,7 +25,9 @@ open class Popin : PopinPusherDelegate {
     private var startCall : Bool = false;
     
     private var sellerToken : Int = 0;
-        
+
+    private var waitHandler: CallAcceptanceWaitHandler?
+
     public  func connect(token: Int, popinDelegate: PopinCallDelegate) {
         self.delegate = popinDelegate;
         Utilities.shared.saveSeller(seller_id: token);
@@ -71,10 +73,48 @@ open class Popin : PopinPusherDelegate {
                 return;
             }
             print("ATTEMPT AGENT CONNECT");
-            popinPresenter.startConnection(seller_id: sellerToken);
+            popinPresenter.startConnection(seller_id: sellerToken, onSuccess: { [weak self] callQueueId in
+                print("Connection started, call_queue_id=\(callQueueId)")
+                self?.startWaitingForAcceptance(callQueueId: callQueueId)
+            }, onFailure: { [weak self] in
+                print("Connection failed")
+                self?.delegate?.onCallFail()
+            });
         }
     }
+
+    private func startWaitingForAcceptance(callQueueId: Int) {
+        waitHandler?.stopWaitingForAcceptance()
+        waitHandler = CallAcceptanceWaitHandler(callQueueId: callQueueId, listener: self)
+        waitHandler?.startWaitingForAcceptance()
+    }
+
+    public func stopWaiting() {
+        waitHandler?.stopWaitingForAcceptance()
+        waitHandler = nil
+    }
     
+    // MARK: - CallAcceptanceListener
+
+    func onQueuePositionChange(position: Int) {
+        print("Queue position changed: \(position)")
+        self.delegate?.onQueuePositionChanged(position: position)
+    }
+
+    func onCallAccepted(callId: Int) {
+        print("Call accepted: \(callId)")
+        waitHandler = nil
+        self.delegate?.onCallAccepted(callId: callId)
+    }
+
+    func onCallMissed() {
+        print("Call missed")
+        waitHandler = nil
+        self.delegate?.onCallMissed()
+    }
+
+    // MARK: - PopinPusherDelegate
+
     public func onAgentConnected() {
         self.delegate?.onConnectionEstablished()
     }
