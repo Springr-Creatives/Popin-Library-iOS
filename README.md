@@ -193,14 +193,6 @@ PopinProduct(
 
 See the `PopinCallExamples` target for a complete working example.
 
-## Dependencies
-
-- [LiveKit](https://github.com/livekit/client-sdk-swift) (~> 2.10) - Video conferencing
-- [LiveKitComponents](https://github.com/livekit/components-swift) (~> 0.1.6) - UI components
-- [Alamofire](https://github.com/Alamofire/Alamofire) (~> 5.0) - HTTP networking
-- [PusherSwift](https://github.com/pusher/pusher-websocket-swift) (~> 10.1) - Real-time messaging
-- [SwiftyJSON](https://github.com/SwiftyJSON/SwiftyJSON) (~> 4.0) - JSON parsing
-
 ## Support
 
 For support and questions, please contact: contact@popin.to
