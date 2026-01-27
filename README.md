@@ -4,13 +4,13 @@ PopinCall is an iOS library that enables seamless integration of video calling f
 
 ## Features
 
-- 🎥 High-quality video calling
-- 🎤 Audio controls (mute/unmute microphone)
-- 📹 Video controls (enable/disable camera, switch camera)
-- 📱 Picture-in-picture local video view
-- 🔄 Automatic connection management
-- 📞 Expert availability handling
-- 🎨 Customizable UI components
+- High-quality video calling powered by LiveKit
+- Audio controls (mute/unmute microphone)
+- Video controls (enable/disable camera, switch camera)
+- Picture-in-picture support
+- CallKit integration for native call UI
+- Automatic connection management with queue positioning
+- Expert availability handling
 
 ## Requirements
 
@@ -22,38 +22,38 @@ PopinCall is an iOS library that enables seamless integration of video calling f
 
 ### Swift Package Manager
 
-1. In Xcode, select File > Add Packages...
+Add PopinCall as a dependency in your `Package.swift`:
+
+```swift
+dependencies: [
+    .package(url: "https://github.com/Springr-Creatives/Popin-Library-iOS.git", from: "1.0.0")
+]
+```
+
+Or in Xcode:
+
+1. Select **File > Add Package Dependencies...**
 2. Enter the package URL: `https://github.com/Springr-Creatives/Popin-Library-iOS.git`
 3. Select the version you want to use.
 
-### CocoaPods
-
-Add the following to your `Podfile`:
-
-```ruby
-source "https://cdn.cocoapods.org/"
-
-target 'YourApp' do
-  use_frameworks!
-  
-  pod 'PopinCall', '~> 0.1.3'
-end
-```
-
-Then run:
-```bash
-pod install
-```
-
 ## Permissions
 
-Add the following permissions to your `Info.plist`:
+Add the following to your `Info.plist`:
 
 ```xml
 <key>NSCameraUsageDescription</key>
 <string>This app needs access to camera for video calls</string>
 <key>NSMicrophoneUsageDescription</key>
 <string>This app needs access to microphone for video calls</string>
+```
+
+And add `audio` to `UIBackgroundModes`:
+
+```xml
+<key>UIBackgroundModes</key>
+<array>
+    <string>audio</string>
+</array>
 ```
 
 ## Quick Start
@@ -64,137 +64,91 @@ Add the following permissions to your `Info.plist`:
 import PopinCall
 ```
 
-### 2. Implement the Delegate
-
-Implement the `PopinCallDelegate` protocol in your view controller:
+### 2. Connect and Implement the Delegate
 
 ```swift
 class ViewController: UIViewController, PopinCallDelegate {
-    
+
+    @IBAction func makeCall(_ sender: Any) {
+        Popin.shared.connect(token: 51, popinDelegate: self)
+    }
+
+    // MARK: - PopinCallDelegate
+
     func onConnectionEstablished() {
-        // Connection established, present the call view controller
-        let callVC = PopinCallViewController()
-        self.navigationController?.pushViewController(callVC, animated: true)
+        print("Connection established")
     }
-    
+
     func onAllExpertsBusy() {
-        // Handle case when all experts are busy
-        print("All experts are currently busy. Please try again later.")
+        print("All experts are currently busy")
     }
-    
+
+    func onQueuePositionChanged(position: Int) {
+        print("Queue position: \(position)")
+    }
+
+    func onCallAccepted(callId: Int) {
+        print("Call accepted: \(callId)")
+    }
+
+    func onCallMissed() {
+        print("Call missed")
+    }
+
     func onCallConnected() {
-        // Call successfully connected
         print("Call connected")
     }
-    
+
     func onCallDisconnected() {
-        // Call disconnected
         print("Call disconnected")
     }
-    
+
     func onCallFail() {
-        // Call failed
         print("Call failed")
     }
 }
 ```
 
-### 3. Initiate a Call
+That's it. The library handles user registration, Pusher connection, queue management, and automatically presents the video call UI when an agent accepts.
+
+## API Reference
+
+### Popin
+
+The `Popin` singleton is the main entry point:
 
 ```swift
-@IBAction func makeCallTapped(_ sender: Any) {
-    // Replace with your actual seller token
-    let sellerToken = 11506
-    
-    Popin.shared.connect(token: sellerToken, popinDelegate: self)
-}
+// Start a connection to an expert
+Popin.shared.connect(token: sellerToken, popinDelegate: self)
+
+// Stop waiting for call acceptance
+Popin.shared.stopWaiting()
 ```
 
-## Detailed Usage
+### PopinCallDelegate
 
-### PopinCall Main Class
-
-The `Popin` class is the main entry point for the library:
-
-```swift
-// Get the shared instance
-let popin = Popin.shared
-
-// Connect with your seller token
-popin.connect(token: yourSellerToken, popinDelegate: self)
-```
-
-### PopinCallViewController
-
-The `PopinCallViewController` provides a complete video calling interface with:
-
-- Full-screen remote video view
-- Picture-in-picture local video view  
-- Control buttons for mute/unmute audio and video
-- Camera switching functionality
-- Call end button
-
-```swift
-// Present the call view controller when connection is established
-func onConnectionEstablished() {
-    let callViewController = PopinCallViewController()
-    navigationController?.pushViewController(callViewController, animated: true)
-}
-```
-
-### Delegate Methods
-
-#### `onConnectionEstablished()`
-Called when the connection to the Popin service is successfully established. This is when you should present the `PopinCallViewController`.
-
-#### `onAllExpertsBusy()`
-Called when all available experts/agents are currently busy. You can show an appropriate message to the user.
-
-#### `onCallConnected()`
-Called when the actual video call is connected and active.
-
-#### `onCallDisconnected()`
-Called when the video call is disconnected.
-
-#### `onCallFail()`
-Called when the call fails for any reason.
-
-## Advanced Configuration
-
-### Custom UI Integration
-
-You can customize the appearance by subclassing `PopinCallViewController` or by implementing your own UI using the underlying components.
-
-### Error Handling
-
-The library provides comprehensive error handling through delegate methods. Make sure to implement all delegate methods to handle various scenarios:
-
-```swift
-func onCallFail() {
-    DispatchQueue.main.async {
-        let alert = UIAlertController(
-            title: "Call Failed", 
-            message: "Unable to connect to the call. Please try again.", 
-            preferredStyle: .alert
-        )
-        alert.addAction(UIAlertAction(title: "OK", style: .default))
-        self.present(alert, animated: true)
-    }
-}
-```
+| Method | Description |
+|--------|-------------|
+| `onConnectionEstablished()` | Connection to the Popin service is established |
+| `onAllExpertsBusy()` | All available experts are currently busy |
+| `onQueuePositionChanged(position:)` | Your position in the queue has changed |
+| `onCallAccepted(callId:)` | An expert has accepted your call |
+| `onCallMissed()` | The call was missed (no expert answered in time) |
+| `onCallConnected()` | The video call is now active |
+| `onCallDisconnected()` | The video call has ended |
+| `onCallFail()` | The call failed to connect |
 
 ## Example Project
 
-Check out the `PopinCallExamples` target in the project for a complete implementation example.
+See the `PopinCallExamples` target for a complete working example.
 
 ## Dependencies
 
-This library uses the following dependencies:
-- **LiveKit** (~> 2.7.2) - Video conferencing
-- **Alamofire** (~> 5) - HTTP networking
-- **PusherSwift** (~> 10.1.0) - Real-time messaging
-- **SwiftyJSON** (~> 4.0) - JSON parsing
-
+- [LiveKit](https://github.com/livekit/client-sdk-swift) (~> 2.10) - Video conferencing
+- [LiveKitComponents](https://github.com/livekit/components-swift) (~> 0.1.6) - UI components
+- [Alamofire](https://github.com/Alamofire/Alamofire) (~> 5.0) - HTTP networking
+- [PusherSwift](https://github.com/pusher/pusher-websocket-swift) (~> 10.1) - Real-time messaging
+- [SwiftyJSON](https://github.com/SwiftyJSON/SwiftyJSON) (~> 4.0) - JSON parsing
 
 ## Support
 
@@ -204,13 +158,6 @@ For support and questions, please contact: contact@popin.to
 
 This library is available under the MIT License. See [LICENSE.md](LICENSE.md) for details.
 
-## Changelog
-
-### Version 0.1.3
-- Improved video quality and performance
-- Enhanced connection stability
-- Updated UI components
-
 ---
 
-Made with ❤️ by [Springr Creatives](https://github.com/Springr-Creatives)
+Made with care by [Springr Creatives](https://github.com/Springr-Creatives)

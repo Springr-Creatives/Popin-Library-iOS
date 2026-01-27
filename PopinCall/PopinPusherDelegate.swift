@@ -6,7 +6,7 @@
 //
 
 import Foundation
-public protocol PopinPusherDelegate {
+protocol PopinPusherDelegate {
     func onPusherConnected();
     func onAgentConnected();
     func onAllExpertsBusy();

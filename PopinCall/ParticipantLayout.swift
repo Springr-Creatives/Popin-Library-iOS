@@ -2,21 +2,21 @@
 import SwiftUI
 
 #if canImport(UIKit)
-public struct ParticipantLayout<Data: RandomAccessCollection, Content: View>: View where Data.Element: Identifiable, Data.Index: Hashable {
+struct ParticipantLayout<Data: RandomAccessCollection, Content: View>: View where Data.Element: Identifiable, Data.Index: Hashable {
     private let _data: Data
     private let _spacing: CGFloat?
     private let _viewBuilder: (Data.Element) -> Content
 
-    public init(_ data: Data,
-                spacing: CGFloat? = nil,
-                content: @escaping (Data.Element) -> Content)
+    init(_ data: Data,
+         spacing: CGFloat? = nil,
+         content: @escaping (Data.Element) -> Content)
     {
         _data = data
         _viewBuilder = content
         _spacing = spacing
     }
 
-    public var body: some View {
+    var body: some View {
         if _data.count > 0 {
             GeometryReader { _ in
                 let computed = _computeColumn()

@@ -37,7 +37,7 @@ class PopinPusher : PusherDelegate{
         pusher.delegate = self;
     }
     
-    public func connect() {
+    func connect() {
         pusher.connect()
        
         let pusherChannel = pusher.subscribe(Utilities.shared.getChannel())

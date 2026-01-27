@@ -15,28 +15,28 @@ import AVFAudio
 import Foundation
 // MARK: - SwiftUI VideoCall View
 
-public struct VideoCallSwiftUIView: View {
+struct VideoCallSwiftUIView: View {
     @EnvironmentObject private var _room: Room
     @Environment(\.presentationMode) var presentationMode
     @ObservedObject var viewModel: VideoCallViewModel
 
-    public let callId: Int
-    public let callComponentId: Int
-    public let callUUID: UUID?
-    public let callRole: Int
-    public let customerName: String
-    public let artifact: String
+    let callId: Int
+    let callComponentId: Int
+    let callUUID: UUID?
+    let callRole: Int
+    let customerName: String
+    let artifact: String
 
     @State private var videoCallId: Int?
     @State private var videoUserId: Int?
-    
-    public init(viewModel: VideoCallViewModel,
-                callId: Int,
-                callComponentId: Int,
-                callUUID: UUID?,
-                callRole: Int,
-                customerName: String,
-                artifact: String) {
+
+    init(viewModel: VideoCallViewModel,
+         callId: Int,
+         callComponentId: Int,
+         callUUID: UUID?,
+         callRole: Int,
+         customerName: String,
+         artifact: String) {
         self.viewModel = viewModel
         self.callId = callId
         self.callComponentId = callComponentId
@@ -46,7 +46,7 @@ public struct VideoCallSwiftUIView: View {
         self.artifact = artifact
     }
     
-    public var body: some View {
+    var body: some View {
         PopinConference(callId: videoCallId, userId: videoUserId)
             .environmentObject(viewModel)
             .onReceive(viewModel.$call.compactMap { $0 }) { call in

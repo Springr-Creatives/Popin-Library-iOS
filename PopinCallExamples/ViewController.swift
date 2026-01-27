@@ -28,7 +28,6 @@ class ViewController: UIViewController {
 extension ViewController : PopinCallDelegate {
     func onConnectionEstablished() {
         print("CALL_CONNEC766");
-        //self.navigationController?.pushViewController(PopinCallViewController(), animated: true)
     }
     
     func onAllExpertsBusy() {

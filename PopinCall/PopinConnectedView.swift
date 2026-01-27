@@ -12,7 +12,7 @@ import LiveKitComponents
 import AVKit
 
 
-public struct PopinConnectedView: View {
+struct PopinConnectedView: View {
 
     @EnvironmentObject private var _room: Room
     @Environment(\.liveKitUIOptions) private var _ui: UIOptions
@@ -180,7 +180,7 @@ public struct PopinConnectedView: View {
         }
     }
 
-    public var body: some View {
+    var body: some View {
         ZStack {
             // Primary participant view (full screen) with PiP support
             if let primaryParticipant = sortedParticipants.first {

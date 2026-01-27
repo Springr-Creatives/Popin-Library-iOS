@@ -16,6 +16,13 @@
     "swift-dependencies": "/Users/ashwin/Developer/Popin-Library-iOS/.build/arm64-apple-macosx/debug/PopinCall.build/BroadcastPickerWrapper.swiftdeps",
     "diagnostics": "/Users/ashwin/Developer/Popin-Library-iOS/.build/arm64-apple-macosx/debug/PopinCall.build/BroadcastPickerWrapper.dia"
   },
+  "/Users/ashwin/Developer/Popin-Library-iOS/PopinCall/CallAcceptanceWaitHandler.swift": {
+    "dependencies": "/Users/ashwin/Developer/Popin-Library-iOS/.build/arm64-apple-macosx/debug/PopinCall.build/CallAcceptanceWaitHandler.d",
+    "object": "/Users/ashwin/Developer/Popin-Library-iOS/.build/arm64-apple-macosx/debug/PopinCall.build/CallAcceptanceWaitHandler.swift.o",
+    "swiftmodule": "/Users/ashwin/Developer/Popin-Library-iOS/.build/arm64-apple-macosx/debug/PopinCall.build/CallAcceptanceWaitHandler~partial.swiftmodule",
+    "swift-dependencies": "/Users/ashwin/Developer/Popin-Library-iOS/.build/arm64-apple-macosx/debug/PopinCall.build/CallAcceptanceWaitHandler.swiftdeps",
+    "diagnostics": "/Users/ashwin/Developer/Popin-Library-iOS/.build/arm64-apple-macosx/debug/PopinCall.build/CallAcceptanceWaitHandler.dia"
+  },
   "/Users/ashwin/Developer/Popin-Library-iOS/PopinCall/CallManager.swift": {
     "dependencies": "/Users/ashwin/Developer/Popin-Library-iOS/.build/arm64-apple-macosx/debug/PopinCall.build/CallManager.d",
     "object": "/Users/ashwin/Developer/Popin-Library-iOS/.build/arm64-apple-macosx/debug/PopinCall.build/CallManager.swift.o",

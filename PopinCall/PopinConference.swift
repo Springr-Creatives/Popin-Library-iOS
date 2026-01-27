@@ -19,7 +19,7 @@ import LiveKitComponents
 import SwiftUI
 
 #if canImport(UIKit)
-public struct PopinConference: View {
+struct PopinConference: View {
     @EnvironmentObject private var _room: Room
     @Environment(\.liveKitUIOptions) private var _ui: UIOptions
     @EnvironmentObject private var viewModel: VideoCallViewModel
@@ -27,10 +27,10 @@ public struct PopinConference: View {
     @State private var primaryParticipantId: String?
     @State private var hasConnected = false
 
-    public var callId: Int?
-    public var userId: Int?
+    var callId: Int?
+    var userId: Int?
 
-    public init(callId: Int? = nil, userId: Int? = nil) {
+    init(callId: Int? = nil, userId: Int? = nil) {
         self.callId = callId
         self.userId = userId
     }
@@ -80,7 +80,7 @@ public struct PopinConference: View {
         .frame(maxWidth: .infinity, maxHeight: .infinity)
     }
 
-    public var body: some View {
+    var body: some View {
         // Show different views based on connection state
         if !viewModel.callAccepted {
             // Not accepted yet (Ringing) - show not connected view

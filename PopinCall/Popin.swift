@@ -13,7 +13,7 @@ import UIKit
 
 let serverURL = "https://widget01.popin-sandbox.com/api/v1";
 
-open class Popin : PopinPusherDelegate, CallAcceptanceListener {
+public class Popin : PopinPusherDelegate, CallAcceptanceListener {
     
     public static let shared = Popin()
     
@@ -43,7 +43,7 @@ open class Popin : PopinPusherDelegate, CallAcceptanceListener {
         }
     }
     
-    public  func connectPusher(seller_id: Int) {
+    func connectPusher(seller_id: Int) {
         startCall = true;
         sellerToken = seller_id;
         popinPusher.delegate = self;
@@ -54,20 +54,20 @@ open class Popin : PopinPusherDelegate, CallAcceptanceListener {
     }
     
     public func getAvailableSchedules() {
-        
+        // TODO: Not yet implemented
     }
-    
+
     public func setScheduledCall(scheduleTime: String) {
-        
+        // TODO: Not yet implemented
     }
-    
+
     public func setRating(rating: Int) {
-        
+        // TODO: Not yet implemented
     }
     
     
     
-    public func onPusherConnected() {
+    func onPusherConnected() {
         print("PUSHER CONNECTED");
         if (startCall && sellerToken > 0) {
             if (Utilities.shared.isConnected()) {
@@ -168,24 +168,24 @@ open class Popin : PopinPusherDelegate, CallAcceptanceListener {
 
     // MARK: - PopinPusherDelegate
 
-    public func onAgentConnected() {
+    func onAgentConnected() {
         self.delegate?.onConnectionEstablished()
     }
     
-    public func onAllExpertsBusy() {
+    func onAllExpertsBusy() {
         self.delegate?.onAllExpertsBusy()
     }
     
-    public func onCallConnected() {
-        
+    func onCallConnected() {
+
     }
-    
-    public func onCallDisconnected() {
-        
+
+    func onCallDisconnected() {
+
     }
-    
-    public func onCallFail() {
-        
+
+    func onCallFail() {
+
     }
 }
 

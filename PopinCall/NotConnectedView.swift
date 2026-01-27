@@ -7,7 +7,7 @@
 import SwiftUI
 
 #if canImport(UIKit)
-public struct NotConnectedView: View {
+struct NotConnectedView: View {
     // Call information
     let callerName: String
     let callId: Int
@@ -35,7 +35,7 @@ public struct NotConnectedView: View {
     @State private var timerActive = true
     @State private var timer: Timer?
 
-    public init(
+    init(
         callerName: String = "Unknown Caller",
         callId: Int = 0,
         callComponentId: Int = 0,
@@ -65,7 +65,7 @@ public struct NotConnectedView: View {
         self.onReject = onReject
     }
 
-    public var body: some View {
+    var body: some View {
         ZStack {
             // Black background
             Color.black
