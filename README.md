@@ -64,47 +64,55 @@ And add `audio` to `UIBackgroundModes`:
 import PopinCall
 ```
 
-### 2. Connect and Implement the Delegate
+### 2. Connect and Implement the Events Listener
 
 ```swift
-class ViewController: UIViewController, PopinCallDelegate {
+class ViewController: UIViewController, PopinEventsListener {
 
     @IBAction func makeCall(_ sender: Any) {
         Popin.shared.connect(token: 51, popinDelegate: self)
     }
 
-    // MARK: - PopinCallDelegate
+    // MARK: - PopinEventsListener
 
-    func onConnectionEstablished() {
-        print("Connection established")
+    func onPermissionGiven() {
+        print("Permission given")
     }
 
-    func onAllExpertsBusy() {
-        print("All experts are currently busy")
+    func onPermissionDenied() {
+        print("Permission denied")
+    }
+
+    func onCallStart() {
+        print("Call started")
+    }
+
+    func onCallCancel() {
+        print("Call cancelled")
     }
 
     func onQueuePositionChanged(position: Int) {
         print("Queue position: \(position)")
     }
 
-    func onCallAccepted(callId: Int) {
-        print("Call accepted: \(callId)")
-    }
-
     func onCallMissed() {
         print("Call missed")
+    }
+
+    func onCallNetworkFailure() {
+        print("Network failure")
     }
 
     func onCallConnected() {
         print("Call connected")
     }
 
-    func onCallDisconnected() {
-        print("Call disconnected")
+    func onCallFailed() {
+        print("Call failed")
     }
 
-    func onCallFail() {
-        print("Call failed")
+    func onCallEnd() {
+        print("Call ended")
     }
 }
 ```
@@ -121,22 +129,24 @@ The `Popin` singleton is the main entry point:
 // Start a connection to an expert
 Popin.shared.connect(token: sellerToken, popinDelegate: self)
 
-// Stop waiting for call acceptance
-Popin.shared.stopWaiting()
+// Cancel waiting for call acceptance
+Popin.shared.cancelCall()
 ```
 
-### PopinCallDelegate
+### PopinEventsListener
 
 | Method | Description |
 |--------|-------------|
-| `onConnectionEstablished()` | Connection to the Popin service is established |
-| `onAllExpertsBusy()` | All available experts are currently busy |
+| `onPermissionGiven()` | Camera and microphone permissions were granted |
+| `onPermissionDenied()` | Camera or microphone permissions were denied |
+| `onCallStart()` | Call has been queued and is waiting for an agent |
+| `onCallCancel()` | Call was cancelled (e.g. all experts busy) |
 | `onQueuePositionChanged(position:)` | Your position in the queue has changed |
-| `onCallAccepted(callId:)` | An expert has accepted your call |
-| `onCallMissed()` | The call was missed (no expert answered in time) |
+| `onCallMissed()` | No agent answered in time |
+| `onCallNetworkFailure()` | A network error occurred |
 | `onCallConnected()` | The video call is now active |
-| `onCallDisconnected()` | The video call has ended |
-| `onCallFail()` | The call failed to connect |
+| `onCallFailed()` | The call failed to connect |
+| `onCallEnd()` | The call has ended |
 
 ## Example Project
 

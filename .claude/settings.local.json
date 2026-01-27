@@ -5,7 +5,8 @@
       "Bash(xcrun simctl:*)",
       "Bash(grep:*)",
       "Bash(cat:*)",
-      "Bash(swift build:*)"
+      "Bash(swift build:*)",
+      "Bash(tree:*)"
     ]
   }
 }

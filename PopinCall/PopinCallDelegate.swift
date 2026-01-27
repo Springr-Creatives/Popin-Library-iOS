@@ -7,13 +7,15 @@
 
 import Foundation
 
-public protocol PopinCallDelegate {
-    func onConnectionEstablished();
-    func onAllExpertsBusy();
-    func onQueuePositionChanged(position: Int);
-    func onCallAccepted(callId: Int);
-    func onCallMissed();
-    func onCallConnected();
-    func onCallDisconnected();
-    func onCallFail();
+public protocol PopinEventsListener {
+    func onPermissionGiven()
+    func onPermissionDenied()
+    func onCallStart()
+    func onCallCancel()
+    func onQueuePositionChanged(position: Int)
+    func onCallMissed()
+    func onCallNetworkFailure()
+    func onCallConnected()
+    func onCallFailed()
+    func onCallEnd()
 }

@@ -52,6 +52,8 @@ public class PopinCallViewController: UIViewController {
     private let popinCallInteractor = PopinCallInteractor()
     var videoCall : VideoCall? = nil
     
+    var onCallEnd: (() -> Void)?
+
     var isAudioEnabled = true, isVideoEnabled = true, isScreenSharing = false
     
     var currentRemoteVideo = "";
@@ -280,15 +282,15 @@ public class PopinCallViewController: UIViewController {
         if !shouldNotEndCX {
             CallManager.shared.endCall()
         }
-        
+
         // Unregister delegate to ensure no further callbacks
         if CallManager.shared.delegate === self {
             CallManager.shared.delegate = nil
         }
-        
+
         CallManager.shared.clearCurrentCall()
         PopinCallManager.shared.clearCallState()
-        
+
         // Explicitly remove hosting controller to trigger RoomScope cleanup (LiveKit disconnect)
         if let hostingController = self.hostingController {
             hostingController.willMove(toParent: nil)
@@ -296,7 +298,9 @@ public class PopinCallViewController: UIViewController {
             hostingController.removeFromParent()
             self.hostingController = nil
         }
-        
+
+        // Notify that call has ended
+        onCallEnd?()
     }
    
 }

@@ -18,44 +18,49 @@ class ViewController: UIViewController {
 
     @IBAction func makeCall(_ sender: Any) {
         print("staryt");
-        //self.navigationController?.pushViewController(PopinCallViewController(), animated: true)
        Popin.shared.connect(token: 51, popinDelegate: self);
-        
     }
-    
+
 }
 
-extension ViewController : PopinCallDelegate {
-    func onConnectionEstablished() {
-        print("CALL_CONNEC766");
+extension ViewController : PopinEventsListener {
+    func onPermissionGiven() {
+        print("Permission given");
     }
-    
-    func onAllExpertsBusy() {
-        print("All experts are busy");
+
+    func onPermissionDenied() {
+        print("Permission denied");
+    }
+
+    func onCallStart() {
+        print("Call started");
+    }
+
+    func onCallCancel() {
+        print("Call cancelled");
     }
 
     func onQueuePositionChanged(position: Int) {
         print("Queue position: \(position)");
     }
 
-    func onCallAccepted(callId: Int) {
-        print("Call accepted: \(callId)");
-    }
-
     func onCallMissed() {
         print("Call missed");
     }
 
+    func onCallNetworkFailure() {
+        print("Network failure");
+    }
+
     func onCallConnected() {
-        print("CALL_CONNEC");
+        print("Call connected");
     }
-    
-    func onCallDisconnected() {
-        print("CALL_DISCONN");
+
+    func onCallFailed() {
+        print("Call failed");
     }
-    
-    func onCallFail() {
-        print("CALL_FAIL");
+
+    func onCallEnd() {
+        print("Call ended");
     }
 }
-

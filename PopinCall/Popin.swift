@@ -14,25 +14,25 @@ import UIKit
 let serverURL = "https://widget01.popin-sandbox.com/api/v1";
 
 public class Popin : PopinPusherDelegate, CallAcceptanceListener {
-    
+
     public static let shared = Popin()
-    
-    private var delegate : PopinCallDelegate?
-    
+
+    private var eventsListener : PopinEventsListener?
+
     private init() {}
-    
-    private  let popinPresenter = PopinPresenter(popinInteractor: PopinInteractor())
-    
-    private  let popinPusher = PopinPusher()
-    
+
+    private let popinPresenter = PopinPresenter(popinInteractor: PopinInteractor())
+
+    private let popinPusher = PopinPusher()
+
     private var startCall : Bool = false;
-    
+
     private var sellerToken : Int = 0;
 
     private var waitHandler: CallAcceptanceWaitHandler?
 
-    public  func connect(token: Int, popinDelegate: PopinCallDelegate) {
-        self.delegate = popinDelegate;
+    public func connect(token: Int, popinDelegate: PopinEventsListener) {
+        self.eventsListener = popinDelegate;
         Utilities.shared.saveSeller(seller_id: token);
         if (!self.popinPresenter.isUserRegistered()) {
             popinPresenter.registerUser(seller_id: token, onSucess: {
@@ -42,17 +42,19 @@ public class Popin : PopinPusherDelegate, CallAcceptanceListener {
             self.connectPusher(seller_id: token)
         }
     }
-    
+
     func connectPusher(seller_id: Int) {
         startCall = true;
         sellerToken = seller_id;
         popinPusher.delegate = self;
         popinPusher.connect()
-      //  startConnect(seller_id: seller_id)
-        
-       
     }
-    
+
+    public func cancelCall() {
+        waitHandler?.stopWaitingForAcceptance()
+        waitHandler = nil
+    }
+
     public func getAvailableSchedules() {
         // TODO: Not yet implemented
     }
@@ -64,24 +66,23 @@ public class Popin : PopinPusherDelegate, CallAcceptanceListener {
     public func setRating(rating: Int) {
         // TODO: Not yet implemented
     }
-    
-    
-    
+
     func onPusherConnected() {
         print("PUSHER CONNECTED");
         if (startCall && sellerToken > 0) {
             if (Utilities.shared.isConnected()) {
                 print("AGENT_ALEADY CONNECTED");
-                self.delegate?.onConnectionEstablished()
+                self.eventsListener?.onCallStart()
                 return;
             }
             print("ATTEMPT AGENT CONNECT");
             popinPresenter.startConnection(seller_id: sellerToken, onSuccess: { [weak self] callQueueId in
                 print("Connection started, call_queue_id=\(callQueueId)")
+                self?.eventsListener?.onCallStart()
                 self?.startWaitingForAcceptance(callQueueId: callQueueId)
             }, onFailure: { [weak self] in
                 print("Connection failed")
-                self?.delegate?.onCallFail()
+                self?.eventsListener?.onCallFailed()
             });
         }
     }
@@ -92,34 +93,29 @@ public class Popin : PopinPusherDelegate, CallAcceptanceListener {
         waitHandler?.startWaitingForAcceptance()
     }
 
-    public func stopWaiting() {
-        waitHandler?.stopWaitingForAcceptance()
-        waitHandler = nil
-    }
-    
     // MARK: - CallAcceptanceListener
 
     func onQueuePositionChange(position: Int) {
         print("Queue position changed: \(position)")
-        self.delegate?.onQueuePositionChanged(position: position)
+        self.eventsListener?.onQueuePositionChanged(position: position)
     }
 
     func onCallAccepted(callId: Int) {
         print("Call accepted: \(callId)")
         waitHandler = nil
-        self.delegate?.onCallAccepted(callId: callId)
         connectToCall(callId: callId)
     }
 
     private func connectToCall(callId: Int) {
         popinPresenter.getCallDetails(callId: callId, onSuccess: { [weak self] talkModel in
             print("Call details received: token=\(talkModel.token ?? "nil"), websocket=\(talkModel.websocket ?? "nil")")
+            self?.eventsListener?.onCallConnected()
             DispatchQueue.main.async {
                 self?.presentCallViewController(talkModel: talkModel)
             }
         }, onFailure: { [weak self] in
             print("Failed to get call details")
-            self?.delegate?.onCallFail()
+            self?.eventsListener?.onCallFailed()
         })
     }
 
@@ -127,6 +123,9 @@ public class Popin : PopinPusherDelegate, CallAcceptanceListener {
     private func presentCallViewController(talkModel: TalkModel) {
         let callVC = PopinCallViewController()
         callVC.modalPresentationStyle = .fullScreen
+        callVC.onCallEnd = { [weak self] in
+            self?.eventsListener?.onCallEnd()
+        }
 
         guard let topVC = Self.topViewController() else {
             print("No top view controller found to present call")
@@ -163,29 +162,28 @@ public class Popin : PopinPusherDelegate, CallAcceptanceListener {
     func onCallMissed() {
         print("Call missed")
         waitHandler = nil
-        self.delegate?.onCallMissed()
+        self.eventsListener?.onCallMissed()
     }
 
     // MARK: - PopinPusherDelegate
 
     func onAgentConnected() {
-        self.delegate?.onConnectionEstablished()
+        self.eventsListener?.onCallStart()
     }
-    
+
     func onAllExpertsBusy() {
-        self.delegate?.onAllExpertsBusy()
+        self.eventsListener?.onCallCancel()
     }
-    
+
     func onCallConnected() {
 
     }
 
     func onCallDisconnected() {
-
+        self.eventsListener?.onCallEnd()
     }
 
     func onCallFail() {
-
+        self.eventsListener?.onCallNetworkFailure()
     }
 }
-
