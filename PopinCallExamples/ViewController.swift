@@ -12,10 +12,12 @@ class ViewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        print("load");
         // Do any additional setup after loading the view.
     }
 
     @IBAction func makeCall(_ sender: Any) {
+        print("staryt");
         //self.navigationController?.pushViewController(PopinCallViewController(), animated: true)
        Popin.shared.connect(token: 11506, popinDelegate: self);
         
@@ -25,6 +27,7 @@ class ViewController: UIViewController {
 
 extension ViewController : PopinCallDelegate {
     func onConnectionEstablished() {
+        print("CALL_CONNEC766");
         //self.navigationController?.pushViewController(PopinCallViewController(), animated: true)
     }
     
