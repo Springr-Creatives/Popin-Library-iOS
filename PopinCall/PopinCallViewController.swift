@@ -305,6 +305,8 @@ extension PopinCallViewController: VideoCallView {
     }
     
     func loadCall(call: TalkModel) {
+        callConnected = true
+        viewModel.callAccepted = true
         viewModel.call = call
     }
     

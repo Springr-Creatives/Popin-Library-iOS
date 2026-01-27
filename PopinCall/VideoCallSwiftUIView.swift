@@ -13,7 +13,6 @@ import Combine
 import UIKit
 import AVFAudio
 import Foundation
-import BugfenderSDK
 // MARK: - SwiftUI VideoCall View
 
 public struct VideoCallSwiftUIView: View {

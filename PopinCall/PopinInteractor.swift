@@ -59,6 +59,29 @@ class PopinInteractor {
                 }
             }
     }
+    func getCallDetails(callId: Int, onSuccess success: @escaping (TalkModel) -> Void, onFailure failure: @escaping () -> Void) {
+        let urlString = serverURL + "/user/call/\(callId)"
+        let headers = Utilities.shared.getHeaders()
+        print("[DEBUG getCallDetails] URL: \(urlString)")
+        AF.request(urlString, method: .get, headers: headers)
+            .responseDecodable(of: TalkModel.self) { response in
+                if let data = response.data, let raw = String(data: data, encoding: .utf8) {
+                    print("[DEBUG getCallDetails] Raw response: \(raw)")
+                }
+                switch response.result {
+                case .success(let talkModel):
+                    print("[DEBUG getCallDetails] status=\(talkModel.status), token=\(talkModel.token ?? "nil"), websocket=\(talkModel.websocket ?? "nil")")
+                    if talkModel.status == 1 {
+                        success(talkModel)
+                    } else {
+                        failure()
+                    }
+                case .failure(let error):
+                    print("[DEBUG getCallDetails] FAILURE: \(error)")
+                    failure()
+                }
+            }
+    }
 }
 
 struct UserModel : Codable{

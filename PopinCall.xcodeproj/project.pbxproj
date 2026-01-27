@@ -9,7 +9,7 @@
 /* Begin PBXBuildFile section */
 		CF1742572F273FF600AE48E7 /* PusherSwift in Frameworks */ = {isa = PBXBuildFile; productRef = CF1742562F273FF600AE48E7 /* PusherSwift */; };
 		CF17425A2F27401200AE48E7 /* SwiftyJSON in Frameworks */ = {isa = PBXBuildFile; productRef = CF1742592F27401200AE48E7 /* SwiftyJSON */; };
-		CF17425D2F27401D00AE48E7 /* AlamofireDynamic in Frameworks */ = {isa = PBXBuildFile; productRef = CF17425C2F27401D00AE48E7 /* AlamofireDynamic */; };
+		CF17425D2F27401D00AE48E7 /* Alamofire in Frameworks */ = {isa = PBXBuildFile; productRef = CF17425C2F27401D00AE48E7 /* Alamofire */; };
 		CF1742602F27404400AE48E7 /* LiveKitComponents in Frameworks */ = {isa = PBXBuildFile; productRef = CF17425F2F27404400AE48E7 /* LiveKitComponents */; };
 		CF17427E2F27407B00AE48E7 /* PopinPusher.swift in Sources */ = {isa = PBXBuildFile; fileRef = CF1742742F27407B00AE48E7 /* PopinPusher.swift */; };
 		CF17427F2F27407B00AE48E7 /* PopinPusherDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = CF1742752F27407B00AE48E7 /* PopinPusherDelegate.swift */; };
@@ -35,14 +35,13 @@
 		CF1742932F27407B00AE48E7 /* PopinConnectedView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CF1742712F27407B00AE48E7 /* PopinConnectedView.swift */; };
 		CF1742942F27407B00AE48E7 /* TopControls.swift in Sources */ = {isa = PBXBuildFile; fileRef = CF1742772F27407B00AE48E7 /* TopControls.swift */; };
 		CF1742952F27407B00AE48E7 /* CallManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = CF1742632F27407B00AE48E7 /* CallManager.swift */; };
-		CF174AA02F27407B00AE48E7 /* CallAcceptanceWaitHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = CF174AA12F27407B00AE48E7 /* CallAcceptanceWaitHandler.swift */; };
 		CF1742962F27407B00AE48E7 /* PopinCallPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = CF17426E2F27407B00AE48E7 /* PopinCallPresenter.swift */; };
 		CF1742972F27407B00AE48E7 /* Utilities.swift in Sources */ = {isa = PBXBuildFile; fileRef = CF1742782F27407B00AE48E7 /* Utilities.swift */; };
 		CF1742982F27407B00AE48E7 /* PopinPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = CF1742732F27407B00AE48E7 /* PopinPresenter.swift */; };
 		CF1742992F27407B00AE48E7 /* PopinConference.swift in Sources */ = {isa = PBXBuildFile; fileRef = CF1742702F27407B00AE48E7 /* PopinConference.swift */; };
 		CF17429A2F27407B00AE48E7 /* PopinCallDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = CF17426C2F27407B00AE48E7 /* PopinCallDelegate.swift */; };
-		CF17429D2F2755F300AE48E7 /* BugfenderLibrary in Frameworks */ = {isa = PBXBuildFile; productRef = CF17429C2F2755F300AE48E7 /* BugfenderLibrary */; };
 		CF17429F2F27844400AE48E7 /* ObjectSavable.swift in Sources */ = {isa = PBXBuildFile; fileRef = CF17429E2F27844400AE48E7 /* ObjectSavable.swift */; };
+		CF174AA02F27407B00AE48E7 /* CallAcceptanceWaitHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = CF174AA12F27407B00AE48E7 /* CallAcceptanceWaitHandler.swift */; };
 		CFA556862923FEA3003453DF /* PopinCallDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = CFA556852923FEA3003453DF /* PopinCallDelegate.swift */; };
 		CFB63D8B2929045E005F265D /* PopinPusher.swift in Sources */ = {isa = PBXBuildFile; fileRef = CFB63D8A2929045E005F265D /* PopinPusher.swift */; };
 		CFB63D8D292908EF005F265D /* PopinPusherDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = CFB63D8C292908EF005F265D /* PopinPusherDelegate.swift */; };
@@ -96,7 +95,6 @@
 		CF1742612F27407B00AE48E7 /* AudienceRow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AudienceRow.swift; sourceTree = "<group>"; };
 		CF1742622F27407B00AE48E7 /* BroadcastPickerWrapper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BroadcastPickerWrapper.swift; sourceTree = "<group>"; };
 		CF1742632F27407B00AE48E7 /* CallManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CallManager.swift; sourceTree = "<group>"; };
-		CF174AA12F27407B00AE48E7 /* CallAcceptanceWaitHandler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CallAcceptanceWaitHandler.swift; sourceTree = "<group>"; };
 		CF1742642F27407B00AE48E7 /* DarwinNotificationCenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DarwinNotificationCenter.swift; sourceTree = "<group>"; };
 		CF1742652F27407B00AE48E7 /* MyCustomRendererView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyCustomRendererView.swift; sourceTree = "<group>"; };
 		CF1742662F27407B00AE48E7 /* NotConnectedView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotConnectedView.swift; sourceTree = "<group>"; };
@@ -124,6 +122,7 @@
 		CF17427C2F27407B00AE48E7 /* VideoCallSwiftUIView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VideoCallSwiftUIView.swift; sourceTree = "<group>"; };
 		CF17427D2F27407B00AE48E7 /* VideoCallViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VideoCallViewModel.swift; sourceTree = "<group>"; };
 		CF17429E2F27844400AE48E7 /* ObjectSavable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ObjectSavable.swift; sourceTree = "<group>"; };
+		CF174AA12F27407B00AE48E7 /* CallAcceptanceWaitHandler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CallAcceptanceWaitHandler.swift; sourceTree = "<group>"; };
 		CFA556852923FEA3003453DF /* PopinCallDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PopinCallDelegate.swift; sourceTree = "<group>"; };
 		CFB63D8A2929045E005F265D /* PopinPusher.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PopinPusher.swift; sourceTree = "<group>"; };
 		CFB63D8C292908EF005F265D /* PopinPusherDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PopinPusherDelegate.swift; sourceTree = "<group>"; };
@@ -147,9 +146,8 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				CF17429D2F2755F300AE48E7 /* BugfenderLibrary in Frameworks */,
 				CF17425A2F27401200AE48E7 /* SwiftyJSON in Frameworks */,
-				CF17425D2F27401D00AE48E7 /* AlamofireDynamic in Frameworks */,
+				CF17425D2F27401D00AE48E7 /* Alamofire in Frameworks */,
 				CF1742602F27404400AE48E7 /* LiveKitComponents in Frameworks */,
 				CF1742572F273FF600AE48E7 /* PusherSwift in Frameworks */,
 			);
@@ -372,7 +370,6 @@
 				CF1742582F27401200AE48E7 /* XCRemoteSwiftPackageReference "SwiftyJSON" */,
 				CF17425B2F27401D00AE48E7 /* XCRemoteSwiftPackageReference "Alamofire" */,
 				CF17425E2F27404400AE48E7 /* XCRemoteSwiftPackageReference "components-swift" */,
-				CF17429B2F2755F300AE48E7 /* XCRemoteSwiftPackageReference "BugfenderSDK-iOS" */,
 			);
 			productRefGroup = CFBBD5672923EA3100D241A9 /* Products */;
 			projectDirPath = "";
@@ -727,7 +724,7 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = 7GE5BSP5FH;
+				DEVELOPMENT_TEAM = 94SDW7Q788;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = PopinCallExamples/Info.plist;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
@@ -756,7 +753,7 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = 7GE5BSP5FH;
+				DEVELOPMENT_TEAM = 94SDW7Q788;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = PopinCallExamples/Info.plist;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
@@ -852,14 +849,6 @@
 				minimumVersion = 0.1.6;
 			};
 		};
-		CF17429B2F2755F300AE48E7 /* XCRemoteSwiftPackageReference "BugfenderSDK-iOS" */ = {
-			isa = XCRemoteSwiftPackageReference;
-			repositoryURL = "https://github.com/bugfender/BugfenderSDK-iOS";
-			requirement = {
-				kind = upToNextMajorVersion;
-				minimumVersion = 2.2.0;
-			};
-		};
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
@@ -873,20 +862,15 @@
 			package = CF1742582F27401200AE48E7 /* XCRemoteSwiftPackageReference "SwiftyJSON" */;
 			productName = SwiftyJSON;
 		};
-		CF17425C2F27401D00AE48E7 /* AlamofireDynamic */ = {
+		CF17425C2F27401D00AE48E7 /* Alamofire */ = {
 			isa = XCSwiftPackageProductDependency;
 			package = CF17425B2F27401D00AE48E7 /* XCRemoteSwiftPackageReference "Alamofire" */;
-			productName = AlamofireDynamic;
+			productName = Alamofire;
 		};
 		CF17425F2F27404400AE48E7 /* LiveKitComponents */ = {
 			isa = XCSwiftPackageProductDependency;
 			package = CF17425E2F27404400AE48E7 /* XCRemoteSwiftPackageReference "components-swift" */;
 			productName = LiveKitComponents;
-		};
-		CF17429C2F2755F300AE48E7 /* BugfenderLibrary */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = CF17429B2F2755F300AE48E7 /* XCRemoteSwiftPackageReference "BugfenderSDK-iOS" */;
-			productName = BugfenderLibrary;
 		};
 /* End XCSwiftPackageProductDependency section */
 	};

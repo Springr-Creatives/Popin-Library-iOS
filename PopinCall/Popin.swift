@@ -6,6 +6,9 @@
 //
 
 import Foundation
+#if canImport(UIKit)
+import UIKit
+#endif
 
 
 let serverURL = "https://widget01.popin-sandbox.com/api/v1";
@@ -105,7 +108,57 @@ open class Popin : PopinPusherDelegate, CallAcceptanceListener {
         print("Call accepted: \(callId)")
         waitHandler = nil
         self.delegate?.onCallAccepted(callId: callId)
+        connectToCall(callId: callId)
     }
+
+    private func connectToCall(callId: Int) {
+        popinPresenter.getCallDetails(callId: callId, onSuccess: { [weak self] talkModel in
+            print("Call details received: token=\(talkModel.token ?? "nil"), websocket=\(talkModel.websocket ?? "nil")")
+            DispatchQueue.main.async {
+                self?.presentCallViewController(talkModel: talkModel)
+            }
+        }, onFailure: { [weak self] in
+            print("Failed to get call details")
+            self?.delegate?.onCallFail()
+        })
+    }
+
+    #if canImport(UIKit)
+    private func presentCallViewController(talkModel: TalkModel) {
+        let callVC = PopinCallViewController()
+        callVC.modalPresentationStyle = .fullScreen
+
+        guard let topVC = Self.topViewController() else {
+            print("No top view controller found to present call")
+            return
+        }
+
+        topVC.present(callVC, animated: true) {
+            callVC.loadCall(call: talkModel)
+        }
+    }
+
+    private static func topViewController(base: UIViewController? = nil) -> UIViewController? {
+        let base = base ?? UIApplication.shared.connectedScenes
+            .compactMap { ($0 as? UIWindowScene)?.keyWindow?.rootViewController }
+            .first
+
+        if let nav = base as? UINavigationController {
+            return topViewController(base: nav.visibleViewController)
+        }
+        if let tab = base as? UITabBarController, let selected = tab.selectedViewController {
+            return topViewController(base: selected)
+        }
+        if let presented = base?.presentedViewController {
+            return topViewController(base: presented)
+        }
+        return base
+    }
+    #else
+    private func presentCallViewController(talkModel: TalkModel) {
+        print("UIKit not available - cannot present call view controller")
+    }
+    #endif
 
     func onCallMissed() {
         print("Call missed")

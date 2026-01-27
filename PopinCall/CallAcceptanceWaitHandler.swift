@@ -94,7 +94,9 @@ class CallAcceptanceWaitHandler {
                     print("[CallAcceptanceWaitHandler] Error: \(error)")
                 }
 
-                self.scheduleNext()
+                if self.isRunning {
+                    self.scheduleNext()
+                }
             }
     }
 }

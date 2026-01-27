@@ -31,5 +31,9 @@ class PopinPresenter {
     func startConnection(seller_id: Int, onSuccess success: @escaping (Int) -> Void, onFailure failure: @escaping () -> Void) {
         popinInteractor.startConnection(seller_id: seller_id, onSuccess: success, onFailure: failure)
     }
-    
+
+    func getCallDetails(callId: Int, onSuccess success: @escaping (TalkModel) -> Void, onFailure failure: @escaping () -> Void) {
+        popinInteractor.getCallDetails(callId: callId, onSuccess: success, onFailure: failure)
+    }
+
 }
