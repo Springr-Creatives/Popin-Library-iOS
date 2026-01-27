@@ -53,6 +53,7 @@ public class PopinCallViewController: UIViewController {
     var videoCall : VideoCall? = nil
     
     var onCallEnd: (() -> Void)?
+    var popinConfig: PopinConfig?
 
     var isAudioEnabled = true, isVideoEnabled = true, isScreenSharing = false
     
@@ -160,6 +161,8 @@ public class PopinCallViewController: UIViewController {
 
     
     private func setupSwiftUIView() {
+        let configHolder = PopinConfigHolder(config: popinConfig ?? PopinConfig.Builder().build())
+
         let swiftUIView = VideoCallSwiftUIView(
             viewModel: viewModel,
             callId: callId,
@@ -169,7 +172,8 @@ public class PopinCallViewController: UIViewController {
             customerName: customerName,
             artifact: artifact
         )
-        
+        .environmentObject(configHolder)
+
         let wrapped = RoomScope(roomOptions: RoomOptions(
             defaultCameraCaptureOptions: CameraCaptureOptions(dimensions: .h720_169),
             defaultScreenShareCaptureOptions: ScreenShareCaptureOptions(dimensions: .h720_169, useBroadcastExtension: true),
@@ -184,7 +188,7 @@ public class PopinCallViewController: UIViewController {
         )) {
             swiftUIView
         }
-        
+
         hostingController = UIHostingController(rootView: AnyView(wrapped))
         
         guard let hostingController = self.hostingController else { return }

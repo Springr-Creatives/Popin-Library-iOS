@@ -11,43 +11,91 @@ import UIKit
 #endif
 
 
-let serverURL = "https://widget01.popin-sandbox.com/api/v1";
+let sandboxServerURL = "https://widget01.popin-sandbox.com/api/v1"
+let productionServerURL = "https://widget01.popin.to/api/v1"
+
+var serverURL: String {
+    Popin.shared?.getConfig().sandboxMode == true ? sandboxServerURL : productionServerURL
+}
 
 public class Popin : PopinPusherDelegate, CallAcceptanceListener {
 
-    public static let shared = Popin()
+    public private(set) static var shared: Popin?
 
-    private var eventsListener : PopinEventsListener?
-
-    private init() {}
+    private var eventsListener: PopinEventsListener?
+    private var config: PopinConfig
 
     private let popinPresenter = PopinPresenter(popinInteractor: PopinInteractor())
-
     private let popinPusher = PopinPusher()
 
-    private var startCall : Bool = false;
-
-    private var sellerToken : Int = 0;
-
+    private var startCall: Bool = false
+    private var sellerToken: Int = 0
     private var waitHandler: CallAcceptanceWaitHandler?
 
-    public func connect(token: Int, popinDelegate: PopinEventsListener) {
-        self.eventsListener = popinDelegate;
-        Utilities.shared.saveSeller(seller_id: token);
-        if (!self.popinPresenter.isUserRegistered()) {
-            popinPresenter.registerUser(seller_id: token, onSucess: {
+    // MARK: - Initialization (matches Android Popin.init)
+
+    @discardableResult
+    public static func initialize(token: Int, config: PopinConfig) -> Popin {
+        if let existing = shared {
+            existing.config = config
+            if !existing.config.persistenceMode {
+                shared = Popin(token: token, config: config)
+            } else {
+                config.initListener?.onInitComplete()
+            }
+        } else {
+            shared = Popin(token: token, config: config)
+        }
+        return shared!
+    }
+
+    @discardableResult
+    public static func initialize(token: Int) -> Popin {
+        return initialize(token: token, config: PopinConfig.Builder().build())
+    }
+
+    private init(token: Int, config: PopinConfig) {
+        self.config = config
+        self.sellerToken = token
+        Utilities.shared.saveSeller(seller_id: token)
+
+        if !config.persistenceMode {
+            // Non-persistence mode: clear saved session and always re-register
+            Utilities.shared.saveUser(user: nil)
+        }
+
+        if !popinPresenter.isUserRegistered() {
+            popinPresenter.registerUser(seller_id: token, name: config.userName, mobile: config.contactInfo, campaign: config.meta, onSucess: { [self] in
                 self.connectPusher(seller_id: token)
             })
         } else {
-            self.connectPusher(seller_id: token)
+            connectPusher(seller_id: token)
         }
     }
 
-    func connectPusher(seller_id: Int) {
-        startCall = true;
-        sellerToken = seller_id;
-        popinPusher.delegate = self;
-        popinPusher.connect()
+    // MARK: - Public API (matches Android Popin methods)
+
+    public func getConfig() -> PopinConfig {
+        return config
+    }
+
+    public func startCall(eventsListener: PopinEventsListener) {
+        self.eventsListener = eventsListener
+        startCall = true
+
+        if Utilities.shared.isConnected() {
+            self.eventsListener?.onCallStart()
+            return
+        }
+
+        popinPresenter.startConnection(seller_id: sellerToken, onSuccess: { [weak self] callQueueId in
+            print("Connection started, call_queue_id=\(callQueueId)")
+            self?.eventsListener?.onCallStart()
+            self?.startWaitingForAcceptance(callQueueId: callQueueId)
+        }, onFailure: { [weak self] in
+            print("Connection failed")
+            self?.eventsListener?.onCallFailed()
+        })
     }
 
     public func cancelCall() {
@@ -55,27 +103,44 @@ public class Popin : PopinPusherDelegate, CallAcceptanceListener {
         waitHandler = nil
     }
 
-    public func getAvailableSchedules() {
-        // TODO: Not yet implemented
+    // MARK: - Legacy convenience (init + startCall in one step)
+
+    public func connect(token: Int, popinDelegate: PopinEventsListener) {
+        self.eventsListener = popinDelegate
+        self.sellerToken = token
+        Utilities.shared.saveSeller(seller_id: token)
+
+        if !popinPresenter.isUserRegistered() {
+            popinPresenter.registerUser(seller_id: token, name: config.userName, mobile: config.contactInfo, campaign: config.meta, onSucess: {
+                self.connectPusher(seller_id: token)
+            })
+        } else {
+            self.connectPusher(seller_id: token)
+        }
     }
 
-    public func setScheduledCall(scheduleTime: String) {
-        // TODO: Not yet implemented
-    }
+    // MARK: - Internal
 
-    public func setRating(rating: Int) {
-        // TODO: Not yet implemented
+    func connectPusher(seller_id: Int) {
+        startCall = true
+        sellerToken = seller_id
+        popinPusher.delegate = self
+        popinPusher.connect()
     }
 
     func onPusherConnected() {
-        print("PUSHER CONNECTED");
-        if (startCall && sellerToken > 0) {
-            if (Utilities.shared.isConnected()) {
-                print("AGENT_ALEADY CONNECTED");
+        print("PUSHER CONNECTED")
+
+        // Notify init listener that initialization is complete
+        config.initListener?.onInitComplete()
+
+        if startCall && sellerToken > 0 {
+            if Utilities.shared.isConnected() {
+                print("AGENT_ALREADY CONNECTED")
                 self.eventsListener?.onCallStart()
-                return;
+                return
             }
-            print("ATTEMPT AGENT CONNECT");
+            print("ATTEMPT AGENT CONNECT")
             popinPresenter.startConnection(seller_id: sellerToken, onSuccess: { [weak self] callQueueId in
                 print("Connection started, call_queue_id=\(callQueueId)")
                 self?.eventsListener?.onCallStart()
@@ -83,7 +148,7 @@ public class Popin : PopinPusherDelegate, CallAcceptanceListener {
             }, onFailure: { [weak self] in
                 print("Connection failed")
                 self?.eventsListener?.onCallFailed()
-            });
+            })
         }
     }
 
@@ -123,6 +188,7 @@ public class Popin : PopinPusherDelegate, CallAcceptanceListener {
     private func presentCallViewController(talkModel: TalkModel) {
         let callVC = PopinCallViewController()
         callVC.modalPresentationStyle = .fullScreen
+        callVC.popinConfig = config
         callVC.onCallEnd = { [weak self] in
             self?.eventsListener?.onCallEnd()
         }

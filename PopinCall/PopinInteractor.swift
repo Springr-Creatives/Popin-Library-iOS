@@ -11,9 +11,18 @@ import SwiftyJSON
 
 class PopinInteractor {
     
-    func registerUser(seller_id: Int, onSucess sucess: @escaping () -> Void, onFailure failure: @escaping () -> Void) {
-        let parameters: Parameters = ["seller_id":seller_id,"is_mobile" : 1, "device": "iosSdk"];
-        let urlString = serverURL + "/website/user/login";
+    func registerUser(seller_id: Int, name: String, mobile: String, campaign: String, onSucess sucess: @escaping () -> Void, onFailure failure: @escaping () -> Void) {
+        var parameters: Parameters = [
+            "seller_id": seller_id,
+            "is_mobile": 1,
+            "device": "iosSdk",
+            "name": name,
+            "mobile": mobile
+        ]
+        if !campaign.isEmpty {
+            parameters["campaign"] = campaign
+        }
+        let urlString = serverURL + "/website/user/login"
         print("[DEBUG registerUser] URL: \(urlString), params: \(parameters)")
         AF.request(urlString, method: .post, parameters: parameters, encoding: URLEncoding.httpBody)
             .responseDecodable(of: UserModel.self) { response in

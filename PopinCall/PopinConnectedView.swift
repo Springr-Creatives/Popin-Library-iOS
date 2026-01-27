@@ -25,8 +25,9 @@ struct PopinConnectedView: View {
     // Maintain a persistent order of participant SIDs to prevents random shifting
     @State private var participantOrder: [String] = []
 
-    // Get view model from environment
+    // Get view model and config from environment
     @EnvironmentObject private var viewModel: VideoCallViewModel
+    @EnvironmentObject private var configHolder: PopinConfigHolder
     
     
     private func enableHardware() async {
@@ -152,31 +153,33 @@ struct PopinConnectedView: View {
             .padding(.bottom, 16)
 
             // Centered disconnect button overlay
-            Button(action: {
-                // Mark that user is ending the call
-                viewModel.isUserEndingCall = true
+            if !configHolder.config.hideDisconnectButton {
+                Button(action: {
+                    // Mark that user is ending the call
+                    viewModel.isUserEndingCall = true
 
-                // Call the end API
-                viewModel.onEndCall?()
+                    // Call the end API
+                    viewModel.onEndCall?()
 
-                // Disconnect from the room
-                Task {
-                    await _room.disconnect()
+                    // Disconnect from the room
+                    Task {
+                        await _room.disconnect()
+                    }
+                }) {
+                    ZStack {
+                        Circle()
+                            .fill(Color.red)
+                            .frame(width: 60, height: 60)
+
+                        Image(systemName: "phone.down.fill")
+                            .font(.system(size: 24))
+                            .foregroundColor(.white)
+                    }
                 }
-            }) {
-                ZStack {
-                    Circle()
-                        .fill(Color.red)
-                        .frame(width: 60, height: 60)
-
-                    Image(systemName: "phone.down.fill")
-                        .font(.system(size: 24))
-                        .foregroundColor(.white)
-                }
+                .frame(width: 60, height: 60)
+                .padding(.bottom, 48)
+                .buttonStyle(.plain)
             }
-            .frame(width: 60, height: 60)
-            .padding(.bottom, 48)
-            .buttonStyle(.plain)
         }
     }
 

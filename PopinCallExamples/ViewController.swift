@@ -12,55 +12,78 @@ class ViewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        print("load");
-        // Do any additional setup after loading the view.
+
+        // Initialize Popin with config (matches Android Popin.init)
+        let config = PopinConfig.Builder()
+            .userName("Demo User")
+            .contactInfo("demo@example.com")
+            .sandboxMode(true)
+            .initListener(self)
+            .hideScreenShareButton(true)
+            .build()
+
+        Popin.initialize(token: 51, config: config)
     }
 
     @IBAction func makeCall(_ sender: Any) {
-        print("staryt");
-       Popin.shared.connect(token: 51, popinDelegate: self);
+        // Start a call (matches Android Popin.getInstance().startCall)
+        Popin.shared?.startCall(eventsListener: self)
     }
 
 }
 
-extension ViewController : PopinEventsListener {
+// MARK: - PopinInitListener
+
+extension ViewController: PopinInitListener {
+    func onInitComplete() {
+        print("Popin initialized")
+    }
+
+    func onInitFailed(reason: String) {
+        print("Popin init failed: \(reason)")
+    }
+}
+
+// MARK: - PopinEventsListener
+
+extension ViewController: PopinEventsListener {
     func onPermissionGiven() {
-        print("Permission given");
+        print("Permission given")
     }
 
     func onPermissionDenied() {
-        print("Permission denied");
+        print("Permission denied")
     }
 
     func onCallStart() {
-        print("Call started");
+        print("Call started")
     }
 
     func onCallCancel() {
-        print("Call cancelled");
+        print("Call cancelled")
     }
 
     func onQueuePositionChanged(position: Int) {
-        print("Queue position: \(position)");
+        print("Queue position: \(position)")
     }
 
     func onCallMissed() {
-        print("Call missed");
+        print("Call missed")
     }
 
     func onCallNetworkFailure() {
-        print("Network failure");
+        print("Network failure")
     }
 
     func onCallConnected() {
-        print("Call connected");
+        print("Call connected")
     }
 
     func onCallFailed() {
-        print("Call failed");
+        print("Call failed")
     }
 
     func onCallEnd() {
-        print("Call ended");
+        print("Call ended")
     }
 }

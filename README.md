@@ -11,6 +11,7 @@ PopinCall is an iOS library that enables seamless integration of video calling f
 - CallKit integration for native call UI
 - Automatic connection management with queue positioning
 - Expert availability handling
+- Configurable UI (hide/show individual controls)
 
 ## Requirements
 
@@ -64,74 +65,114 @@ And add `audio` to `UIBackgroundModes`:
 import PopinCall
 ```
 
-### 2. Connect and Implement the Events Listener
+### 2. Initialize with Configuration
 
 ```swift
-class ViewController: UIViewController, PopinEventsListener {
+let config = PopinConfig.Builder()
+    .userName("John Doe")
+    .contactInfo("john@example.com")
+    .sandboxMode(true)
+    .initListener(self)
+    .hideScreenShareButton(true)
+    .product(PopinProduct(
+        id: "SKU-123",
+        name: "Premium Widget",
+        image: "https://example.com/product.jpg"
+    ))
+    .build()
 
-    @IBAction func makeCall(_ sender: Any) {
-        Popin.shared.connect(token: 51, popinDelegate: self)
-    }
-
-    // MARK: - PopinEventsListener
-
-    func onPermissionGiven() {
-        print("Permission given")
-    }
-
-    func onPermissionDenied() {
-        print("Permission denied")
-    }
-
-    func onCallStart() {
-        print("Call started")
-    }
-
-    func onCallCancel() {
-        print("Call cancelled")
-    }
-
-    func onQueuePositionChanged(position: Int) {
-        print("Queue position: \(position)")
-    }
-
-    func onCallMissed() {
-        print("Call missed")
-    }
-
-    func onCallNetworkFailure() {
-        print("Network failure")
-    }
-
-    func onCallConnected() {
-        print("Call connected")
-    }
-
-    func onCallFailed() {
-        print("Call failed")
-    }
-
-    func onCallEnd() {
-        print("Call ended")
-    }
-}
+Popin.initialize(token: 51, config: config)
 ```
 
-That's it. The library handles user registration, Pusher connection, queue management, and automatically presents the video call UI when an agent accepts.
+### 3. Start a Call
+
+```swift
+Popin.shared?.startCall(eventsListener: self)
+```
+
+### 4. Implement Listeners
+
+```swift
+extension ViewController: PopinInitListener {
+    func onInitComplete() {
+        print("Popin initialized")
+    }
+
+    func onInitFailed(reason: String) {
+        print("Init failed: \(reason)")
+    }
+}
+
+extension ViewController: PopinEventsListener {
+    func onPermissionGiven()                        { }
+    func onPermissionDenied()                       { }
+    func onCallStart()                              { }
+    func onCallCancel()                             { }
+    func onQueuePositionChanged(position: Int)      { }
+    func onCallMissed()                             { }
+    func onCallNetworkFailure()                     { }
+    func onCallConnected()                          { }
+    func onCallFailed()                             { }
+    func onCallEnd()                                { }
+}
+```
 
 ## API Reference
 
 ### Popin
 
-The `Popin` singleton is the main entry point:
-
 ```swift
-// Start a connection to an expert
-Popin.shared.connect(token: sellerToken, popinDelegate: self)
+// Initialize with config
+Popin.initialize(token: sellerToken, config: config)
+
+// Start a call
+Popin.shared?.startCall(eventsListener: self)
 
 // Cancel waiting for call acceptance
-Popin.shared.cancelCall()
+Popin.shared?.cancelCall()
+
+// Access current config
+let config = Popin.shared?.getConfig()
 ```
+
+### PopinConfig.Builder
+
+| Method | Default | Description |
+|--------|---------|-------------|
+| `.userName(String)` | `""` | User's display name |
+| `.contactInfo(String)` | `""` | User's contact info (email/phone) |
+| `.sandboxMode(Bool)` | `false` | Use sandbox environment |
+| `.initListener(PopinInitListener)` | `nil` | Listener for initialization events |
+| `.hideDisconnectButton(Bool)` | `false` | Hide the disconnect/hang-up button |
+| `.hideScreenShareButton(Bool)` | `false` | Hide the screen share button |
+| `.hideFlipCameraButton(Bool)` | `false` | Hide the flip camera button |
+| `.hideMuteVideoButton(Bool)` | `false` | Hide the mute video button |
+| `.hideMuteAudioButton(Bool)` | `false` | Hide the mute audio button |
+| `.hideBackButton(Bool)` | `false` | Hide the back button |
+| `.persistenceMode(Bool)` | `true` | Reuse session across app restarts |
+| `.product(PopinProduct)` | `nil` | Product context for the call |
+| `.callerId(String)` | `nil` | Custom caller identifier |
+| `.meta([String: String])` | `[:]` | Custom metadata key-value pairs |
+
+### PopinProduct
+
+```swift
+PopinProduct(
+    id: "SKU-123",
+    name: "Product Name",
+    image: "https://example.com/image.jpg",
+    url: "https://example.com/product",
+    description: "Product description",
+    extra: "Additional info"
+)
+```
+
+### PopinInitListener
+
+| Method | Description |
+|--------|-------------|
+| `onInitComplete()` | SDK initialization succeeded |
+| `onInitFailed(reason:)` | SDK initialization failed |
 
 ### PopinEventsListener
 

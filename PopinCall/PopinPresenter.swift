@@ -19,9 +19,17 @@ class PopinPresenter {
         return Utilities.shared.getUserToken().count > 0;
     }
     
-    func registerUser(seller_id: Int, onSucess sucess: @escaping () -> Void) {
+    func registerUser(seller_id: Int, name: String, mobile: String, campaign: [String: String], onSucess sucess: @escaping () -> Void) {
         
-        popinInteractor.registerUser(seller_id: seller_id, onSucess: {
+        var campaignString = ""
+        if !campaign.isEmpty {
+            if let jsonData = try? JSONSerialization.data(withJSONObject: campaign, options: []),
+               let jsonString = String(data: jsonData, encoding: .utf8) {
+                campaignString = jsonString
+            }
+        }
+        
+        popinInteractor.registerUser(seller_id: seller_id, name: name, mobile: mobile, campaign: campaignString, onSucess: {
             sucess();
         }, onFailure: {
         

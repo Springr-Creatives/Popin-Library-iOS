@@ -6,7 +6,8 @@
       "Bash(grep:*)",
       "Bash(cat:*)",
       "Bash(swift build:*)",
-      "Bash(tree:*)"
+      "Bash(tree:*)",
+      "Bash(ruby -e:*)"
     ]
   }
 }
