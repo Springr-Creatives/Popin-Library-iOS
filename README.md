@@ -2,16 +2,6 @@
 
 PopinCall is an iOS library that enables seamless integration of video calling functionality into your iOS applications. It provides an easy-to-use interface for connecting users with experts or support agents with robust real-time communication.
 
-## Features
-
-- High-quality video calling powered by LiveKit
-- Audio controls (mute/unmute microphone)
-- Video controls (enable/disable camera, switch camera)
-- Picture-in-picture support
-- CallKit integration for native call UI
-- Automatic connection management with queue positioning
-- Expert availability handling
-- Configurable UI (hide/show individual controls)
 
 ## Requirements
 

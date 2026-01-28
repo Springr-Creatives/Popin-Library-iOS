@@ -774,6 +774,7 @@
 				DEVELOPMENT_TEAM = 94SDW7Q788;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = PopinCallExamples/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = "SDK Example";
 				INFOPLIST_KEY_NSCameraUsageDescription = "PopinCallExamples uses your camera to capture video which is shared with other room participants.";
 				INFOPLIST_KEY_NSMicrophoneUsageDescription = "PopinCallExamples uses your microphone to capture audio which is shared with other room participants.";
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
@@ -805,6 +806,7 @@
 				DEVELOPMENT_TEAM = 94SDW7Q788;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = PopinCallExamples/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = "SDK Example";
 				INFOPLIST_KEY_NSCameraUsageDescription = "PopinCallExamples uses your camera to capture video which is shared with other room participants.";
 				INFOPLIST_KEY_NSMicrophoneUsageDescription = "PopinCallExamples uses your microphone to capture audio which is shared with other room participants.";
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;

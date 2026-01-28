@@ -87,6 +87,7 @@ public class Popin : PopinPusherDelegate, CallAcceptanceListener {
     }
 
     public func startCall() {
+        print("START_CALLL")
         self.eventsListener = config.eventsListener
         callStarted = true
 
@@ -146,23 +147,6 @@ public class Popin : PopinPusherDelegate, CallAcceptanceListener {
 
         // Notify init listener that initialization is complete
         config.initListener?.onInitComplete()
-
-        if callStarted && sellerToken > 0 {
-            if Utilities.shared.isConnected() {
-                print("AGENT_ALREADY CONNECTED")
-                self.eventsListener?.onCallStart()
-                return
-            }
-            print("ATTEMPT AGENT CONNECT")
-            popinPresenter.startConnection(seller_id: sellerToken, onSuccess: { [weak self] callQueueId in
-                print("Connection started, call_queue_id=\(callQueueId)")
-                self?.eventsListener?.onCallStart()
-                self?.startWaitingForAcceptance(callQueueId: callQueueId)
-            }, onFailure: { [weak self] in
-                print("Connection failed")
-                self?.eventsListener?.onCallFailed()
-            })
-        }
     }
 
     private func startWaitingForAcceptance(callQueueId: Int) {
