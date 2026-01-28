@@ -7,7 +7,9 @@
       "Bash(cat:*)",
       "Bash(swift build:*)",
       "Bash(tree:*)",
-      "Bash(ruby -e:*)"
+      "Bash(ruby -e:*)",
+      "Bash(wc:*)",
+      "Bash(ls:*)"
     ]
   }
 }
