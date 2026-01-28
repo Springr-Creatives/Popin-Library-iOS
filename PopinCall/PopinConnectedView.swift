@@ -134,52 +134,28 @@ struct PopinConnectedView: View {
 
             Spacer()
 
-            // Remote participants and controls at bottom
-            HStack(alignment: .bottom, spacing: 0) {
-                // Side controls on the left
-                SideControls()
-                    .environmentObject(_room)
-
-                Spacer()
-
-                // Remote participants to the right of side controls
-                if sortedParticipants.count > 1 {
-                    AudienceRow(
-                        participants: Array(sortedParticipants.dropFirst()),
-                        primaryParticipantId: $primaryParticipantId
-                    )
-                }
+            // Remote participants Row
+            if sortedParticipants.count > 1 {
+                AudienceRow(
+                    participants: Array(sortedParticipants.dropFirst()),
+                    primaryParticipantId: $primaryParticipantId
+                )
+                .padding(.bottom, 8)
             }
-            .padding(.bottom, 16)
 
-            // Centered disconnect button overlay
-            if !configHolder.config.hideDisconnectButton {
-                Button(action: {
-                    // Mark that user is ending the call
-                    viewModel.isUserEndingCall = true
+            // Bottom Controls
+            BottomControls(onEndCall: {
+                // Mark that user is ending the call
+                viewModel.isUserEndingCall = true
 
-                    // Call the end API
-                    viewModel.onEndCall?()
+                // Call the end API
+                viewModel.onEndCall?()
 
-                    // Disconnect from the room
-                    Task {
-                        await _room.disconnect()
-                    }
-                }) {
-                    ZStack {
-                        Circle()
-                            .fill(Color.red)
-                            .frame(width: 60, height: 60)
-
-                        Image(systemName: "phone.down.fill")
-                            .font(.system(size: 24))
-                            .foregroundColor(.white)
-                    }
+                // Disconnect from the room
+                Task {
+                    await _room.disconnect()
                 }
-                .frame(width: 60, height: 60)
-                .padding(.bottom, 48)
-                .buttonStyle(.plain)
-            }
+            })
         }
     }
 

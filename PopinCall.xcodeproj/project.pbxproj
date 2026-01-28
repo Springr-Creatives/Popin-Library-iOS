@@ -26,7 +26,6 @@
 		CF1742892F27407B00AE48E7 /* PiPSupport.swift in Sources */ = {isa = PBXBuildFile; fileRef = CF17426A2F27407B00AE48E7 /* PiPSupport.swift */; };
 		CF17428A2F27407B00AE48E7 /* VideoCall.swift in Sources */ = {isa = PBXBuildFile; fileRef = CF1742792F27407B00AE48E7 /* VideoCall.swift */; };
 		CF17428B2F27407B00AE48E7 /* NotConnectedView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CF1742662F27407B00AE48E7 /* NotConnectedView.swift */; };
-		CF17428C2F27407B00AE48E7 /* SideControls.swift in Sources */ = {isa = PBXBuildFile; fileRef = CF1742762F27407B00AE48E7 /* SideControls.swift */; };
 		CF17428D2F27407B00AE48E7 /* MyCustomRendererView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CF1742652F27407B00AE48E7 /* MyCustomRendererView.swift */; };
 		CF17428E2F27407B00AE48E7 /* PopinCallViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CF17426F2F27407B00AE48E7 /* PopinCallViewController.swift */; };
 		CF17428F2F27407B00AE48E7 /* VideoCallInteractor.swift in Sources */ = {isa = PBXBuildFile; fileRef = CF17427A2F27407B00AE48E7 /* VideoCallInteractor.swift */; };
@@ -47,6 +46,7 @@
 		CFA4CD972F28D0B8009EB444 /* LiveKit in Frameworks */ = {isa = PBXBuildFile; productRef = CFA4CD9C2F28D0C0009EB444 /* LiveKit */; };
 		CFA4CD982F28D0B8009EB444 /* LiveKitComponents in Frameworks */ = {isa = PBXBuildFile; productRef = CFA4CD9D2F28D0C0009EB444 /* LiveKitComponents */; };
 		CFA4CD992F28D0B8009EB444 /* PusherSwift in Frameworks */ = {isa = PBXBuildFile; productRef = CFA4CD9E2F28D0C0009EB444 /* PusherSwift */; };
+		CFA4CDDF2F2A4C2A009EB444 /* BottomControls.swift in Sources */ = {isa = PBXBuildFile; fileRef = CFA4CDDE2F2A4C2A009EB444 /* BottomControls.swift */; };
 		CFA556862923FEA3003453DF /* PopinCallDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = CFA556852923FEA3003453DF /* PopinCallDelegate.swift */; };
 		CFB63D8B2929045E005F265D /* PopinPusher.swift in Sources */ = {isa = PBXBuildFile; fileRef = CFB63D8A2929045E005F265D /* PopinPusher.swift */; };
 		CFB63D8D292908EF005F265D /* PopinPusherDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = CFB63D8C292908EF005F265D /* PopinPusherDelegate.swift */; };
@@ -122,7 +122,6 @@
 		CF1742732F27407B00AE48E7 /* PopinPresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PopinPresenter.swift; sourceTree = "<group>"; };
 		CF1742742F27407B00AE48E7 /* PopinPusher.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PopinPusher.swift; sourceTree = "<group>"; };
 		CF1742752F27407B00AE48E7 /* PopinPusherDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PopinPusherDelegate.swift; sourceTree = "<group>"; };
-		CF1742762F27407B00AE48E7 /* SideControls.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SideControls.swift; sourceTree = "<group>"; };
 		CF1742772F27407B00AE48E7 /* TopControls.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TopControls.swift; sourceTree = "<group>"; };
 		CF1742782F27407B00AE48E7 /* Utilities.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Utilities.swift; sourceTree = "<group>"; };
 		CF1742792F27407B00AE48E7 /* VideoCall.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VideoCall.swift; sourceTree = "<group>"; };
@@ -133,6 +132,7 @@
 		CF17429E2F27844400AE48E7 /* ObjectSavable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ObjectSavable.swift; sourceTree = "<group>"; };
 		CF174AA12F27407B00AE48E7 /* CallAcceptanceWaitHandler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CallAcceptanceWaitHandler.swift; sourceTree = "<group>"; };
 		CF1D09E39EFC62DD51F4244B /* PopinProduct.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = PopinProduct.swift; sourceTree = "<group>"; };
+		CFA4CDDE2F2A4C2A009EB444 /* BottomControls.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BottomControls.swift; sourceTree = "<group>"; };
 		CFA556852923FEA3003453DF /* PopinCallDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PopinCallDelegate.swift; sourceTree = "<group>"; };
 		CFB63D8A2929045E005F265D /* PopinPusher.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PopinPusher.swift; sourceTree = "<group>"; };
 		CFB63D8C292908EF005F265D /* PopinPusherDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PopinPusherDelegate.swift; sourceTree = "<group>"; };
@@ -228,9 +228,9 @@
 				CF1742712F27407B00AE48E7 /* PopinConnectedView.swift */,
 				CF1742722F27407B00AE48E7 /* PopinInteractor.swift */,
 				CF1742732F27407B00AE48E7 /* PopinPresenter.swift */,
+				CFA4CDDE2F2A4C2A009EB444 /* BottomControls.swift */,
 				CF1742742F27407B00AE48E7 /* PopinPusher.swift */,
 				CF1742752F27407B00AE48E7 /* PopinPusherDelegate.swift */,
-				CF1742762F27407B00AE48E7 /* SideControls.swift */,
 				CF1742772F27407B00AE48E7 /* TopControls.swift */,
 				CF1742782F27407B00AE48E7 /* Utilities.swift */,
 				CF1742792F27407B00AE48E7 /* VideoCall.swift */,
@@ -455,7 +455,6 @@
 				CF1742892F27407B00AE48E7 /* PiPSupport.swift in Sources */,
 				CF17428A2F27407B00AE48E7 /* VideoCall.swift in Sources */,
 				CF17428B2F27407B00AE48E7 /* NotConnectedView.swift in Sources */,
-				CF17428C2F27407B00AE48E7 /* SideControls.swift in Sources */,
 				CF17428D2F27407B00AE48E7 /* MyCustomRendererView.swift in Sources */,
 				CF17428E2F27407B00AE48E7 /* PopinCallViewController.swift in Sources */,
 				CF17428F2F27407B00AE48E7 /* VideoCallInteractor.swift in Sources */,
@@ -470,6 +469,7 @@
 				CF1742972F27407B00AE48E7 /* Utilities.swift in Sources */,
 				CF1742982F27407B00AE48E7 /* PopinPresenter.swift in Sources */,
 				CF1742992F27407B00AE48E7 /* PopinConference.swift in Sources */,
+				CFA4CDDF2F2A4C2A009EB444 /* BottomControls.swift in Sources */,
 				CF17429A2F27407B00AE48E7 /* PopinCallDelegate.swift in Sources */,
 				CF17429F2F27844400AE48E7 /* ObjectSavable.swift in Sources */,
 				CFA556862923FEA3003453DF /* PopinCallDelegate.swift in Sources */,

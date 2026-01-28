@@ -33,6 +33,10 @@ public class Popin : PopinPusherDelegate, CallAcceptanceListener {
     private var sellerToken: Int = 0
     private var waitHandler: CallAcceptanceWaitHandler?
 
+    #if canImport(UIKit)
+    private weak var currentCallViewController: PopinCallViewController?
+    #endif
+
     // MARK: - Initialization (matches Android Popin.init)
 
     @discardableResult
@@ -184,6 +188,7 @@ public class Popin : PopinPusherDelegate, CallAcceptanceListener {
     #if canImport(UIKit)
     private func presentCallViewController(talkModel: TalkModel) {
         let callVC = PopinCallViewController()
+        self.currentCallViewController = callVC
         callVC.modalPresentationStyle = .fullScreen
         callVC.popinConfig = config
         callVC.onCallEnd = { [weak self] in
@@ -243,6 +248,11 @@ public class Popin : PopinPusherDelegate, CallAcceptanceListener {
     }
 
     func onCallDisconnected() {
+        #if canImport(UIKit)
+        DispatchQueue.main.async {
+             self.currentCallViewController?.handleRemoteCancel()
+        }
+        #endif
         self.eventsListener?.onCallEnd()
     }
 

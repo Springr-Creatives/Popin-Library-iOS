@@ -65,6 +65,7 @@ public class PopinCallViewController: UIViewController {
     
     // Track if disconnection was initiated by app logic (button/room event) vs external (CallKit)
     private var isAppInitiatedDisconnect = false
+    var shouldSkipEndApi = false
     
     @IBOutlet weak var productLabel: UILabel!
     @IBOutlet weak var callerNameLabel: UILabel!
@@ -87,6 +88,16 @@ public class PopinCallViewController: UIViewController {
         print("reject_click - ending call via CallKit")
         // Always go through CallKit for consistency
         CallManager.shared.endCall()
+    }
+    
+    func handleRemoteCancel() {
+        print("Handling remote cancel")
+        shouldSkipEndApi = true
+        // Close UI and end CallKit call
+        closeViewController(shouldNotEndCX: false)
+        DispatchQueue.main.async {
+            self.dismiss(animated: true)
+        }
     }
     
     required init?(coder aDecoder: NSCoder) {
@@ -399,7 +410,9 @@ extension PopinCallViewController: CallManagerDelegate {
             print("Disconnect from CallManager")
             
             // Determine whether to call End or Reject API
-            if self.callConnected || self.viewModel.callAccepted {
+            if self.shouldSkipEndApi {
+                print("Skipping End/Reject API due to remote cancel")
+            } else if self.callConnected || self.viewModel.callAccepted {
                 print("Call was connected, calling End API")
                 self.videoCallPresenter.endCall(callId: self.callId, onSuccess: {
                     print("End API success")
@@ -426,6 +439,7 @@ extension PopinCallViewController: CallManagerDelegate {
             }
             
             self.closeViewController(shouldNotEndCX: true)
+            self.dismiss(animated: true)
         }
     }
 
