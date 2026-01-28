@@ -23,25 +23,21 @@ let package = Package(
         .package(url: "https://github.com/livekit/components-swift.git", .upToNextMinor(from: "0.1.6")),
     ],
     targets: [
-        // Pre-built XCFramework hosted on your CDN
-        .binaryTarget(
-            name: "PopinCallBinary",
-            // TODO: Replace with your CDN URL and checksum after running scripts/build-xcframework.sh
-            url: "https://<YOUR_CDN>/PopinCall.xcframework.zip",
-            checksum: "<SHA256_CHECKSUM>"
-        ),
-        // Wrapper target that re-exports the binary and declares all dependencies
         .target(
             name: "PopinCall",
             dependencies: [
-                "PopinCallBinary",
                 "Alamofire",
                 .product(name: "PusherSwift", package: "pusher-websocket-swift"),
                 "SwiftyJSON",
                 .product(name: "LiveKit", package: "client-sdk-swift"),
                 .product(name: "LiveKitComponents", package: "components-swift"),
             ],
-            path: "Sources/PopinCall"
+            path: "PopinCall"
+        ),
+        .testTarget(
+            name: "PopinCallTests",
+            dependencies: ["PopinCall"],
+            path: "PopinCallTests"
         ),
     ]
 )
