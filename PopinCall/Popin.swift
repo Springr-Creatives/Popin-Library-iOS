@@ -28,7 +28,8 @@ public class Popin : PopinPusherDelegate, CallAcceptanceListener {
     private let popinPresenter = PopinPresenter(popinInteractor: PopinInteractor())
     private let popinPusher = PopinPusher()
 
-    private var startCall: Bool = false
+    private var callStarted: Bool = false
+    private var pusherConnected: Bool = false
     private var sellerToken: Int = 0
     private var waitHandler: CallAcceptanceWaitHandler?
 
@@ -39,12 +40,16 @@ public class Popin : PopinPusherDelegate, CallAcceptanceListener {
         if let existing = shared {
             existing.config = config
             if !existing.config.persistenceMode {
-                shared = Popin(token: token, config: config)
+                let newInstance = Popin(token: token, config: config)
+                shared = newInstance
+                newInstance.setup()
             } else {
                 config.initListener?.onInitComplete()
             }
         } else {
-            shared = Popin(token: token, config: config)
+            let newInstance = Popin(token: token, config: config)
+            shared = newInstance
+            newInstance.setup()
         }
         return shared!
     }
@@ -58,18 +63,20 @@ public class Popin : PopinPusherDelegate, CallAcceptanceListener {
         self.config = config
         self.sellerToken = token
         Utilities.shared.saveSeller(seller_id: token)
+    }
 
+    private func setup() {
         if !config.persistenceMode {
             // Non-persistence mode: clear saved session and always re-register
             Utilities.shared.saveUser(user: nil)
         }
 
         if !popinPresenter.isUserRegistered() {
-            popinPresenter.registerUser(seller_id: token, name: config.userName, mobile: config.contactInfo, campaign: config.meta, onSucess: { [self] in
-                self.connectPusher(seller_id: token)
+            popinPresenter.registerUser(seller_id: sellerToken, name: config.userName, contactInfo: config.contactInfo, campaign: config.meta, onSucess: { [self] in
+                self.connectPusher(seller_id: sellerToken)
             })
         } else {
-            connectPusher(seller_id: token)
+            connectPusher(seller_id: sellerToken)
         }
     }
 
@@ -79,12 +86,17 @@ public class Popin : PopinPusherDelegate, CallAcceptanceListener {
         return config
     }
 
-    public func startCall(eventsListener: PopinEventsListener) {
-        self.eventsListener = eventsListener
-        startCall = true
+    public func startCall() {
+        self.eventsListener = config.eventsListener
+        callStarted = true
 
         if Utilities.shared.isConnected() {
             self.eventsListener?.onCallStart()
+            return
+        }
+        
+        if !pusherConnected {
+            print("Pusher not connected yet, waiting...")
             return
         }
 
@@ -111,7 +123,7 @@ public class Popin : PopinPusherDelegate, CallAcceptanceListener {
         Utilities.shared.saveSeller(seller_id: token)
 
         if !popinPresenter.isUserRegistered() {
-            popinPresenter.registerUser(seller_id: token, name: config.userName, mobile: config.contactInfo, campaign: config.meta, onSucess: {
+            popinPresenter.registerUser(seller_id: token, name: config.userName, contactInfo: config.contactInfo, campaign: config.meta, onSucess: {
                 self.connectPusher(seller_id: token)
             })
         } else {
@@ -122,7 +134,7 @@ public class Popin : PopinPusherDelegate, CallAcceptanceListener {
     // MARK: - Internal
 
     func connectPusher(seller_id: Int) {
-        startCall = true
+        callStarted = true
         sellerToken = seller_id
         popinPusher.delegate = self
         popinPusher.connect()
@@ -130,11 +142,12 @@ public class Popin : PopinPusherDelegate, CallAcceptanceListener {
 
     func onPusherConnected() {
         print("PUSHER CONNECTED")
+        pusherConnected = true
 
         // Notify init listener that initialization is complete
         config.initListener?.onInitComplete()
 
-        if startCall && sellerToken > 0 {
+        if callStarted && sellerToken > 0 {
             if Utilities.shared.isConnected() {
                 print("AGENT_ALREADY CONNECTED")
                 self.eventsListener?.onCallStart()

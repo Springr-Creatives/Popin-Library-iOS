@@ -19,6 +19,7 @@ class ViewController: UIViewController {
             .contactInfo("demo@example.com")
             .sandboxMode(true)
             .initListener(self)
+            .eventsListener(self)
             .hideScreenShareButton(true)
             .build()
 
@@ -27,7 +28,7 @@ class ViewController: UIViewController {
 
     @IBAction func makeCall(_ sender: Any) {
         // Start a call (matches Android Popin.getInstance().startCall)
-        Popin.shared?.startCall(eventsListener: self)
+        Popin.shared?.startCall()
     }
 
 }

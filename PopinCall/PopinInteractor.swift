@@ -11,14 +11,36 @@ import SwiftyJSON
 
 class PopinInteractor {
     
-    func registerUser(seller_id: Int, name: String, mobile: String, campaign: String, onSucess sucess: @escaping () -> Void, onFailure failure: @escaping () -> Void) {
+    func registerUser(seller_id: Int, name: String, contactInfo: String, campaign: String, onSucess sucess: @escaping () -> Void, onFailure failure: @escaping () -> Void) {
+        let isEmail = contactInfo.contains("@")
+        
+        // Basic validation
+        if isEmail {
+            if !contactInfo.contains(".") || contactInfo.count < 5 {
+                print("[DEBUG registerUser] Invalid email format: \(contactInfo)")
+                failure()
+                return
+            }
+        } else {
+            if contactInfo.count < 8 {
+                print("[DEBUG registerUser] Invalid mobile format: \(contactInfo)")
+                failure()
+                return
+            }
+        }
+
         var parameters: Parameters = [
             "seller_id": seller_id,
-            "is_mobile": 1,
+            "is_mobile": isEmail ? 0 : 1,
             "device": "iosSdk",
-            "name": name,
-            "mobile": mobile
+            "name": name
         ]
+        
+        if isEmail {
+            parameters["email"] = contactInfo
+        } else {
+            parameters["mobile"] = contactInfo
+        }
         if !campaign.isEmpty {
             parameters["campaign"] = campaign
         }
@@ -54,6 +76,9 @@ class PopinInteractor {
         print("[DEBUG startConnection] URL: \(urlString), params: \(parameters)")
         AF.request(urlString, method: .post, parameters: parameters, encoding: URLEncoding.httpBody, headers: headers)
             .responseDecodable(of: StatusModel.self) { response in
+                if let data = response.data, let raw = String(data: data, encoding: .utf8) {
+                    print("[DEBUG startConnection] Raw response: \(raw)")
+                }
                 switch response.result {
                 case .success(let statusModel):
                     print("[DEBUG startConnection] status=\(statusModel.status), call_queue_id=\(statusModel.call_queue_id ?? -1)")

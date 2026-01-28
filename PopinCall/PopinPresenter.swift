@@ -19,7 +19,7 @@ class PopinPresenter {
         return Utilities.shared.getUserToken().count > 0;
     }
     
-    func registerUser(seller_id: Int, name: String, mobile: String, campaign: [String: String], onSucess sucess: @escaping () -> Void) {
+    func registerUser(seller_id: Int, name: String, contactInfo: String, campaign: [String: String], onSucess sucess: @escaping () -> Void) {
         
         var campaignString = ""
         if !campaign.isEmpty {
@@ -29,7 +29,7 @@ class PopinPresenter {
             }
         }
         
-        popinInteractor.registerUser(seller_id: seller_id, name: name, mobile: mobile, campaign: campaignString, onSucess: {
+        popinInteractor.registerUser(seller_id: seller_id, name: name, contactInfo: contactInfo, campaign: campaignString, onSucess: {
             sucess();
         }, onFailure: {
         
