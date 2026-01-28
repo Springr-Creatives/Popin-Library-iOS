@@ -38,6 +38,12 @@ public class PopinCallViewController: UIViewController {
     var customerName: String { pushCallData?.displayName ?? "" }
     var artifact: String { pushCallData?.primaryProductInfo ?? "" }
 
+    /// For outgoing calls: the queue ID used while waiting for acceptance
+    var callQueueId: Int?
+
+    /// Indicates this is an outgoing call (started by user via startCall)
+    var isOutgoingCall: Bool = false
+
     var closedCall : Bool = false;
     var callConnected : Bool = false;
     
@@ -167,6 +173,23 @@ public class PopinCallViewController: UIViewController {
             DispatchQueue.main.async {
                 self.closeViewController(shouldNotEndCX: false)
             }
+        }
+
+        // Set up cancel call callback (for outgoing calls waiting for acceptance)
+        viewModel.onCancelCall = { [weak self] in
+            guard let self = self else { return }
+            self.isAppInitiatedDisconnect = true
+            print("User cancelled call while waiting for acceptance")
+            Popin.shared?.cancelCall()
+            DispatchQueue.main.async {
+                self.closeViewController(shouldNotEndCX: true)
+                self.dismiss(animated: true)
+            }
+        }
+
+        // If this is an outgoing call, set waiting state
+        if isOutgoingCall {
+            viewModel.isWaitingForAcceptance = true
         }
     }
 
@@ -325,24 +348,39 @@ public class PopinCallViewController: UIViewController {
 extension PopinCallViewController: VideoCallView {
     func closeCall(message: String) {
         let alert = UIAlertController(title: "Error", message: message, preferredStyle: .alert)
-        
+
         let okAction = UIAlertAction(title: "OK", style: .default) { _ in
             self.callConnected = false
             print("Close call after alert")
             self.closeViewController(shouldNotEndCX: false)
         }
-        
+
         alert.addAction(okAction)
-        
+
         // Present the alert
         self.present(alert, animated: true, completion: nil)
     }
-    
+
     func loadCall(call: TalkModel) {
         _sdkCallId = call.id
         callConnected = true
+        viewModel.isWaitingForAcceptance = false
         viewModel.callAccepted = true
         viewModel.call = call
+    }
+
+    /// Update queue position for outgoing calls
+    func updateQueuePosition(_ position: Int) {
+        viewModel.queuePosition = position
+    }
+
+    /// Called when the call is missed while waiting
+    func handleCallMissed() {
+        viewModel.isWaitingForAcceptance = false
+        DispatchQueue.main.async {
+            self.closeViewController(shouldNotEndCX: true)
+            self.dismiss(animated: true)
+        }
     }
     
     func startLoading() {

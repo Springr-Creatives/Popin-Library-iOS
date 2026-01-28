@@ -17,8 +17,11 @@
 import LiveKit
 import LiveKitComponents
 import SwiftUI
+import AVFoundation
 
 #if canImport(UIKit)
+import UIKit
+
 struct PopinConference: View {
     @EnvironmentObject private var _room: Room
     @Environment(\.liveKitUIOptions) private var _ui: UIOptions
@@ -82,8 +85,11 @@ struct PopinConference: View {
 
     var body: some View {
         // Show different views based on connection state
-        if !viewModel.callAccepted {
-            // Not accepted yet (Ringing) - show not connected view
+        if viewModel.isWaitingForAcceptance {
+            // Outgoing call waiting for acceptance - show "Connecting..." with self video
+            buildWaitingForAcceptanceView()
+        } else if !viewModel.callAccepted {
+            // Not accepted yet (Ringing) - show not connected view (incoming calls)
              if #available(iOS 16.0, *) {
                  NavigationStack {
                      buildNotConnectedView()
@@ -125,6 +131,174 @@ struct PopinConference: View {
                 }
             }
         }
+    }
+
+    /// View shown for outgoing calls while waiting for the call to be accepted
+    @ViewBuilder
+    func buildWaitingForAcceptanceView() -> some View {
+        ZStack {
+            // Full screen self video preview
+            LocalCameraPreview()
+                .ignoresSafeArea()
+
+            // Gradient overlay at top for better text visibility
+            VStack {
+                LinearGradient(
+                    gradient: Gradient(colors: [Color.black.opacity(0.6), Color.clear]),
+                    startPoint: .top,
+                    endPoint: .bottom
+                )
+                .frame(height: 150)
+                Spacer()
+            }
+            .ignoresSafeArea()
+
+            // Content overlay
+            VStack {
+                // "Connecting..." label at top center
+                HStack(spacing: 8) {
+                    ProgressView()
+                        .progressViewStyle(CircularProgressViewStyle(tint: .white))
+                    Text("Connecting...")
+                        .foregroundColor(.white)
+                        .font(.system(size: 20, weight: .semibold))
+                }
+                .padding(.top, 60)
+
+                Spacer()
+
+                // Bottom controls matching BottomControls.swift style
+                WaitingBottomControls(onCancelCall: {
+                    viewModel.onCancelCall?()
+                })
+            }
+        }
+    }
+}
+
+// MARK: - Local Camera Preview
+
+struct LocalCameraPreview: UIViewRepresentable {
+    func makeUIView(context: Context) -> LocalCameraPreviewUIView {
+        let view = LocalCameraPreviewUIView()
+        view.startCapture()
+        return view
+    }
+
+    func updateUIView(_ uiView: LocalCameraPreviewUIView, context: Context) {}
+
+    static func dismantleUIView(_ uiView: LocalCameraPreviewUIView, coordinator: ()) {
+        uiView.stopCapture()
+    }
+}
+
+class LocalCameraPreviewUIView: UIView {
+    private var captureSession: AVCaptureSession?
+    private var previewLayer: AVCaptureVideoPreviewLayer?
+
+    override init(frame: CGRect) {
+        super.init(frame: frame)
+        backgroundColor = .black
+    }
+
+    required init?(coder: NSCoder) {
+        super.init(coder: coder)
+        backgroundColor = .black
+    }
+
+    override func layoutSubviews() {
+        super.layoutSubviews()
+        previewLayer?.frame = bounds
+    }
+
+    func startCapture() {
+        let session = AVCaptureSession()
+        session.sessionPreset = .high
+
+        guard let camera = AVCaptureDevice.default(.builtInWideAngleCamera, for: .video, position: .front),
+              let input = try? AVCaptureDeviceInput(device: camera) else {
+            return
+        }
+
+        if session.canAddInput(input) {
+            session.addInput(input)
+        }
+
+        let previewLayer = AVCaptureVideoPreviewLayer(session: session)
+        previewLayer.videoGravity = .resizeAspectFill
+        previewLayer.frame = bounds
+        layer.addSublayer(previewLayer)
+
+        self.captureSession = session
+        self.previewLayer = previewLayer
+
+        DispatchQueue.global(qos: .userInitiated).async {
+            session.startRunning()
+        }
+    }
+
+    func stopCapture() {
+        captureSession?.stopRunning()
+        previewLayer?.removeFromSuperlayer()
+        captureSession = nil
+        previewLayer = nil
+    }
+}
+
+// MARK: - Waiting Bottom Controls
+
+struct WaitingBottomControls: View {
+    let onCancelCall: () -> Void
+
+    var body: some View {
+        HStack(spacing: 0) {
+            // 1. Overflow Menu (disabled)
+            ControlCircleButtonView(
+                iconName: "ellipsis",
+                backgroundColor: Color.black.opacity(0.3),
+                iconColor: .white.opacity(0.4)
+            )
+
+            Spacer()
+
+            // 2. Mic (disabled)
+            ControlCircleButtonView(
+                iconName: "mic.fill",
+                backgroundColor: Color.black.opacity(0.3),
+                iconColor: .white.opacity(0.4)
+            )
+
+            Spacer()
+
+            // 3. Video (disabled)
+            ControlCircleButtonView(
+                iconName: "video.fill",
+                backgroundColor: Color.black.opacity(0.3),
+                iconColor: .white.opacity(0.4)
+            )
+
+            Spacer()
+
+            // 4. Flip Camera (disabled)
+            ControlCircleButtonView(
+                iconName: "arrow.triangle.2.circlepath.camera.fill",
+                backgroundColor: Color.black.opacity(0.3),
+                iconColor: .white.opacity(0.4)
+            )
+
+            Spacer()
+
+            // 5. End Call (enabled)
+            ControlCircleButton(
+                iconName: "phone.down.fill",
+                backgroundColor: Color(hex: "E53935"),
+                iconColor: .white,
+                action: onCancelCall
+            )
+        }
+        .padding(.horizontal, 24)
+        .padding(.bottom, 32)
+        .padding(.top, 12)
     }
 }
 #endif
