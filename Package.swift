@@ -6,8 +6,8 @@ import PackageDescription
 let package = Package(
     name: "PopinCall",
     platforms: [
-        .iOS(.v13),
-        .macOS(.v11)
+        .iOS(.v17),
+        .macOS(.v14)
     ],
     products: [
         .library(
