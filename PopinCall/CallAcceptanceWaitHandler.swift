@@ -6,7 +6,6 @@
 //
 
 import Foundation
-import Alamofire
 
 protocol CallAcceptanceListener: AnyObject {
     func onQueuePositionChange(position: Int)
@@ -15,13 +14,13 @@ protocol CallAcceptanceListener: AnyObject {
 }
 
 class CallAcceptanceWaitHandler {
-    private static let interval: TimeInterval = 3.0 // 3 seconds
+    private static let interval: UInt64 = 3_000_000_000 // 3 seconds
     private static let maxDuration: TimeInterval = 300.0 // 5 minutes
 
     private let callQueueId: Int
     private weak var listener: CallAcceptanceListener?
-    private var timer: Timer?
-    private var elapsedTime: TimeInterval = 0
+    private var task: Task<Void, Never>?
+    private var startTime: Date?
     private var queuePosition: Int = -1
     private var isRunning = false
 
@@ -31,73 +30,76 @@ class CallAcceptanceWaitHandler {
     }
 
     func startWaitingForAcceptance() {
+        guard !isRunning else { return }
         isRunning = true
-        elapsedTime = 0
+        startTime = Date()
         print("[CallAcceptanceWaitHandler] Started polling for call_queue_id=\(callQueueId)")
-        scheduleNext()
+        
+        task = Task {
+            while isRunning {
+                // Check timeout
+                if let startTime = startTime, Date().timeIntervalSince(startTime) >= CallAcceptanceWaitHandler.maxDuration {
+                    print("[CallAcceptanceWaitHandler] Timed out after 5 minutes")
+                    await MainActor.run {
+                        self.stopWaitingForAcceptance()
+                        self.listener?.onCallMissed()
+                    }
+                    return
+                }
+                
+                await pollCallUpdate()
+                
+                if !isRunning { break }
+                
+                do {
+                    try await Task.sleep(nanoseconds: CallAcceptanceWaitHandler.interval)
+                } catch {
+                    // Task cancelled
+                    break
+                }
+            }
+        }
     }
 
     func stopWaitingForAcceptance() {
         isRunning = false
-        timer?.invalidate()
-        timer = nil
+        task?.cancel()
+        task = nil
         print("[CallAcceptanceWaitHandler] Stopped polling")
     }
 
-    private func scheduleNext() {
-        guard isRunning, elapsedTime < CallAcceptanceWaitHandler.maxDuration else {
-            if elapsedTime >= CallAcceptanceWaitHandler.maxDuration {
-                print("[CallAcceptanceWaitHandler] Timed out after 5 minutes")
-                stopWaitingForAcceptance()
-                listener?.onCallMissed()
-            }
-            return
-        }
+    private func pollCallUpdate() async {
+        let urlString = serverURL + "/user/connect/update"
+        let parameters: [String: Any] = ["call_queue_id": callQueueId]
 
-        timer = Timer.scheduledTimer(withTimeInterval: CallAcceptanceWaitHandler.interval, repeats: false) { [weak self] _ in
-            self?.pollCallUpdate()
+        do {
+            let model: UpdateConnectionModel = try await Utilities.shared.request(urlString: urlString, method: "POST", parameters: parameters)
+            await handleUpdate(model)
+        } catch {
+            print("[CallAcceptanceWaitHandler] Error: \(error)")
         }
     }
-
-    private func pollCallUpdate() {
+    
+    @MainActor
+    private func handleUpdate(_ model: UpdateConnectionModel) {
+        // Double check isRunning in case it was stopped while request was in flight
         guard isRunning else { return }
-
-        let urlString = serverURL + "/user/connect/update"
-        let parameters: Parameters = ["call_queue_id": callQueueId]
-        let headers = Utilities.shared.getHeaders()
-
-        AF.request(urlString, method: .post, parameters: parameters, encoding: URLEncoding.httpBody, headers: headers)
-            .responseDecodable(of: UpdateConnectionModel.self) { [weak self] response in
-                guard let self = self, self.isRunning else { return }
-
-                self.elapsedTime += CallAcceptanceWaitHandler.interval
-
-                switch response.result {
-                case .success(let model):
-                    print("[CallAcceptanceWaitHandler] status=\(model.status), position=\(model.position ?? -1), call_id=\(model.call_id ?? -1)")
-                    if model.status == 1 {
-                        if let position = model.position, position != self.queuePosition {
-                            self.queuePosition = position
-                            self.listener?.onQueuePositionChange(position: position)
-                        }
-                    } else if model.status == 2 {
-                        self.stopWaitingForAcceptance()
-                        if let callId = model.call_id {
-                            self.listener?.onCallAccepted(callId: callId)
-                        }
-                    } else if model.status == 3 {
-                        self.stopWaitingForAcceptance()
-                        self.listener?.onCallMissed()
-                    }
-
-                case .failure(let error):
-                    print("[CallAcceptanceWaitHandler] Error: \(error)")
-                }
-
-                if self.isRunning {
-                    self.scheduleNext()
-                }
+        
+        print("[CallAcceptanceWaitHandler] status=\(model.status), position=\(model.position ?? -1), call_id=\(model.call_id ?? -1)")
+        if model.status == 1 {
+            if let position = model.position, position != self.queuePosition {
+                self.queuePosition = position
+                self.listener?.onQueuePositionChange(position: position)
             }
+        } else if model.status == 2 {
+            self.stopWaitingForAcceptance()
+            if let callId = model.call_id {
+                self.listener?.onCallAccepted(callId: callId)
+            }
+        } else if model.status == 3 {
+            self.stopWaitingForAcceptance()
+            self.listener?.onCallMissed()
+        }
     }
 }
 

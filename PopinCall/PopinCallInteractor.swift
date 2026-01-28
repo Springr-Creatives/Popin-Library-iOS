@@ -7,11 +7,6 @@
 
 import Foundation
 
-
-import Alamofire
-import SwiftyJSON
-
-
 public struct TalkModel : Codable{
     public let id: Int?;
     public let user_id: Int?;
@@ -27,46 +22,27 @@ public struct TalkModel : Codable{
 
 class PopinCallInteractor {
     
-    func getAccessToken(seller_id: Int, onSucess sucess: @escaping (_ talkModel:  TalkModel) -> Void, onFailure failure: @escaping () -> Void) {
-        let parameters: Parameters = ["seller_id":seller_id];
+    func getAccessToken(seller_id: Int) async throws -> TalkModel {
+        let parameters: [String: Any] = ["seller_id":seller_id];
         let urlString = serverURL + "/user/call";
-        let headers: HTTPHeaders = [
-            "Authorization": "Bearer " + Utilities.shared.getUserToken(),
-            "Accept": "application/json"
-        ]
-        AF.request(urlString, method: .post, parameters: parameters, encoding: URLEncoding.httpBody, headers: headers)
-            .responseDecodable(of: TalkModel.self) { response in
-                switch response.result {
-                case .success(let talkModel):
-                    sucess(talkModel);
-                    break;
-                case .failure(let error):
-                    print(error)
-                    failure();
-                }
-            }
+        // Headers are handled by Utilities automatically if we don't pass them, 
+        // but the original code passed headers explicitly.
+        // Utilities.shared.getHeaders() is used by default in request() if headers is nil.
+        // Original code:
+        // "Authorization": "Bearer " + Utilities.shared.getUserToken(),
+        // "Accept": "application/json"
+        // This is exactly what Utilities.shared.getHeaders() does.
+        
+        return try await Utilities.shared.request(urlString: urlString, method: "POST", parameters: parameters)
     }
     
     
     
-    func endOngoingCall(call_id: Int, onSucess sucess: @escaping () -> Void, onFailure failure: @escaping () -> Void) {
-        let parameters: Parameters = ["call_id":call_id];
+    func endOngoingCall(call_id: Int) async throws {
+        let parameters: [String: Any] = ["call_id":call_id];
         let urlString = serverURL + "/user/call/end";
-        let headers: HTTPHeaders = [
-            "Authorization": "Bearer " + Utilities.shared.getUserToken(),
-            "Accept": "application/json"
-        ]
-        AF.request(urlString, method: .post, parameters: parameters, encoding: URLEncoding.httpBody, headers: headers)
-            .responseDecodable(of: StatusModel.self) { response in
-                switch response.result {
-                case .success(_):
-                    sucess();
-                    break;
-                case .failure(_):
-                    failure();
-                    debugPrint("fail")
-                }
-            }
+        
+        let _: StatusModel = try await Utilities.shared.request(urlString: urlString, method: "POST", parameters: parameters)
     }
     
 }

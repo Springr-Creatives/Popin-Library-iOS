@@ -24,16 +24,25 @@ class PopinCallPresenter {
     }
     
     func createCall() {
-        popinInteractor.getAccessToken(seller_id: Utilities.shared.getSeller(), onSucess: { (talkModel) in
-            print(talkModel);
-            if (talkModel.status == 1) {
-                self.popinCallView?.loadCall(call: talkModel)
-            } else {
-                self.popinCallView?.showMessage(title: "Error", message: "Unable to create call")
+        Task {
+            do {
+                let talkModel = try await popinInteractor.getAccessToken(seller_id: Utilities.shared.getSeller())
+                print(talkModel)
+                
+                await MainActor.run {
+                    if (talkModel.status == 1) {
+                        self.popinCallView?.loadCall(call: talkModel)
+                    } else {
+                        self.popinCallView?.showMessage(title: "Error", message: "Unable to create call")
+                    }
+                }
+            } catch {
+                print("Error creating call: \(error)")
+                await MainActor.run {
+                    self.popinCallView?.showMessage(title: "Error", message: "Unable to create call")
+                }
             }
-        }, onFailure: {
-            self.popinCallView?.showMessage(title: "Error", message: "Unable to create call")
-        })
+        }
     }
     
 }

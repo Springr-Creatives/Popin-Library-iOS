@@ -7,7 +7,6 @@
 
 import Foundation
 import PusherSwift
-import SwiftyJSON
 
 class AuthRequestBuilder: AuthRequestBuilderProtocol {
     func requestFor(socketID: String, channelName: String) -> URLRequest? {
@@ -42,16 +41,25 @@ class PopinPusher : PusherDelegate{
        
         let pusherChannel = pusher.subscribe(Utilities.shared.getChannel())
         pusherChannel.bind(eventName: "user.message", eventCallback: { (event: PusherEvent) -> Void in
-            print("PUSHER_MESSAGE" + event.data!)
-            if let data: String = event.data {
-                let json = JSON.init(parseJSON:data)
-                let type = json["message"]["type"].intValue
-                if (type == 3) {
-                    Utilities.shared.saveConnected()
-                    self.delegate?.onAgentConnected()
-                } else if (type == 15) {
-                    self.delegate?.onAllExpertsBusy()
-                }
+            if let dataString = event.data {
+                 print("PUSHER_MESSAGE" + dataString)
+                 if let data = dataString.data(using: .utf8) {
+                     do {
+                         if let json = try JSONSerialization.jsonObject(with: data, options: []) as? [String: Any],
+                            let message = json["message"] as? [String: Any],
+                            let type = message["type"] as? Int {
+                             
+                             if (type == 3) {
+                                 Utilities.shared.saveConnected()
+                                 self.delegate?.onAgentConnected()
+                             } else if (type == 15) {
+                                 self.delegate?.onAllExpertsBusy()
+                             }
+                         }
+                     } catch {
+                         print("Error parsing pusher message: \(error)")
+                     }
+                 }
             }
         });
         pusherChannel.bind(eventName: "user.call_cancel", eventCallback: { (event: PusherEvent) -> Void in

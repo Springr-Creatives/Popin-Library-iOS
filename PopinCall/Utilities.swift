@@ -10,7 +10,13 @@ import Foundation
 #if canImport(UIKit)
 import UIKit
 #endif
-import Alamofire
+
+enum NetworkError: Error {
+    case invalidURL
+    case noData
+    case decodingError
+    case serverError(statusCode: Int)
+}
 
 class Utilities: NSObject {
     
@@ -21,8 +27,8 @@ class Utilities: NSObject {
     // MARK:- Shared Instance
     static let shared = Utilities()
     
-    func getHeaders() -> HTTPHeaders {
-        var headers: HTTPHeaders = []
+    func getHeaders() -> [String: String] {
+        var headers: [String: String] = [:]
         
         if let token = getUser()?.token {
             headers["Accept"] = "application/json"
@@ -71,13 +77,16 @@ class Utilities: NSObject {
     func sendPushToken(token: String) {
         // Implementation stub or copied from working example if needed
         // Assuming serverURL is globally available
-        let urlString = serverURL + "/v1/seller/fcm/update";
-        let parameters: Parameters = ["push_token": token];
+        let urlString = serverURL + "/seller/fcm/update";
+        let parameters: [String: Any] = ["push_token": token];
         
-        AF.request(urlString, method: .post,  parameters: parameters, encoding: URLEncoding.httpBody, headers: getHeaders())
-            .responseString() { response in
-                
+        Task {
+            do {
+                let _: String? = try await request(urlString: urlString, method: "POST", parameters: parameters)
+            } catch {
+                print("Failed to send push token: \(error)")
             }
+        }
     }
     
     func saveSeller(seller_id: Int) {
@@ -94,7 +103,7 @@ class Utilities: NSObject {
             let captureDate = Date(timeIntervalSince1970: dateDouble)
             let difference = Int(Date().timeIntervalSince(captureDate))
             if (difference < 3600)  { // 1 hour
-                return true;
+                return true;
             }
         }
         return false;
@@ -104,7 +113,71 @@ class Utilities: NSObject {
         UserDefaults.standard.set(Date().timeIntervalSince1970, forKey: "agent_connect")
     }
     
+    // MARK: - Network Helper
     
+    func request<T: Decodable>(urlString: String, method: String = "GET", parameters: [String: Any]? = nil, headers: [String: String]? = nil) async throws -> T {
+        guard let url = URL(string: urlString) else {
+            throw NetworkError.invalidURL
+        }
+        
+        var request = URLRequest(url: url)
+        request.httpMethod = method
+        
+        let allHeaders = headers ?? getHeaders()
+        for (key, value) in allHeaders {
+            request.setValue(value, forHTTPHeaderField: key)
+        }
+        
+        if let parameters = parameters {
+            if method == "GET" {
+                var components = URLComponents(url: url, resolvingAgainstBaseURL: false)
+                components?.queryItems = parameters.map { URLQueryItem(name: $0.key, value: "\($0.value)") }
+                request.url = components?.url
+            } else {
+                // Form URL Encoded
+                request.setValue("application/x-www-form-urlencoded", forHTTPHeaderField: "Content-Type")
+                let parameterArray = parameters.map { key, value -> String in
+                    let percentEncodedKey = key.addingPercentEncoding(withAllowedCharacters: .urlQueryValueAllowed) ?? key
+                    let percentEncodedValue = "\(value)".addingPercentEncoding(withAllowedCharacters: .urlQueryValueAllowed) ?? "\(value)"
+                    return "\(percentEncodedKey)=\(percentEncodedValue)"
+                }
+                request.httpBody = parameterArray.joined(separator: "&").data(using: .utf8)
+            }
+        }
+        
+        let (data, response) = try await URLSession.shared.data(for: request)
+        
+        if let httpResponse = response as? HTTPURLResponse {
+            // print("Response status code: \(httpResponse.statusCode)")
+            if !(200...299).contains(httpResponse.statusCode) {
+                 // Try to decode error if possible, or throw server error
+                 // For now, throw generic server error
+                 // throw NetworkError.serverError(statusCode: httpResponse.statusCode)
+            }
+        }
+        
+        if T.self == String.self {
+             return String(data: data, encoding: .utf8) as! T
+        }
+        
+        do {
+            return try JSONDecoder().decode(T.self, from: data)
+        } catch {
+             // If decoding fails, it might be that the response is not what we expect or empty
+             // Check for specific cases if needed
+             throw error
+        }
+    }
+}
+
+extension CharacterSet {
+    static let urlQueryValueAllowed: CharacterSet = {
+        let generalDelimitersToEncode = ":#[]@" // does not include "?" or "/" due to RFC 3986 - Section 3.4
+        let subDelimitersToEncode = "!$&'()*+,;="
+        var allowed = CharacterSet.urlQueryAllowed
+        allowed.remove(charactersIn: "\(generalDelimitersToEncode)\(subDelimitersToEncode)")
+        return allowed
+    }()
 }
 
 #if canImport(UIKit)

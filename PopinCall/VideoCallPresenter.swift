@@ -41,11 +41,22 @@ class VideoCallPresenter {
 //    }
     
     func rejectCall(callComponentId: Int) {
-        self.videoCallInteractor.notifyReject(callComponentId: callComponentId)
+      //  self.videoCallInteractor.notifyReject(callComponentId: callComponentId)
     }
 
     func endCall(callId: Int, onSuccess: @escaping () -> Void, onFailure: @escaping (String) -> Void) {
-        self.videoCallInteractor.endCall(callId: callId, onSuccess: onSuccess, onFailure: onFailure)
+        Task {
+            do {
+                try await videoCallInteractor.endCall(callId: callId)
+                await MainActor.run {
+                    onSuccess()
+                }
+            } catch {
+                await MainActor.run {
+                    onFailure(error.localizedDescription)
+                }
+            }
+        }
     }
 
 }

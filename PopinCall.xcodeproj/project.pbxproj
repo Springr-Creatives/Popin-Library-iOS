@@ -11,8 +11,6 @@
 		3B0A147CEC443BD9BE47A57A /* PopinInitListener.swift in Sources */ = {isa = PBXBuildFile; fileRef = C1C6537A1A2AEDB3B404AE28 /* PopinInitListener.swift */; };
 		44BAE20E3443AFBB9D98E770 /* PopinConfigEnvironment.swift in Sources */ = {isa = PBXBuildFile; fileRef = 59E728E5D8CAB13CCE470BC6 /* PopinConfigEnvironment.swift */; };
 		CF1742572F273FF600AE48E7 /* PusherSwift in Frameworks */ = {isa = PBXBuildFile; productRef = CF1742562F273FF600AE48E7 /* PusherSwift */; };
-		CF17425A2F27401200AE48E7 /* SwiftyJSON in Frameworks */ = {isa = PBXBuildFile; productRef = CF1742592F27401200AE48E7 /* SwiftyJSON */; };
-		CF17425D2F27401D00AE48E7 /* Alamofire in Frameworks */ = {isa = PBXBuildFile; productRef = CF17425C2F27401D00AE48E7 /* Alamofire */; };
 		CF1742602F27404400AE48E7 /* LiveKitComponents in Frameworks */ = {isa = PBXBuildFile; productRef = CF17425F2F27404400AE48E7 /* LiveKitComponents */; };
 		CF17427E2F27407B00AE48E7 /* PopinPusher.swift in Sources */ = {isa = PBXBuildFile; fileRef = CF1742742F27407B00AE48E7 /* PopinPusher.swift */; };
 		CF17427F2F27407B00AE48E7 /* PopinPusherDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = CF1742752F27407B00AE48E7 /* PopinPusherDelegate.swift */; };
@@ -49,8 +47,6 @@
 		CFA4CD972F28D0B8009EB444 /* LiveKit in Frameworks */ = {isa = PBXBuildFile; productRef = CFA4CD9C2F28D0C0009EB444 /* LiveKit */; };
 		CFA4CD982F28D0B8009EB444 /* LiveKitComponents in Frameworks */ = {isa = PBXBuildFile; productRef = CFA4CD9D2F28D0C0009EB444 /* LiveKitComponents */; };
 		CFA4CD992F28D0B8009EB444 /* PusherSwift in Frameworks */ = {isa = PBXBuildFile; productRef = CFA4CD9E2F28D0C0009EB444 /* PusherSwift */; };
-		CFA4CD9A2F28D0B8009EB444 /* SwiftyJSON in Frameworks */ = {isa = PBXBuildFile; productRef = CFA4CD9F2F28D0C0009EB444 /* SwiftyJSON */; };
-		CFA4CD9B2F28D0B8009EB444 /* Alamofire in Frameworks */ = {isa = PBXBuildFile; productRef = CFA4CDA02F28D0C0009EB444 /* Alamofire */; };
 		CFA556862923FEA3003453DF /* PopinCallDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = CFA556852923FEA3003453DF /* PopinCallDelegate.swift */; };
 		CFB63D8B2929045E005F265D /* PopinPusher.swift in Sources */ = {isa = PBXBuildFile; fileRef = CFB63D8A2929045E005F265D /* PopinPusher.swift */; };
 		CFB63D8D292908EF005F265D /* PopinPusherDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = CFB63D8C292908EF005F265D /* PopinPusherDelegate.swift */; };
@@ -160,8 +156,6 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				CF17425A2F27401200AE48E7 /* SwiftyJSON in Frameworks */,
-				CF17425D2F27401D00AE48E7 /* Alamofire in Frameworks */,
 				CF1742602F27404400AE48E7 /* LiveKitComponents in Frameworks */,
 				CF1742572F273FF600AE48E7 /* PusherSwift in Frameworks */,
 				CFA4CD962F28D0A7009EB444 /* LiveKit in Frameworks */,
@@ -184,8 +178,6 @@
 				CFA4CD972F28D0B8009EB444 /* LiveKit in Frameworks */,
 				CFA4CD982F28D0B8009EB444 /* LiveKitComponents in Frameworks */,
 				CFA4CD992F28D0B8009EB444 /* PusherSwift in Frameworks */,
-				CFA4CD9A2F28D0B8009EB444 /* SwiftyJSON in Frameworks */,
-				CFA4CD9B2F28D0B8009EB444 /* Alamofire in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -320,8 +312,6 @@
 			name = PopinCall;
 			packageProductDependencies = (
 				CF1742562F273FF600AE48E7 /* PusherSwift */,
-				CF1742592F27401200AE48E7 /* SwiftyJSON */,
-				CF17425C2F27401D00AE48E7 /* Alamofire */,
 				CF17425F2F27404400AE48E7 /* LiveKitComponents */,
 				CFA4CD952F28D0A7009EB444 /* LiveKit */,
 			);
@@ -366,8 +356,6 @@
 				CFA4CD9C2F28D0C0009EB444 /* LiveKit */,
 				CFA4CD9D2F28D0C0009EB444 /* LiveKitComponents */,
 				CFA4CD9E2F28D0C0009EB444 /* PusherSwift */,
-				CFA4CD9F2F28D0C0009EB444 /* SwiftyJSON */,
-				CFA4CDA02F28D0C0009EB444 /* Alamofire */,
 			);
 			productName = PopinCallExamples;
 			productReference = CFBBD5842923EA8800D241A9 /* PopinCallExamples.app */;
@@ -405,8 +393,6 @@
 			mainGroup = CFBBD55C2923EA3100D241A9;
 			packageReferences = (
 				CF1742552F273FF600AE48E7 /* XCRemoteSwiftPackageReference "pusher-websocket-swift" */,
-				CF1742582F27401200AE48E7 /* XCRemoteSwiftPackageReference "SwiftyJSON" */,
-				CF17425B2F27401D00AE48E7 /* XCRemoteSwiftPackageReference "Alamofire" */,
 				CF17425E2F27404400AE48E7 /* XCRemoteSwiftPackageReference "components-swift" */,
 				CFA4CD942F28D0A7009EB444 /* XCRemoteSwiftPackageReference "client-sdk-swift" */,
 			);
@@ -878,22 +864,6 @@
 				minimumVersion = 10.1.9;
 			};
 		};
-		CF1742582F27401200AE48E7 /* XCRemoteSwiftPackageReference "SwiftyJSON" */ = {
-			isa = XCRemoteSwiftPackageReference;
-			repositoryURL = "https://github.com/SwiftyJSON/SwiftyJSON.git";
-			requirement = {
-				kind = upToNextMajorVersion;
-				minimumVersion = 5.0.2;
-			};
-		};
-		CF17425B2F27401D00AE48E7 /* XCRemoteSwiftPackageReference "Alamofire" */ = {
-			isa = XCRemoteSwiftPackageReference;
-			repositoryURL = "https://github.com/Alamofire/Alamofire.git";
-			requirement = {
-				kind = upToNextMajorVersion;
-				minimumVersion = 5.11.0;
-			};
-		};
 		CF17425E2F27404400AE48E7 /* XCRemoteSwiftPackageReference "components-swift" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/livekit/components-swift";
@@ -917,16 +887,6 @@
 			isa = XCSwiftPackageProductDependency;
 			package = CF1742552F273FF600AE48E7 /* XCRemoteSwiftPackageReference "pusher-websocket-swift" */;
 			productName = PusherSwift;
-		};
-		CF1742592F27401200AE48E7 /* SwiftyJSON */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = CF1742582F27401200AE48E7 /* XCRemoteSwiftPackageReference "SwiftyJSON" */;
-			productName = SwiftyJSON;
-		};
-		CF17425C2F27401D00AE48E7 /* Alamofire */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = CF17425B2F27401D00AE48E7 /* XCRemoteSwiftPackageReference "Alamofire" */;
-			productName = Alamofire;
 		};
 		CF17425F2F27404400AE48E7 /* LiveKitComponents */ = {
 			isa = XCSwiftPackageProductDependency;
@@ -952,16 +912,6 @@
 			isa = XCSwiftPackageProductDependency;
 			package = CF1742552F273FF600AE48E7 /* XCRemoteSwiftPackageReference "pusher-websocket-swift" */;
 			productName = PusherSwift;
-		};
-		CFA4CD9F2F28D0C0009EB444 /* SwiftyJSON */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = CF1742582F27401200AE48E7 /* XCRemoteSwiftPackageReference "SwiftyJSON" */;
-			productName = SwiftyJSON;
-		};
-		CFA4CDA02F28D0C0009EB444 /* Alamofire */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = CF17425B2F27401D00AE48E7 /* XCRemoteSwiftPackageReference "Alamofire" */;
-			productName = Alamofire;
 		};
 /* End XCSwiftPackageProductDependency section */
 	};

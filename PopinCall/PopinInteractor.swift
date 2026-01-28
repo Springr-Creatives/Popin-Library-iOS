@@ -6,30 +6,32 @@
 //
 
 import Foundation
-import Alamofire
-import SwiftyJSON
 
 class PopinInteractor {
     
-    func registerUser(seller_id: Int, name: String, contactInfo: String, campaign: String, onSucess sucess: @escaping () -> Void, onFailure failure: @escaping () -> Void) {
+    enum InteractorError: Error {
+        case validationFailed
+        case apiError(String?)
+        case invalidResponse
+    }
+
+    func registerUser(seller_id: Int, name: String, contactInfo: String, campaign: String) async throws {
         let isEmail = contactInfo.contains("@")
         
         // Basic validation
         if isEmail {
             if !contactInfo.contains(".") || contactInfo.count < 5 {
                 print("[DEBUG registerUser] Invalid email format: \(contactInfo)")
-                failure()
-                return
+                throw InteractorError.validationFailed
             }
         } else {
             if contactInfo.count < 8 {
                 print("[DEBUG registerUser] Invalid mobile format: \(contactInfo)")
-                failure()
-                return
+                throw InteractorError.validationFailed
             }
         }
 
-        var parameters: Parameters = [
+        var parameters: [String: Any] = [
             "seller_id": seller_id,
             "is_mobile": isEmail ? 0 : 1,
             "device": "iosSdk",
@@ -46,75 +48,45 @@ class PopinInteractor {
         }
         let urlString = serverURL + "/website/user/login"
         print("[DEBUG registerUser] URL: \(urlString), params: \(parameters)")
-        AF.request(urlString, method: .post, parameters: parameters, encoding: URLEncoding.httpBody)
-            .responseDecodable(of: UserModel.self) { response in
-                print("[DEBUG registerUser] HTTP status: \(response.response?.statusCode ?? -1)")
-                if let data = response.data, let raw = String(data: data, encoding: .utf8) {
-                    print("[DEBUG registerUser] Raw response: \(raw)")
-                }
-                switch response.result {
-                case .success(let userModel):
-                    print("[DEBUG registerUser] Decoded: status=\(userModel.status), token=\(userModel.token), channel=\(userModel.channel)")
-                    if (userModel.status == 1) {
-                        Utilities.shared.saveUser(user: userModel)
-                        sucess()
-                        return;
-                    }
-
-                    failure();
-                case .failure(let error):
-                    print("[DEBUG registerUser] FAILURE: \(error)")
-                    failure();
-                }
-            }
+        
+        let userModel: UserModel = try await Utilities.shared.request(urlString: urlString, method: "POST", parameters: parameters)
+        
+        print("[DEBUG registerUser] Decoded: status=\(userModel.status), token=\(userModel.token), channel=\(userModel.channel)")
+        if (userModel.status == 1) {
+            Utilities.shared.saveUser(user: userModel)
+        } else {
+            throw InteractorError.apiError(nil)
+        }
     }
     
-    func startConnection(seller_id: Int, onSuccess success: @escaping (Int) -> Void, onFailure failure: @escaping () -> Void) {
-        let parameters: Parameters = ["seller_id":seller_id];
+    func startConnection(seller_id: Int) async throws -> Int {
+        let parameters: [String: Any] = ["seller_id":seller_id];
         let urlString = serverURL + "/user/connect";
-        let headers = Utilities.shared.getHeaders()
+        
         print("[DEBUG startConnection] URL: \(urlString), params: \(parameters)")
-        AF.request(urlString, method: .post, parameters: parameters, encoding: URLEncoding.httpBody, headers: headers)
-            .responseDecodable(of: StatusModel.self) { response in
-                if let data = response.data, let raw = String(data: data, encoding: .utf8) {
-                    print("[DEBUG startConnection] Raw response: \(raw)")
-                }
-                switch response.result {
-                case .success(let statusModel):
-                    print("[DEBUG startConnection] status=\(statusModel.status), call_queue_id=\(statusModel.call_queue_id ?? -1)")
-                    if statusModel.status == 1, let callQueueId = statusModel.call_queue_id {
-                        success(callQueueId)
-                    } else {
-                        failure()
-                    }
-                case .failure(let error):
-                    print("[DEBUG startConnection] FAILURE: \(error)")
-                    failure()
-                }
-            }
+        let statusModel: StatusModel = try await Utilities.shared.request(urlString: urlString, method: "POST", parameters: parameters)
+        
+        print("[DEBUG startConnection] status=\(statusModel.status), call_queue_id=\(statusModel.call_queue_id ?? -1)")
+        
+        if statusModel.status == 1, let callQueueId = statusModel.call_queue_id {
+            return callQueueId
+        } else {
+             throw InteractorError.apiError(statusModel.message)
+        }
     }
-    func getCallDetails(callId: Int, onSuccess success: @escaping (TalkModel) -> Void, onFailure failure: @escaping () -> Void) {
+    
+    func getCallDetails(callId: Int) async throws -> TalkModel {
         let urlString = serverURL + "/user/call/\(callId)"
-        let headers = Utilities.shared.getHeaders()
         print("[DEBUG getCallDetails] URL: \(urlString)")
-        AF.request(urlString, method: .get, headers: headers)
-            .responseDecodable(of: TalkModel.self) { response in
-                if let data = response.data, let raw = String(data: data, encoding: .utf8) {
-                    print("[DEBUG getCallDetails] Raw response: \(raw)")
-                }
-                switch response.result {
-                case .success(let talkModel):
-                    print("[DEBUG getCallDetails] status=\(talkModel.status), token=\(talkModel.token ?? "nil"), websocket=\(talkModel.websocket ?? "nil")")
-                    if talkModel.status == 1 {
-                        success(talkModel)
-                    } else {
-                        failure()
-                    }
-                case .failure(let error):
-                    print("[DEBUG getCallDetails] FAILURE: \(error)")
-                    failure()
-                }
-            }
+        
+        let talkModel: TalkModel = try await Utilities.shared.request(urlString: urlString, method: "GET")
+        
+        print("[DEBUG getCallDetails] status=\(talkModel.status), token=\(talkModel.token ?? "nil"), websocket=\(talkModel.websocket ?? "nil")")
+        if talkModel.status == 1 {
+            return talkModel
+        } else {
+            throw InteractorError.apiError(nil)
+        }
     }
 }
 
