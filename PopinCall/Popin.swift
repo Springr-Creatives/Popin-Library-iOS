@@ -22,7 +22,7 @@ public class Popin : PopinPusherDelegate, CallAcceptanceListener {
 
     public private(set) static var shared: Popin?
 
-    private var eventsListener: PopinEventsListener?
+    private weak var eventsListener: PopinEventsListener?
     private var config: PopinConfig
 
     private let popinPresenter = PopinPresenter(popinInteractor: PopinInteractor())

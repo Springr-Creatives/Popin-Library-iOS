@@ -14,7 +14,7 @@ public class PopinConfig {
     public let userName: String
     public let contactInfo: String
     public let sandboxMode: Bool
-    public let initListener: PopinInitListener?
+    public weak var initListener: PopinInitListener?
     public let hideDisconnectButton: Bool
     public let hideScreenShareButton: Bool
     public let hideFlipCameraButton: Bool

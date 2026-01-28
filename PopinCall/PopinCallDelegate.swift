@@ -7,7 +7,7 @@
 
 import Foundation
 
-public protocol PopinEventsListener {
+public protocol PopinEventsListener: AnyObject {
     func onPermissionGiven()
     func onPermissionDenied()
     func onCallStart()

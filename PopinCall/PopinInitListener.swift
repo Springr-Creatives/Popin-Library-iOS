@@ -7,7 +7,7 @@
 
 import Foundation
 
-public protocol PopinInitListener {
+public protocol PopinInitListener: AnyObject {
     func onInitComplete()
     func onInitFailed(reason: String)
 }
