@@ -76,7 +76,7 @@ public class Popin : PopinPusherDelegate, CallAcceptanceListener {
         }
 
         if !popinPresenter.isUserRegistered() {
-            popinPresenter.registerUser(seller_id: sellerToken, name: config.userName, contactInfo: config.contactInfo, campaign: config.meta, onSucess: { [self] in
+            popinPresenter.registerUser(seller_id: sellerToken, name: config.userName, contactInfo: config.contactInfo, campaign: getEnhancedMeta(), onSucess: { [self] in
                 self.connectPusher(seller_id: sellerToken)
             })
         } else {
@@ -138,7 +138,7 @@ public class Popin : PopinPusherDelegate, CallAcceptanceListener {
         Utilities.shared.saveSeller(seller_id: token)
 
         if !popinPresenter.isUserRegistered() {
-            popinPresenter.registerUser(seller_id: token, name: config.userName, contactInfo: config.contactInfo, campaign: config.meta, onSucess: {
+            popinPresenter.registerUser(seller_id: token, name: config.userName, contactInfo: config.contactInfo, campaign: getEnhancedMeta(), onSucess: {
                 self.connectPusher(seller_id: token)
             })
         } else {
@@ -147,6 +147,31 @@ public class Popin : PopinPusherDelegate, CallAcceptanceListener {
     }
 
     // MARK: - Internal
+
+    private func getEnhancedMeta() -> [String: String] {
+        var meta = config.meta
+        
+        if let callerId = config.callerId, !callerId.isEmpty {
+            meta["callerId"] = callerId
+        }
+        
+        if let product = config.product {
+            var productMap: [String: String] = [:]
+            if let id = product.id { productMap["id"] = id }
+            if let url = product.url { productMap["url"] = url }
+            if let image = product.image { productMap["image"] = image }
+            if let name = product.name { productMap["name"] = name }
+            if let description = product.description { productMap["description"] = description }
+            if let extra = product.extra { productMap["registrationNumber"] = extra }
+            
+            if let jsonData = try? JSONSerialization.data(withJSONObject: productMap, options: []),
+               let jsonString = String(data: jsonData, encoding: .utf8) {
+                meta["product"] = jsonString
+            }
+        }
+        
+        return meta
+    }
 
     func connectPusher(seller_id: Int) {
         callStarted = true
