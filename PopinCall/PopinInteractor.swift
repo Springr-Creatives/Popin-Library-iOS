@@ -102,3 +102,8 @@ struct StatusModel : Codable{
     let position: Int?;
     let message: String?;
 }
+
+struct InviteParticipantModel: Codable {
+    let status: Int
+    let url: String?
+}

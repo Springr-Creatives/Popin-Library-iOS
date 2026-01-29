@@ -15,12 +15,17 @@ import ReplayKit
 struct BottomControls: View {
     @EnvironmentObject private var room: Room
     @EnvironmentObject private var configHolder: PopinConfigHolder
-    
+    @EnvironmentObject private var viewModel: VideoCallViewModel
+
     let onEndCall: () -> Void
-    
+
     @State private var showOverflowMenu = false
-    @State private var showInviteSheet = false
+    @State private var showInviteDialog = false
     @State private var inviteUrl: String? = nil
+    @State private var inviteError: String? = nil
+    @State private var isLoadingInvite = false
+
+    private let videoCallInteractor = VideoCallInteractor()
     
     var body: some View {
         HStack(spacing: 0) {
@@ -32,7 +37,9 @@ struct BottomControls: View {
                 action: { showOverflowMenu = true }
             )
             .sheet(isPresented: $showOverflowMenu) {
-                OverflowMenuSheet(showOverflowMenu: $showOverflowMenu, showInviteSheet: $showInviteSheet)
+                OverflowMenuSheet(showOverflowMenu: $showOverflowMenu, onInviteTapped: {
+                    generateInviteLink()
+                })
                     .presentationDetents([.height(250)])
                     .presentationDragIndicator(.visible)
             }
@@ -125,10 +132,47 @@ struct BottomControls: View {
         .padding(.horizontal, 24)
         .padding(.bottom, 32)
         .padding(.top, 12)
-        .alert("Invite a Friend", isPresented: $showInviteSheet) {
-            Button("OK", role: .cancel) { }
-        } message: {
-            Text("Invite link generation is not yet implemented.")
+        .sheet(isPresented: $showInviteDialog) {
+            InviteDialogSheet(
+                inviteUrl: inviteUrl,
+                inviteError: inviteError,
+                isLoading: isLoadingInvite,
+                onDismiss: {
+                    showInviteDialog = false
+                    inviteUrl = nil
+                    inviteError = nil
+                }
+            )
+            .presentationDetents([.height(200)])
+            .presentationDragIndicator(.visible)
+        }
+    }
+
+    private func generateInviteLink() {
+        guard let callId = viewModel.call?.id else {
+            inviteError = "Call ID not available"
+            showInviteDialog = true
+            return
+        }
+
+        isLoadingInvite = true
+        inviteError = nil
+        inviteUrl = nil
+        showInviteDialog = true
+
+        Task {
+            do {
+                let url = try await videoCallInteractor.inviteParticipant(callId: callId)
+                await MainActor.run {
+                    inviteUrl = url
+                    isLoadingInvite = false
+                }
+            } catch {
+                await MainActor.run {
+                    inviteError = error.localizedDescription
+                    isLoadingInvite = false
+                }
+            }
         }
     }
 }
@@ -172,17 +216,17 @@ struct ControlCircleButtonView: View {
 
 struct OverflowMenuSheet: View {
     @Binding var showOverflowMenu: Bool
-    @Binding var showInviteSheet: Bool
-    
+    var onInviteTapped: () -> Void
+
     var body: some View {
         ZStack {
             Color(hex: "2A2F33").ignoresSafeArea()
-            
+
             VStack(spacing: 16) {
                 // Invite Row
                 Button(action: {
                     showOverflowMenu = false
-                    showInviteSheet = true
+                    onInviteTapped()
                 }) {
                     HStack {
                         Text("Invite a friend")
@@ -222,6 +266,65 @@ struct OverflowMenuSheet: View {
             }
             .padding(.top, 32)
             .padding(.horizontal, 16)
+        }
+    }
+}
+
+struct InviteDialogSheet: View {
+    let inviteUrl: String?
+    let inviteError: String?
+    let isLoading: Bool
+    let onDismiss: () -> Void
+
+    var body: some View {
+        ZStack {
+            Color(hex: "2A2F33").ignoresSafeArea()
+
+            VStack(spacing: 20) {
+                Text("Invite a Friend")
+                    .font(.system(size: 18, weight: .semibold))
+                    .foregroundColor(.white)
+
+                if isLoading {
+                    ProgressView()
+                        .progressViewStyle(CircularProgressViewStyle(tint: .white))
+                        .scaleEffect(1.2)
+                } else if let error = inviteError {
+                    Text(error)
+                        .font(.system(size: 14))
+                        .foregroundColor(.red)
+                        .multilineTextAlignment(.center)
+                } else if let url = inviteUrl {
+                    Text(url)
+                        .font(.system(size: 14))
+                        .foregroundColor(.white.opacity(0.8))
+                        .lineLimit(2)
+                        .truncationMode(.middle)
+                        .padding(.horizontal)
+
+                    Button(action: {
+                        UIPasteboard.general.string = url
+                    }) {
+                        HStack {
+                            Image(systemName: "doc.on.doc")
+                            Text("Copy Link")
+                        }
+                        .font(.system(size: 16, weight: .medium))
+                        .foregroundColor(.white)
+                        .padding(.horizontal, 24)
+                        .padding(.vertical, 12)
+                        .background(Color(hex: "4CAF50"))
+                        .cornerRadius(8)
+                    }
+                }
+
+                Button(action: onDismiss) {
+                    Text("Close")
+                        .font(.system(size: 16, weight: .medium))
+                        .foregroundColor(.white.opacity(0.7))
+                }
+            }
+            .padding(.top, 24)
         }
     }
 }
