@@ -37,9 +37,13 @@ struct BottomControls: View {
                 action: { showOverflowMenu = true }
             )
             .sheet(isPresented: $showOverflowMenu) {
-                OverflowMenuSheet(showOverflowMenu: $showOverflowMenu, onInviteTapped: {
-                    generateInviteLink()
-                })
+                OverflowMenuSheet(
+                    showOverflowMenu: $showOverflowMenu,
+                    hideScreenShareButton: configHolder.config.hideScreenShareButton,
+                    onInviteTapped: {
+                        generateInviteLink()
+                    }
+                )
                     .presentationDetents([.height(250)])
                     .presentationDragIndicator(.visible)
             }
@@ -216,6 +220,7 @@ struct ControlCircleButtonView: View {
 
 struct OverflowMenuSheet: View {
     @Binding var showOverflowMenu: Bool
+    var hideScreenShareButton: Bool = false
     var onInviteTapped: () -> Void
 
     var body: some View {
@@ -241,27 +246,29 @@ struct OverflowMenuSheet: View {
                     .background(Color(hex: "3E4347"))
                     .cornerRadius(12)
                 }
-                
+
                 // Screen Share Row
-                ZStack {
-                    // Visual
-                    HStack {
-                        Text("Share screen")
-                            .font(.system(size: 16, weight: .regular))
-                            .foregroundColor(.white)
-                        Spacer()
-                        Image(systemName: "rectangle.on.rectangle")
-                            .foregroundColor(.white)
-                            .font(.system(size: 20))
+                if !hideScreenShareButton {
+                    ZStack {
+                        // Visual
+                        HStack {
+                            Text("Share screen")
+                                .font(.system(size: 16, weight: .regular))
+                                .foregroundColor(.white)
+                            Spacer()
+                            Image(systemName: "rectangle.on.rectangle")
+                                .foregroundColor(.white)
+                                .font(.system(size: 20))
+                        }
+                        .padding(20)
+                        .background(Color(hex: "3E4347"))
+                        .cornerRadius(12)
+
+                        // Invisible Picker
+                        BroadcastPickerRowWrapper()
                     }
-                    .padding(20)
-                    .background(Color(hex: "3E4347"))
-                    .cornerRadius(12)
-                    
-                    // Invisible Picker
-                    BroadcastPickerRowWrapper()
                 }
-                
+
                 Spacer()
             }
             .padding(.top, 32)

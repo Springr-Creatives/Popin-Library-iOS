@@ -77,8 +77,10 @@ struct ProductDetailsView: View {
 // MARK: - Top Controls View
 
 struct TopControls: View {
+    @EnvironmentObject private var configHolder: PopinConfigHolder
+
     let onPipClick: () -> Void
-    
+
     // Product data
     let productId: String?
     let productName: String?
@@ -89,14 +91,16 @@ struct TopControls: View {
 
     var body: some View {
         HStack(alignment: .center, spacing: 12) {
-            // PiP Button (Top Left)
-            Button(action: onPipClick) {
-                Image(systemName: "pip.enter")
-                    .font(.system(size: 20))
-                    .foregroundColor(.white)
-                    .padding(12)
-                    .background(Color.black.opacity(0.4))
-                    .clipShape(Circle())
+            // PiP/Back Button (Top Left)
+            if !configHolder.config.hideBackButton {
+                Button(action: onPipClick) {
+                    Image(systemName: "pip.enter")
+                        .font(.system(size: 20))
+                        .foregroundColor(.white)
+                        .padding(12)
+                        .background(Color.black.opacity(0.4))
+                        .clipShape(Circle())
+                }
             }
 
             // Product Details (fills remaining width)
