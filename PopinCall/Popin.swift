@@ -219,7 +219,7 @@ public class Popin : PopinPusherDelegate, CallAcceptanceListener {
     private func presentOutgoingCallViewController(callQueueId: Int) {
         let callVC = PopinCallViewController()
         self.currentCallViewController = callVC
-        callVC.modalPresentationStyle = .fullScreen
+        callVC.modalPresentationStyle = .overFullScreen
         callVC.popinConfig = config
         callVC.callQueueId = callQueueId
         callVC.isOutgoingCall = true
@@ -239,7 +239,7 @@ public class Popin : PopinPusherDelegate, CallAcceptanceListener {
     private func presentCallViewController(talkModel: TalkModel) {
         let callVC = PopinCallViewController()
         self.currentCallViewController = callVC
-        callVC.modalPresentationStyle = .fullScreen
+        callVC.modalPresentationStyle = .overFullScreen
         callVC.popinConfig = config
         callVC.onCallEnd = { [weak self] in
             self?.eventsListener?.onCallEnd()

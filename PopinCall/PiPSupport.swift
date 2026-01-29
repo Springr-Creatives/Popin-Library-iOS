@@ -10,6 +10,13 @@ import LiveKit
 import SwiftUI
 
 #if canImport(UIKit)
+// MARK: - PiP Notifications
+
+extension Notification.Name {
+    static let pipDidStart = Notification.Name("pipDidStart")
+    static let pipDidStop = Notification.Name("pipDidStop")
+}
+
 // MARK: - PiP View Controllers
 
 final class PiPPreviewViewController: UIViewController, VideoRenderer {
@@ -259,6 +266,10 @@ struct PiPView: UIViewControllerRepresentable {
 
         func pictureInPictureControllerDidStartPictureInPicture(_ pictureInPictureController: AVPictureInPictureController) {
             print("PiP did start")
+            // Hide the main view's video to avoid showing two videos
+            previewController.view.isHidden = true
+            // Notify to hide the call view controller
+            NotificationCenter.default.post(name: .pipDidStart, object: nil)
             PopinCallManager.shared.enterPiPMode()
         }
 
@@ -268,6 +279,10 @@ struct PiPView: UIViewControllerRepresentable {
 
         func pictureInPictureControllerDidStopPictureInPicture(_ pictureInPictureController: AVPictureInPictureController) {
             print("PiP did stop")
+            // Show the main view's video again when PiP stops
+            previewController.view.isHidden = false
+            // Notify to show the call view controller
+            NotificationCenter.default.post(name: .pipDidStop, object: nil)
             PopinCallManager.shared.exitPiPMode()
         }
 

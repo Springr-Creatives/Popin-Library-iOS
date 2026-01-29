@@ -308,6 +308,37 @@ public class PopinCallViewController: UIViewController {
     func setupNotifications() {
         // We need to store the value in variable/state to keep notification active.
       /*  darwinNotificationCenterObservation = DarwinNotificationCenter.shared.addObserver(name: "iOS_BroadcastStopped", callback: notificationCallback) */
+
+        // PiP notifications
+        NotificationCenter.default.addObserver(
+            self,
+            selector: #selector(handlePiPDidStart),
+            name: .pipDidStart,
+            object: nil
+        )
+        NotificationCenter.default.addObserver(
+            self,
+            selector: #selector(handlePiPDidStop),
+            name: .pipDidStop,
+            object: nil
+        )
+    }
+
+    @objc private func handlePiPDidStart() {
+        print("PopinCallViewController: PiP started, hiding view")
+        UIView.animate(withDuration: 0.3) {
+            self.view.alpha = 0
+        } completion: { _ in
+            self.view.isHidden = true
+        }
+    }
+
+    @objc private func handlePiPDidStop() {
+        print("PopinCallViewController: PiP stopped, showing view")
+        self.view.isHidden = false
+        UIView.animate(withDuration: 0.3) {
+            self.view.alpha = 1
+        }
     }
     
     func closeViewController(shouldNotEndCX: Bool) {
