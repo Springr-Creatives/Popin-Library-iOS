@@ -13,11 +13,22 @@ class ViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
 
+        // Example product info to display during the call
+        let product = PopinProduct(
+            id: "SKU-12345",
+            name: "Wireless Headphones",
+            image: "https://images.unsplash.com/photo-1505740420928-5e560c06d30e",
+            url: "https://example.com/products/headphones",
+            description: "Noise-cancelling wireless headphones",
+            extra: "$299.99"
+        )
+
         // Initialize Popin with config (matches Android Popin.init)
         let config = PopinConfig.Builder()
             .userName("Demo User")
             .contactInfo("demo@example.com")
             .sandboxMode(true)
+            .product(product)  // Set product info to display in TopControls during call
             .initListener(self)
             .eventsListener(self)
             .hideScreenShareButton(true)

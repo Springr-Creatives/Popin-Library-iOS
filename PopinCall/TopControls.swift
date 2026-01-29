@@ -88,7 +88,7 @@ struct TopControls: View {
     let productExtra: String?
 
     var body: some View {
-        HStack(alignment: .top) {
+        HStack(alignment: .center, spacing: 12) {
             // PiP Button (Top Left)
             Button(action: onPipClick) {
                 Image(systemName: "pip.enter")
@@ -98,12 +98,8 @@ struct TopControls: View {
                     .background(Color.black.opacity(0.4))
                     .clipShape(Circle())
             }
-            .padding(.top, 16)
-            .padding(.leading, 16)
 
-            Spacer()
-
-            // Product Details (Top Right/Center)
+            // Product Details (fills remaining width)
             if productId != nil || productName != nil {
                 ProductDetailsView(
                     productId: productId,
@@ -113,11 +109,12 @@ struct TopControls: View {
                     productDescription: productDescription,
                     productExtra: productExtra
                 )
-                .padding(.top, 16)
-                .padding(.trailing, 16)
-                .frame(maxWidth: 250) // Limit width
+            } else {
+                Spacer()
             }
         }
+        .padding(.top, 16)
+        .padding(.horizontal, 16)
     }
 }
 #endif

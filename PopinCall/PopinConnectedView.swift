@@ -115,6 +115,31 @@ struct PopinConnectedView: View {
         return ordered
     }
 
+    // Computed product properties - prefer config product (outgoing calls) over callData (incoming calls)
+    private var productId: String? {
+        configHolder.config.product?.id ?? PopinCallManager.shared.callData?.productId
+    }
+
+    private var productName: String? {
+        configHolder.config.product?.name ?? PopinCallManager.shared.callData?.productName
+    }
+
+    private var productImageUrl: String? {
+        configHolder.config.product?.image ?? PopinCallManager.shared.callData?.productImage
+    }
+
+    private var productUrl: String? {
+        configHolder.config.product?.url
+    }
+
+    private var productDescription: String? {
+        configHolder.config.product?.description
+    }
+
+    private var productExtra: String? {
+        configHolder.config.product?.extra
+    }
+
     @ViewBuilder
     private var overlayControls: some View {
         VStack(spacing: 0) {
@@ -124,12 +149,12 @@ struct PopinConnectedView: View {
                     // Enable PiP when PiP button is clicked
                     pipHandler.startPictureInPicture()
                 },
-                productId: PopinCallManager.shared.callData?.productId,
-                productName: PopinCallManager.shared.callData?.productName,
-                productUrl: nil,
-                productImageUrl: PopinCallManager.shared.callData?.productImage,
-                productDescription: nil,
-                productExtra: nil
+                productId: productId,
+                productName: productName,
+                productUrl: productUrl,
+                productImageUrl: productImageUrl,
+                productDescription: productDescription,
+                productExtra: productExtra
             )
 
             Spacer()
