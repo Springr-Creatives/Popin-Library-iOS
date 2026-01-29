@@ -23,15 +23,41 @@ class ViewController: UIViewController {
             extra: "$299.99"
         )
 
+        // Example metadata to pass with the call
+        let metadata: [String: String] = [
+            "source": "ios_app",
+            "version": "1.0.0",
+            "campaign": "summer_sale"
+        ]
+
         // Initialize Popin with config (matches Android Popin.init)
         let config = PopinConfig.Builder()
+            // User information
             .userName("Demo User")
-            .contactInfo("demo@example.com")
+            .contactInfo("demo@example.com") //email or phone
+            .callerId("user-12345")
+
+            // Environment
             .sandboxMode(true)
-            .product(product)  // Set product info to display in TopControls during call
+
+            // Product info to display in TopControls during call
+            .product(product)
+
+            // Custom metadata
+            .meta(metadata)
+
+            // Listeners
             .initListener(self)
             .eventsListener(self)
-            .hideScreenShareButton(true)
+
+            // UI visibility options (all visible by default)
+            .hideDisconnectButton(false)      // Show end call button
+            .hideScreenShareButton(false)     // Show screen share option
+            .hideFlipCameraButton(false)      // Show flip camera button
+            .hideMuteVideoButton(false)       // Show video toggle button
+            .hideMuteAudioButton(false)       // Show mic toggle button
+            .hideBackButton(false)            // Show PiP/back button
+            .persistenceMode(true)              //Maintain user session or create new sesssion everytime
             .build()
 
         Popin.initialize(token: 51, config: config)
