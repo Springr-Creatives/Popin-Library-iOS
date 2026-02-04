@@ -60,6 +60,9 @@ struct ChatView: View {
             )
         }
         .background(Color(hex: "1A1D21"))
+        .onTapGesture {
+            UIApplication.shared.sendAction(#selector(UIResponder.resignFirstResponder), to: nil, from: nil, for: nil)
+        }
         .onAppear {
             chatManager.isChatOpen = true
             chatManager.resetUnreadCount()
