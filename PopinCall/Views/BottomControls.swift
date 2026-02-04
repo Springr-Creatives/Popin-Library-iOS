@@ -57,11 +57,19 @@ struct BottomControls: View {
                 OverflowMenuSheet(
                     showOverflowMenu: $showOverflowMenu,
                     hideScreenShareButton: configHolder.config.hideScreenShareButton,
+                    hideFlipCameraButton: configHolder.config.hideFlipCameraButton,
                     onInviteTapped: {
                         generateInviteLink()
+                    },
+                    onFlipCameraTapped: {
+                        Task {
+                            let videoTrack = room.localParticipant.firstCameraVideoTrack as? LocalVideoTrack
+                            let cameraCapturer = videoTrack?.capturer as? CameraCapturer
+                            try? await cameraCapturer?.switchCameraPosition()
+                        }
                     }
                 )
-                .modifier(SheetPresentationModifier(height: 250))
+                .modifier(SheetPresentationModifier(height: 320))
             }
             
             Spacer()
@@ -118,26 +126,7 @@ struct BottomControls: View {
             
             Spacer()
             
-            // 4. Flip Camera
-            if !configHolder.config.hideFlipCameraButton {
-                Button(action: {
-                    Task {
-                        let videoTrack = room.localParticipant.firstCameraVideoTrack as? LocalVideoTrack
-                        let cameraCapturer = videoTrack?.capturer as? CameraCapturer
-                        try await cameraCapturer?.switchCameraPosition()
-                    }
-                }) {
-                    ControlCircleButtonView(
-                        iconName: "arrow.triangle.2.circlepath.camera.fill",
-                        backgroundColor: Color.black.opacity(0.5),
-                        iconColor: .white
-                    )
-                }
-            }
-
-            Spacer()
-
-            // 5. Chat Button
+            // 4. Chat Button
             if !configHolder.config.hideChatButton, viewModel.call?.id != nil {
                 ZStack(alignment: .topTrailing) {
                     ControlCircleButton(
@@ -162,7 +151,7 @@ struct BottomControls: View {
 
             Spacer()
 
-            // 6. End Call
+            // 5. End Call
             if !configHolder.config.hideDisconnectButton {
                 ControlCircleButton(
                     iconName: "phone.down.fill",
@@ -264,7 +253,9 @@ struct ControlCircleButtonView: View {
 struct OverflowMenuSheet: View {
     @Binding var showOverflowMenu: Bool
     var hideScreenShareButton: Bool = false
+    var hideFlipCameraButton: Bool = false
     var onInviteTapped: () -> Void
+    var onFlipCameraTapped: () -> Void
 
     var body: some View {
         ZStack {
@@ -288,6 +279,27 @@ struct OverflowMenuSheet: View {
                     .padding(20)
                     .background(Color(hex: "3E4347"))
                     .cornerRadius(12)
+                }
+
+                // Flip Camera Row
+                if !hideFlipCameraButton {
+                    Button(action: {
+                        showOverflowMenu = false
+                        onFlipCameraTapped()
+                    }) {
+                        HStack {
+                            Text("Flip camera")
+                                .font(.system(size: 16, weight: .regular))
+                                .foregroundColor(.white)
+                            Spacer()
+                            Image(systemName: "arrow.triangle.2.circlepath.camera.fill")
+                                .foregroundColor(.white)
+                                .font(.system(size: 20))
+                        }
+                        .padding(20)
+                        .background(Color(hex: "3E4347"))
+                        .cornerRadius(12)
+                    }
                 }
 
                 // Screen Share Row
