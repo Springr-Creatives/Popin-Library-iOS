@@ -68,8 +68,12 @@ extension MyCustomRendererView: VideoRenderer {
     func set(size _: CGSize) {}
 
     func render(frame: LiveKit.VideoFrame) {
-        if let sampleBuffer = frame.toCMSampleBuffer() {
+        guard let sampleBuffer = frame.toCMSampleBuffer() else { return }
+        if #available(iOS 17.0, *) {
             sampleBufferDisplayLayer.sampleBufferRenderer.enqueue(sampleBuffer)
+        } else {
+            // SDK requires iOS 17+ at runtime, this is just for buildability
+            sampleBufferDisplayLayer.enqueue(sampleBuffer)
         }
     }
 }

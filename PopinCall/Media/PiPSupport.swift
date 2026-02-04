@@ -56,7 +56,11 @@ final class PiPPreviewViewController: UIViewController, VideoRenderer {
 //                print("PiPPreview: Layer failed with error: \(String(describing: layer.error))")
                 layer.flush()
             }
-            layer.sampleBufferRenderer.enqueue(sampleBuffer)
+            if #available(iOS 17.0, *) {
+                layer.sampleBufferRenderer.enqueue(sampleBuffer)
+            } else {
+                layer.enqueue(sampleBuffer)
+            }
             layer.setAffineTransform(CGAffineTransform(rotationAngle: frame.rotation.rotationAngle))
         }
     }
@@ -101,7 +105,11 @@ final class PiPVideoCallViewController: AVPictureInPictureVideoCallViewControlle
 //                print("PiPVideoCall: Layer failed with error: \(String(describing: layer.error))")
                 layer.flush()
             }
-            layer.sampleBufferRenderer.enqueue(sampleBuffer)
+            if #available(iOS 17.0, *) {
+                layer.sampleBufferRenderer.enqueue(sampleBuffer)
+            } else {
+                layer.enqueue(sampleBuffer)
+            }
             layer.setAffineTransform(CGAffineTransform(rotationAngle: frame.rotation.rotationAngle))
             preferredContentSize = frame.rotatedSize
         }

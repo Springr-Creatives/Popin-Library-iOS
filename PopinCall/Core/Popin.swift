@@ -22,6 +22,17 @@ public class Popin : PopinPusherDelegate, CallAcceptanceListener {
 
     public private(set) static var shared: Popin?
 
+    /// Minimum iOS version required for SDK functionality
+    public static let minimumIOSVersion = 17
+
+    /// Returns true if the current iOS version meets the minimum requirement
+    public static var isSupported: Bool {
+        if #available(iOS 17.0, *) {
+            return true
+        }
+        return false
+    }
+
     private weak var eventsListener: PopinEventsListener?
     private var config: PopinConfig
 
@@ -41,6 +52,16 @@ public class Popin : PopinPusherDelegate, CallAcceptanceListener {
 
     @discardableResult
     public static func initialize(token: Int, config: PopinConfig) -> Popin {
+        // Check iOS version requirement
+        guard isSupported else {
+            print("PopinCall SDK requires iOS \(minimumIOSVersion) or later. Current device is running an unsupported iOS version.")
+            config.initListener?.onInitFailed(reason: "PopinCall SDK requires iOS \(minimumIOSVersion) or later.")
+            // Return a non-functional instance
+            let instance = Popin(token: token, config: config)
+            shared = instance
+            return instance
+        }
+
         if let existing = shared {
             existing.config = config
             if !existing.config.persistenceMode {
@@ -91,6 +112,12 @@ public class Popin : PopinPusherDelegate, CallAcceptanceListener {
     }
 
     public func startCall() {
+        guard Self.isSupported else {
+            print("PopinCall SDK requires iOS \(Self.minimumIOSVersion) or later.")
+            config.eventsListener?.onCallFailed()
+            return
+        }
+
         print("START_CALLL")
         self.eventsListener = config.eventsListener
         callStarted = true
@@ -133,6 +160,12 @@ public class Popin : PopinPusherDelegate, CallAcceptanceListener {
     // MARK: - Legacy convenience (init + startCall in one step)
 
     public func connect(token: Int, popinDelegate: PopinEventsListener) {
+        guard Self.isSupported else {
+            print("PopinCall SDK requires iOS \(Self.minimumIOSVersion) or later.")
+            popinDelegate.onCallFailed()
+            return
+        }
+
         self.eventsListener = popinDelegate
         self.sellerToken = token
         Utilities.shared.saveSeller(seller_id: token)

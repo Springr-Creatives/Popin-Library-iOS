@@ -48,8 +48,11 @@ class PopinPusher : PusherDelegate{
                          if let json = try JSONSerialization.jsonObject(with: data, options: []) as? [String: Any],
                             let message = json["message"] as? [String: Any],
                             let type = message["type"] as? Int {
-                             
-                             if (type == 3) {
+
+                             if (type == 1) {
+                                 // Chat message - forward to ChatManager
+                                 ChatManager.shared.handlePusherMessage(dataString)
+                             } else if (type == 3) {
                                  Utilities.shared.saveConnected()
                                  self.delegate?.onAgentConnected()
                              } else if (type == 15) {

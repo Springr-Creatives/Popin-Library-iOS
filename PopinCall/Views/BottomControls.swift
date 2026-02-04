@@ -12,6 +12,21 @@ import LiveKitComponents
 #if canImport(UIKit)
 import ReplayKit
 
+// Helper modifier for iOS 16+ sheet presentation
+struct SheetPresentationModifier: ViewModifier {
+    let height: CGFloat
+
+    func body(content: Content) -> some View {
+        if #available(iOS 16.0, *) {
+            content
+                .presentationDetents([.height(height)])
+                .presentationDragIndicator(.visible)
+        } else {
+            content
+        }
+    }
+}
+
 struct BottomControls: View {
     @EnvironmentObject private var room: Room
     @EnvironmentObject private var configHolder: PopinConfigHolder
@@ -24,6 +39,8 @@ struct BottomControls: View {
     @State private var inviteUrl: String? = nil
     @State private var inviteError: String? = nil
     @State private var isLoadingInvite = false
+    @State private var showChat = false
+    @ObservedObject private var chatManager = ChatManager.shared
 
     private let videoCallInteractor = VideoCallInteractor()
     
@@ -44,8 +61,7 @@ struct BottomControls: View {
                         generateInviteLink()
                     }
                 )
-                    .presentationDetents([.height(250)])
-                    .presentationDragIndicator(.visible)
+                .modifier(SheetPresentationModifier(height: 250))
             }
             
             Spacer()
@@ -117,13 +133,36 @@ struct BottomControls: View {
                         iconColor: .white
                     )
                 }
-                // Disable if no video track? Or just let it do nothing.
-                // Generally good to give feedback but keep it simple for now.
             }
-            
+
             Spacer()
-            
-            // 5. End Call
+
+            // 5. Chat Button
+            if !configHolder.config.hideChatButton, viewModel.call?.id != nil {
+                ZStack(alignment: .topTrailing) {
+                    ControlCircleButton(
+                        iconName: "bubble.left.fill",
+                        backgroundColor: Color.black.opacity(0.5),
+                        iconColor: .white,
+                        action: { showChat = true }
+                    )
+
+                    // Unread badge
+                    if chatManager.unreadCount > 0 {
+                        Text("\(chatManager.unreadCount)")
+                            .font(.system(size: 12, weight: .bold))
+                            .foregroundColor(.white)
+                            .frame(minWidth: 20, minHeight: 20)
+                            .background(Color.red)
+                            .clipShape(Circle())
+                            .offset(x: 4, y: -4)
+                    }
+                }
+            }
+
+            Spacer()
+
+            // 6. End Call
             if !configHolder.config.hideDisconnectButton {
                 ControlCircleButton(
                     iconName: "phone.down.fill",
@@ -147,8 +186,12 @@ struct BottomControls: View {
                     inviteError = nil
                 }
             )
-            .presentationDetents([.height(200)])
-            .presentationDragIndicator(.visible)
+            .modifier(SheetPresentationModifier(height: 200))
+        }
+        .fullScreenCover(isPresented: $showChat) {
+            if let callId = viewModel.call?.id {
+                ChatView(callId: callId, onClose: { showChat = false })
+            }
         }
     }
 

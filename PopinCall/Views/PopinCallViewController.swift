@@ -360,6 +360,11 @@ public class PopinCallViewController: UIViewController {
         CallManager.shared.clearCurrentCall()
         PopinCallManager.shared.clearCallState()
 
+        // Clear chat messages for this call
+        if let callId = viewModel.call?.id {
+            ChatManager.shared.clearMessages(for: callId)
+        }
+
         // Explicitly remove hosting controller to trigger RoomScope cleanup (LiveKit disconnect)
         if let hostingController = self.hostingController {
             hostingController.willMove(toParent: nil)

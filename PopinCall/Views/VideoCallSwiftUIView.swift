@@ -54,6 +54,11 @@ struct VideoCallSwiftUIView: View {
                 videoCallId = call.id
                 videoUserId = call.user_id
 
+                // Configure ChatManager for this call
+                if let callId = call.id {
+                    ChatManager.shared.configure(callId: callId, sellerId: Utilities.shared.getSeller())
+                }
+
                 Task {
                     guard let websocket = call.websocket,
                           let token = call.access_token else { return }
