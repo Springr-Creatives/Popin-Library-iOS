@@ -70,14 +70,22 @@ struct PopinConnectedView: View {
             return !existingSids.contains(sid)
         }
         
-        // 4. Sort new participants by joinedAt (to maintain initial stable order)
+        // 4. Sort new participants - prioritize agent/seller (identity starts with 's')
         let sortedNew = newParticipants.sorted { p1, p2 in
-            if p1 is LocalParticipant { return true }
-            if p2 is LocalParticipant { return false }
-            
+            let identity1 = p1.identity?.stringValue ?? ""
+            let identity2 = p2.identity?.stringValue ?? ""
+
+            let isSeller1 = identity1.hasPrefix("s")
+            let isSeller2 = identity2.hasPrefix("s")
+
+            // Seller/agent comes first
+            if isSeller1 && !isSeller2 { return true }
+            if !isSeller1 && isSeller2 { return false }
+
+            // If both are sellers or both are not, sort by joinedAt
             let date1 = p1.joinedAt ?? Date.distantPast
             let date2 = p2.joinedAt ?? Date.distantPast
-            
+
             if date1 != date2 {
                 return date1 < date2
             }
@@ -114,11 +122,19 @@ struct PopinConnectedView: View {
         }
         
         // Fallback: If for some reason the order list is desynced or empty but we have participants
-        // (e.g. initial load), use the stable sort as backup.
+        // (e.g. initial load), use the stable sort as backup - prioritize agent/seller (identity starts with 's')
         if ordered.isEmpty && !_room.allParticipants.isEmpty {
             return Array(_room.allParticipants.values).sorted { p1, p2 in
-                if p1 is LocalParticipant { return true }
-                if p2 is LocalParticipant { return false }
+                let identity1 = p1.identity?.stringValue ?? ""
+                let identity2 = p2.identity?.stringValue ?? ""
+
+                let isSeller1 = identity1.hasPrefix("s")
+                let isSeller2 = identity2.hasPrefix("s")
+
+                // Seller/agent comes first
+                if isSeller1 && !isSeller2 { return true }
+                if !isSeller1 && isSeller2 { return false }
+
                 let d1 = p1.joinedAt ?? Date.distantPast
                 let d2 = p2.joinedAt ?? Date.distantPast
                 return d1 < d2
