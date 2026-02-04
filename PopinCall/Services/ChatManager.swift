@@ -25,7 +25,6 @@ class ChatManager: ObservableObject {
     private init() {}
 
     func configure(callId: Int, sellerId: Int) {
-        print("[ChatManager] configure - callId: \(callId), sellerId: \(sellerId)")
         self.currentCallId = callId
         self.currentSellerId = sellerId
         if messages[callId] == nil {
@@ -34,9 +33,7 @@ class ChatManager: ObservableObject {
     }
 
     func getMessages(for callId: Int) -> [ChatMessage] {
-        let msgs = messages[callId] ?? []
-        print("[ChatManager] getMessages for callId \(callId) - count: \(msgs.count)")
-        return msgs
+        return messages[callId] ?? []
     }
 
     func clearMessages(for callId: Int) {
@@ -49,21 +46,15 @@ class ChatManager: ObservableObject {
     }
 
     func sendMessage(text: String?, image: String? = nil, onSuccess: @escaping () -> Void, onFailure: @escaping (String) -> Void) {
-        print("[ChatManager] sendMessage called with text: \(text ?? "nil")")
-
         guard let sellerId = currentSellerId else {
-            print("[ChatManager] ERROR: Seller ID not configured")
             onFailure("Seller ID not configured")
             return
         }
 
         guard let callId = currentCallId else {
-            print("[ChatManager] ERROR: Call ID not configured")
             onFailure("Call ID not configured")
             return
         }
-
-        print("[ChatManager] sendMessage - sellerId: \(sellerId), callId: \(callId)")
 
         let urlString = serverURL + "/user/message"
         let timezone = TimeZone.current.identifier
@@ -81,29 +72,22 @@ class ChatManager: ObservableObject {
             parameters["image"] = image
         }
 
-        print("[ChatManager] sendMessage - URL: \(urlString), params: \(parameters)")
-
         Task {
             do {
-                // First get raw response to debug
                 let rawResponse: String = try await Utilities.shared.request(
                     urlString: urlString,
                     method: "POST",
                     parameters: parameters
                 )
-                print("[ChatManager] sendMessage - raw response: \(rawResponse)")
 
-                // Try to parse as JSON to check status
                 var isSuccess = true
                 if let data = rawResponse.data(using: .utf8),
                    let json = try? JSONSerialization.jsonObject(with: data) as? [String: Any] {
-                    // Check various success indicators
                     if let status = json["status"] as? Int {
                         isSuccess = (status == 1)
                     } else if let success = json["success"] as? Bool {
                         isSuccess = success
                     }
-                    print("[ChatManager] sendMessage - parsed isSuccess: \(isSuccess)")
                 }
 
                 if isSuccess {
@@ -122,27 +106,21 @@ class ChatManager: ObservableObject {
                         senderName: nil
                     )
 
-                    print("[ChatManager] sendMessage - created ChatMessage with id: \(messageId)")
-
                     await MainActor.run {
                         var updatedMessages = self.messages
-                        print("[ChatManager] sendMessage - before update, messages for callId \(callId): \(updatedMessages[callId]?.count ?? 0)")
                         if updatedMessages[callId] == nil {
                             updatedMessages[callId] = []
                         }
                         updatedMessages[callId]?.append(chatMessage)
                         self.messages = updatedMessages
-                        print("[ChatManager] sendMessage - after update, messages for callId \(callId): \(self.messages[callId]?.count ?? 0)")
                         onSuccess()
                     }
                 } else {
-                    print("[ChatManager] sendMessage - FAILED")
                     await MainActor.run {
                         onFailure("Failed to send message")
                     }
                 }
             } catch {
-                print("[ChatManager] sendMessage - EXCEPTION: \(error.localizedDescription)")
                 await MainActor.run {
                     onFailure(error.localizedDescription)
                 }
@@ -174,6 +152,7 @@ class ChatManager: ObservableObject {
                 let sellerId = messageObj["seller_id"] as? Int
                 // Prefer agent_name over seller_name for incoming messages
                 let agentName = messageObj["agent_name"] as? String ?? messageObj["seller_name"] as? String
+                print("[ChatManager] Pusher message - agent_name: \(messageObj["agent_name"] ?? "nil"), seller_name: \(messageObj["seller_name"] ?? "nil"), using: \(agentName ?? "nil")")
 
                 // Use direction to determine if message is from user (0) or agent (1)
                 // direction = 0 means sent by user, direction = 1 means from agent

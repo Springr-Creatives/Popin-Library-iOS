@@ -18,13 +18,10 @@ struct ChatView: View {
     @State private var isSending: Bool = false
 
     private var messages: [ChatMessage] {
-        let msgs = chatManager.getMessages(for: callId)
-        print("[ChatView] messages computed - callId: \(callId), count: \(msgs.count)")
-        return msgs
+        chatManager.getMessages(for: callId)
     }
 
     var body: some View {
-        let _ = print("[ChatView] body rendered - callId: \(callId), messages count: \(messages.count)")
         VStack(spacing: 0) {
             // Top Bar
             ChatTopBar(onClose: onClose)
@@ -41,8 +38,7 @@ struct ChatView: View {
                     .padding(.horizontal, 16)
                     .padding(.vertical, 12)
                 }
-                .onChange(of: messages.count) { newCount in
-                    print("[ChatView] messages.count changed to: \(newCount)")
+                .onChange(of: messages.count) { _ in
                     if let lastMessage = messages.last {
                         withAnimation {
                             proxy.scrollTo(lastMessage.id, anchor: .bottom)
@@ -50,7 +46,6 @@ struct ChatView: View {
                     }
                 }
                 .onAppear {
-                    print("[ChatView] ScrollView onAppear - callId: \(callId)")
                     if let lastMessage = messages.last {
                         proxy.scrollTo(lastMessage.id, anchor: .bottom)
                     }
@@ -66,7 +61,6 @@ struct ChatView: View {
         }
         .background(Color(hex: "1A1D21"))
         .onAppear {
-            print("[ChatView] onAppear - callId: \(callId)")
             chatManager.resetUnreadCount()
         }
     }
@@ -75,7 +69,6 @@ struct ChatView: View {
         let trimmedText = messageText.trimmingCharacters(in: .whitespacesAndNewlines)
         guard !trimmedText.isEmpty else { return }
 
-        print("[ChatView] sendMessage - text: \(trimmedText), callId: \(callId)")
         isSending = true
         let textToSend = trimmedText
         messageText = ""
@@ -84,11 +77,9 @@ struct ChatView: View {
             text: textToSend,
             image: nil,
             onSuccess: {
-                print("[ChatView] sendMessage onSuccess - messages count now: \(self.messages.count)")
                 self.isSending = false
             },
-            onFailure: { error in
-                print("[ChatView] sendMessage onFailure: \(error)")
+            onFailure: { _ in
                 self.isSending = false
             }
         )
