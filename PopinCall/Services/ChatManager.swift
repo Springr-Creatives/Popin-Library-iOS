@@ -21,6 +21,7 @@ class ChatManager: ObservableObject {
     weak var listener: ChatMessageListener?
     private var currentCallId: Int?
     private var currentSellerId: Int?
+    var isChatOpen: Bool = false
 
     private init() {}
 
@@ -152,7 +153,6 @@ class ChatManager: ObservableObject {
                 let sellerId = messageObj["seller_id"] as? Int
                 // Prefer agent_name over seller_name for incoming messages
                 let agentName = messageObj["agent_name"] as? String ?? messageObj["seller_name"] as? String
-                print("[ChatManager] Pusher message - agent_name: \(messageObj["agent_name"] ?? "nil"), seller_name: \(messageObj["seller_name"] ?? "nil"), using: \(agentName ?? "nil")")
 
                 // Use direction to determine if message is from user (0) or agent (1)
                 // direction = 0 means sent by user, direction = 1 means from agent
@@ -180,8 +180,8 @@ class ChatManager: ObservableObject {
                         if !updatedMessages[callId]!.contains(where: { $0.id == chatMessage.id }) {
                             updatedMessages[callId]?.append(chatMessage)
                             self.messages = updatedMessages
-                            // Only increment unread for received messages
-                            if !isMe {
+                            // Only increment unread for received messages when chat is not open
+                            if !isMe && !self.isChatOpen {
                                 self.unreadCount += 1
                             }
                             self.listener?.onMessageReceived(chatMessage)

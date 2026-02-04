@@ -61,7 +61,11 @@ struct ChatView: View {
         }
         .background(Color(hex: "1A1D21"))
         .onAppear {
+            chatManager.isChatOpen = true
             chatManager.resetUnreadCount()
+        }
+        .onDisappear {
+            chatManager.isChatOpen = false
         }
     }
 
