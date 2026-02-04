@@ -39,7 +39,7 @@ struct BottomControls: View {
     @State private var inviteUrl: String? = nil
     @State private var inviteError: String? = nil
     @State private var isLoadingInvite = false
-    @State private var showChat = false
+    @Binding var showChat: Bool
     @ObservedObject private var chatManager = ChatManager.shared
 
     private let videoCallInteractor = VideoCallInteractor()

@@ -34,6 +34,7 @@ struct PopinConnectedView: View {
     @State private var primaryParticipantId: String?
     @StateObject private var pipHandler = PiPHandler()
     @State private var pipSupported = AVPictureInPictureController.isPictureInPictureSupported()
+    @State private var showChat = false
 
     // Maintain a persistent order of participant SIDs to prevents random shifting
     @State private var participantOrder: [String] = []
@@ -209,7 +210,7 @@ struct PopinConnectedView: View {
                 Task {
                     await _room.disconnect()
                 }
-            })
+            }, showChat: $showChat)
         }
     }
 
@@ -273,6 +274,24 @@ struct PopinConnectedView: View {
             // Automatically enable PiP when app goes to background
             if newPhase == .background && pipSupported {
                 pipHandler.startPictureInPicture()
+            }
+        }
+        .onChange(of: showChat) { show in
+            if show {
+                // Chat opened -> Start PiP if supported
+                if pipSupported {
+                    pipHandler.startPictureInPicture()
+                }
+            } else {
+                 // Chat closed -> Stop PiP
+                 pipHandler.stopPictureInPicture()
+            }
+        }
+        .onReceive(NotificationCenter.default.publisher(for: .pipDidStop)) { _ in
+            // PiP stopped (e.g. user restored from PiP window)
+            // If chat is open, close it to show full screen video
+            if showChat {
+                showChat = false
             }
         }
     }
