@@ -98,10 +98,10 @@ public class Popin : PopinPusherDelegate, CallAcceptanceListener {
 
         if !popinPresenter.isUserRegistered() {
             popinPresenter.registerUser(seller_id: sellerToken, name: config.userName, contactInfo: config.contactInfo, campaign: getEnhancedMeta(), onSucess: { [self] in
-                self.connectPusher(seller_id: sellerToken)
+                self.config.initListener?.onInitComplete()
             })
         } else {
-            connectPusher(seller_id: sellerToken)
+            config.initListener?.onInitComplete()
         }
     }
 
@@ -127,11 +127,15 @@ public class Popin : PopinPusherDelegate, CallAcceptanceListener {
             return
         }
 
+        // Connect Pusher if not already connected
         if !pusherConnected {
-            print("Pusher not connected yet, waiting...")
-            return
+            connectPusher(seller_id: sellerToken)
         }
 
+        initiateCall()
+    }
+
+    private func initiateCall() {
         popinPresenter.startConnection(seller_id: sellerToken, onSuccess: { [weak self] callQueueId in
             print("Connection started, call_queue_id=\(callQueueId)")
             self?.eventsListener?.onCallStart()
@@ -168,14 +172,17 @@ public class Popin : PopinPusherDelegate, CallAcceptanceListener {
 
         self.eventsListener = popinDelegate
         self.sellerToken = token
+        self.callStarted = true
         Utilities.shared.saveSeller(seller_id: token)
 
         if !popinPresenter.isUserRegistered() {
             popinPresenter.registerUser(seller_id: token, name: config.userName, contactInfo: config.contactInfo, campaign: getEnhancedMeta(), onSucess: {
                 self.connectPusher(seller_id: token)
+                self.initiateCall()
             })
         } else {
             self.connectPusher(seller_id: token)
+            self.initiateCall()
         }
     }
 
@@ -206,8 +213,7 @@ public class Popin : PopinPusherDelegate, CallAcceptanceListener {
         return meta
     }
 
-    func connectPusher(seller_id: Int) {
-        callStarted = true
+    private func connectPusher(seller_id: Int) {
         sellerToken = seller_id
         popinPusher.delegate = self
         popinPusher.connect()
@@ -216,9 +222,6 @@ public class Popin : PopinPusherDelegate, CallAcceptanceListener {
     func onPusherConnected() {
         print("PUSHER CONNECTED")
         pusherConnected = true
-
-        // Notify init listener that initialization is complete
-        config.initListener?.onInitComplete()
     }
 
     private func startWaitingForAcceptance(callQueueId: Int) {
