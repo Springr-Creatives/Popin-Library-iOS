@@ -7,20 +7,6 @@
     }
   ],
   "copyCommands" : {
-    "/Users/ashwin/Developer/Popin-Library-iOS/.build/arm64-apple-macosx/debug/Alamofire_Alamofire.bundle/PrivacyInfo.xcprivacy" : {
-      "inputs" : [
-        {
-          "kind" : "file",
-          "name" : "/Users/ashwin/Developer/Popin-Library-iOS/.build/checkouts/Alamofire/Source/PrivacyInfo.xcprivacy"
-        }
-      ],
-      "outputs" : [
-        {
-          "kind" : "file",
-          "name" : "/Users/ashwin/Developer/Popin-Library-iOS/.build/arm64-apple-macosx/debug/Alamofire_Alamofire.bundle/PrivacyInfo.xcprivacy"
-        }
-      ]
-    },
     "/Users/ashwin/Developer/Popin-Library-iOS/.build/arm64-apple-macosx/debug/LiveKitWebRTC.framework" : {
       "inputs" : [
         {
@@ -148,542 +134,6 @@
     }
   ],
   "swiftCommands" : {
-    "C.Alamofire-arm64-apple-macosx26.0-debug.module" : {
-      "executable" : "/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/swiftc",
-      "fileList" : "/Users/ashwin/Developer/Popin-Library-iOS/.build/arm64-apple-macosx/debug/Alamofire.build/sources",
-      "importPath" : "/Users/ashwin/Developer/Popin-Library-iOS/.build/arm64-apple-macosx/debug/Modules",
-      "inputs" : [
-        {
-          "kind" : "file",
-          "name" : "/Users/ashwin/Developer/Popin-Library-iOS/.build/checkouts/Alamofire/Source/Alamofire.swift"
-        },
-        {
-          "kind" : "file",
-          "name" : "/Users/ashwin/Developer/Popin-Library-iOS/.build/checkouts/Alamofire/Source/Core/AFError.swift"
-        },
-        {
-          "kind" : "file",
-          "name" : "/Users/ashwin/Developer/Popin-Library-iOS/.build/checkouts/Alamofire/Source/Core/DataRequest.swift"
-        },
-        {
-          "kind" : "file",
-          "name" : "/Users/ashwin/Developer/Popin-Library-iOS/.build/checkouts/Alamofire/Source/Core/DataStreamRequest.swift"
-        },
-        {
-          "kind" : "file",
-          "name" : "/Users/ashwin/Developer/Popin-Library-iOS/.build/checkouts/Alamofire/Source/Core/DownloadRequest.swift"
-        },
-        {
-          "kind" : "file",
-          "name" : "/Users/ashwin/Developer/Popin-Library-iOS/.build/checkouts/Alamofire/Source/Core/HTTPHeaders.swift"
-        },
-        {
-          "kind" : "file",
-          "name" : "/Users/ashwin/Developer/Popin-Library-iOS/.build/checkouts/Alamofire/Source/Core/HTTPMethod.swift"
-        },
-        {
-          "kind" : "file",
-          "name" : "/Users/ashwin/Developer/Popin-Library-iOS/.build/checkouts/Alamofire/Source/Core/Notifications.swift"
-        },
-        {
-          "kind" : "file",
-          "name" : "/Users/ashwin/Developer/Popin-Library-iOS/.build/checkouts/Alamofire/Source/Core/ParameterEncoder.swift"
-        },
-        {
-          "kind" : "file",
-          "name" : "/Users/ashwin/Developer/Popin-Library-iOS/.build/checkouts/Alamofire/Source/Core/ParameterEncoding.swift"
-        },
-        {
-          "kind" : "file",
-          "name" : "/Users/ashwin/Developer/Popin-Library-iOS/.build/checkouts/Alamofire/Source/Core/Protected.swift"
-        },
-        {
-          "kind" : "file",
-          "name" : "/Users/ashwin/Developer/Popin-Library-iOS/.build/checkouts/Alamofire/Source/Core/Request.swift"
-        },
-        {
-          "kind" : "file",
-          "name" : "/Users/ashwin/Developer/Popin-Library-iOS/.build/checkouts/Alamofire/Source/Core/RequestTaskMap.swift"
-        },
-        {
-          "kind" : "file",
-          "name" : "/Users/ashwin/Developer/Popin-Library-iOS/.build/checkouts/Alamofire/Source/Core/Response.swift"
-        },
-        {
-          "kind" : "file",
-          "name" : "/Users/ashwin/Developer/Popin-Library-iOS/.build/checkouts/Alamofire/Source/Core/Session.swift"
-        },
-        {
-          "kind" : "file",
-          "name" : "/Users/ashwin/Developer/Popin-Library-iOS/.build/checkouts/Alamofire/Source/Core/SessionDelegate.swift"
-        },
-        {
-          "kind" : "file",
-          "name" : "/Users/ashwin/Developer/Popin-Library-iOS/.build/checkouts/Alamofire/Source/Core/URLConvertible+URLRequestConvertible.swift"
-        },
-        {
-          "kind" : "file",
-          "name" : "/Users/ashwin/Developer/Popin-Library-iOS/.build/checkouts/Alamofire/Source/Core/UploadRequest.swift"
-        },
-        {
-          "kind" : "file",
-          "name" : "/Users/ashwin/Developer/Popin-Library-iOS/.build/checkouts/Alamofire/Source/Core/WebSocketRequest.swift"
-        },
-        {
-          "kind" : "file",
-          "name" : "/Users/ashwin/Developer/Popin-Library-iOS/.build/checkouts/Alamofire/Source/Extensions/DispatchQueue+Alamofire.swift"
-        },
-        {
-          "kind" : "file",
-          "name" : "/Users/ashwin/Developer/Popin-Library-iOS/.build/checkouts/Alamofire/Source/Extensions/OperationQueue+Alamofire.swift"
-        },
-        {
-          "kind" : "file",
-          "name" : "/Users/ashwin/Developer/Popin-Library-iOS/.build/checkouts/Alamofire/Source/Extensions/Result+Alamofire.swift"
-        },
-        {
-          "kind" : "file",
-          "name" : "/Users/ashwin/Developer/Popin-Library-iOS/.build/checkouts/Alamofire/Source/Extensions/StringEncoding+Alamofire.swift"
-        },
-        {
-          "kind" : "file",
-          "name" : "/Users/ashwin/Developer/Popin-Library-iOS/.build/checkouts/Alamofire/Source/Extensions/URLRequest+Alamofire.swift"
-        },
-        {
-          "kind" : "file",
-          "name" : "/Users/ashwin/Developer/Popin-Library-iOS/.build/checkouts/Alamofire/Source/Extensions/URLSessionConfiguration+Alamofire.swift"
-        },
-        {
-          "kind" : "file",
-          "name" : "/Users/ashwin/Developer/Popin-Library-iOS/.build/checkouts/Alamofire/Source/Features/AlamofireExtended.swift"
-        },
-        {
-          "kind" : "file",
-          "name" : "/Users/ashwin/Developer/Popin-Library-iOS/.build/checkouts/Alamofire/Source/Features/AuthenticationInterceptor.swift"
-        },
-        {
-          "kind" : "file",
-          "name" : "/Users/ashwin/Developer/Popin-Library-iOS/.build/checkouts/Alamofire/Source/Features/CachedResponseHandler.swift"
-        },
-        {
-          "kind" : "file",
-          "name" : "/Users/ashwin/Developer/Popin-Library-iOS/.build/checkouts/Alamofire/Source/Features/Combine.swift"
-        },
-        {
-          "kind" : "file",
-          "name" : "/Users/ashwin/Developer/Popin-Library-iOS/.build/checkouts/Alamofire/Source/Features/Concurrency.swift"
-        },
-        {
-          "kind" : "file",
-          "name" : "/Users/ashwin/Developer/Popin-Library-iOS/.build/checkouts/Alamofire/Source/Features/EventMonitor.swift"
-        },
-        {
-          "kind" : "file",
-          "name" : "/Users/ashwin/Developer/Popin-Library-iOS/.build/checkouts/Alamofire/Source/Features/MultipartFormData.swift"
-        },
-        {
-          "kind" : "file",
-          "name" : "/Users/ashwin/Developer/Popin-Library-iOS/.build/checkouts/Alamofire/Source/Features/MultipartUpload.swift"
-        },
-        {
-          "kind" : "file",
-          "name" : "/Users/ashwin/Developer/Popin-Library-iOS/.build/checkouts/Alamofire/Source/Features/NetworkReachabilityManager.swift"
-        },
-        {
-          "kind" : "file",
-          "name" : "/Users/ashwin/Developer/Popin-Library-iOS/.build/checkouts/Alamofire/Source/Features/OfflineRetrier.swift"
-        },
-        {
-          "kind" : "file",
-          "name" : "/Users/ashwin/Developer/Popin-Library-iOS/.build/checkouts/Alamofire/Source/Features/RedirectHandler.swift"
-        },
-        {
-          "kind" : "file",
-          "name" : "/Users/ashwin/Developer/Popin-Library-iOS/.build/checkouts/Alamofire/Source/Features/RequestCompression.swift"
-        },
-        {
-          "kind" : "file",
-          "name" : "/Users/ashwin/Developer/Popin-Library-iOS/.build/checkouts/Alamofire/Source/Features/RequestInterceptor.swift"
-        },
-        {
-          "kind" : "file",
-          "name" : "/Users/ashwin/Developer/Popin-Library-iOS/.build/checkouts/Alamofire/Source/Features/ResponseSerialization.swift"
-        },
-        {
-          "kind" : "file",
-          "name" : "/Users/ashwin/Developer/Popin-Library-iOS/.build/checkouts/Alamofire/Source/Features/RetryPolicy.swift"
-        },
-        {
-          "kind" : "file",
-          "name" : "/Users/ashwin/Developer/Popin-Library-iOS/.build/checkouts/Alamofire/Source/Features/ServerTrustEvaluation.swift"
-        },
-        {
-          "kind" : "file",
-          "name" : "/Users/ashwin/Developer/Popin-Library-iOS/.build/checkouts/Alamofire/Source/Features/URLEncodedFormEncoder.swift"
-        },
-        {
-          "kind" : "file",
-          "name" : "/Users/ashwin/Developer/Popin-Library-iOS/.build/checkouts/Alamofire/Source/Features/Validation.swift"
-        },
-        {
-          "kind" : "file",
-          "name" : "/Users/ashwin/Developer/Popin-Library-iOS/.build/arm64-apple-macosx/debug/Alamofire.build/DerivedSources/resource_bundle_accessor.swift"
-        },
-        {
-          "kind" : "file",
-          "name" : "/Users/ashwin/Developer/Popin-Library-iOS/.build/arm64-apple-macosx/debug/swift-version--58304C5D6DBC2206.txt"
-        },
-        {
-          "kind" : "virtual",
-          "name" : "<Alamofire-arm64-apple-macosx26.0-debug.module-resources>"
-        },
-        {
-          "kind" : "file",
-          "name" : "/Users/ashwin/Developer/Popin-Library-iOS/.build/arm64-apple-macosx/debug/Alamofire.build/sources"
-        }
-      ],
-      "isLibrary" : true,
-      "moduleName" : "Alamofire",
-      "moduleOutputPath" : "/Users/ashwin/Developer/Popin-Library-iOS/.build/arm64-apple-macosx/debug/Modules/Alamofire.swiftmodule",
-      "objects" : [
-        "/Users/ashwin/Developer/Popin-Library-iOS/.build/arm64-apple-macosx/debug/Alamofire.build/Alamofire.swift.o",
-        "/Users/ashwin/Developer/Popin-Library-iOS/.build/arm64-apple-macosx/debug/Alamofire.build/AFError.swift.o",
-        "/Users/ashwin/Developer/Popin-Library-iOS/.build/arm64-apple-macosx/debug/Alamofire.build/DataRequest.swift.o",
-        "/Users/ashwin/Developer/Popin-Library-iOS/.build/arm64-apple-macosx/debug/Alamofire.build/DataStreamRequest.swift.o",
-        "/Users/ashwin/Developer/Popin-Library-iOS/.build/arm64-apple-macosx/debug/Alamofire.build/DownloadRequest.swift.o",
-        "/Users/ashwin/Developer/Popin-Library-iOS/.build/arm64-apple-macosx/debug/Alamofire.build/HTTPHeaders.swift.o",
-        "/Users/ashwin/Developer/Popin-Library-iOS/.build/arm64-apple-macosx/debug/Alamofire.build/HTTPMethod.swift.o",
-        "/Users/ashwin/Developer/Popin-Library-iOS/.build/arm64-apple-macosx/debug/Alamofire.build/Notifications.swift.o",
-        "/Users/ashwin/Developer/Popin-Library-iOS/.build/arm64-apple-macosx/debug/Alamofire.build/ParameterEncoder.swift.o",
-        "/Users/ashwin/Developer/Popin-Library-iOS/.build/arm64-apple-macosx/debug/Alamofire.build/ParameterEncoding.swift.o",
-        "/Users/ashwin/Developer/Popin-Library-iOS/.build/arm64-apple-macosx/debug/Alamofire.build/Protected.swift.o",
-        "/Users/ashwin/Developer/Popin-Library-iOS/.build/arm64-apple-macosx/debug/Alamofire.build/Request.swift.o",
-        "/Users/ashwin/Developer/Popin-Library-iOS/.build/arm64-apple-macosx/debug/Alamofire.build/RequestTaskMap.swift.o",
-        "/Users/ashwin/Developer/Popin-Library-iOS/.build/arm64-apple-macosx/debug/Alamofire.build/Response.swift.o",
-        "/Users/ashwin/Developer/Popin-Library-iOS/.build/arm64-apple-macosx/debug/Alamofire.build/Session.swift.o",
-        "/Users/ashwin/Developer/Popin-Library-iOS/.build/arm64-apple-macosx/debug/Alamofire.build/SessionDelegate.swift.o",
-        "/Users/ashwin/Developer/Popin-Library-iOS/.build/arm64-apple-macosx/debug/Alamofire.build/URLConvertible+URLRequestConvertible.swift.o",
-        "/Users/ashwin/Developer/Popin-Library-iOS/.build/arm64-apple-macosx/debug/Alamofire.build/UploadRequest.swift.o",
-        "/Users/ashwin/Developer/Popin-Library-iOS/.build/arm64-apple-macosx/debug/Alamofire.build/WebSocketRequest.swift.o",
-        "/Users/ashwin/Developer/Popin-Library-iOS/.build/arm64-apple-macosx/debug/Alamofire.build/DispatchQueue+Alamofire.swift.o",
-        "/Users/ashwin/Developer/Popin-Library-iOS/.build/arm64-apple-macosx/debug/Alamofire.build/OperationQueue+Alamofire.swift.o",
-        "/Users/ashwin/Developer/Popin-Library-iOS/.build/arm64-apple-macosx/debug/Alamofire.build/Result+Alamofire.swift.o",
-        "/Users/ashwin/Developer/Popin-Library-iOS/.build/arm64-apple-macosx/debug/Alamofire.build/StringEncoding+Alamofire.swift.o",
-        "/Users/ashwin/Developer/Popin-Library-iOS/.build/arm64-apple-macosx/debug/Alamofire.build/URLRequest+Alamofire.swift.o",
-        "/Users/ashwin/Developer/Popin-Library-iOS/.build/arm64-apple-macosx/debug/Alamofire.build/URLSessionConfiguration+Alamofire.swift.o",
-        "/Users/ashwin/Developer/Popin-Library-iOS/.build/arm64-apple-macosx/debug/Alamofire.build/AlamofireExtended.swift.o",
-        "/Users/ashwin/Developer/Popin-Library-iOS/.build/arm64-apple-macosx/debug/Alamofire.build/AuthenticationInterceptor.swift.o",
-        "/Users/ashwin/Developer/Popin-Library-iOS/.build/arm64-apple-macosx/debug/Alamofire.build/CachedResponseHandler.swift.o",
-        "/Users/ashwin/Developer/Popin-Library-iOS/.build/arm64-apple-macosx/debug/Alamofire.build/Combine.swift.o",
-        "/Users/ashwin/Developer/Popin-Library-iOS/.build/arm64-apple-macosx/debug/Alamofire.build/Concurrency.swift.o",
-        "/Users/ashwin/Developer/Popin-Library-iOS/.build/arm64-apple-macosx/debug/Alamofire.build/EventMonitor.swift.o",
-        "/Users/ashwin/Developer/Popin-Library-iOS/.build/arm64-apple-macosx/debug/Alamofire.build/MultipartFormData.swift.o",
-        "/Users/ashwin/Developer/Popin-Library-iOS/.build/arm64-apple-macosx/debug/Alamofire.build/MultipartUpload.swift.o",
-        "/Users/ashwin/Developer/Popin-Library-iOS/.build/arm64-apple-macosx/debug/Alamofire.build/NetworkReachabilityManager.swift.o",
-        "/Users/ashwin/Developer/Popin-Library-iOS/.build/arm64-apple-macosx/debug/Alamofire.build/OfflineRetrier.swift.o",
-        "/Users/ashwin/Developer/Popin-Library-iOS/.build/arm64-apple-macosx/debug/Alamofire.build/RedirectHandler.swift.o",
-        "/Users/ashwin/Developer/Popin-Library-iOS/.build/arm64-apple-macosx/debug/Alamofire.build/RequestCompression.swift.o",
-        "/Users/ashwin/Developer/Popin-Library-iOS/.build/arm64-apple-macosx/debug/Alamofire.build/RequestInterceptor.swift.o",
-        "/Users/ashwin/Developer/Popin-Library-iOS/.build/arm64-apple-macosx/debug/Alamofire.build/ResponseSerialization.swift.o",
-        "/Users/ashwin/Developer/Popin-Library-iOS/.build/arm64-apple-macosx/debug/Alamofire.build/RetryPolicy.swift.o",
-        "/Users/ashwin/Developer/Popin-Library-iOS/.build/arm64-apple-macosx/debug/Alamofire.build/ServerTrustEvaluation.swift.o",
-        "/Users/ashwin/Developer/Popin-Library-iOS/.build/arm64-apple-macosx/debug/Alamofire.build/URLEncodedFormEncoder.swift.o",
-        "/Users/ashwin/Developer/Popin-Library-iOS/.build/arm64-apple-macosx/debug/Alamofire.build/Validation.swift.o",
-        "/Users/ashwin/Developer/Popin-Library-iOS/.build/arm64-apple-macosx/debug/Alamofire.build/resource_bundle_accessor.swift.o"
-      ],
-      "otherArguments" : [
-        "-target",
-        "arm64-apple-macosx10.13",
-        "-incremental",
-        "-enable-batch-mode",
-        "-serialize-diagnostics",
-        "-index-store-path",
-        "/Users/ashwin/Developer/Popin-Library-iOS/.build/arm64-apple-macosx/debug/index/store",
-        "-Onone",
-        "-enable-testing",
-        "-j12",
-        "-DSWIFT_PACKAGE",
-        "-DDEBUG",
-        "-DSWIFT_MODULE_RESOURCE_BUNDLE_AVAILABLE",
-        "-module-cache-path",
-        "/Users/ashwin/Developer/Popin-Library-iOS/.build/arm64-apple-macosx/debug/ModuleCache",
-        "-parseable-output",
-        "-parse-as-library",
-        "-emit-objc-header",
-        "-emit-objc-header-path",
-        "/Users/ashwin/Developer/Popin-Library-iOS/.build/arm64-apple-macosx/debug/Alamofire.build/include/Alamofire-Swift.h",
-        "-swift-version",
-        "5",
-        "-enable-upcoming-feature",
-        "ExistentialAny",
-        "-plugin-path",
-        "/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/swift/host/plugins/testing",
-        "-sdk",
-        "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX26.2.sdk",
-        "-F",
-        "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/Library/Frameworks",
-        "-F",
-        "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/Library/PrivateFrameworks",
-        "-I",
-        "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/usr/lib",
-        "-L",
-        "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/usr/lib",
-        "-g",
-        "-Xcc",
-        "-isysroot",
-        "-Xcc",
-        "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX26.2.sdk",
-        "-Xcc",
-        "-F",
-        "-Xcc",
-        "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/Library/Frameworks",
-        "-Xcc",
-        "-F",
-        "-Xcc",
-        "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/Library/PrivateFrameworks",
-        "-Xcc",
-        "-fPIC",
-        "-Xcc",
-        "-g",
-        "-suppress-warnings",
-        "-user-module-version",
-        "5.11.0",
-        "-package-name",
-        "alamofire"
-      ],
-      "outputFileMapPath" : "/Users/ashwin/Developer/Popin-Library-iOS/.build/arm64-apple-macosx/debug/Alamofire.build/output-file-map.json",
-      "outputs" : [
-        {
-          "kind" : "file",
-          "name" : "/Users/ashwin/Developer/Popin-Library-iOS/.build/arm64-apple-macosx/debug/Alamofire.build/Alamofire.swift.o"
-        },
-        {
-          "kind" : "file",
-          "name" : "/Users/ashwin/Developer/Popin-Library-iOS/.build/arm64-apple-macosx/debug/Alamofire.build/AFError.swift.o"
-        },
-        {
-          "kind" : "file",
-          "name" : "/Users/ashwin/Developer/Popin-Library-iOS/.build/arm64-apple-macosx/debug/Alamofire.build/DataRequest.swift.o"
-        },
-        {
-          "kind" : "file",
-          "name" : "/Users/ashwin/Developer/Popin-Library-iOS/.build/arm64-apple-macosx/debug/Alamofire.build/DataStreamRequest.swift.o"
-        },
-        {
-          "kind" : "file",
-          "name" : "/Users/ashwin/Developer/Popin-Library-iOS/.build/arm64-apple-macosx/debug/Alamofire.build/DownloadRequest.swift.o"
-        },
-        {
-          "kind" : "file",
-          "name" : "/Users/ashwin/Developer/Popin-Library-iOS/.build/arm64-apple-macosx/debug/Alamofire.build/HTTPHeaders.swift.o"
-        },
-        {
-          "kind" : "file",
-          "name" : "/Users/ashwin/Developer/Popin-Library-iOS/.build/arm64-apple-macosx/debug/Alamofire.build/HTTPMethod.swift.o"
-        },
-        {
-          "kind" : "file",
-          "name" : "/Users/ashwin/Developer/Popin-Library-iOS/.build/arm64-apple-macosx/debug/Alamofire.build/Notifications.swift.o"
-        },
-        {
-          "kind" : "file",
-          "name" : "/Users/ashwin/Developer/Popin-Library-iOS/.build/arm64-apple-macosx/debug/Alamofire.build/ParameterEncoder.swift.o"
-        },
-        {
-          "kind" : "file",
-          "name" : "/Users/ashwin/Developer/Popin-Library-iOS/.build/arm64-apple-macosx/debug/Alamofire.build/ParameterEncoding.swift.o"
-        },
-        {
-          "kind" : "file",
-          "name" : "/Users/ashwin/Developer/Popin-Library-iOS/.build/arm64-apple-macosx/debug/Alamofire.build/Protected.swift.o"
-        },
-        {
-          "kind" : "file",
-          "name" : "/Users/ashwin/Developer/Popin-Library-iOS/.build/arm64-apple-macosx/debug/Alamofire.build/Request.swift.o"
-        },
-        {
-          "kind" : "file",
-          "name" : "/Users/ashwin/Developer/Popin-Library-iOS/.build/arm64-apple-macosx/debug/Alamofire.build/RequestTaskMap.swift.o"
-        },
-        {
-          "kind" : "file",
-          "name" : "/Users/ashwin/Developer/Popin-Library-iOS/.build/arm64-apple-macosx/debug/Alamofire.build/Response.swift.o"
-        },
-        {
-          "kind" : "file",
-          "name" : "/Users/ashwin/Developer/Popin-Library-iOS/.build/arm64-apple-macosx/debug/Alamofire.build/Session.swift.o"
-        },
-        {
-          "kind" : "file",
-          "name" : "/Users/ashwin/Developer/Popin-Library-iOS/.build/arm64-apple-macosx/debug/Alamofire.build/SessionDelegate.swift.o"
-        },
-        {
-          "kind" : "file",
-          "name" : "/Users/ashwin/Developer/Popin-Library-iOS/.build/arm64-apple-macosx/debug/Alamofire.build/URLConvertible+URLRequestConvertible.swift.o"
-        },
-        {
-          "kind" : "file",
-          "name" : "/Users/ashwin/Developer/Popin-Library-iOS/.build/arm64-apple-macosx/debug/Alamofire.build/UploadRequest.swift.o"
-        },
-        {
-          "kind" : "file",
-          "name" : "/Users/ashwin/Developer/Popin-Library-iOS/.build/arm64-apple-macosx/debug/Alamofire.build/WebSocketRequest.swift.o"
-        },
-        {
-          "kind" : "file",
-          "name" : "/Users/ashwin/Developer/Popin-Library-iOS/.build/arm64-apple-macosx/debug/Alamofire.build/DispatchQueue+Alamofire.swift.o"
-        },
-        {
-          "kind" : "file",
-          "name" : "/Users/ashwin/Developer/Popin-Library-iOS/.build/arm64-apple-macosx/debug/Alamofire.build/OperationQueue+Alamofire.swift.o"
-        },
-        {
-          "kind" : "file",
-          "name" : "/Users/ashwin/Developer/Popin-Library-iOS/.build/arm64-apple-macosx/debug/Alamofire.build/Result+Alamofire.swift.o"
-        },
-        {
-          "kind" : "file",
-          "name" : "/Users/ashwin/Developer/Popin-Library-iOS/.build/arm64-apple-macosx/debug/Alamofire.build/StringEncoding+Alamofire.swift.o"
-        },
-        {
-          "kind" : "file",
-          "name" : "/Users/ashwin/Developer/Popin-Library-iOS/.build/arm64-apple-macosx/debug/Alamofire.build/URLRequest+Alamofire.swift.o"
-        },
-        {
-          "kind" : "file",
-          "name" : "/Users/ashwin/Developer/Popin-Library-iOS/.build/arm64-apple-macosx/debug/Alamofire.build/URLSessionConfiguration+Alamofire.swift.o"
-        },
-        {
-          "kind" : "file",
-          "name" : "/Users/ashwin/Developer/Popin-Library-iOS/.build/arm64-apple-macosx/debug/Alamofire.build/AlamofireExtended.swift.o"
-        },
-        {
-          "kind" : "file",
-          "name" : "/Users/ashwin/Developer/Popin-Library-iOS/.build/arm64-apple-macosx/debug/Alamofire.build/AuthenticationInterceptor.swift.o"
-        },
-        {
-          "kind" : "file",
-          "name" : "/Users/ashwin/Developer/Popin-Library-iOS/.build/arm64-apple-macosx/debug/Alamofire.build/CachedResponseHandler.swift.o"
-        },
-        {
-          "kind" : "file",
-          "name" : "/Users/ashwin/Developer/Popin-Library-iOS/.build/arm64-apple-macosx/debug/Alamofire.build/Combine.swift.o"
-        },
-        {
-          "kind" : "file",
-          "name" : "/Users/ashwin/Developer/Popin-Library-iOS/.build/arm64-apple-macosx/debug/Alamofire.build/Concurrency.swift.o"
-        },
-        {
-          "kind" : "file",
-          "name" : "/Users/ashwin/Developer/Popin-Library-iOS/.build/arm64-apple-macosx/debug/Alamofire.build/EventMonitor.swift.o"
-        },
-        {
-          "kind" : "file",
-          "name" : "/Users/ashwin/Developer/Popin-Library-iOS/.build/arm64-apple-macosx/debug/Alamofire.build/MultipartFormData.swift.o"
-        },
-        {
-          "kind" : "file",
-          "name" : "/Users/ashwin/Developer/Popin-Library-iOS/.build/arm64-apple-macosx/debug/Alamofire.build/MultipartUpload.swift.o"
-        },
-        {
-          "kind" : "file",
-          "name" : "/Users/ashwin/Developer/Popin-Library-iOS/.build/arm64-apple-macosx/debug/Alamofire.build/NetworkReachabilityManager.swift.o"
-        },
-        {
-          "kind" : "file",
-          "name" : "/Users/ashwin/Developer/Popin-Library-iOS/.build/arm64-apple-macosx/debug/Alamofire.build/OfflineRetrier.swift.o"
-        },
-        {
-          "kind" : "file",
-          "name" : "/Users/ashwin/Developer/Popin-Library-iOS/.build/arm64-apple-macosx/debug/Alamofire.build/RedirectHandler.swift.o"
-        },
-        {
-          "kind" : "file",
-          "name" : "/Users/ashwin/Developer/Popin-Library-iOS/.build/arm64-apple-macosx/debug/Alamofire.build/RequestCompression.swift.o"
-        },
-        {
-          "kind" : "file",
-          "name" : "/Users/ashwin/Developer/Popin-Library-iOS/.build/arm64-apple-macosx/debug/Alamofire.build/RequestInterceptor.swift.o"
-        },
-        {
-          "kind" : "file",
-          "name" : "/Users/ashwin/Developer/Popin-Library-iOS/.build/arm64-apple-macosx/debug/Alamofire.build/ResponseSerialization.swift.o"
-        },
-        {
-          "kind" : "file",
-          "name" : "/Users/ashwin/Developer/Popin-Library-iOS/.build/arm64-apple-macosx/debug/Alamofire.build/RetryPolicy.swift.o"
-        },
-        {
-          "kind" : "file",
-          "name" : "/Users/ashwin/Developer/Popin-Library-iOS/.build/arm64-apple-macosx/debug/Alamofire.build/ServerTrustEvaluation.swift.o"
-        },
-        {
-          "kind" : "file",
-          "name" : "/Users/ashwin/Developer/Popin-Library-iOS/.build/arm64-apple-macosx/debug/Alamofire.build/URLEncodedFormEncoder.swift.o"
-        },
-        {
-          "kind" : "file",
-          "name" : "/Users/ashwin/Developer/Popin-Library-iOS/.build/arm64-apple-macosx/debug/Alamofire.build/Validation.swift.o"
-        },
-        {
-          "kind" : "file",
-          "name" : "/Users/ashwin/Developer/Popin-Library-iOS/.build/arm64-apple-macosx/debug/Alamofire.build/resource_bundle_accessor.swift.o"
-        },
-        {
-          "kind" : "file",
-          "name" : "/Users/ashwin/Developer/Popin-Library-iOS/.build/arm64-apple-macosx/debug/Modules/Alamofire.swiftmodule"
-        }
-      ],
-      "prepareForIndexing" : false,
-      "sources" : [
-        "/Users/ashwin/Developer/Popin-Library-iOS/.build/checkouts/Alamofire/Source/Alamofire.swift",
-        "/Users/ashwin/Developer/Popin-Library-iOS/.build/checkouts/Alamofire/Source/Core/AFError.swift",
-        "/Users/ashwin/Developer/Popin-Library-iOS/.build/checkouts/Alamofire/Source/Core/DataRequest.swift",
-        "/Users/ashwin/Developer/Popin-Library-iOS/.build/checkouts/Alamofire/Source/Core/DataStreamRequest.swift",
-        "/Users/ashwin/Developer/Popin-Library-iOS/.build/checkouts/Alamofire/Source/Core/DownloadRequest.swift",
-        "/Users/ashwin/Developer/Popin-Library-iOS/.build/checkouts/Alamofire/Source/Core/HTTPHeaders.swift",
-        "/Users/ashwin/Developer/Popin-Library-iOS/.build/checkouts/Alamofire/Source/Core/HTTPMethod.swift",
-        "/Users/ashwin/Developer/Popin-Library-iOS/.build/checkouts/Alamofire/Source/Core/Notifications.swift",
-        "/Users/ashwin/Developer/Popin-Library-iOS/.build/checkouts/Alamofire/Source/Core/ParameterEncoder.swift",
-        "/Users/ashwin/Developer/Popin-Library-iOS/.build/checkouts/Alamofire/Source/Core/ParameterEncoding.swift",
-        "/Users/ashwin/Developer/Popin-Library-iOS/.build/checkouts/Alamofire/Source/Core/Protected.swift",
-        "/Users/ashwin/Developer/Popin-Library-iOS/.build/checkouts/Alamofire/Source/Core/Request.swift",
-        "/Users/ashwin/Developer/Popin-Library-iOS/.build/checkouts/Alamofire/Source/Core/RequestTaskMap.swift",
-        "/Users/ashwin/Developer/Popin-Library-iOS/.build/checkouts/Alamofire/Source/Core/Response.swift",
-        "/Users/ashwin/Developer/Popin-Library-iOS/.build/checkouts/Alamofire/Source/Core/Session.swift",
-        "/Users/ashwin/Developer/Popin-Library-iOS/.build/checkouts/Alamofire/Source/Core/SessionDelegate.swift",
-        "/Users/ashwin/Developer/Popin-Library-iOS/.build/checkouts/Alamofire/Source/Core/URLConvertible+URLRequestConvertible.swift",
-        "/Users/ashwin/Developer/Popin-Library-iOS/.build/checkouts/Alamofire/Source/Core/UploadRequest.swift",
-        "/Users/ashwin/Developer/Popin-Library-iOS/.build/checkouts/Alamofire/Source/Core/WebSocketRequest.swift",
-        "/Users/ashwin/Developer/Popin-Library-iOS/.build/checkouts/Alamofire/Source/Extensions/DispatchQueue+Alamofire.swift",
-        "/Users/ashwin/Developer/Popin-Library-iOS/.build/checkouts/Alamofire/Source/Extensions/OperationQueue+Alamofire.swift",
-        "/Users/ashwin/Developer/Popin-Library-iOS/.build/checkouts/Alamofire/Source/Extensions/Result+Alamofire.swift",
-        "/Users/ashwin/Developer/Popin-Library-iOS/.build/checkouts/Alamofire/Source/Extensions/StringEncoding+Alamofire.swift",
-        "/Users/ashwin/Developer/Popin-Library-iOS/.build/checkouts/Alamofire/Source/Extensions/URLRequest+Alamofire.swift",
-        "/Users/ashwin/Developer/Popin-Library-iOS/.build/checkouts/Alamofire/Source/Extensions/URLSessionConfiguration+Alamofire.swift",
-        "/Users/ashwin/Developer/Popin-Library-iOS/.build/checkouts/Alamofire/Source/Features/AlamofireExtended.swift",
-        "/Users/ashwin/Developer/Popin-Library-iOS/.build/checkouts/Alamofire/Source/Features/AuthenticationInterceptor.swift",
-        "/Users/ashwin/Developer/Popin-Library-iOS/.build/checkouts/Alamofire/Source/Features/CachedResponseHandler.swift",
-        "/Users/ashwin/Developer/Popin-Library-iOS/.build/checkouts/Alamofire/Source/Features/Combine.swift",
-        "/Users/ashwin/Developer/Popin-Library-iOS/.build/checkouts/Alamofire/Source/Features/Concurrency.swift",
-        "/Users/ashwin/Developer/Popin-Library-iOS/.build/checkouts/Alamofire/Source/Features/EventMonitor.swift",
-        "/Users/ashwin/Developer/Popin-Library-iOS/.build/checkouts/Alamofire/Source/Features/MultipartFormData.swift",
-        "/Users/ashwin/Developer/Popin-Library-iOS/.build/checkouts/Alamofire/Source/Features/MultipartUpload.swift",
-        "/Users/ashwin/Developer/Popin-Library-iOS/.build/checkouts/Alamofire/Source/Features/NetworkReachabilityManager.swift",
-        "/Users/ashwin/Developer/Popin-Library-iOS/.build/checkouts/Alamofire/Source/Features/OfflineRetrier.swift",
-        "/Users/ashwin/Developer/Popin-Library-iOS/.build/checkouts/Alamofire/Source/Features/RedirectHandler.swift",
-        "/Users/ashwin/Developer/Popin-Library-iOS/.build/checkouts/Alamofire/Source/Features/RequestCompression.swift",
-        "/Users/ashwin/Developer/Popin-Library-iOS/.build/checkouts/Alamofire/Source/Features/RequestInterceptor.swift",
-        "/Users/ashwin/Developer/Popin-Library-iOS/.build/checkouts/Alamofire/Source/Features/ResponseSerialization.swift",
-        "/Users/ashwin/Developer/Popin-Library-iOS/.build/checkouts/Alamofire/Source/Features/RetryPolicy.swift",
-        "/Users/ashwin/Developer/Popin-Library-iOS/.build/checkouts/Alamofire/Source/Features/ServerTrustEvaluation.swift",
-        "/Users/ashwin/Developer/Popin-Library-iOS/.build/checkouts/Alamofire/Source/Features/URLEncodedFormEncoder.swift",
-        "/Users/ashwin/Developer/Popin-Library-iOS/.build/checkouts/Alamofire/Source/Features/Validation.swift",
-        "/Users/ashwin/Developer/Popin-Library-iOS/.build/arm64-apple-macosx/debug/Alamofire.build/DerivedSources/resource_bundle_accessor.swift"
-      ],
-      "tempsPath" : "/Users/ashwin/Developer/Popin-Library-iOS/.build/arm64-apple-macosx/debug/Alamofire.build",
-      "wholeModuleOptimization" : false
-    },
     "C.BitCollections-arm64-apple-macosx26.0-debug.module" : {
       "executable" : "/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/swiftc",
       "fileList" : "/Users/ashwin/Developer/Popin-Library-iOS/.build/arm64-apple-macosx/debug/BitCollections.build/sources",
@@ -4126,12 +3576,12 @@
           "name" : "/Users/ashwin/Developer/Popin-Library-iOS/.build/arm64-apple-macosx/debug/Modules/OrderedCollections.swiftmodule"
         },
         {
-          "kind" : "directory",
-          "name" : "/Users/ashwin/Developer/Popin-Library-iOS/.build/arm64-apple-macosx/debug/LiveKitWebRTC.framework"
-        },
-        {
           "kind" : "file",
           "name" : "/Users/ashwin/Developer/Popin-Library-iOS/.build/arm64-apple-macosx/debug/liblivekit_uniffi.a"
+        },
+        {
+          "kind" : "directory",
+          "name" : "/Users/ashwin/Developer/Popin-Library-iOS/.build/arm64-apple-macosx/debug/LiveKitWebRTC.framework"
         },
         {
           "kind" : "file",
@@ -5882,12 +5332,12 @@
           "name" : "/Users/ashwin/Developer/Popin-Library-iOS/.build/arm64-apple-macosx/debug/Modules/LiveKit.swiftmodule"
         },
         {
-          "kind" : "directory",
-          "name" : "/Users/ashwin/Developer/Popin-Library-iOS/.build/arm64-apple-macosx/debug/LiveKitWebRTC.framework"
-        },
-        {
           "kind" : "file",
           "name" : "/Users/ashwin/Developer/Popin-Library-iOS/.build/arm64-apple-macosx/debug/liblivekit_uniffi.a"
+        },
+        {
+          "kind" : "directory",
+          "name" : "/Users/ashwin/Developer/Popin-Library-iOS/.build/arm64-apple-macosx/debug/LiveKitWebRTC.framework"
         },
         {
           "kind" : "file",
@@ -7072,127 +6522,155 @@
       "inputs" : [
         {
           "kind" : "file",
-          "name" : "/Users/ashwin/Developer/Popin-Library-iOS/PopinCall/AudienceRow.swift"
+          "name" : "/Users/ashwin/Developer/Popin-Library-iOS/PopinCall/Core/Popin.swift"
         },
         {
           "kind" : "file",
-          "name" : "/Users/ashwin/Developer/Popin-Library-iOS/PopinCall/BroadcastPickerWrapper.swift"
+          "name" : "/Users/ashwin/Developer/Popin-Library-iOS/PopinCall/Core/PopinConfig.swift"
         },
         {
           "kind" : "file",
-          "name" : "/Users/ashwin/Developer/Popin-Library-iOS/PopinCall/CallAcceptanceWaitHandler.swift"
+          "name" : "/Users/ashwin/Developer/Popin-Library-iOS/PopinCall/Core/PopinConfigEnvironment.swift"
         },
         {
           "kind" : "file",
-          "name" : "/Users/ashwin/Developer/Popin-Library-iOS/PopinCall/CallManager.swift"
+          "name" : "/Users/ashwin/Developer/Popin-Library-iOS/PopinCall/Core/PopinProduct.swift"
         },
         {
           "kind" : "file",
-          "name" : "/Users/ashwin/Developer/Popin-Library-iOS/PopinCall/DarwinNotificationCenter.swift"
+          "name" : "/Users/ashwin/Developer/Popin-Library-iOS/PopinCall/Media/BroadcastPickerWrapper.swift"
         },
         {
           "kind" : "file",
-          "name" : "/Users/ashwin/Developer/Popin-Library-iOS/PopinCall/MyCustomRendererView.swift"
+          "name" : "/Users/ashwin/Developer/Popin-Library-iOS/PopinCall/Media/MyCustomRendererView.swift"
         },
         {
           "kind" : "file",
-          "name" : "/Users/ashwin/Developer/Popin-Library-iOS/PopinCall/NotConnectedView.swift"
+          "name" : "/Users/ashwin/Developer/Popin-Library-iOS/PopinCall/Media/PiPSupport.swift"
         },
         {
           "kind" : "file",
-          "name" : "/Users/ashwin/Developer/Popin-Library-iOS/PopinCall/ObjectSavable.swift"
+          "name" : "/Users/ashwin/Developer/Popin-Library-iOS/PopinCall/Models/ChatMessage.swift"
         },
         {
           "kind" : "file",
-          "name" : "/Users/ashwin/Developer/Popin-Library-iOS/PopinCall/ParticipantCell.swift"
+          "name" : "/Users/ashwin/Developer/Popin-Library-iOS/PopinCall/Models/VideoCall.swift"
         },
         {
           "kind" : "file",
-          "name" : "/Users/ashwin/Developer/Popin-Library-iOS/PopinCall/ParticipantLayout.swift"
+          "name" : "/Users/ashwin/Developer/Popin-Library-iOS/PopinCall/Protocols/PopinCallDelegate.swift"
         },
         {
           "kind" : "file",
-          "name" : "/Users/ashwin/Developer/Popin-Library-iOS/PopinCall/ParticipantTile.swift"
+          "name" : "/Users/ashwin/Developer/Popin-Library-iOS/PopinCall/Protocols/PopinInitListener.swift"
         },
         {
           "kind" : "file",
-          "name" : "/Users/ashwin/Developer/Popin-Library-iOS/PopinCall/PiPSupport.swift"
+          "name" : "/Users/ashwin/Developer/Popin-Library-iOS/PopinCall/Protocols/PopinPusherDelegate.swift"
         },
         {
           "kind" : "file",
-          "name" : "/Users/ashwin/Developer/Popin-Library-iOS/PopinCall/Popin.swift"
+          "name" : "/Users/ashwin/Developer/Popin-Library-iOS/PopinCall/Services/CallAcceptanceWaitHandler.swift"
         },
         {
           "kind" : "file",
-          "name" : "/Users/ashwin/Developer/Popin-Library-iOS/PopinCall/PopinCallDelegate.swift"
+          "name" : "/Users/ashwin/Developer/Popin-Library-iOS/PopinCall/Services/CallManager.swift"
         },
         {
           "kind" : "file",
-          "name" : "/Users/ashwin/Developer/Popin-Library-iOS/PopinCall/PopinCallInteractor.swift"
+          "name" : "/Users/ashwin/Developer/Popin-Library-iOS/PopinCall/Services/ChatManager.swift"
         },
         {
           "kind" : "file",
-          "name" : "/Users/ashwin/Developer/Popin-Library-iOS/PopinCall/PopinCallPresenter.swift"
+          "name" : "/Users/ashwin/Developer/Popin-Library-iOS/PopinCall/Services/PopinConference.swift"
         },
         {
           "kind" : "file",
-          "name" : "/Users/ashwin/Developer/Popin-Library-iOS/PopinCall/PopinCallViewController.swift"
+          "name" : "/Users/ashwin/Developer/Popin-Library-iOS/PopinCall/Services/PopinPusher.swift"
         },
         {
           "kind" : "file",
-          "name" : "/Users/ashwin/Developer/Popin-Library-iOS/PopinCall/PopinConference.swift"
+          "name" : "/Users/ashwin/Developer/Popin-Library-iOS/PopinCall/Utilities/DarwinNotificationCenter.swift"
         },
         {
           "kind" : "file",
-          "name" : "/Users/ashwin/Developer/Popin-Library-iOS/PopinCall/PopinConnectedView.swift"
+          "name" : "/Users/ashwin/Developer/Popin-Library-iOS/PopinCall/Utilities/ObjectSavable.swift"
         },
         {
           "kind" : "file",
-          "name" : "/Users/ashwin/Developer/Popin-Library-iOS/PopinCall/PopinInteractor.swift"
+          "name" : "/Users/ashwin/Developer/Popin-Library-iOS/PopinCall/Utilities/Utilities.swift"
         },
         {
           "kind" : "file",
-          "name" : "/Users/ashwin/Developer/Popin-Library-iOS/PopinCall/PopinPresenter.swift"
+          "name" : "/Users/ashwin/Developer/Popin-Library-iOS/PopinCall/VIP/PopinCallInteractor.swift"
         },
         {
           "kind" : "file",
-          "name" : "/Users/ashwin/Developer/Popin-Library-iOS/PopinCall/PopinPusher.swift"
+          "name" : "/Users/ashwin/Developer/Popin-Library-iOS/PopinCall/VIP/PopinCallPresenter.swift"
         },
         {
           "kind" : "file",
-          "name" : "/Users/ashwin/Developer/Popin-Library-iOS/PopinCall/PopinPusherDelegate.swift"
+          "name" : "/Users/ashwin/Developer/Popin-Library-iOS/PopinCall/VIP/PopinInteractor.swift"
         },
         {
           "kind" : "file",
-          "name" : "/Users/ashwin/Developer/Popin-Library-iOS/PopinCall/SideControls.swift"
+          "name" : "/Users/ashwin/Developer/Popin-Library-iOS/PopinCall/VIP/PopinPresenter.swift"
         },
         {
           "kind" : "file",
-          "name" : "/Users/ashwin/Developer/Popin-Library-iOS/PopinCall/TopControls.swift"
+          "name" : "/Users/ashwin/Developer/Popin-Library-iOS/PopinCall/VIP/VideoCallInteractor.swift"
         },
         {
           "kind" : "file",
-          "name" : "/Users/ashwin/Developer/Popin-Library-iOS/PopinCall/Utilities.swift"
+          "name" : "/Users/ashwin/Developer/Popin-Library-iOS/PopinCall/VIP/VideoCallPresenter.swift"
         },
         {
           "kind" : "file",
-          "name" : "/Users/ashwin/Developer/Popin-Library-iOS/PopinCall/VideoCall.swift"
+          "name" : "/Users/ashwin/Developer/Popin-Library-iOS/PopinCall/VIP/VideoCallViewModel.swift"
         },
         {
           "kind" : "file",
-          "name" : "/Users/ashwin/Developer/Popin-Library-iOS/PopinCall/VideoCallInteractor.swift"
+          "name" : "/Users/ashwin/Developer/Popin-Library-iOS/PopinCall/Views/AudienceRow.swift"
         },
         {
           "kind" : "file",
-          "name" : "/Users/ashwin/Developer/Popin-Library-iOS/PopinCall/VideoCallPresenter.swift"
+          "name" : "/Users/ashwin/Developer/Popin-Library-iOS/PopinCall/Views/BottomControls.swift"
         },
         {
           "kind" : "file",
-          "name" : "/Users/ashwin/Developer/Popin-Library-iOS/PopinCall/VideoCallSwiftUIView.swift"
+          "name" : "/Users/ashwin/Developer/Popin-Library-iOS/PopinCall/Views/ChatView.swift"
         },
         {
           "kind" : "file",
-          "name" : "/Users/ashwin/Developer/Popin-Library-iOS/PopinCall/VideoCallViewModel.swift"
+          "name" : "/Users/ashwin/Developer/Popin-Library-iOS/PopinCall/Views/NotConnectedView.swift"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/ashwin/Developer/Popin-Library-iOS/PopinCall/Views/ParticipantCell.swift"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/ashwin/Developer/Popin-Library-iOS/PopinCall/Views/ParticipantLayout.swift"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/ashwin/Developer/Popin-Library-iOS/PopinCall/Views/ParticipantTile.swift"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/ashwin/Developer/Popin-Library-iOS/PopinCall/Views/PopinCallViewController.swift"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/ashwin/Developer/Popin-Library-iOS/PopinCall/Views/PopinConnectedView.swift"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/ashwin/Developer/Popin-Library-iOS/PopinCall/Views/TopControls.swift"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/ashwin/Developer/Popin-Library-iOS/PopinCall/Views/VideoCallSwiftUIView.swift"
         },
         {
           "kind" : "file",
@@ -7200,15 +6678,7 @@
         },
         {
           "kind" : "file",
-          "name" : "/Users/ashwin/Developer/Popin-Library-iOS/.build/arm64-apple-macosx/debug/Modules/Alamofire.swiftmodule"
-        },
-        {
-          "kind" : "file",
           "name" : "/Users/ashwin/Developer/Popin-Library-iOS/.build/arm64-apple-macosx/debug/Modules/PusherSwift.swiftmodule"
-        },
-        {
-          "kind" : "file",
-          "name" : "/Users/ashwin/Developer/Popin-Library-iOS/.build/arm64-apple-macosx/debug/Modules/SwiftyJSON.swiftmodule"
         },
         {
           "kind" : "file",
@@ -7219,12 +6689,12 @@
           "name" : "/Users/ashwin/Developer/Popin-Library-iOS/.build/arm64-apple-macosx/debug/Modules/LiveKitComponents.swiftmodule"
         },
         {
-          "kind" : "directory",
-          "name" : "/Users/ashwin/Developer/Popin-Library-iOS/.build/arm64-apple-macosx/debug/LiveKitWebRTC.framework"
-        },
-        {
           "kind" : "file",
           "name" : "/Users/ashwin/Developer/Popin-Library-iOS/.build/arm64-apple-macosx/debug/liblivekit_uniffi.a"
+        },
+        {
+          "kind" : "directory",
+          "name" : "/Users/ashwin/Developer/Popin-Library-iOS/.build/arm64-apple-macosx/debug/LiveKitWebRTC.framework"
         },
         {
           "kind" : "file",
@@ -7235,41 +6705,48 @@
       "moduleName" : "PopinCall",
       "moduleOutputPath" : "/Users/ashwin/Developer/Popin-Library-iOS/.build/arm64-apple-macosx/debug/Modules/PopinCall.swiftmodule",
       "objects" : [
-        "/Users/ashwin/Developer/Popin-Library-iOS/.build/arm64-apple-macosx/debug/PopinCall.build/AudienceRow.swift.o",
+        "/Users/ashwin/Developer/Popin-Library-iOS/.build/arm64-apple-macosx/debug/PopinCall.build/Popin.swift.o",
+        "/Users/ashwin/Developer/Popin-Library-iOS/.build/arm64-apple-macosx/debug/PopinCall.build/PopinConfig.swift.o",
+        "/Users/ashwin/Developer/Popin-Library-iOS/.build/arm64-apple-macosx/debug/PopinCall.build/PopinConfigEnvironment.swift.o",
+        "/Users/ashwin/Developer/Popin-Library-iOS/.build/arm64-apple-macosx/debug/PopinCall.build/PopinProduct.swift.o",
         "/Users/ashwin/Developer/Popin-Library-iOS/.build/arm64-apple-macosx/debug/PopinCall.build/BroadcastPickerWrapper.swift.o",
+        "/Users/ashwin/Developer/Popin-Library-iOS/.build/arm64-apple-macosx/debug/PopinCall.build/MyCustomRendererView.swift.o",
+        "/Users/ashwin/Developer/Popin-Library-iOS/.build/arm64-apple-macosx/debug/PopinCall.build/PiPSupport.swift.o",
+        "/Users/ashwin/Developer/Popin-Library-iOS/.build/arm64-apple-macosx/debug/PopinCall.build/ChatMessage.swift.o",
+        "/Users/ashwin/Developer/Popin-Library-iOS/.build/arm64-apple-macosx/debug/PopinCall.build/VideoCall.swift.o",
+        "/Users/ashwin/Developer/Popin-Library-iOS/.build/arm64-apple-macosx/debug/PopinCall.build/PopinCallDelegate.swift.o",
+        "/Users/ashwin/Developer/Popin-Library-iOS/.build/arm64-apple-macosx/debug/PopinCall.build/PopinInitListener.swift.o",
+        "/Users/ashwin/Developer/Popin-Library-iOS/.build/arm64-apple-macosx/debug/PopinCall.build/PopinPusherDelegate.swift.o",
         "/Users/ashwin/Developer/Popin-Library-iOS/.build/arm64-apple-macosx/debug/PopinCall.build/CallAcceptanceWaitHandler.swift.o",
         "/Users/ashwin/Developer/Popin-Library-iOS/.build/arm64-apple-macosx/debug/PopinCall.build/CallManager.swift.o",
+        "/Users/ashwin/Developer/Popin-Library-iOS/.build/arm64-apple-macosx/debug/PopinCall.build/ChatManager.swift.o",
+        "/Users/ashwin/Developer/Popin-Library-iOS/.build/arm64-apple-macosx/debug/PopinCall.build/PopinConference.swift.o",
+        "/Users/ashwin/Developer/Popin-Library-iOS/.build/arm64-apple-macosx/debug/PopinCall.build/PopinPusher.swift.o",
         "/Users/ashwin/Developer/Popin-Library-iOS/.build/arm64-apple-macosx/debug/PopinCall.build/DarwinNotificationCenter.swift.o",
-        "/Users/ashwin/Developer/Popin-Library-iOS/.build/arm64-apple-macosx/debug/PopinCall.build/MyCustomRendererView.swift.o",
-        "/Users/ashwin/Developer/Popin-Library-iOS/.build/arm64-apple-macosx/debug/PopinCall.build/NotConnectedView.swift.o",
         "/Users/ashwin/Developer/Popin-Library-iOS/.build/arm64-apple-macosx/debug/PopinCall.build/ObjectSavable.swift.o",
+        "/Users/ashwin/Developer/Popin-Library-iOS/.build/arm64-apple-macosx/debug/PopinCall.build/Utilities.swift.o",
+        "/Users/ashwin/Developer/Popin-Library-iOS/.build/arm64-apple-macosx/debug/PopinCall.build/PopinCallInteractor.swift.o",
+        "/Users/ashwin/Developer/Popin-Library-iOS/.build/arm64-apple-macosx/debug/PopinCall.build/PopinCallPresenter.swift.o",
+        "/Users/ashwin/Developer/Popin-Library-iOS/.build/arm64-apple-macosx/debug/PopinCall.build/PopinInteractor.swift.o",
+        "/Users/ashwin/Developer/Popin-Library-iOS/.build/arm64-apple-macosx/debug/PopinCall.build/PopinPresenter.swift.o",
+        "/Users/ashwin/Developer/Popin-Library-iOS/.build/arm64-apple-macosx/debug/PopinCall.build/VideoCallInteractor.swift.o",
+        "/Users/ashwin/Developer/Popin-Library-iOS/.build/arm64-apple-macosx/debug/PopinCall.build/VideoCallPresenter.swift.o",
+        "/Users/ashwin/Developer/Popin-Library-iOS/.build/arm64-apple-macosx/debug/PopinCall.build/VideoCallViewModel.swift.o",
+        "/Users/ashwin/Developer/Popin-Library-iOS/.build/arm64-apple-macosx/debug/PopinCall.build/AudienceRow.swift.o",
+        "/Users/ashwin/Developer/Popin-Library-iOS/.build/arm64-apple-macosx/debug/PopinCall.build/BottomControls.swift.o",
+        "/Users/ashwin/Developer/Popin-Library-iOS/.build/arm64-apple-macosx/debug/PopinCall.build/ChatView.swift.o",
+        "/Users/ashwin/Developer/Popin-Library-iOS/.build/arm64-apple-macosx/debug/PopinCall.build/NotConnectedView.swift.o",
         "/Users/ashwin/Developer/Popin-Library-iOS/.build/arm64-apple-macosx/debug/PopinCall.build/ParticipantCell.swift.o",
         "/Users/ashwin/Developer/Popin-Library-iOS/.build/arm64-apple-macosx/debug/PopinCall.build/ParticipantLayout.swift.o",
         "/Users/ashwin/Developer/Popin-Library-iOS/.build/arm64-apple-macosx/debug/PopinCall.build/ParticipantTile.swift.o",
-        "/Users/ashwin/Developer/Popin-Library-iOS/.build/arm64-apple-macosx/debug/PopinCall.build/PiPSupport.swift.o",
-        "/Users/ashwin/Developer/Popin-Library-iOS/.build/arm64-apple-macosx/debug/PopinCall.build/Popin.swift.o",
-        "/Users/ashwin/Developer/Popin-Library-iOS/.build/arm64-apple-macosx/debug/PopinCall.build/PopinCallDelegate.swift.o",
-        "/Users/ashwin/Developer/Popin-Library-iOS/.build/arm64-apple-macosx/debug/PopinCall.build/PopinCallInteractor.swift.o",
-        "/Users/ashwin/Developer/Popin-Library-iOS/.build/arm64-apple-macosx/debug/PopinCall.build/PopinCallPresenter.swift.o",
         "/Users/ashwin/Developer/Popin-Library-iOS/.build/arm64-apple-macosx/debug/PopinCall.build/PopinCallViewController.swift.o",
-        "/Users/ashwin/Developer/Popin-Library-iOS/.build/arm64-apple-macosx/debug/PopinCall.build/PopinConference.swift.o",
         "/Users/ashwin/Developer/Popin-Library-iOS/.build/arm64-apple-macosx/debug/PopinCall.build/PopinConnectedView.swift.o",
-        "/Users/ashwin/Developer/Popin-Library-iOS/.build/arm64-apple-macosx/debug/PopinCall.build/PopinInteractor.swift.o",
-        "/Users/ashwin/Developer/Popin-Library-iOS/.build/arm64-apple-macosx/debug/PopinCall.build/PopinPresenter.swift.o",
-        "/Users/ashwin/Developer/Popin-Library-iOS/.build/arm64-apple-macosx/debug/PopinCall.build/PopinPusher.swift.o",
-        "/Users/ashwin/Developer/Popin-Library-iOS/.build/arm64-apple-macosx/debug/PopinCall.build/PopinPusherDelegate.swift.o",
-        "/Users/ashwin/Developer/Popin-Library-iOS/.build/arm64-apple-macosx/debug/PopinCall.build/SideControls.swift.o",
         "/Users/ashwin/Developer/Popin-Library-iOS/.build/arm64-apple-macosx/debug/PopinCall.build/TopControls.swift.o",
-        "/Users/ashwin/Developer/Popin-Library-iOS/.build/arm64-apple-macosx/debug/PopinCall.build/Utilities.swift.o",
-        "/Users/ashwin/Developer/Popin-Library-iOS/.build/arm64-apple-macosx/debug/PopinCall.build/VideoCall.swift.o",
-        "/Users/ashwin/Developer/Popin-Library-iOS/.build/arm64-apple-macosx/debug/PopinCall.build/VideoCallInteractor.swift.o",
-        "/Users/ashwin/Developer/Popin-Library-iOS/.build/arm64-apple-macosx/debug/PopinCall.build/VideoCallPresenter.swift.o",
-        "/Users/ashwin/Developer/Popin-Library-iOS/.build/arm64-apple-macosx/debug/PopinCall.build/VideoCallSwiftUIView.swift.o",
-        "/Users/ashwin/Developer/Popin-Library-iOS/.build/arm64-apple-macosx/debug/PopinCall.build/VideoCallViewModel.swift.o"
+        "/Users/ashwin/Developer/Popin-Library-iOS/.build/arm64-apple-macosx/debug/PopinCall.build/VideoCallSwiftUIView.swift.o"
       ],
       "otherArguments" : [
         "-target",
-        "arm64-apple-macosx11.0",
+        "arm64-apple-macosx12.0",
         "-incremental",
         "-enable-batch-mode",
         "-serialize-diagnostics",
@@ -7344,17 +6821,59 @@
         "-Xcc",
         "-fPIC",
         "-Xcc",
-        "-g"
+        "-g",
+        "-package-name",
+        "popin_library_ios"
       ],
       "outputFileMapPath" : "/Users/ashwin/Developer/Popin-Library-iOS/.build/arm64-apple-macosx/debug/PopinCall.build/output-file-map.json",
       "outputs" : [
         {
           "kind" : "file",
-          "name" : "/Users/ashwin/Developer/Popin-Library-iOS/.build/arm64-apple-macosx/debug/PopinCall.build/AudienceRow.swift.o"
+          "name" : "/Users/ashwin/Developer/Popin-Library-iOS/.build/arm64-apple-macosx/debug/PopinCall.build/Popin.swift.o"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/ashwin/Developer/Popin-Library-iOS/.build/arm64-apple-macosx/debug/PopinCall.build/PopinConfig.swift.o"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/ashwin/Developer/Popin-Library-iOS/.build/arm64-apple-macosx/debug/PopinCall.build/PopinConfigEnvironment.swift.o"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/ashwin/Developer/Popin-Library-iOS/.build/arm64-apple-macosx/debug/PopinCall.build/PopinProduct.swift.o"
         },
         {
           "kind" : "file",
           "name" : "/Users/ashwin/Developer/Popin-Library-iOS/.build/arm64-apple-macosx/debug/PopinCall.build/BroadcastPickerWrapper.swift.o"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/ashwin/Developer/Popin-Library-iOS/.build/arm64-apple-macosx/debug/PopinCall.build/MyCustomRendererView.swift.o"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/ashwin/Developer/Popin-Library-iOS/.build/arm64-apple-macosx/debug/PopinCall.build/PiPSupport.swift.o"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/ashwin/Developer/Popin-Library-iOS/.build/arm64-apple-macosx/debug/PopinCall.build/ChatMessage.swift.o"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/ashwin/Developer/Popin-Library-iOS/.build/arm64-apple-macosx/debug/PopinCall.build/VideoCall.swift.o"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/ashwin/Developer/Popin-Library-iOS/.build/arm64-apple-macosx/debug/PopinCall.build/PopinCallDelegate.swift.o"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/ashwin/Developer/Popin-Library-iOS/.build/arm64-apple-macosx/debug/PopinCall.build/PopinInitListener.swift.o"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/ashwin/Developer/Popin-Library-iOS/.build/arm64-apple-macosx/debug/PopinCall.build/PopinPusherDelegate.swift.o"
         },
         {
           "kind" : "file",
@@ -7366,19 +6885,71 @@
         },
         {
           "kind" : "file",
+          "name" : "/Users/ashwin/Developer/Popin-Library-iOS/.build/arm64-apple-macosx/debug/PopinCall.build/ChatManager.swift.o"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/ashwin/Developer/Popin-Library-iOS/.build/arm64-apple-macosx/debug/PopinCall.build/PopinConference.swift.o"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/ashwin/Developer/Popin-Library-iOS/.build/arm64-apple-macosx/debug/PopinCall.build/PopinPusher.swift.o"
+        },
+        {
+          "kind" : "file",
           "name" : "/Users/ashwin/Developer/Popin-Library-iOS/.build/arm64-apple-macosx/debug/PopinCall.build/DarwinNotificationCenter.swift.o"
         },
         {
           "kind" : "file",
-          "name" : "/Users/ashwin/Developer/Popin-Library-iOS/.build/arm64-apple-macosx/debug/PopinCall.build/MyCustomRendererView.swift.o"
+          "name" : "/Users/ashwin/Developer/Popin-Library-iOS/.build/arm64-apple-macosx/debug/PopinCall.build/ObjectSavable.swift.o"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/ashwin/Developer/Popin-Library-iOS/.build/arm64-apple-macosx/debug/PopinCall.build/Utilities.swift.o"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/ashwin/Developer/Popin-Library-iOS/.build/arm64-apple-macosx/debug/PopinCall.build/PopinCallInteractor.swift.o"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/ashwin/Developer/Popin-Library-iOS/.build/arm64-apple-macosx/debug/PopinCall.build/PopinCallPresenter.swift.o"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/ashwin/Developer/Popin-Library-iOS/.build/arm64-apple-macosx/debug/PopinCall.build/PopinInteractor.swift.o"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/ashwin/Developer/Popin-Library-iOS/.build/arm64-apple-macosx/debug/PopinCall.build/PopinPresenter.swift.o"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/ashwin/Developer/Popin-Library-iOS/.build/arm64-apple-macosx/debug/PopinCall.build/VideoCallInteractor.swift.o"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/ashwin/Developer/Popin-Library-iOS/.build/arm64-apple-macosx/debug/PopinCall.build/VideoCallPresenter.swift.o"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/ashwin/Developer/Popin-Library-iOS/.build/arm64-apple-macosx/debug/PopinCall.build/VideoCallViewModel.swift.o"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/ashwin/Developer/Popin-Library-iOS/.build/arm64-apple-macosx/debug/PopinCall.build/AudienceRow.swift.o"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/ashwin/Developer/Popin-Library-iOS/.build/arm64-apple-macosx/debug/PopinCall.build/BottomControls.swift.o"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/ashwin/Developer/Popin-Library-iOS/.build/arm64-apple-macosx/debug/PopinCall.build/ChatView.swift.o"
         },
         {
           "kind" : "file",
           "name" : "/Users/ashwin/Developer/Popin-Library-iOS/.build/arm64-apple-macosx/debug/PopinCall.build/NotConnectedView.swift.o"
-        },
-        {
-          "kind" : "file",
-          "name" : "/Users/ashwin/Developer/Popin-Library-iOS/.build/arm64-apple-macosx/debug/PopinCall.build/ObjectSavable.swift.o"
         },
         {
           "kind" : "file",
@@ -7394,31 +6965,7 @@
         },
         {
           "kind" : "file",
-          "name" : "/Users/ashwin/Developer/Popin-Library-iOS/.build/arm64-apple-macosx/debug/PopinCall.build/PiPSupport.swift.o"
-        },
-        {
-          "kind" : "file",
-          "name" : "/Users/ashwin/Developer/Popin-Library-iOS/.build/arm64-apple-macosx/debug/PopinCall.build/Popin.swift.o"
-        },
-        {
-          "kind" : "file",
-          "name" : "/Users/ashwin/Developer/Popin-Library-iOS/.build/arm64-apple-macosx/debug/PopinCall.build/PopinCallDelegate.swift.o"
-        },
-        {
-          "kind" : "file",
-          "name" : "/Users/ashwin/Developer/Popin-Library-iOS/.build/arm64-apple-macosx/debug/PopinCall.build/PopinCallInteractor.swift.o"
-        },
-        {
-          "kind" : "file",
-          "name" : "/Users/ashwin/Developer/Popin-Library-iOS/.build/arm64-apple-macosx/debug/PopinCall.build/PopinCallPresenter.swift.o"
-        },
-        {
-          "kind" : "file",
           "name" : "/Users/ashwin/Developer/Popin-Library-iOS/.build/arm64-apple-macosx/debug/PopinCall.build/PopinCallViewController.swift.o"
-        },
-        {
-          "kind" : "file",
-          "name" : "/Users/ashwin/Developer/Popin-Library-iOS/.build/arm64-apple-macosx/debug/PopinCall.build/PopinConference.swift.o"
         },
         {
           "kind" : "file",
@@ -7426,51 +6973,11 @@
         },
         {
           "kind" : "file",
-          "name" : "/Users/ashwin/Developer/Popin-Library-iOS/.build/arm64-apple-macosx/debug/PopinCall.build/PopinInteractor.swift.o"
-        },
-        {
-          "kind" : "file",
-          "name" : "/Users/ashwin/Developer/Popin-Library-iOS/.build/arm64-apple-macosx/debug/PopinCall.build/PopinPresenter.swift.o"
-        },
-        {
-          "kind" : "file",
-          "name" : "/Users/ashwin/Developer/Popin-Library-iOS/.build/arm64-apple-macosx/debug/PopinCall.build/PopinPusher.swift.o"
-        },
-        {
-          "kind" : "file",
-          "name" : "/Users/ashwin/Developer/Popin-Library-iOS/.build/arm64-apple-macosx/debug/PopinCall.build/PopinPusherDelegate.swift.o"
-        },
-        {
-          "kind" : "file",
-          "name" : "/Users/ashwin/Developer/Popin-Library-iOS/.build/arm64-apple-macosx/debug/PopinCall.build/SideControls.swift.o"
-        },
-        {
-          "kind" : "file",
           "name" : "/Users/ashwin/Developer/Popin-Library-iOS/.build/arm64-apple-macosx/debug/PopinCall.build/TopControls.swift.o"
         },
         {
           "kind" : "file",
-          "name" : "/Users/ashwin/Developer/Popin-Library-iOS/.build/arm64-apple-macosx/debug/PopinCall.build/Utilities.swift.o"
-        },
-        {
-          "kind" : "file",
-          "name" : "/Users/ashwin/Developer/Popin-Library-iOS/.build/arm64-apple-macosx/debug/PopinCall.build/VideoCall.swift.o"
-        },
-        {
-          "kind" : "file",
-          "name" : "/Users/ashwin/Developer/Popin-Library-iOS/.build/arm64-apple-macosx/debug/PopinCall.build/VideoCallInteractor.swift.o"
-        },
-        {
-          "kind" : "file",
-          "name" : "/Users/ashwin/Developer/Popin-Library-iOS/.build/arm64-apple-macosx/debug/PopinCall.build/VideoCallPresenter.swift.o"
-        },
-        {
-          "kind" : "file",
           "name" : "/Users/ashwin/Developer/Popin-Library-iOS/.build/arm64-apple-macosx/debug/PopinCall.build/VideoCallSwiftUIView.swift.o"
-        },
-        {
-          "kind" : "file",
-          "name" : "/Users/ashwin/Developer/Popin-Library-iOS/.build/arm64-apple-macosx/debug/PopinCall.build/VideoCallViewModel.swift.o"
         },
         {
           "kind" : "file",
@@ -7479,37 +6986,44 @@
       ],
       "prepareForIndexing" : false,
       "sources" : [
-        "/Users/ashwin/Developer/Popin-Library-iOS/PopinCall/AudienceRow.swift",
-        "/Users/ashwin/Developer/Popin-Library-iOS/PopinCall/BroadcastPickerWrapper.swift",
-        "/Users/ashwin/Developer/Popin-Library-iOS/PopinCall/CallAcceptanceWaitHandler.swift",
-        "/Users/ashwin/Developer/Popin-Library-iOS/PopinCall/CallManager.swift",
-        "/Users/ashwin/Developer/Popin-Library-iOS/PopinCall/DarwinNotificationCenter.swift",
-        "/Users/ashwin/Developer/Popin-Library-iOS/PopinCall/MyCustomRendererView.swift",
-        "/Users/ashwin/Developer/Popin-Library-iOS/PopinCall/NotConnectedView.swift",
-        "/Users/ashwin/Developer/Popin-Library-iOS/PopinCall/ObjectSavable.swift",
-        "/Users/ashwin/Developer/Popin-Library-iOS/PopinCall/ParticipantCell.swift",
-        "/Users/ashwin/Developer/Popin-Library-iOS/PopinCall/ParticipantLayout.swift",
-        "/Users/ashwin/Developer/Popin-Library-iOS/PopinCall/ParticipantTile.swift",
-        "/Users/ashwin/Developer/Popin-Library-iOS/PopinCall/PiPSupport.swift",
-        "/Users/ashwin/Developer/Popin-Library-iOS/PopinCall/Popin.swift",
-        "/Users/ashwin/Developer/Popin-Library-iOS/PopinCall/PopinCallDelegate.swift",
-        "/Users/ashwin/Developer/Popin-Library-iOS/PopinCall/PopinCallInteractor.swift",
-        "/Users/ashwin/Developer/Popin-Library-iOS/PopinCall/PopinCallPresenter.swift",
-        "/Users/ashwin/Developer/Popin-Library-iOS/PopinCall/PopinCallViewController.swift",
-        "/Users/ashwin/Developer/Popin-Library-iOS/PopinCall/PopinConference.swift",
-        "/Users/ashwin/Developer/Popin-Library-iOS/PopinCall/PopinConnectedView.swift",
-        "/Users/ashwin/Developer/Popin-Library-iOS/PopinCall/PopinInteractor.swift",
-        "/Users/ashwin/Developer/Popin-Library-iOS/PopinCall/PopinPresenter.swift",
-        "/Users/ashwin/Developer/Popin-Library-iOS/PopinCall/PopinPusher.swift",
-        "/Users/ashwin/Developer/Popin-Library-iOS/PopinCall/PopinPusherDelegate.swift",
-        "/Users/ashwin/Developer/Popin-Library-iOS/PopinCall/SideControls.swift",
-        "/Users/ashwin/Developer/Popin-Library-iOS/PopinCall/TopControls.swift",
-        "/Users/ashwin/Developer/Popin-Library-iOS/PopinCall/Utilities.swift",
-        "/Users/ashwin/Developer/Popin-Library-iOS/PopinCall/VideoCall.swift",
-        "/Users/ashwin/Developer/Popin-Library-iOS/PopinCall/VideoCallInteractor.swift",
-        "/Users/ashwin/Developer/Popin-Library-iOS/PopinCall/VideoCallPresenter.swift",
-        "/Users/ashwin/Developer/Popin-Library-iOS/PopinCall/VideoCallSwiftUIView.swift",
-        "/Users/ashwin/Developer/Popin-Library-iOS/PopinCall/VideoCallViewModel.swift"
+        "/Users/ashwin/Developer/Popin-Library-iOS/PopinCall/Core/Popin.swift",
+        "/Users/ashwin/Developer/Popin-Library-iOS/PopinCall/Core/PopinConfig.swift",
+        "/Users/ashwin/Developer/Popin-Library-iOS/PopinCall/Core/PopinConfigEnvironment.swift",
+        "/Users/ashwin/Developer/Popin-Library-iOS/PopinCall/Core/PopinProduct.swift",
+        "/Users/ashwin/Developer/Popin-Library-iOS/PopinCall/Media/BroadcastPickerWrapper.swift",
+        "/Users/ashwin/Developer/Popin-Library-iOS/PopinCall/Media/MyCustomRendererView.swift",
+        "/Users/ashwin/Developer/Popin-Library-iOS/PopinCall/Media/PiPSupport.swift",
+        "/Users/ashwin/Developer/Popin-Library-iOS/PopinCall/Models/ChatMessage.swift",
+        "/Users/ashwin/Developer/Popin-Library-iOS/PopinCall/Models/VideoCall.swift",
+        "/Users/ashwin/Developer/Popin-Library-iOS/PopinCall/Protocols/PopinCallDelegate.swift",
+        "/Users/ashwin/Developer/Popin-Library-iOS/PopinCall/Protocols/PopinInitListener.swift",
+        "/Users/ashwin/Developer/Popin-Library-iOS/PopinCall/Protocols/PopinPusherDelegate.swift",
+        "/Users/ashwin/Developer/Popin-Library-iOS/PopinCall/Services/CallAcceptanceWaitHandler.swift",
+        "/Users/ashwin/Developer/Popin-Library-iOS/PopinCall/Services/CallManager.swift",
+        "/Users/ashwin/Developer/Popin-Library-iOS/PopinCall/Services/ChatManager.swift",
+        "/Users/ashwin/Developer/Popin-Library-iOS/PopinCall/Services/PopinConference.swift",
+        "/Users/ashwin/Developer/Popin-Library-iOS/PopinCall/Services/PopinPusher.swift",
+        "/Users/ashwin/Developer/Popin-Library-iOS/PopinCall/Utilities/DarwinNotificationCenter.swift",
+        "/Users/ashwin/Developer/Popin-Library-iOS/PopinCall/Utilities/ObjectSavable.swift",
+        "/Users/ashwin/Developer/Popin-Library-iOS/PopinCall/Utilities/Utilities.swift",
+        "/Users/ashwin/Developer/Popin-Library-iOS/PopinCall/VIP/PopinCallInteractor.swift",
+        "/Users/ashwin/Developer/Popin-Library-iOS/PopinCall/VIP/PopinCallPresenter.swift",
+        "/Users/ashwin/Developer/Popin-Library-iOS/PopinCall/VIP/PopinInteractor.swift",
+        "/Users/ashwin/Developer/Popin-Library-iOS/PopinCall/VIP/PopinPresenter.swift",
+        "/Users/ashwin/Developer/Popin-Library-iOS/PopinCall/VIP/VideoCallInteractor.swift",
+        "/Users/ashwin/Developer/Popin-Library-iOS/PopinCall/VIP/VideoCallPresenter.swift",
+        "/Users/ashwin/Developer/Popin-Library-iOS/PopinCall/VIP/VideoCallViewModel.swift",
+        "/Users/ashwin/Developer/Popin-Library-iOS/PopinCall/Views/AudienceRow.swift",
+        "/Users/ashwin/Developer/Popin-Library-iOS/PopinCall/Views/BottomControls.swift",
+        "/Users/ashwin/Developer/Popin-Library-iOS/PopinCall/Views/ChatView.swift",
+        "/Users/ashwin/Developer/Popin-Library-iOS/PopinCall/Views/NotConnectedView.swift",
+        "/Users/ashwin/Developer/Popin-Library-iOS/PopinCall/Views/ParticipantCell.swift",
+        "/Users/ashwin/Developer/Popin-Library-iOS/PopinCall/Views/ParticipantLayout.swift",
+        "/Users/ashwin/Developer/Popin-Library-iOS/PopinCall/Views/ParticipantTile.swift",
+        "/Users/ashwin/Developer/Popin-Library-iOS/PopinCall/Views/PopinCallViewController.swift",
+        "/Users/ashwin/Developer/Popin-Library-iOS/PopinCall/Views/PopinConnectedView.swift",
+        "/Users/ashwin/Developer/Popin-Library-iOS/PopinCall/Views/TopControls.swift",
+        "/Users/ashwin/Developer/Popin-Library-iOS/PopinCall/Views/VideoCallSwiftUIView.swift"
       ],
       "tempsPath" : "/Users/ashwin/Developer/Popin-Library-iOS/.build/arm64-apple-macosx/debug/PopinCall.build",
       "wholeModuleOptimization" : false
@@ -7552,7 +7066,7 @@
       ],
       "otherArguments" : [
         "-target",
-        "arm64-apple-macosx11.0",
+        "arm64-apple-macosx12.0",
         "-incremental",
         "-enable-batch-mode",
         "-serialize-diagnostics",
@@ -7627,7 +7141,9 @@
         "-Xcc",
         "-fPIC",
         "-Xcc",
-        "-g"
+        "-g",
+        "-package-name",
+        "popin_library_ios"
       ],
       "outputFileMapPath" : "/Users/ashwin/Developer/Popin-Library-iOS/.build/arm64-apple-macosx/debug/PopinCallPackageTests.build/output-file-map.json",
       "outputs" : [
@@ -7759,7 +7275,9 @@
         "-Xcc",
         "-fPIC",
         "-Xcc",
-        "-g"
+        "-g",
+        "-package-name",
+        "popin_library_ios"
       ],
       "outputFileMapPath" : "/Users/ashwin/Developer/Popin-Library-iOS/.build/arm64-apple-macosx/debug/PopinCallTests.build/output-file-map.json",
       "outputs" : [
@@ -11149,102 +10667,6 @@
       "tempsPath" : "/Users/ashwin/Developer/Popin-Library-iOS/.build/arm64-apple-macosx/debug/SwiftProtobufPluginLibrary.build",
       "wholeModuleOptimization" : false
     },
-    "C.SwiftyJSON-arm64-apple-macosx26.0-debug.module" : {
-      "executable" : "/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/swiftc",
-      "fileList" : "/Users/ashwin/Developer/Popin-Library-iOS/.build/arm64-apple-macosx/debug/SwiftyJSON.build/sources",
-      "importPath" : "/Users/ashwin/Developer/Popin-Library-iOS/.build/arm64-apple-macosx/debug/Modules",
-      "inputs" : [
-        {
-          "kind" : "file",
-          "name" : "/Users/ashwin/Developer/Popin-Library-iOS/.build/checkouts/SwiftyJSON/Source/SwiftyJSON/SwiftyJSON.swift"
-        },
-        {
-          "kind" : "file",
-          "name" : "/Users/ashwin/Developer/Popin-Library-iOS/.build/arm64-apple-macosx/debug/swift-version--58304C5D6DBC2206.txt"
-        },
-        {
-          "kind" : "file",
-          "name" : "/Users/ashwin/Developer/Popin-Library-iOS/.build/arm64-apple-macosx/debug/SwiftyJSON.build/sources"
-        }
-      ],
-      "isLibrary" : true,
-      "moduleName" : "SwiftyJSON",
-      "moduleOutputPath" : "/Users/ashwin/Developer/Popin-Library-iOS/.build/arm64-apple-macosx/debug/Modules/SwiftyJSON.swiftmodule",
-      "objects" : [
-        "/Users/ashwin/Developer/Popin-Library-iOS/.build/arm64-apple-macosx/debug/SwiftyJSON.build/SwiftyJSON.swift.o"
-      ],
-      "otherArguments" : [
-        "-target",
-        "arm64-apple-macosx10.13",
-        "-incremental",
-        "-enable-batch-mode",
-        "-serialize-diagnostics",
-        "-index-store-path",
-        "/Users/ashwin/Developer/Popin-Library-iOS/.build/arm64-apple-macosx/debug/index/store",
-        "-Onone",
-        "-enable-testing",
-        "-j12",
-        "-DSWIFT_PACKAGE",
-        "-DDEBUG",
-        "-DSWIFT_MODULE_RESOURCE_BUNDLE_UNAVAILABLE",
-        "-module-cache-path",
-        "/Users/ashwin/Developer/Popin-Library-iOS/.build/arm64-apple-macosx/debug/ModuleCache",
-        "-parseable-output",
-        "-parse-as-library",
-        "-emit-objc-header",
-        "-emit-objc-header-path",
-        "/Users/ashwin/Developer/Popin-Library-iOS/.build/arm64-apple-macosx/debug/SwiftyJSON.build/include/SwiftyJSON-Swift.h",
-        "-swift-version",
-        "5",
-        "-plugin-path",
-        "/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/swift/host/plugins/testing",
-        "-sdk",
-        "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX26.2.sdk",
-        "-F",
-        "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/Library/Frameworks",
-        "-F",
-        "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/Library/PrivateFrameworks",
-        "-I",
-        "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/usr/lib",
-        "-L",
-        "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/usr/lib",
-        "-g",
-        "-Xcc",
-        "-isysroot",
-        "-Xcc",
-        "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX26.2.sdk",
-        "-Xcc",
-        "-F",
-        "-Xcc",
-        "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/Library/Frameworks",
-        "-Xcc",
-        "-F",
-        "-Xcc",
-        "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/Library/PrivateFrameworks",
-        "-Xcc",
-        "-fPIC",
-        "-Xcc",
-        "-g",
-        "-suppress-warnings"
-      ],
-      "outputFileMapPath" : "/Users/ashwin/Developer/Popin-Library-iOS/.build/arm64-apple-macosx/debug/SwiftyJSON.build/output-file-map.json",
-      "outputs" : [
-        {
-          "kind" : "file",
-          "name" : "/Users/ashwin/Developer/Popin-Library-iOS/.build/arm64-apple-macosx/debug/SwiftyJSON.build/SwiftyJSON.swift.o"
-        },
-        {
-          "kind" : "file",
-          "name" : "/Users/ashwin/Developer/Popin-Library-iOS/.build/arm64-apple-macosx/debug/Modules/SwiftyJSON.swiftmodule"
-        }
-      ],
-      "prepareForIndexing" : false,
-      "sources" : [
-        "/Users/ashwin/Developer/Popin-Library-iOS/.build/checkouts/SwiftyJSON/Source/SwiftyJSON/SwiftyJSON.swift"
-      ],
-      "tempsPath" : "/Users/ashwin/Developer/Popin-Library-iOS/.build/arm64-apple-macosx/debug/SwiftyJSON.build",
-      "wholeModuleOptimization" : false
-    },
     "C.TweetNacl-arm64-apple-macosx26.0-debug.module" : {
       "executable" : "/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/swiftc",
       "fileList" : "/Users/ashwin/Developer/Popin-Library-iOS/.build/arm64-apple-macosx/debug/TweetNacl.build/sources",
@@ -12903,120 +12325,6 @@
 
   },
   "swiftTargetScanArgs" : {
-    "Alamofire" : [
-      "/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/swiftc",
-      "-module-name",
-      "Alamofire",
-      "-package-name",
-      "alamofire",
-      "-c",
-      "/Users/ashwin/Developer/Popin-Library-iOS/.build/checkouts/Alamofire/Source/Alamofire.swift",
-      "/Users/ashwin/Developer/Popin-Library-iOS/.build/checkouts/Alamofire/Source/Core/AFError.swift",
-      "/Users/ashwin/Developer/Popin-Library-iOS/.build/checkouts/Alamofire/Source/Core/DataRequest.swift",
-      "/Users/ashwin/Developer/Popin-Library-iOS/.build/checkouts/Alamofire/Source/Core/DataStreamRequest.swift",
-      "/Users/ashwin/Developer/Popin-Library-iOS/.build/checkouts/Alamofire/Source/Core/DownloadRequest.swift",
-      "/Users/ashwin/Developer/Popin-Library-iOS/.build/checkouts/Alamofire/Source/Core/HTTPHeaders.swift",
-      "/Users/ashwin/Developer/Popin-Library-iOS/.build/checkouts/Alamofire/Source/Core/HTTPMethod.swift",
-      "/Users/ashwin/Developer/Popin-Library-iOS/.build/checkouts/Alamofire/Source/Core/Notifications.swift",
-      "/Users/ashwin/Developer/Popin-Library-iOS/.build/checkouts/Alamofire/Source/Core/ParameterEncoder.swift",
-      "/Users/ashwin/Developer/Popin-Library-iOS/.build/checkouts/Alamofire/Source/Core/ParameterEncoding.swift",
-      "/Users/ashwin/Developer/Popin-Library-iOS/.build/checkouts/Alamofire/Source/Core/Protected.swift",
-      "/Users/ashwin/Developer/Popin-Library-iOS/.build/checkouts/Alamofire/Source/Core/Request.swift",
-      "/Users/ashwin/Developer/Popin-Library-iOS/.build/checkouts/Alamofire/Source/Core/RequestTaskMap.swift",
-      "/Users/ashwin/Developer/Popin-Library-iOS/.build/checkouts/Alamofire/Source/Core/Response.swift",
-      "/Users/ashwin/Developer/Popin-Library-iOS/.build/checkouts/Alamofire/Source/Core/Session.swift",
-      "/Users/ashwin/Developer/Popin-Library-iOS/.build/checkouts/Alamofire/Source/Core/SessionDelegate.swift",
-      "/Users/ashwin/Developer/Popin-Library-iOS/.build/checkouts/Alamofire/Source/Core/URLConvertible+URLRequestConvertible.swift",
-      "/Users/ashwin/Developer/Popin-Library-iOS/.build/checkouts/Alamofire/Source/Core/UploadRequest.swift",
-      "/Users/ashwin/Developer/Popin-Library-iOS/.build/checkouts/Alamofire/Source/Core/WebSocketRequest.swift",
-      "/Users/ashwin/Developer/Popin-Library-iOS/.build/checkouts/Alamofire/Source/Extensions/DispatchQueue+Alamofire.swift",
-      "/Users/ashwin/Developer/Popin-Library-iOS/.build/checkouts/Alamofire/Source/Extensions/OperationQueue+Alamofire.swift",
-      "/Users/ashwin/Developer/Popin-Library-iOS/.build/checkouts/Alamofire/Source/Extensions/Result+Alamofire.swift",
-      "/Users/ashwin/Developer/Popin-Library-iOS/.build/checkouts/Alamofire/Source/Extensions/StringEncoding+Alamofire.swift",
-      "/Users/ashwin/Developer/Popin-Library-iOS/.build/checkouts/Alamofire/Source/Extensions/URLRequest+Alamofire.swift",
-      "/Users/ashwin/Developer/Popin-Library-iOS/.build/checkouts/Alamofire/Source/Extensions/URLSessionConfiguration+Alamofire.swift",
-      "/Users/ashwin/Developer/Popin-Library-iOS/.build/checkouts/Alamofire/Source/Features/AlamofireExtended.swift",
-      "/Users/ashwin/Developer/Popin-Library-iOS/.build/checkouts/Alamofire/Source/Features/AuthenticationInterceptor.swift",
-      "/Users/ashwin/Developer/Popin-Library-iOS/.build/checkouts/Alamofire/Source/Features/CachedResponseHandler.swift",
-      "/Users/ashwin/Developer/Popin-Library-iOS/.build/checkouts/Alamofire/Source/Features/Combine.swift",
-      "/Users/ashwin/Developer/Popin-Library-iOS/.build/checkouts/Alamofire/Source/Features/Concurrency.swift",
-      "/Users/ashwin/Developer/Popin-Library-iOS/.build/checkouts/Alamofire/Source/Features/EventMonitor.swift",
-      "/Users/ashwin/Developer/Popin-Library-iOS/.build/checkouts/Alamofire/Source/Features/MultipartFormData.swift",
-      "/Users/ashwin/Developer/Popin-Library-iOS/.build/checkouts/Alamofire/Source/Features/MultipartUpload.swift",
-      "/Users/ashwin/Developer/Popin-Library-iOS/.build/checkouts/Alamofire/Source/Features/NetworkReachabilityManager.swift",
-      "/Users/ashwin/Developer/Popin-Library-iOS/.build/checkouts/Alamofire/Source/Features/OfflineRetrier.swift",
-      "/Users/ashwin/Developer/Popin-Library-iOS/.build/checkouts/Alamofire/Source/Features/RedirectHandler.swift",
-      "/Users/ashwin/Developer/Popin-Library-iOS/.build/checkouts/Alamofire/Source/Features/RequestCompression.swift",
-      "/Users/ashwin/Developer/Popin-Library-iOS/.build/checkouts/Alamofire/Source/Features/RequestInterceptor.swift",
-      "/Users/ashwin/Developer/Popin-Library-iOS/.build/checkouts/Alamofire/Source/Features/ResponseSerialization.swift",
-      "/Users/ashwin/Developer/Popin-Library-iOS/.build/checkouts/Alamofire/Source/Features/RetryPolicy.swift",
-      "/Users/ashwin/Developer/Popin-Library-iOS/.build/checkouts/Alamofire/Source/Features/ServerTrustEvaluation.swift",
-      "/Users/ashwin/Developer/Popin-Library-iOS/.build/checkouts/Alamofire/Source/Features/URLEncodedFormEncoder.swift",
-      "/Users/ashwin/Developer/Popin-Library-iOS/.build/checkouts/Alamofire/Source/Features/Validation.swift",
-      "/Users/ashwin/Developer/Popin-Library-iOS/.build/arm64-apple-macosx/debug/Alamofire.build/DerivedSources/resource_bundle_accessor.swift",
-      "-I",
-      "/Users/ashwin/Developer/Popin-Library-iOS/.build/arm64-apple-macosx/debug/Modules",
-      "-target",
-      "arm64-apple-macosx10.13",
-      "-incremental",
-      "-enable-batch-mode",
-      "-serialize-diagnostics",
-      "-index-store-path",
-      "/Users/ashwin/Developer/Popin-Library-iOS/.build/arm64-apple-macosx/debug/index/store",
-      "-Onone",
-      "-enable-testing",
-      "-j12",
-      "-DSWIFT_PACKAGE",
-      "-DDEBUG",
-      "-DSWIFT_MODULE_RESOURCE_BUNDLE_AVAILABLE",
-      "-module-cache-path",
-      "/Users/ashwin/Developer/Popin-Library-iOS/.build/arm64-apple-macosx/debug/ModuleCache",
-      "-parseable-output",
-      "-parse-as-library",
-      "-emit-objc-header",
-      "-emit-objc-header-path",
-      "/Users/ashwin/Developer/Popin-Library-iOS/.build/arm64-apple-macosx/debug/Alamofire.build/include/Alamofire-Swift.h",
-      "-swift-version",
-      "5",
-      "-enable-upcoming-feature",
-      "ExistentialAny",
-      "-plugin-path",
-      "/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/swift/host/plugins/testing",
-      "-sdk",
-      "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX26.2.sdk",
-      "-F",
-      "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/Library/Frameworks",
-      "-F",
-      "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/Library/PrivateFrameworks",
-      "-I",
-      "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/usr/lib",
-      "-L",
-      "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/usr/lib",
-      "-g",
-      "-Xcc",
-      "-isysroot",
-      "-Xcc",
-      "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX26.2.sdk",
-      "-Xcc",
-      "-F",
-      "-Xcc",
-      "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/Library/Frameworks",
-      "-Xcc",
-      "-F",
-      "-Xcc",
-      "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/Library/PrivateFrameworks",
-      "-Xcc",
-      "-fPIC",
-      "-Xcc",
-      "-g",
-      "-suppress-warnings",
-      "-user-module-version",
-      "5.11.0",
-      "-package-name",
-      "alamofire",
-      "-driver-use-frontend-path",
-      "/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/swiftc"
-    ],
     "BitCollections" : [
       "/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/swiftc",
       "-module-name",
@@ -14332,42 +13640,51 @@
       "/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/swiftc",
       "-module-name",
       "PopinCall",
+      "-package-name",
+      "popin_library_ios",
       "-c",
-      "/Users/ashwin/Developer/Popin-Library-iOS/PopinCall/AudienceRow.swift",
-      "/Users/ashwin/Developer/Popin-Library-iOS/PopinCall/BroadcastPickerWrapper.swift",
-      "/Users/ashwin/Developer/Popin-Library-iOS/PopinCall/CallAcceptanceWaitHandler.swift",
-      "/Users/ashwin/Developer/Popin-Library-iOS/PopinCall/CallManager.swift",
-      "/Users/ashwin/Developer/Popin-Library-iOS/PopinCall/DarwinNotificationCenter.swift",
-      "/Users/ashwin/Developer/Popin-Library-iOS/PopinCall/MyCustomRendererView.swift",
-      "/Users/ashwin/Developer/Popin-Library-iOS/PopinCall/NotConnectedView.swift",
-      "/Users/ashwin/Developer/Popin-Library-iOS/PopinCall/ObjectSavable.swift",
-      "/Users/ashwin/Developer/Popin-Library-iOS/PopinCall/ParticipantCell.swift",
-      "/Users/ashwin/Developer/Popin-Library-iOS/PopinCall/ParticipantLayout.swift",
-      "/Users/ashwin/Developer/Popin-Library-iOS/PopinCall/ParticipantTile.swift",
-      "/Users/ashwin/Developer/Popin-Library-iOS/PopinCall/PiPSupport.swift",
-      "/Users/ashwin/Developer/Popin-Library-iOS/PopinCall/Popin.swift",
-      "/Users/ashwin/Developer/Popin-Library-iOS/PopinCall/PopinCallDelegate.swift",
-      "/Users/ashwin/Developer/Popin-Library-iOS/PopinCall/PopinCallInteractor.swift",
-      "/Users/ashwin/Developer/Popin-Library-iOS/PopinCall/PopinCallPresenter.swift",
-      "/Users/ashwin/Developer/Popin-Library-iOS/PopinCall/PopinCallViewController.swift",
-      "/Users/ashwin/Developer/Popin-Library-iOS/PopinCall/PopinConference.swift",
-      "/Users/ashwin/Developer/Popin-Library-iOS/PopinCall/PopinConnectedView.swift",
-      "/Users/ashwin/Developer/Popin-Library-iOS/PopinCall/PopinInteractor.swift",
-      "/Users/ashwin/Developer/Popin-Library-iOS/PopinCall/PopinPresenter.swift",
-      "/Users/ashwin/Developer/Popin-Library-iOS/PopinCall/PopinPusher.swift",
-      "/Users/ashwin/Developer/Popin-Library-iOS/PopinCall/PopinPusherDelegate.swift",
-      "/Users/ashwin/Developer/Popin-Library-iOS/PopinCall/SideControls.swift",
-      "/Users/ashwin/Developer/Popin-Library-iOS/PopinCall/TopControls.swift",
-      "/Users/ashwin/Developer/Popin-Library-iOS/PopinCall/Utilities.swift",
-      "/Users/ashwin/Developer/Popin-Library-iOS/PopinCall/VideoCall.swift",
-      "/Users/ashwin/Developer/Popin-Library-iOS/PopinCall/VideoCallInteractor.swift",
-      "/Users/ashwin/Developer/Popin-Library-iOS/PopinCall/VideoCallPresenter.swift",
-      "/Users/ashwin/Developer/Popin-Library-iOS/PopinCall/VideoCallSwiftUIView.swift",
-      "/Users/ashwin/Developer/Popin-Library-iOS/PopinCall/VideoCallViewModel.swift",
+      "/Users/ashwin/Developer/Popin-Library-iOS/PopinCall/Core/Popin.swift",
+      "/Users/ashwin/Developer/Popin-Library-iOS/PopinCall/Core/PopinConfig.swift",
+      "/Users/ashwin/Developer/Popin-Library-iOS/PopinCall/Core/PopinConfigEnvironment.swift",
+      "/Users/ashwin/Developer/Popin-Library-iOS/PopinCall/Core/PopinProduct.swift",
+      "/Users/ashwin/Developer/Popin-Library-iOS/PopinCall/Media/BroadcastPickerWrapper.swift",
+      "/Users/ashwin/Developer/Popin-Library-iOS/PopinCall/Media/MyCustomRendererView.swift",
+      "/Users/ashwin/Developer/Popin-Library-iOS/PopinCall/Media/PiPSupport.swift",
+      "/Users/ashwin/Developer/Popin-Library-iOS/PopinCall/Models/ChatMessage.swift",
+      "/Users/ashwin/Developer/Popin-Library-iOS/PopinCall/Models/VideoCall.swift",
+      "/Users/ashwin/Developer/Popin-Library-iOS/PopinCall/Protocols/PopinCallDelegate.swift",
+      "/Users/ashwin/Developer/Popin-Library-iOS/PopinCall/Protocols/PopinInitListener.swift",
+      "/Users/ashwin/Developer/Popin-Library-iOS/PopinCall/Protocols/PopinPusherDelegate.swift",
+      "/Users/ashwin/Developer/Popin-Library-iOS/PopinCall/Services/CallAcceptanceWaitHandler.swift",
+      "/Users/ashwin/Developer/Popin-Library-iOS/PopinCall/Services/CallManager.swift",
+      "/Users/ashwin/Developer/Popin-Library-iOS/PopinCall/Services/ChatManager.swift",
+      "/Users/ashwin/Developer/Popin-Library-iOS/PopinCall/Services/PopinConference.swift",
+      "/Users/ashwin/Developer/Popin-Library-iOS/PopinCall/Services/PopinPusher.swift",
+      "/Users/ashwin/Developer/Popin-Library-iOS/PopinCall/Utilities/DarwinNotificationCenter.swift",
+      "/Users/ashwin/Developer/Popin-Library-iOS/PopinCall/Utilities/ObjectSavable.swift",
+      "/Users/ashwin/Developer/Popin-Library-iOS/PopinCall/Utilities/Utilities.swift",
+      "/Users/ashwin/Developer/Popin-Library-iOS/PopinCall/VIP/PopinCallInteractor.swift",
+      "/Users/ashwin/Developer/Popin-Library-iOS/PopinCall/VIP/PopinCallPresenter.swift",
+      "/Users/ashwin/Developer/Popin-Library-iOS/PopinCall/VIP/PopinInteractor.swift",
+      "/Users/ashwin/Developer/Popin-Library-iOS/PopinCall/VIP/PopinPresenter.swift",
+      "/Users/ashwin/Developer/Popin-Library-iOS/PopinCall/VIP/VideoCallInteractor.swift",
+      "/Users/ashwin/Developer/Popin-Library-iOS/PopinCall/VIP/VideoCallPresenter.swift",
+      "/Users/ashwin/Developer/Popin-Library-iOS/PopinCall/VIP/VideoCallViewModel.swift",
+      "/Users/ashwin/Developer/Popin-Library-iOS/PopinCall/Views/AudienceRow.swift",
+      "/Users/ashwin/Developer/Popin-Library-iOS/PopinCall/Views/BottomControls.swift",
+      "/Users/ashwin/Developer/Popin-Library-iOS/PopinCall/Views/ChatView.swift",
+      "/Users/ashwin/Developer/Popin-Library-iOS/PopinCall/Views/NotConnectedView.swift",
+      "/Users/ashwin/Developer/Popin-Library-iOS/PopinCall/Views/ParticipantCell.swift",
+      "/Users/ashwin/Developer/Popin-Library-iOS/PopinCall/Views/ParticipantLayout.swift",
+      "/Users/ashwin/Developer/Popin-Library-iOS/PopinCall/Views/ParticipantTile.swift",
+      "/Users/ashwin/Developer/Popin-Library-iOS/PopinCall/Views/PopinCallViewController.swift",
+      "/Users/ashwin/Developer/Popin-Library-iOS/PopinCall/Views/PopinConnectedView.swift",
+      "/Users/ashwin/Developer/Popin-Library-iOS/PopinCall/Views/TopControls.swift",
+      "/Users/ashwin/Developer/Popin-Library-iOS/PopinCall/Views/VideoCallSwiftUIView.swift",
       "-I",
       "/Users/ashwin/Developer/Popin-Library-iOS/.build/arm64-apple-macosx/debug/Modules",
       "-target",
-      "arm64-apple-macosx11.0",
+      "arm64-apple-macosx12.0",
       "-incremental",
       "-enable-batch-mode",
       "-serialize-diagnostics",
@@ -14443,6 +13760,8 @@
       "-fPIC",
       "-Xcc",
       "-g",
+      "-package-name",
+      "popin_library_ios",
       "-driver-use-frontend-path",
       "/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/swiftc"
     ],
@@ -14450,12 +13769,14 @@
       "/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/swiftc",
       "-module-name",
       "PopinCallPackageTests",
+      "-package-name",
+      "popin_library_ios",
       "-c",
       "/Users/ashwin/Developer/Popin-Library-iOS/.build/arm64-apple-macosx/debug/PopinCallPackageTests.derived/runner.swift",
       "-I",
       "/Users/ashwin/Developer/Popin-Library-iOS/.build/arm64-apple-macosx/debug/Modules",
       "-target",
-      "arm64-apple-macosx11.0",
+      "arm64-apple-macosx12.0",
       "-incremental",
       "-enable-batch-mode",
       "-serialize-diagnostics",
@@ -14531,6 +13852,8 @@
       "-fPIC",
       "-Xcc",
       "-g",
+      "-package-name",
+      "popin_library_ios",
       "-driver-use-frontend-path",
       "/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/swiftc"
     ],
@@ -14538,6 +13861,8 @@
       "/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/swiftc",
       "-module-name",
       "PopinCallTests",
+      "-package-name",
+      "popin_library_ios",
       "-c",
       "/Users/ashwin/Developer/Popin-Library-iOS/PopinCallTests/PopinCallTests.swift",
       "-I",
@@ -14618,6 +13943,8 @@
       "-fPIC",
       "-Xcc",
       "-g",
+      "-package-name",
+      "popin_library_ios",
       "-driver-use-frontend-path",
       "/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/swiftc"
     ],
@@ -14998,69 +14325,6 @@
       "-driver-use-frontend-path",
       "/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/swiftc"
     ],
-    "SwiftyJSON" : [
-      "/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/swiftc",
-      "-module-name",
-      "SwiftyJSON",
-      "-c",
-      "/Users/ashwin/Developer/Popin-Library-iOS/.build/checkouts/SwiftyJSON/Source/SwiftyJSON/SwiftyJSON.swift",
-      "-I",
-      "/Users/ashwin/Developer/Popin-Library-iOS/.build/arm64-apple-macosx/debug/Modules",
-      "-target",
-      "arm64-apple-macosx10.13",
-      "-incremental",
-      "-enable-batch-mode",
-      "-serialize-diagnostics",
-      "-index-store-path",
-      "/Users/ashwin/Developer/Popin-Library-iOS/.build/arm64-apple-macosx/debug/index/store",
-      "-Onone",
-      "-enable-testing",
-      "-j12",
-      "-DSWIFT_PACKAGE",
-      "-DDEBUG",
-      "-DSWIFT_MODULE_RESOURCE_BUNDLE_UNAVAILABLE",
-      "-module-cache-path",
-      "/Users/ashwin/Developer/Popin-Library-iOS/.build/arm64-apple-macosx/debug/ModuleCache",
-      "-parseable-output",
-      "-parse-as-library",
-      "-emit-objc-header",
-      "-emit-objc-header-path",
-      "/Users/ashwin/Developer/Popin-Library-iOS/.build/arm64-apple-macosx/debug/SwiftyJSON.build/include/SwiftyJSON-Swift.h",
-      "-swift-version",
-      "5",
-      "-plugin-path",
-      "/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/swift/host/plugins/testing",
-      "-sdk",
-      "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX26.2.sdk",
-      "-F",
-      "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/Library/Frameworks",
-      "-F",
-      "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/Library/PrivateFrameworks",
-      "-I",
-      "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/usr/lib",
-      "-L",
-      "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/usr/lib",
-      "-g",
-      "-Xcc",
-      "-isysroot",
-      "-Xcc",
-      "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX26.2.sdk",
-      "-Xcc",
-      "-F",
-      "-Xcc",
-      "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/Library/Frameworks",
-      "-Xcc",
-      "-F",
-      "-Xcc",
-      "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/Library/PrivateFrameworks",
-      "-Xcc",
-      "-fPIC",
-      "-Xcc",
-      "-g",
-      "-suppress-warnings",
-      "-driver-use-frontend-path",
-      "/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/swiftc"
-    ],
     "TweetNacl" : [
       "/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/swiftc",
       "-module-name",
@@ -15372,9 +14636,6 @@
     ]
   },
   "targetDependencyMap" : {
-    "Alamofire" : [
-
-    ],
     "BitCollections" : [
       "InternalCollectionsUtilities"
     ],
@@ -15446,12 +14707,10 @@
       "RustLiveKitUniFFI",
       "LiveKitWebRTC",
       "LKObjCHelpers",
-      "SwiftyJSON",
       "PusherSwift",
       "TweetNacl",
       "CTweetNacl",
-      "NWWebSocket",
-      "Alamofire"
+      "NWWebSocket"
     ],
     "PopinCallPackageTests" : [
       "PopinCallTests",
@@ -15466,12 +14725,10 @@
       "RustLiveKitUniFFI",
       "LiveKitWebRTC",
       "LKObjCHelpers",
-      "SwiftyJSON",
       "PusherSwift",
       "TweetNacl",
       "CTweetNacl",
-      "NWWebSocket",
-      "Alamofire"
+      "NWWebSocket"
     ],
     "PopinCallTests" : [
       "PopinCall",
@@ -15485,12 +14742,10 @@
       "RustLiveKitUniFFI",
       "LiveKitWebRTC",
       "LKObjCHelpers",
-      "SwiftyJSON",
       "PusherSwift",
       "TweetNacl",
       "CTweetNacl",
-      "NWWebSocket",
-      "Alamofire"
+      "NWWebSocket"
     ],
     "PusherSwift" : [
       "TweetNacl",
@@ -15502,9 +14757,6 @@
     ],
     "SwiftProtobufPluginLibrary" : [
       "SwiftProtobuf"
-    ],
-    "SwiftyJSON" : [
-
     ],
     "TweetNacl" : [
       "CTweetNacl"
@@ -15542,378 +14794,6 @@
     }
   },
   "writeCommands" : {
-    "/Users/ashwin/Developer/Popin-Library-iOS/.build/arm64-apple-macosx/debug/Alamofire.build/sources" : {
-      "alwaysOutOfDate" : false,
-      "inputs" : [
-        {
-          "kind" : "virtual",
-          "name" : "<sources-file-list>"
-        },
-        {
-          "kind" : "file",
-          "name" : "/Users/ashwin/Developer/Popin-Library-iOS/.build/checkouts/Alamofire/Source/Alamofire.swift"
-        },
-        {
-          "kind" : "file",
-          "name" : "/Users/ashwin/Developer/Popin-Library-iOS/.build/checkouts/Alamofire/Source/Core/AFError.swift"
-        },
-        {
-          "kind" : "file",
-          "name" : "/Users/ashwin/Developer/Popin-Library-iOS/.build/checkouts/Alamofire/Source/Core/DataRequest.swift"
-        },
-        {
-          "kind" : "file",
-          "name" : "/Users/ashwin/Developer/Popin-Library-iOS/.build/checkouts/Alamofire/Source/Core/DataStreamRequest.swift"
-        },
-        {
-          "kind" : "file",
-          "name" : "/Users/ashwin/Developer/Popin-Library-iOS/.build/checkouts/Alamofire/Source/Core/DownloadRequest.swift"
-        },
-        {
-          "kind" : "file",
-          "name" : "/Users/ashwin/Developer/Popin-Library-iOS/.build/checkouts/Alamofire/Source/Core/HTTPHeaders.swift"
-        },
-        {
-          "kind" : "file",
-          "name" : "/Users/ashwin/Developer/Popin-Library-iOS/.build/checkouts/Alamofire/Source/Core/HTTPMethod.swift"
-        },
-        {
-          "kind" : "file",
-          "name" : "/Users/ashwin/Developer/Popin-Library-iOS/.build/checkouts/Alamofire/Source/Core/Notifications.swift"
-        },
-        {
-          "kind" : "file",
-          "name" : "/Users/ashwin/Developer/Popin-Library-iOS/.build/checkouts/Alamofire/Source/Core/ParameterEncoder.swift"
-        },
-        {
-          "kind" : "file",
-          "name" : "/Users/ashwin/Developer/Popin-Library-iOS/.build/checkouts/Alamofire/Source/Core/ParameterEncoding.swift"
-        },
-        {
-          "kind" : "file",
-          "name" : "/Users/ashwin/Developer/Popin-Library-iOS/.build/checkouts/Alamofire/Source/Core/Protected.swift"
-        },
-        {
-          "kind" : "file",
-          "name" : "/Users/ashwin/Developer/Popin-Library-iOS/.build/checkouts/Alamofire/Source/Core/Request.swift"
-        },
-        {
-          "kind" : "file",
-          "name" : "/Users/ashwin/Developer/Popin-Library-iOS/.build/checkouts/Alamofire/Source/Core/RequestTaskMap.swift"
-        },
-        {
-          "kind" : "file",
-          "name" : "/Users/ashwin/Developer/Popin-Library-iOS/.build/checkouts/Alamofire/Source/Core/Response.swift"
-        },
-        {
-          "kind" : "file",
-          "name" : "/Users/ashwin/Developer/Popin-Library-iOS/.build/checkouts/Alamofire/Source/Core/Session.swift"
-        },
-        {
-          "kind" : "file",
-          "name" : "/Users/ashwin/Developer/Popin-Library-iOS/.build/checkouts/Alamofire/Source/Core/SessionDelegate.swift"
-        },
-        {
-          "kind" : "file",
-          "name" : "/Users/ashwin/Developer/Popin-Library-iOS/.build/checkouts/Alamofire/Source/Core/URLConvertible+URLRequestConvertible.swift"
-        },
-        {
-          "kind" : "file",
-          "name" : "/Users/ashwin/Developer/Popin-Library-iOS/.build/checkouts/Alamofire/Source/Core/UploadRequest.swift"
-        },
-        {
-          "kind" : "file",
-          "name" : "/Users/ashwin/Developer/Popin-Library-iOS/.build/checkouts/Alamofire/Source/Core/WebSocketRequest.swift"
-        },
-        {
-          "kind" : "file",
-          "name" : "/Users/ashwin/Developer/Popin-Library-iOS/.build/checkouts/Alamofire/Source/Extensions/DispatchQueue+Alamofire.swift"
-        },
-        {
-          "kind" : "file",
-          "name" : "/Users/ashwin/Developer/Popin-Library-iOS/.build/checkouts/Alamofire/Source/Extensions/OperationQueue+Alamofire.swift"
-        },
-        {
-          "kind" : "file",
-          "name" : "/Users/ashwin/Developer/Popin-Library-iOS/.build/checkouts/Alamofire/Source/Extensions/Result+Alamofire.swift"
-        },
-        {
-          "kind" : "file",
-          "name" : "/Users/ashwin/Developer/Popin-Library-iOS/.build/checkouts/Alamofire/Source/Extensions/StringEncoding+Alamofire.swift"
-        },
-        {
-          "kind" : "file",
-          "name" : "/Users/ashwin/Developer/Popin-Library-iOS/.build/checkouts/Alamofire/Source/Extensions/URLRequest+Alamofire.swift"
-        },
-        {
-          "kind" : "file",
-          "name" : "/Users/ashwin/Developer/Popin-Library-iOS/.build/checkouts/Alamofire/Source/Extensions/URLSessionConfiguration+Alamofire.swift"
-        },
-        {
-          "kind" : "file",
-          "name" : "/Users/ashwin/Developer/Popin-Library-iOS/.build/checkouts/Alamofire/Source/Features/AlamofireExtended.swift"
-        },
-        {
-          "kind" : "file",
-          "name" : "/Users/ashwin/Developer/Popin-Library-iOS/.build/checkouts/Alamofire/Source/Features/AuthenticationInterceptor.swift"
-        },
-        {
-          "kind" : "file",
-          "name" : "/Users/ashwin/Developer/Popin-Library-iOS/.build/checkouts/Alamofire/Source/Features/CachedResponseHandler.swift"
-        },
-        {
-          "kind" : "file",
-          "name" : "/Users/ashwin/Developer/Popin-Library-iOS/.build/checkouts/Alamofire/Source/Features/Combine.swift"
-        },
-        {
-          "kind" : "file",
-          "name" : "/Users/ashwin/Developer/Popin-Library-iOS/.build/checkouts/Alamofire/Source/Features/Concurrency.swift"
-        },
-        {
-          "kind" : "file",
-          "name" : "/Users/ashwin/Developer/Popin-Library-iOS/.build/checkouts/Alamofire/Source/Features/EventMonitor.swift"
-        },
-        {
-          "kind" : "file",
-          "name" : "/Users/ashwin/Developer/Popin-Library-iOS/.build/checkouts/Alamofire/Source/Features/MultipartFormData.swift"
-        },
-        {
-          "kind" : "file",
-          "name" : "/Users/ashwin/Developer/Popin-Library-iOS/.build/checkouts/Alamofire/Source/Features/MultipartUpload.swift"
-        },
-        {
-          "kind" : "file",
-          "name" : "/Users/ashwin/Developer/Popin-Library-iOS/.build/checkouts/Alamofire/Source/Features/NetworkReachabilityManager.swift"
-        },
-        {
-          "kind" : "file",
-          "name" : "/Users/ashwin/Developer/Popin-Library-iOS/.build/checkouts/Alamofire/Source/Features/OfflineRetrier.swift"
-        },
-        {
-          "kind" : "file",
-          "name" : "/Users/ashwin/Developer/Popin-Library-iOS/.build/checkouts/Alamofire/Source/Features/RedirectHandler.swift"
-        },
-        {
-          "kind" : "file",
-          "name" : "/Users/ashwin/Developer/Popin-Library-iOS/.build/checkouts/Alamofire/Source/Features/RequestCompression.swift"
-        },
-        {
-          "kind" : "file",
-          "name" : "/Users/ashwin/Developer/Popin-Library-iOS/.build/checkouts/Alamofire/Source/Features/RequestInterceptor.swift"
-        },
-        {
-          "kind" : "file",
-          "name" : "/Users/ashwin/Developer/Popin-Library-iOS/.build/checkouts/Alamofire/Source/Features/ResponseSerialization.swift"
-        },
-        {
-          "kind" : "file",
-          "name" : "/Users/ashwin/Developer/Popin-Library-iOS/.build/checkouts/Alamofire/Source/Features/RetryPolicy.swift"
-        },
-        {
-          "kind" : "file",
-          "name" : "/Users/ashwin/Developer/Popin-Library-iOS/.build/checkouts/Alamofire/Source/Features/ServerTrustEvaluation.swift"
-        },
-        {
-          "kind" : "file",
-          "name" : "/Users/ashwin/Developer/Popin-Library-iOS/.build/checkouts/Alamofire/Source/Features/URLEncodedFormEncoder.swift"
-        },
-        {
-          "kind" : "file",
-          "name" : "/Users/ashwin/Developer/Popin-Library-iOS/.build/checkouts/Alamofire/Source/Features/Validation.swift"
-        },
-        {
-          "kind" : "file",
-          "name" : "/Users/ashwin/Developer/Popin-Library-iOS/.build/arm64-apple-macosx/debug/Alamofire.build/DerivedSources/resource_bundle_accessor.swift"
-        }
-      ],
-      "outputFilePath" : "/Users/ashwin/Developer/Popin-Library-iOS/.build/arm64-apple-macosx/debug/Alamofire.build/sources"
-    },
-    "/Users/ashwin/Developer/Popin-Library-iOS/.build/arm64-apple-macosx/debug/AlamofireDynamic.product/Objects.LinkFileList" : {
-      "alwaysOutOfDate" : false,
-      "inputs" : [
-        {
-          "kind" : "virtual",
-          "name" : "<link-file-list>"
-        },
-        {
-          "kind" : "file",
-          "name" : "/Users/ashwin/Developer/Popin-Library-iOS/.build/arm64-apple-macosx/debug/Alamofire.build/AFError.swift.o"
-        },
-        {
-          "kind" : "file",
-          "name" : "/Users/ashwin/Developer/Popin-Library-iOS/.build/arm64-apple-macosx/debug/Alamofire.build/Alamofire.swift.o"
-        },
-        {
-          "kind" : "file",
-          "name" : "/Users/ashwin/Developer/Popin-Library-iOS/.build/arm64-apple-macosx/debug/Alamofire.build/AlamofireExtended.swift.o"
-        },
-        {
-          "kind" : "file",
-          "name" : "/Users/ashwin/Developer/Popin-Library-iOS/.build/arm64-apple-macosx/debug/Alamofire.build/AuthenticationInterceptor.swift.o"
-        },
-        {
-          "kind" : "file",
-          "name" : "/Users/ashwin/Developer/Popin-Library-iOS/.build/arm64-apple-macosx/debug/Alamofire.build/CachedResponseHandler.swift.o"
-        },
-        {
-          "kind" : "file",
-          "name" : "/Users/ashwin/Developer/Popin-Library-iOS/.build/arm64-apple-macosx/debug/Alamofire.build/Combine.swift.o"
-        },
-        {
-          "kind" : "file",
-          "name" : "/Users/ashwin/Developer/Popin-Library-iOS/.build/arm64-apple-macosx/debug/Alamofire.build/Concurrency.swift.o"
-        },
-        {
-          "kind" : "file",
-          "name" : "/Users/ashwin/Developer/Popin-Library-iOS/.build/arm64-apple-macosx/debug/Alamofire.build/DataRequest.swift.o"
-        },
-        {
-          "kind" : "file",
-          "name" : "/Users/ashwin/Developer/Popin-Library-iOS/.build/arm64-apple-macosx/debug/Alamofire.build/DataStreamRequest.swift.o"
-        },
-        {
-          "kind" : "file",
-          "name" : "/Users/ashwin/Developer/Popin-Library-iOS/.build/arm64-apple-macosx/debug/Alamofire.build/DispatchQueue+Alamofire.swift.o"
-        },
-        {
-          "kind" : "file",
-          "name" : "/Users/ashwin/Developer/Popin-Library-iOS/.build/arm64-apple-macosx/debug/Alamofire.build/DownloadRequest.swift.o"
-        },
-        {
-          "kind" : "file",
-          "name" : "/Users/ashwin/Developer/Popin-Library-iOS/.build/arm64-apple-macosx/debug/Alamofire.build/EventMonitor.swift.o"
-        },
-        {
-          "kind" : "file",
-          "name" : "/Users/ashwin/Developer/Popin-Library-iOS/.build/arm64-apple-macosx/debug/Alamofire.build/HTTPHeaders.swift.o"
-        },
-        {
-          "kind" : "file",
-          "name" : "/Users/ashwin/Developer/Popin-Library-iOS/.build/arm64-apple-macosx/debug/Alamofire.build/HTTPMethod.swift.o"
-        },
-        {
-          "kind" : "file",
-          "name" : "/Users/ashwin/Developer/Popin-Library-iOS/.build/arm64-apple-macosx/debug/Alamofire.build/MultipartFormData.swift.o"
-        },
-        {
-          "kind" : "file",
-          "name" : "/Users/ashwin/Developer/Popin-Library-iOS/.build/arm64-apple-macosx/debug/Alamofire.build/MultipartUpload.swift.o"
-        },
-        {
-          "kind" : "file",
-          "name" : "/Users/ashwin/Developer/Popin-Library-iOS/.build/arm64-apple-macosx/debug/Alamofire.build/NetworkReachabilityManager.swift.o"
-        },
-        {
-          "kind" : "file",
-          "name" : "/Users/ashwin/Developer/Popin-Library-iOS/.build/arm64-apple-macosx/debug/Alamofire.build/Notifications.swift.o"
-        },
-        {
-          "kind" : "file",
-          "name" : "/Users/ashwin/Developer/Popin-Library-iOS/.build/arm64-apple-macosx/debug/Alamofire.build/OfflineRetrier.swift.o"
-        },
-        {
-          "kind" : "file",
-          "name" : "/Users/ashwin/Developer/Popin-Library-iOS/.build/arm64-apple-macosx/debug/Alamofire.build/OperationQueue+Alamofire.swift.o"
-        },
-        {
-          "kind" : "file",
-          "name" : "/Users/ashwin/Developer/Popin-Library-iOS/.build/arm64-apple-macosx/debug/Alamofire.build/ParameterEncoder.swift.o"
-        },
-        {
-          "kind" : "file",
-          "name" : "/Users/ashwin/Developer/Popin-Library-iOS/.build/arm64-apple-macosx/debug/Alamofire.build/ParameterEncoding.swift.o"
-        },
-        {
-          "kind" : "file",
-          "name" : "/Users/ashwin/Developer/Popin-Library-iOS/.build/arm64-apple-macosx/debug/Alamofire.build/Protected.swift.o"
-        },
-        {
-          "kind" : "file",
-          "name" : "/Users/ashwin/Developer/Popin-Library-iOS/.build/arm64-apple-macosx/debug/Alamofire.build/RedirectHandler.swift.o"
-        },
-        {
-          "kind" : "file",
-          "name" : "/Users/ashwin/Developer/Popin-Library-iOS/.build/arm64-apple-macosx/debug/Alamofire.build/Request.swift.o"
-        },
-        {
-          "kind" : "file",
-          "name" : "/Users/ashwin/Developer/Popin-Library-iOS/.build/arm64-apple-macosx/debug/Alamofire.build/RequestCompression.swift.o"
-        },
-        {
-          "kind" : "file",
-          "name" : "/Users/ashwin/Developer/Popin-Library-iOS/.build/arm64-apple-macosx/debug/Alamofire.build/RequestInterceptor.swift.o"
-        },
-        {
-          "kind" : "file",
-          "name" : "/Users/ashwin/Developer/Popin-Library-iOS/.build/arm64-apple-macosx/debug/Alamofire.build/RequestTaskMap.swift.o"
-        },
-        {
-          "kind" : "file",
-          "name" : "/Users/ashwin/Developer/Popin-Library-iOS/.build/arm64-apple-macosx/debug/Alamofire.build/Response.swift.o"
-        },
-        {
-          "kind" : "file",
-          "name" : "/Users/ashwin/Developer/Popin-Library-iOS/.build/arm64-apple-macosx/debug/Alamofire.build/ResponseSerialization.swift.o"
-        },
-        {
-          "kind" : "file",
-          "name" : "/Users/ashwin/Developer/Popin-Library-iOS/.build/arm64-apple-macosx/debug/Alamofire.build/Result+Alamofire.swift.o"
-        },
-        {
-          "kind" : "file",
-          "name" : "/Users/ashwin/Developer/Popin-Library-iOS/.build/arm64-apple-macosx/debug/Alamofire.build/RetryPolicy.swift.o"
-        },
-        {
-          "kind" : "file",
-          "name" : "/Users/ashwin/Developer/Popin-Library-iOS/.build/arm64-apple-macosx/debug/Alamofire.build/ServerTrustEvaluation.swift.o"
-        },
-        {
-          "kind" : "file",
-          "name" : "/Users/ashwin/Developer/Popin-Library-iOS/.build/arm64-apple-macosx/debug/Alamofire.build/Session.swift.o"
-        },
-        {
-          "kind" : "file",
-          "name" : "/Users/ashwin/Developer/Popin-Library-iOS/.build/arm64-apple-macosx/debug/Alamofire.build/SessionDelegate.swift.o"
-        },
-        {
-          "kind" : "file",
-          "name" : "/Users/ashwin/Developer/Popin-Library-iOS/.build/arm64-apple-macosx/debug/Alamofire.build/StringEncoding+Alamofire.swift.o"
-        },
-        {
-          "kind" : "file",
-          "name" : "/Users/ashwin/Developer/Popin-Library-iOS/.build/arm64-apple-macosx/debug/Alamofire.build/URLConvertible+URLRequestConvertible.swift.o"
-        },
-        {
-          "kind" : "file",
-          "name" : "/Users/ashwin/Developer/Popin-Library-iOS/.build/arm64-apple-macosx/debug/Alamofire.build/URLEncodedFormEncoder.swift.o"
-        },
-        {
-          "kind" : "file",
-          "name" : "/Users/ashwin/Developer/Popin-Library-iOS/.build/arm64-apple-macosx/debug/Alamofire.build/URLRequest+Alamofire.swift.o"
-        },
-        {
-          "kind" : "file",
-          "name" : "/Users/ashwin/Developer/Popin-Library-iOS/.build/arm64-apple-macosx/debug/Alamofire.build/URLSessionConfiguration+Alamofire.swift.o"
-        },
-        {
-          "kind" : "file",
-          "name" : "/Users/ashwin/Developer/Popin-Library-iOS/.build/arm64-apple-macosx/debug/Alamofire.build/UploadRequest.swift.o"
-        },
-        {
-          "kind" : "file",
-          "name" : "/Users/ashwin/Developer/Popin-Library-iOS/.build/arm64-apple-macosx/debug/Alamofire.build/Validation.swift.o"
-        },
-        {
-          "kind" : "file",
-          "name" : "/Users/ashwin/Developer/Popin-Library-iOS/.build/arm64-apple-macosx/debug/Alamofire.build/WebSocketRequest.swift.o"
-        },
-        {
-          "kind" : "file",
-          "name" : "/Users/ashwin/Developer/Popin-Library-iOS/.build/arm64-apple-macosx/debug/Alamofire.build/resource_bundle_accessor.swift.o"
-        }
-      ],
-      "outputFilePath" : "/Users/ashwin/Developer/Popin-Library-iOS/.build/arm64-apple-macosx/debug/AlamofireDynamic.product/Objects.LinkFileList"
-    },
     "/Users/ashwin/Developer/Popin-Library-iOS/.build/arm64-apple-macosx/debug/BitCollections.build/sources" : {
       "alwaysOutOfDate" : false,
       "inputs" : [
@@ -18137,127 +17017,155 @@
         },
         {
           "kind" : "file",
-          "name" : "/Users/ashwin/Developer/Popin-Library-iOS/PopinCall/AudienceRow.swift"
+          "name" : "/Users/ashwin/Developer/Popin-Library-iOS/PopinCall/Core/Popin.swift"
         },
         {
           "kind" : "file",
-          "name" : "/Users/ashwin/Developer/Popin-Library-iOS/PopinCall/BroadcastPickerWrapper.swift"
+          "name" : "/Users/ashwin/Developer/Popin-Library-iOS/PopinCall/Core/PopinConfig.swift"
         },
         {
           "kind" : "file",
-          "name" : "/Users/ashwin/Developer/Popin-Library-iOS/PopinCall/CallAcceptanceWaitHandler.swift"
+          "name" : "/Users/ashwin/Developer/Popin-Library-iOS/PopinCall/Core/PopinConfigEnvironment.swift"
         },
         {
           "kind" : "file",
-          "name" : "/Users/ashwin/Developer/Popin-Library-iOS/PopinCall/CallManager.swift"
+          "name" : "/Users/ashwin/Developer/Popin-Library-iOS/PopinCall/Core/PopinProduct.swift"
         },
         {
           "kind" : "file",
-          "name" : "/Users/ashwin/Developer/Popin-Library-iOS/PopinCall/DarwinNotificationCenter.swift"
+          "name" : "/Users/ashwin/Developer/Popin-Library-iOS/PopinCall/Media/BroadcastPickerWrapper.swift"
         },
         {
           "kind" : "file",
-          "name" : "/Users/ashwin/Developer/Popin-Library-iOS/PopinCall/MyCustomRendererView.swift"
+          "name" : "/Users/ashwin/Developer/Popin-Library-iOS/PopinCall/Media/MyCustomRendererView.swift"
         },
         {
           "kind" : "file",
-          "name" : "/Users/ashwin/Developer/Popin-Library-iOS/PopinCall/NotConnectedView.swift"
+          "name" : "/Users/ashwin/Developer/Popin-Library-iOS/PopinCall/Media/PiPSupport.swift"
         },
         {
           "kind" : "file",
-          "name" : "/Users/ashwin/Developer/Popin-Library-iOS/PopinCall/ObjectSavable.swift"
+          "name" : "/Users/ashwin/Developer/Popin-Library-iOS/PopinCall/Models/ChatMessage.swift"
         },
         {
           "kind" : "file",
-          "name" : "/Users/ashwin/Developer/Popin-Library-iOS/PopinCall/ParticipantCell.swift"
+          "name" : "/Users/ashwin/Developer/Popin-Library-iOS/PopinCall/Models/VideoCall.swift"
         },
         {
           "kind" : "file",
-          "name" : "/Users/ashwin/Developer/Popin-Library-iOS/PopinCall/ParticipantLayout.swift"
+          "name" : "/Users/ashwin/Developer/Popin-Library-iOS/PopinCall/Protocols/PopinCallDelegate.swift"
         },
         {
           "kind" : "file",
-          "name" : "/Users/ashwin/Developer/Popin-Library-iOS/PopinCall/ParticipantTile.swift"
+          "name" : "/Users/ashwin/Developer/Popin-Library-iOS/PopinCall/Protocols/PopinInitListener.swift"
         },
         {
           "kind" : "file",
-          "name" : "/Users/ashwin/Developer/Popin-Library-iOS/PopinCall/PiPSupport.swift"
+          "name" : "/Users/ashwin/Developer/Popin-Library-iOS/PopinCall/Protocols/PopinPusherDelegate.swift"
         },
         {
           "kind" : "file",
-          "name" : "/Users/ashwin/Developer/Popin-Library-iOS/PopinCall/Popin.swift"
+          "name" : "/Users/ashwin/Developer/Popin-Library-iOS/PopinCall/Services/CallAcceptanceWaitHandler.swift"
         },
         {
           "kind" : "file",
-          "name" : "/Users/ashwin/Developer/Popin-Library-iOS/PopinCall/PopinCallDelegate.swift"
+          "name" : "/Users/ashwin/Developer/Popin-Library-iOS/PopinCall/Services/CallManager.swift"
         },
         {
           "kind" : "file",
-          "name" : "/Users/ashwin/Developer/Popin-Library-iOS/PopinCall/PopinCallInteractor.swift"
+          "name" : "/Users/ashwin/Developer/Popin-Library-iOS/PopinCall/Services/ChatManager.swift"
         },
         {
           "kind" : "file",
-          "name" : "/Users/ashwin/Developer/Popin-Library-iOS/PopinCall/PopinCallPresenter.swift"
+          "name" : "/Users/ashwin/Developer/Popin-Library-iOS/PopinCall/Services/PopinConference.swift"
         },
         {
           "kind" : "file",
-          "name" : "/Users/ashwin/Developer/Popin-Library-iOS/PopinCall/PopinCallViewController.swift"
+          "name" : "/Users/ashwin/Developer/Popin-Library-iOS/PopinCall/Services/PopinPusher.swift"
         },
         {
           "kind" : "file",
-          "name" : "/Users/ashwin/Developer/Popin-Library-iOS/PopinCall/PopinConference.swift"
+          "name" : "/Users/ashwin/Developer/Popin-Library-iOS/PopinCall/Utilities/DarwinNotificationCenter.swift"
         },
         {
           "kind" : "file",
-          "name" : "/Users/ashwin/Developer/Popin-Library-iOS/PopinCall/PopinConnectedView.swift"
+          "name" : "/Users/ashwin/Developer/Popin-Library-iOS/PopinCall/Utilities/ObjectSavable.swift"
         },
         {
           "kind" : "file",
-          "name" : "/Users/ashwin/Developer/Popin-Library-iOS/PopinCall/PopinInteractor.swift"
+          "name" : "/Users/ashwin/Developer/Popin-Library-iOS/PopinCall/Utilities/Utilities.swift"
         },
         {
           "kind" : "file",
-          "name" : "/Users/ashwin/Developer/Popin-Library-iOS/PopinCall/PopinPresenter.swift"
+          "name" : "/Users/ashwin/Developer/Popin-Library-iOS/PopinCall/VIP/PopinCallInteractor.swift"
         },
         {
           "kind" : "file",
-          "name" : "/Users/ashwin/Developer/Popin-Library-iOS/PopinCall/PopinPusher.swift"
+          "name" : "/Users/ashwin/Developer/Popin-Library-iOS/PopinCall/VIP/PopinCallPresenter.swift"
         },
         {
           "kind" : "file",
-          "name" : "/Users/ashwin/Developer/Popin-Library-iOS/PopinCall/PopinPusherDelegate.swift"
+          "name" : "/Users/ashwin/Developer/Popin-Library-iOS/PopinCall/VIP/PopinInteractor.swift"
         },
         {
           "kind" : "file",
-          "name" : "/Users/ashwin/Developer/Popin-Library-iOS/PopinCall/SideControls.swift"
+          "name" : "/Users/ashwin/Developer/Popin-Library-iOS/PopinCall/VIP/PopinPresenter.swift"
         },
         {
           "kind" : "file",
-          "name" : "/Users/ashwin/Developer/Popin-Library-iOS/PopinCall/TopControls.swift"
+          "name" : "/Users/ashwin/Developer/Popin-Library-iOS/PopinCall/VIP/VideoCallInteractor.swift"
         },
         {
           "kind" : "file",
-          "name" : "/Users/ashwin/Developer/Popin-Library-iOS/PopinCall/Utilities.swift"
+          "name" : "/Users/ashwin/Developer/Popin-Library-iOS/PopinCall/VIP/VideoCallPresenter.swift"
         },
         {
           "kind" : "file",
-          "name" : "/Users/ashwin/Developer/Popin-Library-iOS/PopinCall/VideoCall.swift"
+          "name" : "/Users/ashwin/Developer/Popin-Library-iOS/PopinCall/VIP/VideoCallViewModel.swift"
         },
         {
           "kind" : "file",
-          "name" : "/Users/ashwin/Developer/Popin-Library-iOS/PopinCall/VideoCallInteractor.swift"
+          "name" : "/Users/ashwin/Developer/Popin-Library-iOS/PopinCall/Views/AudienceRow.swift"
         },
         {
           "kind" : "file",
-          "name" : "/Users/ashwin/Developer/Popin-Library-iOS/PopinCall/VideoCallPresenter.swift"
+          "name" : "/Users/ashwin/Developer/Popin-Library-iOS/PopinCall/Views/BottomControls.swift"
         },
         {
           "kind" : "file",
-          "name" : "/Users/ashwin/Developer/Popin-Library-iOS/PopinCall/VideoCallSwiftUIView.swift"
+          "name" : "/Users/ashwin/Developer/Popin-Library-iOS/PopinCall/Views/ChatView.swift"
         },
         {
           "kind" : "file",
-          "name" : "/Users/ashwin/Developer/Popin-Library-iOS/PopinCall/VideoCallViewModel.swift"
+          "name" : "/Users/ashwin/Developer/Popin-Library-iOS/PopinCall/Views/NotConnectedView.swift"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/ashwin/Developer/Popin-Library-iOS/PopinCall/Views/ParticipantCell.swift"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/ashwin/Developer/Popin-Library-iOS/PopinCall/Views/ParticipantLayout.swift"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/ashwin/Developer/Popin-Library-iOS/PopinCall/Views/ParticipantTile.swift"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/ashwin/Developer/Popin-Library-iOS/PopinCall/Views/PopinCallViewController.swift"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/ashwin/Developer/Popin-Library-iOS/PopinCall/Views/PopinConnectedView.swift"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/ashwin/Developer/Popin-Library-iOS/PopinCall/Views/TopControls.swift"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/ashwin/Developer/Popin-Library-iOS/PopinCall/Views/VideoCallSwiftUIView.swift"
         }
       ],
       "outputFilePath" : "/Users/ashwin/Developer/Popin-Library-iOS/.build/arm64-apple-macosx/debug/PopinCall.build/sources"
@@ -18282,182 +17190,6 @@
         {
           "kind" : "virtual",
           "name" : "<link-file-list>"
-        },
-        {
-          "kind" : "file",
-          "name" : "/Users/ashwin/Developer/Popin-Library-iOS/.build/arm64-apple-macosx/debug/Alamofire.build/AFError.swift.o"
-        },
-        {
-          "kind" : "file",
-          "name" : "/Users/ashwin/Developer/Popin-Library-iOS/.build/arm64-apple-macosx/debug/Alamofire.build/Alamofire.swift.o"
-        },
-        {
-          "kind" : "file",
-          "name" : "/Users/ashwin/Developer/Popin-Library-iOS/.build/arm64-apple-macosx/debug/Alamofire.build/AlamofireExtended.swift.o"
-        },
-        {
-          "kind" : "file",
-          "name" : "/Users/ashwin/Developer/Popin-Library-iOS/.build/arm64-apple-macosx/debug/Alamofire.build/AuthenticationInterceptor.swift.o"
-        },
-        {
-          "kind" : "file",
-          "name" : "/Users/ashwin/Developer/Popin-Library-iOS/.build/arm64-apple-macosx/debug/Alamofire.build/CachedResponseHandler.swift.o"
-        },
-        {
-          "kind" : "file",
-          "name" : "/Users/ashwin/Developer/Popin-Library-iOS/.build/arm64-apple-macosx/debug/Alamofire.build/Combine.swift.o"
-        },
-        {
-          "kind" : "file",
-          "name" : "/Users/ashwin/Developer/Popin-Library-iOS/.build/arm64-apple-macosx/debug/Alamofire.build/Concurrency.swift.o"
-        },
-        {
-          "kind" : "file",
-          "name" : "/Users/ashwin/Developer/Popin-Library-iOS/.build/arm64-apple-macosx/debug/Alamofire.build/DataRequest.swift.o"
-        },
-        {
-          "kind" : "file",
-          "name" : "/Users/ashwin/Developer/Popin-Library-iOS/.build/arm64-apple-macosx/debug/Alamofire.build/DataStreamRequest.swift.o"
-        },
-        {
-          "kind" : "file",
-          "name" : "/Users/ashwin/Developer/Popin-Library-iOS/.build/arm64-apple-macosx/debug/Alamofire.build/DispatchQueue+Alamofire.swift.o"
-        },
-        {
-          "kind" : "file",
-          "name" : "/Users/ashwin/Developer/Popin-Library-iOS/.build/arm64-apple-macosx/debug/Alamofire.build/DownloadRequest.swift.o"
-        },
-        {
-          "kind" : "file",
-          "name" : "/Users/ashwin/Developer/Popin-Library-iOS/.build/arm64-apple-macosx/debug/Alamofire.build/EventMonitor.swift.o"
-        },
-        {
-          "kind" : "file",
-          "name" : "/Users/ashwin/Developer/Popin-Library-iOS/.build/arm64-apple-macosx/debug/Alamofire.build/HTTPHeaders.swift.o"
-        },
-        {
-          "kind" : "file",
-          "name" : "/Users/ashwin/Developer/Popin-Library-iOS/.build/arm64-apple-macosx/debug/Alamofire.build/HTTPMethod.swift.o"
-        },
-        {
-          "kind" : "file",
-          "name" : "/Users/ashwin/Developer/Popin-Library-iOS/.build/arm64-apple-macosx/debug/Alamofire.build/MultipartFormData.swift.o"
-        },
-        {
-          "kind" : "file",
-          "name" : "/Users/ashwin/Developer/Popin-Library-iOS/.build/arm64-apple-macosx/debug/Alamofire.build/MultipartUpload.swift.o"
-        },
-        {
-          "kind" : "file",
-          "name" : "/Users/ashwin/Developer/Popin-Library-iOS/.build/arm64-apple-macosx/debug/Alamofire.build/NetworkReachabilityManager.swift.o"
-        },
-        {
-          "kind" : "file",
-          "name" : "/Users/ashwin/Developer/Popin-Library-iOS/.build/arm64-apple-macosx/debug/Alamofire.build/Notifications.swift.o"
-        },
-        {
-          "kind" : "file",
-          "name" : "/Users/ashwin/Developer/Popin-Library-iOS/.build/arm64-apple-macosx/debug/Alamofire.build/OfflineRetrier.swift.o"
-        },
-        {
-          "kind" : "file",
-          "name" : "/Users/ashwin/Developer/Popin-Library-iOS/.build/arm64-apple-macosx/debug/Alamofire.build/OperationQueue+Alamofire.swift.o"
-        },
-        {
-          "kind" : "file",
-          "name" : "/Users/ashwin/Developer/Popin-Library-iOS/.build/arm64-apple-macosx/debug/Alamofire.build/ParameterEncoder.swift.o"
-        },
-        {
-          "kind" : "file",
-          "name" : "/Users/ashwin/Developer/Popin-Library-iOS/.build/arm64-apple-macosx/debug/Alamofire.build/ParameterEncoding.swift.o"
-        },
-        {
-          "kind" : "file",
-          "name" : "/Users/ashwin/Developer/Popin-Library-iOS/.build/arm64-apple-macosx/debug/Alamofire.build/Protected.swift.o"
-        },
-        {
-          "kind" : "file",
-          "name" : "/Users/ashwin/Developer/Popin-Library-iOS/.build/arm64-apple-macosx/debug/Alamofire.build/RedirectHandler.swift.o"
-        },
-        {
-          "kind" : "file",
-          "name" : "/Users/ashwin/Developer/Popin-Library-iOS/.build/arm64-apple-macosx/debug/Alamofire.build/Request.swift.o"
-        },
-        {
-          "kind" : "file",
-          "name" : "/Users/ashwin/Developer/Popin-Library-iOS/.build/arm64-apple-macosx/debug/Alamofire.build/RequestCompression.swift.o"
-        },
-        {
-          "kind" : "file",
-          "name" : "/Users/ashwin/Developer/Popin-Library-iOS/.build/arm64-apple-macosx/debug/Alamofire.build/RequestInterceptor.swift.o"
-        },
-        {
-          "kind" : "file",
-          "name" : "/Users/ashwin/Developer/Popin-Library-iOS/.build/arm64-apple-macosx/debug/Alamofire.build/RequestTaskMap.swift.o"
-        },
-        {
-          "kind" : "file",
-          "name" : "/Users/ashwin/Developer/Popin-Library-iOS/.build/arm64-apple-macosx/debug/Alamofire.build/Response.swift.o"
-        },
-        {
-          "kind" : "file",
-          "name" : "/Users/ashwin/Developer/Popin-Library-iOS/.build/arm64-apple-macosx/debug/Alamofire.build/ResponseSerialization.swift.o"
-        },
-        {
-          "kind" : "file",
-          "name" : "/Users/ashwin/Developer/Popin-Library-iOS/.build/arm64-apple-macosx/debug/Alamofire.build/Result+Alamofire.swift.o"
-        },
-        {
-          "kind" : "file",
-          "name" : "/Users/ashwin/Developer/Popin-Library-iOS/.build/arm64-apple-macosx/debug/Alamofire.build/RetryPolicy.swift.o"
-        },
-        {
-          "kind" : "file",
-          "name" : "/Users/ashwin/Developer/Popin-Library-iOS/.build/arm64-apple-macosx/debug/Alamofire.build/ServerTrustEvaluation.swift.o"
-        },
-        {
-          "kind" : "file",
-          "name" : "/Users/ashwin/Developer/Popin-Library-iOS/.build/arm64-apple-macosx/debug/Alamofire.build/Session.swift.o"
-        },
-        {
-          "kind" : "file",
-          "name" : "/Users/ashwin/Developer/Popin-Library-iOS/.build/arm64-apple-macosx/debug/Alamofire.build/SessionDelegate.swift.o"
-        },
-        {
-          "kind" : "file",
-          "name" : "/Users/ashwin/Developer/Popin-Library-iOS/.build/arm64-apple-macosx/debug/Alamofire.build/StringEncoding+Alamofire.swift.o"
-        },
-        {
-          "kind" : "file",
-          "name" : "/Users/ashwin/Developer/Popin-Library-iOS/.build/arm64-apple-macosx/debug/Alamofire.build/URLConvertible+URLRequestConvertible.swift.o"
-        },
-        {
-          "kind" : "file",
-          "name" : "/Users/ashwin/Developer/Popin-Library-iOS/.build/arm64-apple-macosx/debug/Alamofire.build/URLEncodedFormEncoder.swift.o"
-        },
-        {
-          "kind" : "file",
-          "name" : "/Users/ashwin/Developer/Popin-Library-iOS/.build/arm64-apple-macosx/debug/Alamofire.build/URLRequest+Alamofire.swift.o"
-        },
-        {
-          "kind" : "file",
-          "name" : "/Users/ashwin/Developer/Popin-Library-iOS/.build/arm64-apple-macosx/debug/Alamofire.build/URLSessionConfiguration+Alamofire.swift.o"
-        },
-        {
-          "kind" : "file",
-          "name" : "/Users/ashwin/Developer/Popin-Library-iOS/.build/arm64-apple-macosx/debug/Alamofire.build/UploadRequest.swift.o"
-        },
-        {
-          "kind" : "file",
-          "name" : "/Users/ashwin/Developer/Popin-Library-iOS/.build/arm64-apple-macosx/debug/Alamofire.build/Validation.swift.o"
-        },
-        {
-          "kind" : "file",
-          "name" : "/Users/ashwin/Developer/Popin-Library-iOS/.build/arm64-apple-macosx/debug/Alamofire.build/WebSocketRequest.swift.o"
-        },
-        {
-          "kind" : "file",
-          "name" : "/Users/ashwin/Developer/Popin-Library-iOS/.build/arm64-apple-macosx/debug/Alamofire.build/resource_bundle_accessor.swift.o"
         },
         {
           "kind" : "file",
@@ -19973,6 +18705,10 @@
         },
         {
           "kind" : "file",
+          "name" : "/Users/ashwin/Developer/Popin-Library-iOS/.build/arm64-apple-macosx/debug/PopinCall.build/BottomControls.swift.o"
+        },
+        {
+          "kind" : "file",
           "name" : "/Users/ashwin/Developer/Popin-Library-iOS/.build/arm64-apple-macosx/debug/PopinCall.build/BroadcastPickerWrapper.swift.o"
         },
         {
@@ -19982,6 +18718,18 @@
         {
           "kind" : "file",
           "name" : "/Users/ashwin/Developer/Popin-Library-iOS/.build/arm64-apple-macosx/debug/PopinCall.build/CallManager.swift.o"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/ashwin/Developer/Popin-Library-iOS/.build/arm64-apple-macosx/debug/PopinCall.build/ChatManager.swift.o"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/ashwin/Developer/Popin-Library-iOS/.build/arm64-apple-macosx/debug/PopinCall.build/ChatMessage.swift.o"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/ashwin/Developer/Popin-Library-iOS/.build/arm64-apple-macosx/debug/PopinCall.build/ChatView.swift.o"
         },
         {
           "kind" : "file",
@@ -20041,7 +18789,19 @@
         },
         {
           "kind" : "file",
+          "name" : "/Users/ashwin/Developer/Popin-Library-iOS/.build/arm64-apple-macosx/debug/PopinCall.build/PopinConfig.swift.o"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/ashwin/Developer/Popin-Library-iOS/.build/arm64-apple-macosx/debug/PopinCall.build/PopinConfigEnvironment.swift.o"
+        },
+        {
+          "kind" : "file",
           "name" : "/Users/ashwin/Developer/Popin-Library-iOS/.build/arm64-apple-macosx/debug/PopinCall.build/PopinConnectedView.swift.o"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/ashwin/Developer/Popin-Library-iOS/.build/arm64-apple-macosx/debug/PopinCall.build/PopinInitListener.swift.o"
         },
         {
           "kind" : "file",
@@ -20053,15 +18813,15 @@
         },
         {
           "kind" : "file",
+          "name" : "/Users/ashwin/Developer/Popin-Library-iOS/.build/arm64-apple-macosx/debug/PopinCall.build/PopinProduct.swift.o"
+        },
+        {
+          "kind" : "file",
           "name" : "/Users/ashwin/Developer/Popin-Library-iOS/.build/arm64-apple-macosx/debug/PopinCall.build/PopinPusher.swift.o"
         },
         {
           "kind" : "file",
           "name" : "/Users/ashwin/Developer/Popin-Library-iOS/.build/arm64-apple-macosx/debug/PopinCall.build/PopinPusherDelegate.swift.o"
-        },
-        {
-          "kind" : "file",
-          "name" : "/Users/ashwin/Developer/Popin-Library-iOS/.build/arm64-apple-macosx/debug/PopinCall.build/SideControls.swift.o"
         },
         {
           "kind" : "file",
@@ -20650,10 +19410,6 @@
         {
           "kind" : "file",
           "name" : "/Users/ashwin/Developer/Popin-Library-iOS/.build/arm64-apple-macosx/debug/SwiftProtobuf.build/wrappers.pb.swift.o"
-        },
-        {
-          "kind" : "file",
-          "name" : "/Users/ashwin/Developer/Popin-Library-iOS/.build/arm64-apple-macosx/debug/SwiftyJSON.build/SwiftyJSON.swift.o"
         },
         {
           "kind" : "file",
@@ -21877,20 +20633,6 @@
         }
       ],
       "outputFilePath" : "/Users/ashwin/Developer/Popin-Library-iOS/.build/arm64-apple-macosx/debug/SwiftProtobufPluginLibrary.build/sources"
-    },
-    "/Users/ashwin/Developer/Popin-Library-iOS/.build/arm64-apple-macosx/debug/SwiftyJSON.build/sources" : {
-      "alwaysOutOfDate" : false,
-      "inputs" : [
-        {
-          "kind" : "virtual",
-          "name" : "<sources-file-list>"
-        },
-        {
-          "kind" : "file",
-          "name" : "/Users/ashwin/Developer/Popin-Library-iOS/.build/checkouts/SwiftyJSON/Source/SwiftyJSON/SwiftyJSON.swift"
-        }
-      ],
-      "outputFilePath" : "/Users/ashwin/Developer/Popin-Library-iOS/.build/arm64-apple-macosx/debug/SwiftyJSON.build/sources"
     },
     "/Users/ashwin/Developer/Popin-Library-iOS/.build/arm64-apple-macosx/debug/TweetNacl.build/sources" : {
       "alwaysOutOfDate" : false,
