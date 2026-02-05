@@ -181,6 +181,15 @@ public class PopinCallViewController: UIViewController {
             self.isAppInitiatedDisconnect = true
             print("User cancelled call while waiting for acceptance")
             Popin.shared?.cancelCall()
+
+            if let queueId = self.callQueueId {
+                self.videoCallPresenter.closeScreen(callQueueId: queueId, onSuccess: {
+                    print("Close screen API success")
+                }, onFailure: { error in
+                    print("Close screen API failed: \(error)")
+                })
+            }
+
             DispatchQueue.main.async {
                 self.closeViewController(shouldNotEndCX: true)
                 self.dismiss(animated: true)

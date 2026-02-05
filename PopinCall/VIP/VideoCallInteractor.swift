@@ -31,4 +31,10 @@ class VideoCallInteractor {
         }
     }
 
+    func closeScreen(callQueueId: Int) async throws {
+        let urlString = serverURL + "/user/screen/close/sdk"
+        let parameters: [String: Any] = ["call_queue_id": callQueueId]
+        let _: StatusModel = try await Utilities.shared.request(urlString: urlString, method: "POST", parameters: parameters)
+    }
+
 }

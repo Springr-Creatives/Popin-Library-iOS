@@ -59,5 +59,20 @@ class VideoCallPresenter {
         }
     }
 
+    func closeScreen(callQueueId: Int, onSuccess: @escaping () -> Void, onFailure: @escaping (String) -> Void) {
+        Task {
+            do {
+                try await videoCallInteractor.closeScreen(callQueueId: callQueueId)
+                await MainActor.run {
+                    onSuccess()
+                }
+            } catch {
+                await MainActor.run {
+                    onFailure(error.localizedDescription)
+                }
+            }
+        }
+    }
+
 }
 #endif
