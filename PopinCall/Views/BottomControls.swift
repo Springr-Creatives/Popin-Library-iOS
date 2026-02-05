@@ -340,6 +340,8 @@ struct InviteDialogSheet: View {
     let isLoading: Bool
     let onDismiss: () -> Void
 
+    @State private var showCopiedToast = false
+
     var body: some View {
         ZStack {
             Color(hex: "2A2F33").ignoresSafeArea()
@@ -368,6 +370,10 @@ struct InviteDialogSheet: View {
 
                     Button(action: {
                         UIPasteboard.general.string = url
+                        showCopiedToast = true
+                        DispatchQueue.main.asyncAfter(deadline: .now() + 2) {
+                            showCopiedToast = false
+                        }
                     }) {
                         HStack {
                             Image(systemName: "doc.on.doc")
@@ -389,6 +395,23 @@ struct InviteDialogSheet: View {
                 }
             }
             .padding(.top, 24)
+
+            // Toast message
+            if showCopiedToast {
+                VStack {
+                    Spacer()
+                    Text("Invite link copied")
+                        .font(.system(size: 14, weight: .medium))
+                        .foregroundColor(.white)
+                        .padding(.horizontal, 16)
+                        .padding(.vertical, 10)
+                        .background(Color.black.opacity(0.8))
+                        .cornerRadius(8)
+                        .padding(.bottom, 20)
+                }
+                .transition(.opacity)
+                .animation(.easeInOut(duration: 0.3), value: showCopiedToast)
+            }
         }
     }
 }
