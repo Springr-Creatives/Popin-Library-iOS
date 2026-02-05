@@ -17,6 +17,7 @@ class ChatManager: ObservableObject {
 
     @Published private(set) var messages: [Int: [ChatMessage]] = [:]
     @Published var unreadCount: Int = 0
+    @Published private(set) var latestIncomingMessage: ChatMessage? = nil
 
     weak var listener: ChatMessageListener?
     private var currentCallId: Int?
@@ -183,6 +184,8 @@ class ChatManager: ObservableObject {
                             // Only increment unread for received messages when chat is not open
                             if !isMe && !self.isChatOpen {
                                 self.unreadCount += 1
+                                // Set latest incoming message for toast display
+                                self.latestIncomingMessage = chatMessage
                             }
                             self.listener?.onMessageReceived(chatMessage)
                         }

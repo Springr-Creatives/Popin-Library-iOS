@@ -42,6 +42,11 @@ struct PopinConnectedView: View {
     // Get view model and config from environment
     @EnvironmentObject private var viewModel: VideoCallViewModel
     @EnvironmentObject private var configHolder: PopinConfigHolder
+
+    // Chat toast state
+    @ObservedObject private var chatManager = ChatManager.shared
+    @State private var toastMessage: String? = nil
+    @State private var toastTimer: Timer? = nil
     
     
     private func enableHardware() async {
@@ -108,7 +113,30 @@ struct PopinConnectedView: View {
             participantOrder = newOrder
         }
     }
-    
+
+    private func showToast(message: String) {
+        // Cancel any existing timer
+        toastTimer?.invalidate()
+
+        // Show the toast
+        withAnimation {
+            toastMessage = message
+        }
+
+        // Auto-dismiss after 4 seconds
+        toastTimer = Timer.scheduledTimer(withTimeInterval: 4.0, repeats: false) { _ in
+            dismissToast()
+        }
+    }
+
+    private func dismissToast() {
+        toastTimer?.invalidate()
+        toastTimer = nil
+        withAnimation {
+            toastMessage = nil
+        }
+    }
+
     private var sortedParticipants: [Participant] {
         // Map the maintained order to actual Participant objects
         var ordered: [Participant] = []
@@ -188,6 +216,22 @@ struct PopinConnectedView: View {
             )
 
             Spacer()
+
+            // Chat toast - appears when new message arrives
+            if let message = toastMessage, !showChat {
+                ChatDetailsToast(
+                    message: message,
+                    showBadge: chatManager.unreadCount > 0,
+                    onTap: {
+                        dismissToast()
+                        showChat = true
+                    }
+                )
+                .padding(.horizontal, 40)
+                .padding(.bottom, 8)
+                .transition(.move(edge: .bottom).combined(with: .opacity))
+                .animation(.easeInOut(duration: 0.3), value: toastMessage)
+            }
 
             // Remote participants Row
             if sortedParticipants.count > 1 {
@@ -282,6 +326,8 @@ struct PopinConnectedView: View {
                 if pipSupported {
                     pipHandler.startPictureInPicture()
                 }
+                // Dismiss any active toast
+                dismissToast()
             } else {
                  // Chat closed -> Stop PiP
                  pipHandler.stopPictureInPicture()
@@ -292,6 +338,12 @@ struct PopinConnectedView: View {
             // If chat is open, close it to show full screen video
             if showChat {
                 showChat = false
+            }
+        }
+        .onChange(of: chatManager.latestIncomingMessage) { newMessage in
+            // Show toast when new incoming message arrives
+            if let message = newMessage, let text = message.text, !text.isEmpty, !showChat {
+                showToast(message: text)
             }
         }
     }

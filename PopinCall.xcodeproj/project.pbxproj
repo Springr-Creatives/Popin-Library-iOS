@@ -13,6 +13,7 @@
 		CF17CHAT22F27407B00AE48E7 /* ChatMessage.swift in Sources */ = {isa = PBXBuildFile; fileRef = CF17CHAT12F27407B00AE48E7 /* ChatMessage.swift */; };
 		CF17CHAT42F27407B00AE48E7 /* ChatManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = CF17CHAT32F27407B00AE48E7 /* ChatManager.swift */; };
 		CF17CHAT62F27407B00AE48E7 /* ChatView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CF17CHAT52F27407B00AE48E7 /* ChatView.swift */; };
+		CF17CHAT82F27407B00AE48E7 /* ChatDetailsToast.swift in Sources */ = {isa = PBXBuildFile; fileRef = CF17CHAT72F27407B00AE48E7 /* ChatDetailsToast.swift */; };
 		CF1742572F273FF600AE48E7 /* PusherSwift in Frameworks */ = {isa = PBXBuildFile; productRef = CF1742562F273FF600AE48E7 /* PusherSwift */; };
 		CF1742602F27404400AE48E7 /* LiveKitComponents in Frameworks */ = {isa = PBXBuildFile; productRef = CF17425F2F27404400AE48E7 /* LiveKitComponents */; };
 		CF17427E2F27407B00AE48E7 /* PopinPusher.swift in Sources */ = {isa = PBXBuildFile; fileRef = CF1742742F27407B00AE48E7 /* PopinPusher.swift */; };
@@ -103,6 +104,7 @@
 		CF17CHAT12F27407B00AE48E7 /* ChatMessage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatMessage.swift; sourceTree = "<group>"; };
 		CF17CHAT32F27407B00AE48E7 /* ChatManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatManager.swift; sourceTree = "<group>"; };
 		CF17CHAT52F27407B00AE48E7 /* ChatView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatView.swift; sourceTree = "<group>"; };
+		CF17CHAT72F27407B00AE48E7 /* ChatDetailsToast.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatDetailsToast.swift; sourceTree = "<group>"; };
 		CF1742612F27407B00AE48E7 /* AudienceRow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AudienceRow.swift; sourceTree = "<group>"; };
 		CF1742622F27407B00AE48E7 /* BroadcastPickerWrapper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BroadcastPickerWrapper.swift; sourceTree = "<group>"; };
 		CF1742632F27407B00AE48E7 /* CallManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CallManager.swift; sourceTree = "<group>"; };
@@ -197,6 +199,7 @@
 			isa = PBXGroup;
 			children = (
 				CFA4CDDE2F2A4C2A009EB444 /* BottomControls.swift */,
+				CF17CHAT72F27407B00AE48E7 /* ChatDetailsToast.swift */,
 				CF17CHAT52F27407B00AE48E7 /* ChatView.swift */,
 				CF1742772F27407B00AE48E7 /* TopControls.swift */,
 				CF1742662F27407B00AE48E7 /* NotConnectedView.swift */,
@@ -503,6 +506,7 @@
 				CF17CHAT22F27407B00AE48E7 /* ChatMessage.swift in Sources */,
 				CF17CHAT42F27407B00AE48E7 /* ChatManager.swift in Sources */,
 				CF17CHAT62F27407B00AE48E7 /* ChatView.swift in Sources */,
+				CF17CHAT82F27407B00AE48E7 /* ChatDetailsToast.swift in Sources */,
 				CFB63D8D292908EF005F265D /* PopinPusherDelegate.swift in Sources */,
 				CF17427E2F27407B00AE48E7 /* PopinPusher.swift in Sources */,
 				CF1742802F27407B00AE48E7 /* VideoCallViewModel.swift in Sources */,
