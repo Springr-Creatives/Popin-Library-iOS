@@ -65,10 +65,10 @@ struct VideoCallSwiftUIView: View {
                     do {
                         try await _room.connect(url: websocket, token: token)
                         print("Connected to room")
-                        try await _room.localParticipant.setMicrophone(enabled: true)
-                        print("Microphone enabled")
-                        try await _room.localParticipant.setCamera(enabled: true)
-                        print("Camera enabled")
+                        try await _room.localParticipant.setMicrophone(enabled: viewModel.preCallMicEnabled)
+                        print("Microphone enabled: \(viewModel.preCallMicEnabled)")
+                        try await _room.localParticipant.setCamera(enabled: viewModel.preCallCameraEnabled)
+                        print("Camera enabled: \(viewModel.preCallCameraEnabled)")
 
 //                        // Enable multitasking camera access for PiP immediately after enabling camera
 //                        // This must be set before the AVCaptureSession starts

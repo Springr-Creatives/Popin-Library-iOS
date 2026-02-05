@@ -20,6 +20,12 @@ final class VideoCallViewModel: ObservableObject {
     /// Queue position for outgoing calls (0 means position not yet known)
     @Published var queuePosition: Int = 0
 
+    /// Pre-call microphone state (set during waiting screen, applied when call connects)
+    @Published var preCallMicEnabled: Bool = true
+
+    /// Pre-call camera state (set during waiting screen, applied when call connects)
+    @Published var preCallCameraEnabled: Bool = true
+
     var onEndCall: (() -> Void)?
     var onRoomDisconnected: (() -> Void)?
 

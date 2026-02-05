@@ -168,7 +168,7 @@ struct PopinConference: View {
                 Spacer()
 
                 // Bottom controls matching BottomControls.swift style
-                WaitingBottomControls(onCancelCall: {
+                WaitingBottomControls(viewModel: viewModel, onCancelCall: {
                     viewModel.onCancelCall?()
                 })
             }
@@ -248,6 +248,7 @@ class LocalCameraPreviewUIView: UIView {
 // MARK: - Waiting Bottom Controls
 
 struct WaitingBottomControls: View {
+    @ObservedObject var viewModel: VideoCallViewModel
     let onCancelCall: () -> Void
 
     var body: some View {
@@ -261,20 +262,26 @@ struct WaitingBottomControls: View {
 
             Spacer()
 
-            // 2. Mic (disabled)
-            ControlCircleButtonView(
-                iconName: "mic.fill",
-                backgroundColor: Color.black.opacity(0.3),
-                iconColor: .white.opacity(0.4)
+            // 2. Mic Toggle
+            ControlCircleButton(
+                iconName: viewModel.preCallMicEnabled ? "mic.fill" : "mic.slash.fill",
+                backgroundColor: viewModel.preCallMicEnabled ? Color.black.opacity(0.5) : .white,
+                iconColor: viewModel.preCallMicEnabled ? .white : .black,
+                action: {
+                    viewModel.preCallMicEnabled.toggle()
+                }
             )
 
             Spacer()
 
-            // 3. Video (disabled)
-            ControlCircleButtonView(
-                iconName: "video.fill",
-                backgroundColor: Color.black.opacity(0.3),
-                iconColor: .white.opacity(0.4)
+            // 3. Video Toggle
+            ControlCircleButton(
+                iconName: viewModel.preCallCameraEnabled ? "video.fill" : "video.slash.fill",
+                backgroundColor: viewModel.preCallCameraEnabled ? Color.black.opacity(0.5) : .white,
+                iconColor: viewModel.preCallCameraEnabled ? .white : .black,
+                action: {
+                    viewModel.preCallCameraEnabled.toggle()
+                }
             )
 
             Spacer()
