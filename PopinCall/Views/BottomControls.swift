@@ -57,16 +57,13 @@ struct BottomControls: View {
                 OverflowMenuSheet(
                     showOverflowMenu: $showOverflowMenu,
                     hideScreenShareButton: configHolder.config.hideScreenShareButton,
-                    hideFlipCameraButton: configHolder.config.hideFlipCameraButton,
+                    hideChatButton: configHolder.config.hideChatButton || viewModel.call?.id == nil,
+                    unreadCount: chatManager.unreadCount,
                     onInviteTapped: {
                         generateInviteLink()
                     },
-                    onFlipCameraTapped: {
-                        Task {
-                            let videoTrack = room.localParticipant.firstCameraVideoTrack as? LocalVideoTrack
-                            let cameraCapturer = videoTrack?.capturer as? CameraCapturer
-                            try? await cameraCapturer?.switchCameraPosition()
-                        }
+                    onChatTapped: {
+                        showChat = true
                     }
                 )
                 .modifier(SheetPresentationModifier(height: 320))
@@ -125,28 +122,21 @@ struct BottomControls: View {
             }
             
             Spacer()
-            
-            // 4. Chat Button
-            if !configHolder.config.hideChatButton, viewModel.call?.id != nil {
-                ZStack(alignment: .topTrailing) {
-                    ControlCircleButton(
-                        iconName: "bubble.left.fill",
-                        backgroundColor: Color.black.opacity(0.5),
-                        iconColor: .white,
-                        action: { showChat = true }
-                    )
 
-                    // Unread badge
-                    if chatManager.unreadCount > 0 {
-                        Text("\(chatManager.unreadCount)")
-                            .font(.system(size: 12, weight: .bold))
-                            .foregroundColor(.white)
-                            .frame(minWidth: 20, minHeight: 20)
-                            .background(Color.red)
-                            .clipShape(Circle())
-                            .offset(x: 4, y: -4)
+            // 4. Flip Camera Button
+            if !configHolder.config.hideFlipCameraButton {
+                ControlCircleButton(
+                    iconName: "arrow.triangle.2.circlepath.camera.fill",
+                    backgroundColor: Color.black.opacity(0.5),
+                    iconColor: .white,
+                    action: {
+                        Task {
+                            let videoTrack = room.localParticipant.firstCameraVideoTrack as? LocalVideoTrack
+                            let cameraCapturer = videoTrack?.capturer as? CameraCapturer
+                            try? await cameraCapturer?.switchCameraPosition()
+                        }
                     }
-                }
+                )
             }
 
             Spacer()
@@ -253,9 +243,10 @@ struct ControlCircleButtonView: View {
 struct OverflowMenuSheet: View {
     @Binding var showOverflowMenu: Bool
     var hideScreenShareButton: Bool = false
-    var hideFlipCameraButton: Bool = false
+    var hideChatButton: Bool = false
+    var unreadCount: Int = 0
     var onInviteTapped: () -> Void
-    var onFlipCameraTapped: () -> Void
+    var onChatTapped: () -> Void
 
     var body: some View {
         ZStack {
@@ -281,20 +272,31 @@ struct OverflowMenuSheet: View {
                     .cornerRadius(12)
                 }
 
-                // Flip Camera Row
-                if !hideFlipCameraButton {
+                // Chat Row
+                if !hideChatButton {
                     Button(action: {
                         showOverflowMenu = false
-                        onFlipCameraTapped()
+                        onChatTapped()
                     }) {
                         HStack {
-                            Text("Flip camera")
+                            Text("Chat")
                                 .font(.system(size: 16, weight: .regular))
                                 .foregroundColor(.white)
                             Spacer()
-                            Image(systemName: "arrow.triangle.2.circlepath.camera.fill")
-                                .foregroundColor(.white)
-                                .font(.system(size: 20))
+                            ZStack(alignment: .topTrailing) {
+                                Image(systemName: "bubble.left.fill")
+                                    .foregroundColor(.white)
+                                    .font(.system(size: 20))
+                                if unreadCount > 0 {
+                                    Text("\(unreadCount)")
+                                        .font(.system(size: 10, weight: .bold))
+                                        .foregroundColor(.white)
+                                        .frame(minWidth: 16, minHeight: 16)
+                                        .background(Color.red)
+                                        .clipShape(Circle())
+                                        .offset(x: 8, y: -8)
+                                }
+                            }
                         }
                         .padding(20)
                         .background(Color(hex: "3E4347"))
