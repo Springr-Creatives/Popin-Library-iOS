@@ -62,7 +62,6 @@ class ParticipantCell: UICollectionViewCell {
         cellId = Self.instanceCounter
         
         super.init(frame: frame)
-        print("\(String(describing: self)) init, instances: \(Self.instanceCounter)")
         
         contentView.addSubview(videoView)
         contentView.addSubview(noVideoContainer)
@@ -76,12 +75,10 @@ class ParticipantCell: UICollectionViewCell {
     
     deinit {
         Self.instanceCounter -= 1
-        print("\(String(describing: self)) deinit, instances: \(Self.instanceCounter)")
     }
     
     override func prepareForReuse() {
         super.prepareForReuse()
-        print("prepareForReuse, cellId: \(cellId)")
         participant = nil
     }
     
@@ -111,7 +108,6 @@ class ParticipantCell: UICollectionViewCell {
 
 extension ParticipantCell: ParticipantDelegate {
     func participant(_: RemoteParticipant, didSubscribeTrack trackPublication: RemoteTrackPublication) {
-        print("didSubscribe")
         DispatchQueue.main.async { [weak self] in
             if (trackPublication.track?.kind == .video) {
                 self?.noVideoContainer.isHidden = true
@@ -121,7 +117,6 @@ extension ParticipantCell: ParticipantDelegate {
     }
     
     func participant(_: RemoteParticipant, didUnsubscribeTrack trackPublication: RemoteTrackPublication) {
-        print("didUnsubscribe")
         DispatchQueue.main.async { [weak self] in
             if (trackPublication.track?.kind == .video) {
                 self?.noVideoContainer.isHidden = false

@@ -21,12 +21,10 @@ class PopinInteractor {
         // Basic validation
         if isEmail {
             if !contactInfo.contains(".") || contactInfo.count < 5 {
-                print("[DEBUG registerUser] Invalid email format: \(contactInfo)")
                 throw InteractorError.validationFailed
             }
         } else {
             if contactInfo.count < 8 {
-                print("[DEBUG registerUser] Invalid mobile format: \(contactInfo)")
                 throw InteractorError.validationFailed
             }
         }
@@ -47,11 +45,9 @@ class PopinInteractor {
             parameters["campaign"] = campaign
         }
         let urlString = serverURL + "/website/user/login"
-        print("[DEBUG registerUser] URL: \(urlString), params: \(parameters)")
         
         let userModel: UserModel = try await Utilities.shared.request(urlString: urlString, method: "POST", parameters: parameters)
         
-        print("[DEBUG registerUser] Decoded: status=\(userModel.status), token=\(userModel.token), channel=\(userModel.channel)")
         if (userModel.status == 1) {
             Utilities.shared.saveUser(user: userModel)
         } else {
@@ -63,10 +59,7 @@ class PopinInteractor {
         let parameters: [String: Any] = ["seller_id":seller_id];
         let urlString = serverURL + "/user/connect";
         
-        print("[DEBUG startConnection] URL: \(urlString), params: \(parameters)")
         let statusModel: StatusModel = try await Utilities.shared.request(urlString: urlString, method: "POST", parameters: parameters)
-        
-        print("[DEBUG startConnection] status=\(statusModel.status), call_queue_id=\(statusModel.call_queue_id ?? -1)")
         
         if statusModel.status == 1, let callQueueId = statusModel.call_queue_id {
             return callQueueId
@@ -77,11 +70,9 @@ class PopinInteractor {
     
     func getCallDetails(callId: Int) async throws -> TalkModel {
         let urlString = serverURL + "/user/call/\(callId)"
-        print("[DEBUG getCallDetails] URL: \(urlString)")
         
         let talkModel: TalkModel = try await Utilities.shared.request(urlString: urlString, method: "GET")
         
-        print("[DEBUG getCallDetails] status=\(talkModel.status), token=\(talkModel.token ?? "nil"), websocket=\(talkModel.websocket ?? "nil")")
         if talkModel.status == 1 {
             return talkModel
         } else {

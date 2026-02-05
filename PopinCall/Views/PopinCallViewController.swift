@@ -85,19 +85,16 @@ public class PopinCallViewController: UIViewController {
     }
     
     @IBAction func acceptClick(_ sender: Any) {
-        print("accept_click - answering call via CallKit")
         // Always go through CallKit for consistency
         CallManager.shared.answerCall()
     }
 
     @IBAction func rejectClick(_ sender: Any) {
-        print("reject_click - ending call via CallKit")
         // Always go through CallKit for consistency
         CallManager.shared.endCall()
     }
     
     func handleRemoteCancel() {
-        print("Handling remote cancel")
         shouldSkipEndApi = true
         // Close UI and end CallKit call
         closeViewController(shouldNotEndCX: false)
@@ -112,7 +109,6 @@ public class PopinCallViewController: UIViewController {
     }
     
     deinit {
-        print("VideoCallViewController deinit")
         NotificationCenter.default.removeObserver(self)
         timer?.invalidate()
         timer = nil
@@ -149,15 +145,12 @@ public class PopinCallViewController: UIViewController {
         viewModel.onEndCall = { [weak self] in
             guard let self = self else { return }
             self.isAppInitiatedDisconnect = true
-            print("End call button clicked")
             self.videoCallPresenter.endCall(callId: self.callId, onSuccess: {
-                print("End call API success")
                 DispatchQueue.main.async {
                     self.closeViewController(shouldNotEndCX: true)
                     self.dismiss(animated: true)
                 }
             }, onFailure: { error in
-                print("End call API failed: \(error)")
                 DispatchQueue.main.async {
                     self.closeViewController(shouldNotEndCX: true)
                     self.dismiss(animated: true)
@@ -169,7 +162,6 @@ public class PopinCallViewController: UIViewController {
         viewModel.onRoomDisconnected = { [weak self] in
             guard let self = self else { return }
             self.isAppInitiatedDisconnect = true
-            print("Room disconnected - closing without calling end API")
             DispatchQueue.main.async {
                 self.closeViewController(shouldNotEndCX: false)
             }
@@ -179,14 +171,11 @@ public class PopinCallViewController: UIViewController {
         viewModel.onCancelCall = { [weak self] in
             guard let self = self else { return }
             self.isAppInitiatedDisconnect = true
-            print("User cancelled call while waiting for acceptance")
             Popin.shared?.cancelCall()
 
             if let queueId = self.callQueueId {
                 self.videoCallPresenter.closeScreen(callQueueId: queueId, onSuccess: {
-                    print("Close screen API success")
                 }, onFailure: { error in
-                    print("Close screen API failed: \(error)")
                 })
             }
 
@@ -276,8 +265,6 @@ public class PopinCallViewController: UIViewController {
         let cameraStatus = AVCaptureDevice.authorizationStatus(for: .video)
         let micStatus = AVCaptureDevice.authorizationStatus(for: .audio)
         
-        print("Permission Check - Camera: \(cameraStatus.rawValue), Mic: \(micStatus.rawValue)")
-        
         var missingPermissions: [String] = []
         
         switch cameraStatus {
@@ -295,7 +282,6 @@ public class PopinCallViewController: UIViewController {
         }
         
         if !missingPermissions.isEmpty {
-            print("permission issue")
             let message = "Please allow access to the following in Settings:\n\n" + missingPermissions.joined(separator: ", ")
             let alert = UIAlertController(title: "Permissions Required",
                                           message: message,
@@ -334,7 +320,6 @@ public class PopinCallViewController: UIViewController {
     }
 
     @objc private func handlePiPDidStart() {
-        print("PopinCallViewController: PiP started, hiding view")
         UIView.animate(withDuration: 0.3) {
             self.view.alpha = 0
         } completion: { _ in
@@ -343,7 +328,6 @@ public class PopinCallViewController: UIViewController {
     }
 
     @objc private func handlePiPDidStop() {
-        print("PopinCallViewController: PiP stopped, showing view")
         self.view.isHidden = false
         UIView.animate(withDuration: 0.3) {
             self.view.alpha = 1
@@ -354,7 +338,6 @@ public class PopinCallViewController: UIViewController {
         if closedCall {
             return
         }
-        print("DISCONNECTING_CALL")
         closedCall = true
 
         if !shouldNotEndCX {
@@ -396,7 +379,6 @@ extension PopinCallViewController: VideoCallView {
 
         let okAction = UIAlertAction(title: "OK", style: .default) { _ in
             self.callConnected = false
-            print("Close call after alert")
             self.closeViewController(shouldNotEndCX: false)
         }
 
@@ -448,11 +430,9 @@ extension PopinCallViewController {
 
     /// Called when CallKit answers the call (from PopinCallManager delegation)
     func handleCallKitAnswerCall() {
-        print("handleCallKitAnswerCall - starting")
        // videoCallPresenter.acceptCall(callComponentId: self.callComponentId, callRole: self.callRole)
         callConnected = true
         viewModel.callAccepted = true
-        print("handleCallKitAnswerCall - completed")
     }
 }
 
@@ -461,12 +441,10 @@ extension PopinCallViewController {
 extension PopinCallViewController: CallManagerDelegate {
 
     func callManager(_ manager: CallManager, didReceiveIncomingCall callUUID: UUID, callerName: String) {
-        print("CallManager didReceiveIncomingCall - UUID: \(callUUID), Caller: \(callerName)")
         // Call is already being displayed, no action needed
     }
 
     func callManager(_ manager: CallManager, didAnswerCall callUUID: UUID) {
-        print("CallManager didAnswerCall - UUID: \(callUUID)")
         
         // Notify PopinCallManager that call was answered to stop status checks and update state
         PopinCallManager.shared.callAnswered()
@@ -476,47 +454,36 @@ extension PopinCallViewController: CallManagerDelegate {
     }
 
     func callManager(_ manager: CallManager, didHoldCall callUUID: UUID, isOnHold: Bool) {
-        print("CallManager didHoldCall - UUID: \(callUUID), isOnHold: \(isOnHold)")
         DispatchQueue.main.async { [weak self] in
             self?.viewModel.isOnHold = isOnHold
         }
     }
 
     func callManager(_ manager: CallManager, didEndCall callUUID: UUID) {
-        print("CallManager didEndCall - UUID: \(callUUID)")
         
         // Ensure status checking is stopped in case it was still running
         PopinCallManager.shared.stopStatusChecking()
         
         DispatchQueue.main.async { [weak self] in
             guard let self = self else { return }
-            print("Disconnect from CallManager")
             
             // Determine whether to call End or Reject API
             if self.shouldSkipEndApi {
-                print("Skipping End/Reject API due to remote cancel")
             } else if self.callConnected || self.viewModel.callAccepted {
-                print("Call was connected, calling End API")
                 self.videoCallPresenter.endCall(callId: self.callId, onSuccess: {
-                    print("End API success")
                     if !self.isAppInitiatedDisconnect {
-                        print("External termination detected (e.g. End & Accept). Exiting app.")
                         exit(0)
                     }
                 }, onFailure: { error in
-                    print("End API failed: \(error)")
                     if !self.isAppInitiatedDisconnect {
-                        print("External termination detected (e.g. End & Accept). Exiting app.")
                         exit(0)
                     }
                 })
             } else {
-                print("Call was not connected, calling Reject API")
                 self.videoCallPresenter.rejectCall(callComponentId: self.callComponentId)
                 
                 // Also exit if this was an external reject (e.g. "Decline" on incoming GSM interrupt)
                 if !self.isAppInitiatedDisconnect {
-                     print("External termination detected (e.g. End/Decline). Exiting app.")
                      exit(0)
                 }
             }
@@ -527,13 +494,11 @@ extension PopinCallViewController: CallManagerDelegate {
     }
 
     func callManager(_ manager: CallManager, didActivateAudioSession session: AVAudioSession) {
-        print("CallManager didActivateAudioSession (Delegate)")
         // Audio session is already configured in CallManager
         // LiveKit audio session is already activated
     }
 
     func callManager(_ manager: CallManager, didDeactivateAudioSession session: AVAudioSession) {
-        print("CallManager didDeactivateAudioSession (Delegate)")
         // Audio session is already handled in CallManager
         // LiveKit audio session is already deactivated
     }

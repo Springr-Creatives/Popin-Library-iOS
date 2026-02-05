@@ -54,7 +54,6 @@ public class Popin : PopinPusherDelegate, CallAcceptanceListener {
     public static func initialize(token: Int, config: PopinConfig) -> Popin {
         // Check iOS version requirement
         guard isSupported else {
-            print("PopinCall SDK requires iOS \(minimumIOSVersion) or later. Current device is running an unsupported iOS version.")
             config.initListener?.onInitFailed(reason: "PopinCall SDK requires iOS \(minimumIOSVersion) or later.")
             // Return a non-functional instance
             let instance = Popin(token: token, config: config)
@@ -113,12 +112,10 @@ public class Popin : PopinPusherDelegate, CallAcceptanceListener {
 
     public func startCall() {
         guard Self.isSupported else {
-            print("PopinCall SDK requires iOS \(Self.minimumIOSVersion) or later.")
             config.eventsListener?.onCallFailed()
             return
         }
 
-        print("START_CALLL")
         self.eventsListener = config.eventsListener
         callStarted = true
 
@@ -137,7 +134,6 @@ public class Popin : PopinPusherDelegate, CallAcceptanceListener {
 
     private func initiateCall() {
         popinPresenter.startConnection(seller_id: sellerToken, onSuccess: { [weak self] callQueueId in
-            print("Connection started, call_queue_id=\(callQueueId)")
             self?.eventsListener?.onCallStart()
 
             // Present call UI immediately with "Connecting..." state
@@ -147,7 +143,6 @@ public class Popin : PopinPusherDelegate, CallAcceptanceListener {
 
             self?.startWaitingForAcceptance(callQueueId: callQueueId)
         }, onFailure: { [weak self] in
-            print("Connection failed")
             self?.eventsListener?.onCallFailed()
         })
     }
@@ -165,7 +160,6 @@ public class Popin : PopinPusherDelegate, CallAcceptanceListener {
 
     public func connect(token: Int, popinDelegate: PopinEventsListener) {
         guard Self.isSupported else {
-            print("PopinCall SDK requires iOS \(Self.minimumIOSVersion) or later.")
             popinDelegate.onCallFailed()
             return
         }
@@ -220,7 +214,6 @@ public class Popin : PopinPusherDelegate, CallAcceptanceListener {
     }
 
     func onPusherConnected() {
-        print("PUSHER CONNECTED")
         pusherConnected = true
     }
 
@@ -233,7 +226,6 @@ public class Popin : PopinPusherDelegate, CallAcceptanceListener {
     // MARK: - CallAcceptanceListener
 
     func onQueuePositionChange(position: Int) {
-        print("Queue position changed: \(position)")
         self.eventsListener?.onQueuePositionChanged(position: position)
 
         #if canImport(UIKit)
@@ -244,14 +236,12 @@ public class Popin : PopinPusherDelegate, CallAcceptanceListener {
     }
 
     func onCallAccepted(callId: Int) {
-        print("Call accepted: \(callId)")
         waitHandler = nil
         connectToCall(callId: callId)
     }
 
     private func connectToCall(callId: Int) {
         popinPresenter.getCallDetails(callId: callId, onSuccess: { [weak self] talkModel in
-            print("Call details received: token=\(talkModel.token ?? "nil"), websocket=\(talkModel.websocket ?? "nil")")
             self?.eventsListener?.onCallConnected()
             DispatchQueue.main.async {
                 #if canImport(UIKit)
@@ -265,7 +255,6 @@ public class Popin : PopinPusherDelegate, CallAcceptanceListener {
                 #endif
             }
         }, onFailure: { [weak self] in
-            print("Failed to get call details")
             self?.eventsListener?.onCallFailed()
             #if canImport(UIKit)
             DispatchQueue.main.async {
@@ -289,7 +278,6 @@ public class Popin : PopinPusherDelegate, CallAcceptanceListener {
         }
 
         guard let topVC = Self.topViewController() else {
-            print("No top view controller found to present call")
             return
         }
 
@@ -307,7 +295,6 @@ public class Popin : PopinPusherDelegate, CallAcceptanceListener {
         }
 
         guard let topVC = Self.topViewController() else {
-            print("No top view controller found to present call")
             return
         }
 
@@ -334,12 +321,10 @@ public class Popin : PopinPusherDelegate, CallAcceptanceListener {
     }
     #else
     private func presentCallViewController(talkModel: TalkModel) {
-        print("UIKit not available - cannot present call view controller")
     }
     #endif
 
     func onCallMissed() {
-        print("Call missed")
         waitHandler = nil
         self.eventsListener?.onCallMissed()
 

@@ -36,7 +36,6 @@ class PopinPresenter {
                     sucess()
                 }
             } catch {
-                print("Error registering user: \(error)")
                 // Note: registerUser signature in original file had onFailure but it wasn't in the arguments list? 
                 // Wait, looking at the previous file content:
                 // func registerUser(seller_id: Int, name: String, contactInfo: String, campaign: [String: String], onSucess sucess: @escaping () -> Void) {
@@ -56,7 +55,6 @@ class PopinPresenter {
                     success(callQueueId)
                 }
             } catch {
-                print("Error starting connection: \(error)")
                 await MainActor.run {
                     failure()
                 }
@@ -72,7 +70,6 @@ class PopinPresenter {
                     success(talkModel)
                 }
             } catch {
-                print("Error getting call details: \(error)")
                 await MainActor.run {
                     failure()
                 }

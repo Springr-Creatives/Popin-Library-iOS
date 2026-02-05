@@ -254,7 +254,6 @@ struct NotConnectedView: View {
 
         // Validate timeout
         if calculatedTimeout < 1 {
-            print("Request expired: timeout=\(calculatedTimeout)")
             // Auto-reject expired call
             onReject()
             return
@@ -264,7 +263,6 @@ struct NotConnectedView: View {
 
         // Check for overflow (same as Android)
         if calculatedTimeout > timeout {
-            print("Timeout overflow detected: calculated=\(calculatedTimeout), actual=\(timeout)")
             finalTimeout = timeout
         }
 

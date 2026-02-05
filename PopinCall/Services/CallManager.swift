@@ -186,7 +186,6 @@ extension CallManager: CXProviderDelegate {
         do {
             try AVAudioSession.sharedInstance().setActive(false, options: .notifyOthersOnDeactivation)
         } catch {
-             print("CallManager: Failed to deactivate audio session on end: \(error)")
         }
         */
 
@@ -208,38 +207,27 @@ extension CallManager: CXProviderDelegate {
     func provider(_ provider: CXProvider, didActivate audioSession: AVAudioSession) {
         // Configure audio session for LiveKit video calls
         do {
-            print("did_activate_audio_session")
-            print("AudioSession Category: \(audioSession.category.rawValue), Mode: \(audioSession.mode.rawValue), Options: \(audioSession.categoryOptions.rawValue)")
-            
             // WebRTC generally prefers 48kHz and NO mixWithOthers for VoiceProcessingIO
             try audioSession.setPreferredSampleRate(48000.0)
             try audioSession.setCategory(.playAndRecord, mode: .videoChat, options: [.allowBluetooth, .allowBluetoothA2DP, .defaultToSpeaker, .allowAirPlay])
             // CallKit activates the session for us, but we set the category.
             
-            print("AudioSession Configured - Category: \(audioSession.category.rawValue), Mode: \(audioSession.mode.rawValue), Options: \(audioSession.categoryOptions.rawValue)")
-
             // Enable speaker by default for video calls
             try audioSession.overrideOutputAudioPort(.speaker)
-            print("AudioSession overrideOutputAudioPort(.speaker) success")
 
             // Activate LiveKit audio engine
             try AudioManager.shared.setEngineAvailability(.default)
-            print("AudioManager engine availability set to .default")
 
             delegate?.callManager(self, didActivateAudioSession: audioSession)
         } catch {
-            print("CallManager: Failed to activate audio session: \(error)")
         }
     }
 
     func provider(_ provider: CXProvider, didDeactivate audioSession: AVAudioSession) {
-        print("did_deactivate_audio_session")
         // Deactivate LiveKit audio session
         do {
             try AudioManager.shared.setEngineAvailability(.none)
-            print("AudioManager engine availability set to .none")
         } catch {
-             print("CallManager: Failed to deactivate audio session: \(error)")
         }
 
         delegate?.callManager(self, didDeactivateAudioSession: audioSession)
@@ -303,7 +291,6 @@ extension CallManager: PKPushRegistryDelegate {
         }
 
         // Configure audio session early (workaround for mic initialization issue)
-        print("AVSESSION_CONFIGURE")
         do {
             let session = AVAudioSession.sharedInstance()
             try session.setCategory(.playAndRecord, mode: .videoChat, options: [.mixWithOthers, .allowBluetooth, .allowBluetoothA2DP, .defaultToSpeaker, .allowAirPlay])
@@ -325,18 +312,12 @@ extension CallManager: CXCallObserverDelegate {
         
         // Check if this is a different call (e.g. GSM call) and if it has ended
         if call.uuid != currentUUID && call.hasEnded {
-            print("CallManager: Detected other call ended, attempting to unhold current call")
             
             // Construct request to unhold the current call
             let setHeldAction = CXSetHeldCallAction(call: currentUUID, onHold: false)
             let transaction = CXTransaction(action: setHeldAction)
             
             callController.request(transaction) { error in
-                if let error = error {
-                    print("CallManager: Failed to unhold call: \(error.localizedDescription)")
-                } else {
-                    print("CallManager: Successfully requested unhold")
-                }
             }
         }
     }
@@ -415,13 +396,9 @@ public class PopinCallManager {
             // Report to CallManager (CallKit)
             let handle = self.callData?.displayName ?? "Incoming Call"
             CallManager.shared.reportIncomingCall(uuid: uuid, handle: handle) { error in
-                if let error = error {
-                    print("Error reporting incoming call: \(error)")
-                }
                 completion()
             }
         } catch {
-            print("Failed to decode push payload: \(error)")
             // Fallback manual parsing if needed, or just fail
             completion()
         }
@@ -433,19 +410,15 @@ public class PopinCallManager {
     }
     
     public func callAnswered() {
-        print("PopinCallManager: Call answered")
     }
     
     public func stopStatusChecking() {
-        print("PopinCallManager: Stop status checking")
     }
     
     public func enterPiPMode() {
-        print("PopinCallManager: Enter PiP Mode")
     }
     
     public func exitPiPMode() {
-        print("PopinCallManager: Exit PiP Mode")
     }
 }
 #endif

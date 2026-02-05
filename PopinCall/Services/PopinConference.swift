@@ -105,7 +105,6 @@ struct PopinConference: View {
                     hasConnected = true
                 }
                 .onChange(of: _room.connectionState) { newState in
-                    print("STATE> \(newState.rawValue)")
                     if newState == .connected {
                         hasConnected = true
                     }

@@ -74,11 +74,9 @@ class ViewController: UIViewController {
 
 extension ViewController: PopinInitListener {
     func onInitComplete() {
-        print("Popin initialized")
     }
 
     func onInitFailed(reason: String) {
-        print("Popin init failed: \(reason)")
     }
 }
 
@@ -86,42 +84,32 @@ extension ViewController: PopinInitListener {
 
 extension ViewController: PopinEventsListener {
     func onPermissionGiven() {
-        print("Permission given")
     }
 
     func onPermissionDenied() {
-        print("Permission denied")
     }
 
     func onCallStart() {
-        print("Call started")
     }
 
     func onCallCancel() {
-        print("Call cancelled")
     }
 
     func onQueuePositionChanged(position: Int) {
-        print("Queue position: \(position)")
     }
 
     func onCallMissed() {
-        print("Call missed")
     }
 
     func onCallNetworkFailure() {
-        print("Network failure")
     }
 
     func onCallConnected() {
-        print("Call connected")
     }
 
     func onCallFailed() {
-        print("Call failed")
     }
 
     func onCallEnd() {
-        print("Call ended")
     }
 }

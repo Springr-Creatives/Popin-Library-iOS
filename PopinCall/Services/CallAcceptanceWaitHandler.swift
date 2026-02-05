@@ -33,13 +33,11 @@ class CallAcceptanceWaitHandler {
         guard !isRunning else { return }
         isRunning = true
         startTime = Date()
-        print("[CallAcceptanceWaitHandler] Started polling for call_queue_id=\(callQueueId)")
         
         task = Task {
             while isRunning {
                 // Check timeout
                 if let startTime = startTime, Date().timeIntervalSince(startTime) >= CallAcceptanceWaitHandler.maxDuration {
-                    print("[CallAcceptanceWaitHandler] Timed out after 5 minutes")
                     await MainActor.run {
                         self.stopWaitingForAcceptance()
                         self.listener?.onCallMissed()
@@ -65,7 +63,6 @@ class CallAcceptanceWaitHandler {
         isRunning = false
         task?.cancel()
         task = nil
-        print("[CallAcceptanceWaitHandler] Stopped polling")
     }
 
     private func pollCallUpdate() async {
@@ -76,7 +73,6 @@ class CallAcceptanceWaitHandler {
             let model: UpdateConnectionModel = try await Utilities.shared.request(urlString: urlString, method: "POST", parameters: parameters)
             await handleUpdate(model)
         } catch {
-            print("[CallAcceptanceWaitHandler] Error: \(error)")
         }
     }
     
@@ -85,7 +81,6 @@ class CallAcceptanceWaitHandler {
         // Double check isRunning in case it was stopped while request was in flight
         guard isRunning else { return }
         
-        print("[CallAcceptanceWaitHandler] status=\(model.status), position=\(model.position ?? -1), call_id=\(model.call_id ?? -1)")
         if model.status == 1 {
             if let position = model.position, position != self.queuePosition {
                 self.queuePosition = position

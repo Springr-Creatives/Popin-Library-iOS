@@ -38,22 +38,14 @@ final class PiPPreviewViewController: UIViewController, VideoRenderer {
 
     func render(frame: LiveKit.VideoFrame) {
         guard let sampleBuffer = frame.toCMSampleBuffer() else {
-            print("PiPPreview: Failed to convert frame to CMSampleBuffer")
             return
         }
 
         frameCount += 1
-//        if frameCount == 1 {
-//            print("PiPPreview: First frame received!")
-//        }
-//        if frameCount % 30 == 0 {
-//            print("PiPPreview: Rendered \(frameCount) frames, size: \(frame.dimensions)")
-//        }
 
         Task { @MainActor in
             let layer = renderingView.sampleBufferDisplayLayer
             if layer.status == .failed {
-//                print("PiPPreview: Layer failed with error: \(String(describing: layer.error))")
                 layer.flush()
             }
             if #available(iOS 17.0, *) {
@@ -74,12 +66,10 @@ final class PiPVideoCallViewController: AVPictureInPictureVideoCallViewControlle
         renderingView.sampleBufferDisplayLayer.videoGravity = .resizeAspectFill
         view = renderingView
         view.backgroundColor = .clear
-//        print("PiPVideoCall: loadView called")
     }
 
     override func viewDidLoad() {
         super.viewDidLoad()
-//        print("PiPVideoCall: viewDidLoad - view bounds: \(view.bounds)")
     }
 
     var isAdaptiveStreamEnabled: Bool { true }
@@ -87,22 +77,14 @@ final class PiPVideoCallViewController: AVPictureInPictureVideoCallViewControlle
 
     func render(frame: LiveKit.VideoFrame) {
         guard let sampleBuffer = frame.toCMSampleBuffer() else {
-//            print("PiPVideoCall: Failed to convert frame to CMSampleBuffer")
             return
         }
 
         frameCount += 1
-//        if frameCount == 1 {
-//            print("PiPVideoCall: First frame received!")
-//        }
-//        if frameCount % 30 == 0 {
-//            print("PiPVideoCall: Rendered \(frameCount) frames, size: \(frame.dimensions), preferredSize will be: \(frame.rotatedSize)")
-//        }
 
         Task { @MainActor in
             let layer = renderingView.sampleBufferDisplayLayer
             if layer.status == .failed {
-//                print("PiPVideoCall: Layer failed with error: \(String(describing: layer.error))")
                 layer.flush()
             }
             if #available(iOS 17.0, *) {
@@ -127,7 +109,6 @@ final class PiPSampleRenderingView: UIView {
 
     override func layoutSubviews() {
         super.layoutSubviews()
-//        print("PiPSampleRenderingView: layoutSubviews - bounds: \(bounds)")
     }
 }
 
@@ -160,7 +141,6 @@ class PiPHandler: ObservableObject {
     weak var controller: AVPictureInPictureController?
     
     func startPictureInPicture() {
-        print("PiPHandler: Requesting start")
         controller?.startPictureInPicture()
     }
     
@@ -178,7 +158,6 @@ struct PiPView: UIViewControllerRepresentable {
         let _ = context.coordinator.previewController.view
         let _ = context.coordinator.videoCallController.view
 
-//        print("PiPView: Adding video renderers to track")
         track.add(videoRenderer: context.coordinator.previewController)
         track.add(videoRenderer: context.coordinator.videoCallController)
 
@@ -196,7 +175,6 @@ struct PiPView: UIViewControllerRepresentable {
     }
 
     static func dismantleUIViewController(_ uiViewController: UIViewController, coordinator: Coordinator) {
-//        print("PiPView: Removing video renderers from track")
         coordinator.cleanup()
     }
 
@@ -269,11 +247,9 @@ struct PiPView: UIViewControllerRepresentable {
         // MARK: - AVPictureInPictureControllerDelegate
 
         func pictureInPictureControllerWillStartPictureInPicture(_ pictureInPictureController: AVPictureInPictureController) {
-            print("PiP will start")
         }
 
         func pictureInPictureControllerDidStartPictureInPicture(_ pictureInPictureController: AVPictureInPictureController) {
-            print("PiP did start")
             // Hide the main view's video to avoid showing two videos
             previewController.view.isHidden = true
             // Notify to hide the call view controller
@@ -282,11 +258,9 @@ struct PiPView: UIViewControllerRepresentable {
         }
 
         func pictureInPictureControllerWillStopPictureInPicture(_ pictureInPictureController: AVPictureInPictureController) {
-            print("PiP will stop")
         }
 
         func pictureInPictureControllerDidStopPictureInPicture(_ pictureInPictureController: AVPictureInPictureController) {
-            print("PiP did stop")
             // Show the main view's video again when PiP stops
             previewController.view.isHidden = false
             // Notify to show the call view controller
@@ -296,7 +270,6 @@ struct PiPView: UIViewControllerRepresentable {
 
         func pictureInPictureController(_ pictureInPictureController: AVPictureInPictureController,
                                        failedToStartPictureInPictureWithError error: Error) {
-            print("PiP failed to start: \(error.localizedDescription)")
         }
     }
 }

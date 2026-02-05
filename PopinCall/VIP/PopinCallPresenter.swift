@@ -27,7 +27,6 @@ class PopinCallPresenter {
         Task {
             do {
                 let talkModel = try await popinInteractor.getAccessToken(seller_id: Utilities.shared.getSeller())
-                print(talkModel)
                 
                 await MainActor.run {
                     if (talkModel.status == 1) {
@@ -37,7 +36,6 @@ class PopinCallPresenter {
                     }
                 }
             } catch {
-                print("Error creating call: \(error)")
                 await MainActor.run {
                     self.popinCallView?.showMessage(title: "Error", message: "Unable to create call")
                 }

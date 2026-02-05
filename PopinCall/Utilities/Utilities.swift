@@ -43,7 +43,6 @@ class Utilities: NSObject {
         do {
             try userDefaults.setObject(user, forKey: "authenticatedUser")
         } catch {
-            print(error.localizedDescription)
         }
     }
     
@@ -53,7 +52,6 @@ class Utilities: NSObject {
             let user = try userDefaults.getObject(forKey: "authenticatedUser", castTo: UserModel.self)
             return user
         } catch {
-            print(error.localizedDescription)
         }
         return nil;
     }
@@ -84,7 +82,6 @@ class Utilities: NSObject {
             do {
                 let _: String? = try await request(urlString: urlString, method: "POST", parameters: parameters)
             } catch {
-                print("Failed to send push token: \(error)")
             }
         }
     }
@@ -148,7 +145,6 @@ class Utilities: NSObject {
         let (data, response) = try await URLSession.shared.data(for: request)
         
         if let httpResponse = response as? HTTPURLResponse {
-            // print("Response status code: \(httpResponse.statusCode)")
             if !(200...299).contains(httpResponse.statusCode) {
                  // Try to decode error if possible, or throw server error
                  // For now, throw generic server error

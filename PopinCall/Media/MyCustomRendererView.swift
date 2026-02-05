@@ -46,7 +46,6 @@ class MyCustomRendererView: NativeView {
                                                        options: [.initial, .new])
         { _, change in
             guard let newValue = change.newValue else { return }
-            print("isPictureInPicturePossible: \(newValue)")
         }
     }
 

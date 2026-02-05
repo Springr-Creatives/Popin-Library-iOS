@@ -289,15 +289,12 @@ struct PopinConnectedView: View {
             syncParticipantOrder()
         }
         .onChange(of: _room.connectionState) { newState in
-            print("ROOM CHANGE -> \(newState)")
-            
             if newState == .connected {
                 syncParticipantOrder()
             }
             
             // Handle room disconnection (when not user-initiated)
             if newState == .disconnected && !viewModel.isUserEndingCall {
-                print("Room disconnected externally - closing without end API")
                 viewModel.onRoomDisconnected?()
             }
         }

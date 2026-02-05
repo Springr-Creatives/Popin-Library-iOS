@@ -64,11 +64,8 @@ struct VideoCallSwiftUIView: View {
                           let token = call.access_token else { return }
                     do {
                         try await _room.connect(url: websocket, token: token)
-                        print("Connected to room")
                         try await _room.localParticipant.setMicrophone(enabled: viewModel.preCallMicEnabled)
-                        print("Microphone enabled: \(viewModel.preCallMicEnabled)")
                         try await _room.localParticipant.setCamera(enabled: viewModel.preCallCameraEnabled)
-                        print("Camera enabled: \(viewModel.preCallCameraEnabled)")
 
 //                        // Enable multitasking camera access for PiP immediately after enabling camera
 //                        // This must be set before the AVCaptureSession starts
@@ -87,7 +84,6 @@ struct VideoCallSwiftUIView: View {
                                         cameraCapturer.captureSession.beginConfiguration()
                                         cameraCapturer.captureSession.isMultitaskingCameraAccessEnabled = true
                                         cameraCapturer.captureSession.commitConfiguration()
-                                        print("Enabled multitasking camera access via AVCaptureSession")
                                     }
                                 }
                             }
@@ -97,7 +93,6 @@ struct VideoCallSwiftUIView: View {
                         
 
                     } catch {
-                        print("Failed to connect or set media: \(error.localizedDescription)")
                     }
                 }
             }
@@ -111,14 +106,11 @@ struct VideoCallSwiftUIView: View {
                     do {
                         let jsonData = try JSONSerialization.data(withJSONObject: data, options: [])
                         try await _room.localParticipant.publish(data: jsonData)
-                        print("Data published via LiveKit")
                     } catch {
-                        print("Failed to publish data: \(error)")
                     }
                 }
             }
             .onReceive(viewModel.$isOnHold) { isOnHold in
-                print("VideoCallSwiftUIView: isOnHold changed to \(isOnHold)")
                 Task {
                     do {
                         // Toggle camera and microphone based on hold status
@@ -137,9 +129,7 @@ struct VideoCallSwiftUIView: View {
                             try await _room.localParticipant.setMicrophone(enabled: shouldEnable)
                         }
                         
-                        print("VideoCallSwiftUIView: Media tracks updated for hold status: \(isOnHold)")
                     } catch {
-                        print("VideoCallSwiftUIView: Failed to update media tracks for hold: \(error)")
                     }
                 }
             }

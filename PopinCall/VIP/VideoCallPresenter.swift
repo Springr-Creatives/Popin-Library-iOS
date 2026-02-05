@@ -26,7 +26,6 @@ class VideoCallPresenter {
     }
     
 //    func acceptCall(callComponentId: Int, callRole: Int) {
-//        print("PRESENTER_ANSWER_CALL")
 //        self.videoCallInteractor.notifyAccept(callComponentId: callComponentId, callRole: callRole,  onAccept: { (videoCall) in
 //            if (videoCall.status == 1) {
 //                self.videoCallView?.loadCall(call: videoCall)

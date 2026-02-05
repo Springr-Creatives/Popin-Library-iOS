@@ -193,7 +193,6 @@ class ChatManager: ObservableObject {
                 }
             }
         } catch {
-            print("Error parsing chat message: \(error)")
         }
     }
 }

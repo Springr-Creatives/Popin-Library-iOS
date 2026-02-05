@@ -42,7 +42,6 @@ class PopinPusher : PusherDelegate{
         let pusherChannel = pusher.subscribe(Utilities.shared.getChannel())
         pusherChannel.bind(eventName: "user.message", eventCallback: { (event: PusherEvent) -> Void in
             if let dataString = event.data {
-                 print("PUSHER_MESSAGE" + dataString)
                  if let data = dataString.data(using: .utf8) {
                      do {
                          if let json = try JSONSerialization.jsonObject(with: data, options: []) as? [String: Any],
@@ -60,7 +59,6 @@ class PopinPusher : PusherDelegate{
                              }
                          }
                      } catch {
-                         print("Error parsing pusher message: \(error)")
                      }
                  }
             }
