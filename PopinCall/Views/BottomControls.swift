@@ -46,6 +46,8 @@ struct BottomControls: View {
     
     var body: some View {
         HStack(spacing: 0) {
+            Spacer()
+
             // 1. Overflow Menu
             ControlCircleButton(
                 iconName: "ellipsis",
@@ -150,8 +152,10 @@ struct BottomControls: View {
                     action: onEndCall
                 )
             }
+
+            Spacer()
         }
-        .padding(.horizontal, 24)
+        .padding(.horizontal, 16)
         .padding(.bottom, 32)
         .padding(.top, 12)
         .sheet(isPresented: $showInviteDialog) {
