@@ -208,6 +208,7 @@ struct NotConnectedView: View {
                                 .fill(Color(red: 0.8, green: 0.2, blue: 0.2))
                         )
                     }
+                    .buttonStyle(PlainButtonStyle())
 
                     // Accept button
                     Button(action: {
@@ -231,6 +232,7 @@ struct NotConnectedView: View {
                                 .fill(Color(red: 0.2, green: 0.7, blue: 0.3))
                         )
                     }
+                    .buttonStyle(PlainButtonStyle())
                 }
                 .padding(.horizontal, 8)
                 .padding(.bottom, 24)

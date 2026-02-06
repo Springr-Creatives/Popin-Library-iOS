@@ -120,6 +120,7 @@ struct TopControls: View {
                         .background(Color.black.opacity(0.4))
                         .clipShape(Circle())
                 }
+                .buttonStyle(PlainButtonStyle())
             }
 
             // Product Details (fills remaining width)

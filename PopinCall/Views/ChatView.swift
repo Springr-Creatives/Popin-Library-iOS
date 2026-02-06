@@ -114,6 +114,7 @@ struct ChatTopBar: View {
                     .background(Color.white.opacity(0.2))
                     .clipShape(Circle())
             }
+            .buttonStyle(PlainButtonStyle())
         }
         .padding(.horizontal, 16)
         .padding(.vertical, 12)
@@ -221,6 +222,7 @@ struct MessageInputBar: View {
                         .clipShape(Circle())
                 }
             }
+            .buttonStyle(PlainButtonStyle())
             .disabled(messageText.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty || isSending)
             .opacity(messageText.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty ? 0.5 : 1.0)
         }

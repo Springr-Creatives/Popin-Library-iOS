@@ -210,7 +210,7 @@ struct ControlCircleButton: View {
     let backgroundColor: Color
     let iconColor: Color
     let action: () -> Void
-    
+
     var body: some View {
         Button(action: action) {
             ControlCircleButtonView(
@@ -219,6 +219,7 @@ struct ControlCircleButton: View {
                 iconColor: iconColor
             )
         }
+        .buttonStyle(PlainButtonStyle())
     }
 }
 
@@ -271,6 +272,7 @@ struct OverflowMenuSheet: View {
                     .background(Color(hex: "3E4347"))
                     .cornerRadius(12)
                 }
+                .buttonStyle(PlainButtonStyle())
 
                 // Chat Row
                 if !hideChatButton {
@@ -302,6 +304,7 @@ struct OverflowMenuSheet: View {
                         .background(Color(hex: "3E4347"))
                         .cornerRadius(12)
                     }
+                    .buttonStyle(PlainButtonStyle())
                 }
 
                 // Screen Share Row
@@ -386,6 +389,7 @@ struct InviteDialogSheet: View {
                         .background(Color(hex: "4CAF50"))
                         .cornerRadius(8)
                     }
+                    .buttonStyle(PlainButtonStyle())
                 }
 
                 Button(action: onDismiss) {
@@ -393,6 +397,7 @@ struct InviteDialogSheet: View {
                         .font(.system(size: 16, weight: .medium))
                         .foregroundColor(.white.opacity(0.7))
                 }
+                .buttonStyle(PlainButtonStyle())
             }
             .padding(.top, 24)
 
