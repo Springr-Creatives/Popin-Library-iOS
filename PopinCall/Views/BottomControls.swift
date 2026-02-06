@@ -350,6 +350,7 @@ struct InviteDialogSheet: View {
     let onDismiss: () -> Void
 
     @State private var showCopiedToast = false
+    @State private var showShareSheet = false
 
     var body: some View {
         ZStack {
@@ -377,25 +378,46 @@ struct InviteDialogSheet: View {
                         .truncationMode(.middle)
                         .padding(.horizontal)
 
-                    Button(action: {
-                        UIPasteboard.general.string = url
-                        showCopiedToast = true
-                        DispatchQueue.main.asyncAfter(deadline: .now() + 2) {
-                            showCopiedToast = false
+                    HStack(spacing: 12) {
+                        Button(action: {
+                            UIPasteboard.general.string = url
+                            showCopiedToast = true
+                            DispatchQueue.main.asyncAfter(deadline: .now() + 2) {
+                                showCopiedToast = false
+                            }
+                        }) {
+                            HStack {
+                                Image(systemName: "doc.on.doc")
+                                Text("Copy Link")
+                            }
+                            .font(.system(size: 16, weight: .medium))
+                            .foregroundColor(.white)
+                            .padding(.horizontal, 24)
+                            .padding(.vertical, 12)
+                            .background(Color(hex: "4CAF50"))
+                            .cornerRadius(8)
                         }
-                    }) {
-                        HStack {
-                            Image(systemName: "doc.on.doc")
-                            Text("Copy Link")
+                        .buttonStyle(PlainButtonStyle())
+
+                        Button(action: {
+                            showShareSheet = true
+                        }) {
+                            HStack {
+                                Image(systemName: "square.and.arrow.up")
+                                Text("Share")
+                            }
+                            .font(.system(size: 16, weight: .medium))
+                            .foregroundColor(.white)
+                            .padding(.horizontal, 24)
+                            .padding(.vertical, 12)
+                            .background(Color(hex: "2196F3"))
+                            .cornerRadius(8)
                         }
-                        .font(.system(size: 16, weight: .medium))
-                        .foregroundColor(.white)
-                        .padding(.horizontal, 24)
-                        .padding(.vertical, 12)
-                        .background(Color(hex: "4CAF50"))
-                        .cornerRadius(8)
+                        .buttonStyle(PlainButtonStyle())
+                        .sheet(isPresented: $showShareSheet) {
+                            ShareSheet(activityItems: [url])
+                        }
                     }
-                    .buttonStyle(PlainButtonStyle())
                 }
 
                 Button(action: onDismiss) {
@@ -425,6 +447,16 @@ struct InviteDialogSheet: View {
             }
         }
     }
+}
+
+struct ShareSheet: UIViewControllerRepresentable {
+    let activityItems: [Any]
+
+    func makeUIViewController(context: Context) -> UIActivityViewController {
+        UIActivityViewController(activityItems: activityItems, applicationActivities: nil)
+    }
+
+    func updateUIViewController(_ uiViewController: UIActivityViewController, context: Context) {}
 }
 
 struct BroadcastPickerRowWrapper: UIViewRepresentable {
