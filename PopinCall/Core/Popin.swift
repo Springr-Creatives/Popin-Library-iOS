@@ -98,6 +98,8 @@ public class Popin : PopinPusherDelegate, CallAcceptanceListener {
         if !popinPresenter.isUserRegistered() {
             popinPresenter.registerUser(seller_id: sellerToken, name: config.userName, contactInfo: config.contactInfo, campaign: getEnhancedMeta(), onSucess: { [self] in
                 self.config.initListener?.onInitComplete()
+            }, onFailure: { [weak self] reason in
+                self?.config.initListener?.onInitFailed(reason: reason)
             })
         } else {
             config.initListener?.onInitComplete()
@@ -173,6 +175,9 @@ public class Popin : PopinPusherDelegate, CallAcceptanceListener {
             popinPresenter.registerUser(seller_id: token, name: config.userName, contactInfo: config.contactInfo, campaign: getEnhancedMeta(), onSucess: {
                 self.connectPusher(seller_id: token)
                 self.initiateCall()
+            }, onFailure: { reason in
+                self.eventsListener?.onCallFailed()
+                self.config.initListener?.onInitFailed(reason: reason)
             })
         } else {
             self.connectPusher(seller_id: token)

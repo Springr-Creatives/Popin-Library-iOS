@@ -19,7 +19,7 @@ class PopinPresenter {
         return Utilities.shared.getUserToken().count > 0;
     }
     
-    func registerUser(seller_id: Int, name: String, contactInfo: String, campaign: [String: String], onSucess sucess: @escaping () -> Void) {
+    func registerUser(seller_id: Int, name: String, contactInfo: String, campaign: [String: String], onSucess sucess: @escaping () -> Void, onFailure failure: @escaping (String) -> Void) {
         
         var campaignString = ""
         if !campaign.isEmpty {
@@ -36,13 +36,16 @@ class PopinPresenter {
                     sucess()
                 }
             } catch {
-                // Note: registerUser signature in original file had onFailure but it wasn't in the arguments list? 
-                // Wait, looking at the previous file content:
-                // func registerUser(seller_id: Int, name: String, contactInfo: String, campaign: [String: String], onSucess sucess: @escaping () -> Void) {
-                // ...
-                // popinInteractor.registerUser(..., onSucess: { ... }, onFailure: { ... });
-                // The wrapper method in Presenter ONLY has onSucess. It swallows the failure.
-                // So I will just print the error.
+                let errorMessage: String
+                if case let PopinInteractor.InteractorError.apiError(message) = error, let message = message {
+                    errorMessage = message
+                } else {
+                    errorMessage = error.localizedDescription
+                }
+                
+                await MainActor.run {
+                    failure(errorMessage)
+                }
             }
         }
     }

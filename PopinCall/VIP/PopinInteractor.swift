@@ -51,7 +51,7 @@ class PopinInteractor {
         if (userModel.status == 1) {
             Utilities.shared.saveUser(user: userModel)
         } else {
-            throw InteractorError.apiError(nil)
+            throw InteractorError.apiError(userModel.message)
         }
     }
     
@@ -83,8 +83,9 @@ class PopinInteractor {
 
 struct UserModel : Codable{
     let status: Int;
-    let token: String;
-    let channel: String;
+    let token: String?;
+    let channel: String?;
+    let message: String?;
 }
 struct StatusModel : Codable{
     let status: Int;
