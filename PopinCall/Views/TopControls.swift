@@ -18,78 +18,62 @@ struct ProductDetailsView: View {
     let productImageUrl: String?
     let productDescription: String?
     let productExtra: String?
+    let onBackClick: (() -> Void)?
 
-    // Computed properties for text display - matches Android logic
     private var primaryText: String {
-        if let extra = productExtra, !extra.isEmpty {
-            return extra
-        }
-        return productName ?? "No Product Name"
+        return productName ?? productId ?? ""
     }
 
     private var secondaryText: String {
-        if let extra = productExtra, !extra.isEmpty {
-            return productName ?? ""
+        if productName != nil {
+            return productId ?? ""
         }
-        return productId ?? ""
+        return productExtra ?? ""
     }
 
     private func openProductUrl() {
         guard let urlString = productUrl,
               let url = URL(string: urlString),
               UIApplication.shared.canOpenURL(url) else { return }
+        onBackClick?()
         UIApplication.shared.open(url)
     }
 
     var body: some View {
-        Button(action: openProductUrl) {
-            HStack(alignment: .top, spacing: 8) {
-                // Product Image - 4:3 aspect ratio matching Android (12:9)
-                if let imageURL = productImageUrl, let url = URL(string: imageURL) {
-                    AsyncImage(url: url) { image in
-                        image
-                            .resizable()
-                            .aspectRatio(contentMode: .fill)
-                    } placeholder: {
-                        Color.gray.opacity(0.3)
+        if let id = productId, !id.isEmpty {
+            Button(action: openProductUrl) {
+                HStack(alignment: .center, spacing: 8) {
+                    // Product image - square, matching Android 48dp
+                    if let imageURL = productImageUrl, !imageURL.isEmpty, let url = URL(string: imageURL) {
+                        AsyncImage(url: url) { image in
+                            image
+                                .resizable()
+                                .aspectRatio(contentMode: .fill)
+                        } placeholder: {
+                            Color.gray.opacity(0.3)
+                        }
+                        .frame(width: 48, height: 48)
+                        .clipShape(RoundedRectangle(cornerRadius: 8))
                     }
-                    .frame(width: 75, height: 56)
-                    .clipShape(RoundedRectangle(cornerRadius: 8))
-                }
 
-                // Product Text Details
-                VStack(alignment: .leading, spacing: 0) {
-                    Text(primaryText)
-                        .font(.system(size: 13, weight: .medium))
-                        .foregroundColor(.white)
-                        .lineLimit(1)
-
-                    if !secondaryText.isEmpty {
-                        Text(secondaryText)
-                            .font(.system(size: 13, weight: .medium))
-                            .foregroundColor(.white.opacity(0.8))
+                    // Text content
+                    VStack(alignment: .leading, spacing: 2) {
+                        Text(primaryText)
+                            .font(.system(size: 14, weight: .semibold))
+                            .foregroundColor(.white)
                             .lineLimit(1)
-                    }
 
-                    // View details row with arrow
-                    HStack(spacing: 4) {
-                        Text("View details")
-                            .font(.system(size: 12, weight: .bold))
-                            .foregroundColor(.white)
-                        Image(systemName: "arrow.right")
-                            .font(.system(size: 12, weight: .bold))
-                            .foregroundColor(.white)
+                        if !secondaryText.isEmpty {
+                            Text(secondaryText)
+                                .font(.system(size: 12, weight: .regular))
+                                .foregroundColor(.white.opacity(0.7))
+                                .lineLimit(1)
+                        }
                     }
                 }
-
-                Spacer()
             }
-            .padding(.horizontal, 8)
-            .padding(.vertical, 4)
-            .background(Color.black.opacity(0.6))
-            .cornerRadius(20)
+            .buttonStyle(PlainButtonStyle())
         }
-        .buttonStyle(PlainButtonStyle())
     }
 }
 
@@ -123,19 +107,18 @@ struct TopControls: View {
                 .buttonStyle(PlainButtonStyle())
             }
 
-            // Product Details (fills remaining width)
-            if productId != nil || productName != nil {
-                ProductDetailsView(
-                    productId: productId,
-                    productName: productName,
-                    productUrl: productUrl,
-                    productImageUrl: productImageUrl,
-                    productDescription: productDescription,
-                    productExtra: productExtra
-                )
-            } else {
-                Spacer()
-            }
+            // Product Details
+            ProductDetailsView(
+                productId: productId,
+                productName: productName,
+                productUrl: productUrl,
+                productImageUrl: productImageUrl,
+                productDescription: productDescription,
+                productExtra: productExtra,
+                onBackClick: onPipClick
+            )
+
+            Spacer()
         }
         .padding(.top, 16)
         .padding(.horizontal, 16)

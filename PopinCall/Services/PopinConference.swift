@@ -136,9 +136,14 @@ struct PopinConference: View {
     @ViewBuilder
     func buildWaitingForAcceptanceView() -> some View {
         ZStack {
-            // Full screen self video preview
-            LocalCameraPreview()
-                .ignoresSafeArea()
+            // Full screen self video preview or black screen when camera is off
+            if viewModel.preCallCameraEnabled {
+                LocalCameraPreview()
+                    .ignoresSafeArea()
+            } else {
+                Color.black
+                    .ignoresSafeArea()
+            }
 
             // Gradient overlay at top for better text visibility
             VStack {
