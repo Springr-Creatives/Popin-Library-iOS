@@ -6638,6 +6638,10 @@
         },
         {
           "kind" : "file",
+          "name" : "/Users/ashwin/Developer/Popin-Library-iOS/PopinCall/Views/ChatDetailsToast.swift"
+        },
+        {
+          "kind" : "file",
           "name" : "/Users/ashwin/Developer/Popin-Library-iOS/PopinCall/Views/ChatView.swift"
         },
         {
@@ -6734,6 +6738,7 @@
         "/Users/ashwin/Developer/Popin-Library-iOS/.build/arm64-apple-macosx/debug/PopinCall.build/VideoCallViewModel.swift.o",
         "/Users/ashwin/Developer/Popin-Library-iOS/.build/arm64-apple-macosx/debug/PopinCall.build/AudienceRow.swift.o",
         "/Users/ashwin/Developer/Popin-Library-iOS/.build/arm64-apple-macosx/debug/PopinCall.build/BottomControls.swift.o",
+        "/Users/ashwin/Developer/Popin-Library-iOS/.build/arm64-apple-macosx/debug/PopinCall.build/ChatDetailsToast.swift.o",
         "/Users/ashwin/Developer/Popin-Library-iOS/.build/arm64-apple-macosx/debug/PopinCall.build/ChatView.swift.o",
         "/Users/ashwin/Developer/Popin-Library-iOS/.build/arm64-apple-macosx/debug/PopinCall.build/NotConnectedView.swift.o",
         "/Users/ashwin/Developer/Popin-Library-iOS/.build/arm64-apple-macosx/debug/PopinCall.build/ParticipantCell.swift.o",
@@ -6945,6 +6950,10 @@
         },
         {
           "kind" : "file",
+          "name" : "/Users/ashwin/Developer/Popin-Library-iOS/.build/arm64-apple-macosx/debug/PopinCall.build/ChatDetailsToast.swift.o"
+        },
+        {
+          "kind" : "file",
           "name" : "/Users/ashwin/Developer/Popin-Library-iOS/.build/arm64-apple-macosx/debug/PopinCall.build/ChatView.swift.o"
         },
         {
@@ -7015,6 +7024,7 @@
         "/Users/ashwin/Developer/Popin-Library-iOS/PopinCall/VIP/VideoCallViewModel.swift",
         "/Users/ashwin/Developer/Popin-Library-iOS/PopinCall/Views/AudienceRow.swift",
         "/Users/ashwin/Developer/Popin-Library-iOS/PopinCall/Views/BottomControls.swift",
+        "/Users/ashwin/Developer/Popin-Library-iOS/PopinCall/Views/ChatDetailsToast.swift",
         "/Users/ashwin/Developer/Popin-Library-iOS/PopinCall/Views/ChatView.swift",
         "/Users/ashwin/Developer/Popin-Library-iOS/PopinCall/Views/NotConnectedView.swift",
         "/Users/ashwin/Developer/Popin-Library-iOS/PopinCall/Views/ParticipantCell.swift",
@@ -13672,6 +13682,7 @@
       "/Users/ashwin/Developer/Popin-Library-iOS/PopinCall/VIP/VideoCallViewModel.swift",
       "/Users/ashwin/Developer/Popin-Library-iOS/PopinCall/Views/AudienceRow.swift",
       "/Users/ashwin/Developer/Popin-Library-iOS/PopinCall/Views/BottomControls.swift",
+      "/Users/ashwin/Developer/Popin-Library-iOS/PopinCall/Views/ChatDetailsToast.swift",
       "/Users/ashwin/Developer/Popin-Library-iOS/PopinCall/Views/ChatView.swift",
       "/Users/ashwin/Developer/Popin-Library-iOS/PopinCall/Views/NotConnectedView.swift",
       "/Users/ashwin/Developer/Popin-Library-iOS/PopinCall/Views/ParticipantCell.swift",
@@ -17133,6 +17144,10 @@
         },
         {
           "kind" : "file",
+          "name" : "/Users/ashwin/Developer/Popin-Library-iOS/PopinCall/Views/ChatDetailsToast.swift"
+        },
+        {
+          "kind" : "file",
           "name" : "/Users/ashwin/Developer/Popin-Library-iOS/PopinCall/Views/ChatView.swift"
         },
         {
@@ -18718,6 +18733,10 @@
         {
           "kind" : "file",
           "name" : "/Users/ashwin/Developer/Popin-Library-iOS/.build/arm64-apple-macosx/debug/PopinCall.build/CallManager.swift.o"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/ashwin/Developer/Popin-Library-iOS/.build/arm64-apple-macosx/debug/PopinCall.build/ChatDetailsToast.swift.o"
         },
         {
           "kind" : "file",

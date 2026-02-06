@@ -205,6 +205,13 @@
     "swift-dependencies": "/Users/ashwin/Developer/Popin-Library-iOS/.build/arm64-apple-macosx/debug/PopinCall.build/BottomControls.swiftdeps",
     "diagnostics": "/Users/ashwin/Developer/Popin-Library-iOS/.build/arm64-apple-macosx/debug/PopinCall.build/BottomControls.dia"
   },
+  "/Users/ashwin/Developer/Popin-Library-iOS/PopinCall/Views/ChatDetailsToast.swift": {
+    "dependencies": "/Users/ashwin/Developer/Popin-Library-iOS/.build/arm64-apple-macosx/debug/PopinCall.build/ChatDetailsToast.d",
+    "object": "/Users/ashwin/Developer/Popin-Library-iOS/.build/arm64-apple-macosx/debug/PopinCall.build/ChatDetailsToast.swift.o",
+    "swiftmodule": "/Users/ashwin/Developer/Popin-Library-iOS/.build/arm64-apple-macosx/debug/PopinCall.build/ChatDetailsToast~partial.swiftmodule",
+    "swift-dependencies": "/Users/ashwin/Developer/Popin-Library-iOS/.build/arm64-apple-macosx/debug/PopinCall.build/ChatDetailsToast.swiftdeps",
+    "diagnostics": "/Users/ashwin/Developer/Popin-Library-iOS/.build/arm64-apple-macosx/debug/PopinCall.build/ChatDetailsToast.dia"
+  },
   "/Users/ashwin/Developer/Popin-Library-iOS/PopinCall/Views/ChatView.swift": {
     "dependencies": "/Users/ashwin/Developer/Popin-Library-iOS/.build/arm64-apple-macosx/debug/PopinCall.build/ChatView.d",
     "object": "/Users/ashwin/Developer/Popin-Library-iOS/.build/arm64-apple-macosx/debug/PopinCall.build/ChatView.swift.o",

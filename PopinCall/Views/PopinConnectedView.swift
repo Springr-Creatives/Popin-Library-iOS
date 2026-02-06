@@ -215,6 +215,35 @@ struct PopinConnectedView: View {
                 productExtra: productExtra
             )
 
+            // "You're on mute" badge - shown when mic is muted (lowest priority)
+            if !_room.localParticipant.isMicrophoneEnabled() && toastMessage == nil && !showChat {
+                HStack(spacing: 6) {
+                    Image(systemName: "info.circle.fill")
+                        .font(.system(size: 18))
+                        .foregroundColor(.white)
+                    Text("You're on mute")
+                        .font(.system(size: 14, weight: .medium))
+                        .foregroundColor(.white)
+                }
+                .padding(.horizontal, 12)
+                .padding(.vertical, 6)
+                .background(
+                    Capsule()
+                        .fill(Color.black.opacity(0.4))
+                )
+                .background(
+                    Capsule()
+                        .fill(.ultraThinMaterial)
+                )
+                .clipShape(Capsule())
+                .overlay(
+                    Capsule()
+                        .stroke(Color.black.opacity(0.1), lineWidth: 1)
+                )
+                .padding(.top, 8)
+                .transition(.opacity)
+            }
+
             Spacer()
 
             // Chat toast - appears when new message arrives
