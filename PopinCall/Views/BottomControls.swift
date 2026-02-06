@@ -93,6 +93,7 @@ struct BottomControls: View {
                         )
                     }
                 )
+                .buttonStyle(PlainButtonStyle())
             } else {
                  // Placeholder to keep spacing if hidden? Or just nothing.
                  // If hidden, the Spacer() logic might need adjustment for perfect distribution,
@@ -121,6 +122,7 @@ struct BottomControls: View {
                         )
                     }
                 )
+                .buttonStyle(PlainButtonStyle())
             }
             
             Spacer()
