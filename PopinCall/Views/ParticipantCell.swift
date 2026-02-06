@@ -100,9 +100,10 @@ class ParticipantCell: UICollectionViewCell {
     }
     
     private func setFirstVideoTrack() {
-        let track = participant?.firstCameraVideoTrack
+        // Prefer screen share track over camera (matching Android behavior)
+        let track = participant?.firstScreenShareVideoTrack ?? participant?.firstCameraVideoTrack
         videoView.track = track
-        noVideoContainer.isHidden = (track != nil) // Show the container if there's no video track
+        noVideoContainer.isHidden = (track != nil)
     }
 }
 

@@ -353,34 +353,30 @@ struct PrimaryParticipantView: View {
     let pipHandler: PiPHandler
     let pipSupported: Bool
 
+    // Prefer screen share track over camera (matching Android PrimarySpeakerView)
+    private var preferredVideoTrack: VideoTrack? {
+        if let screenTrack = participant.firstScreenShareVideoTrack {
+            return screenTrack
+        }
+        return participant.firstCameraVideoTrack
+    }
+
     var body: some View {
         ZStack {
-            if pipSupported {
-                let cameraReference = TrackReference(participant: participant, source: .camera)
-                if let trackPublication = cameraReference.resolve(),
-                   let videoTrack = trackPublication.track as? VideoTrack {
-                    // Use PiP-enabled view for primary participant
-                    PiPView(track: videoTrack, pipHandler: pipHandler)
-                        .frame(maxWidth: .infinity, maxHeight: .infinity)
-                        .background(Color.black)
-                        .ignoresSafeArea()
-                } else {
-                    // Fallback to regular ParticipantView
-                    ParticipantView(showInformation: false)
-                        .environmentObject(participant)
-                        .frame(maxWidth: .infinity, maxHeight: .infinity)
-                        .background(Color.black)
-                }
+            if pipSupported, let track = preferredVideoTrack {
+                PiPView(track: track, pipHandler: pipHandler)
+                    .frame(maxWidth: .infinity, maxHeight: .infinity)
+                    .background(Color.black)
+                    .ignoresSafeArea()
             } else {
-                // PiP not supported, use regular ParticipantView
                 ParticipantView(showInformation: false)
                     .environmentObject(participant)
                     .frame(maxWidth: .infinity, maxHeight: .infinity)
                     .background(Color.black)
             }
 
-            // Show no video icon when camera is disabled
-            if !participant.isCameraEnabled() {
+            // Show no video icon when no video is available
+            if preferredVideoTrack == nil {
                 Image(systemName: "video.slash.fill")
                     .font(.system(size: 64))
                     .foregroundColor(.white.opacity(0.6))

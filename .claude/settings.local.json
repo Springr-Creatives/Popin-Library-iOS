@@ -10,7 +10,8 @@
       "Bash(ruby -e:*)",
       "Bash(wc:*)",
       "Bash(ls:*)",
-      "Bash(plutil:*)"
+      "Bash(plutil:*)",
+      "Bash(find:*)"
     ]
   }
 }
