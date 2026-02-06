@@ -202,9 +202,34 @@ Popin.shared?.startCall()
 // Cancel waiting for call acceptance
 Popin.shared?.cancelCall()
 
+// Set user group (must be called after initialization)
+Popin.shared?.setGroup(identifier: "group-id", onSuccess: {
+    print("Group set successfully")
+}, onFailure: { error in
+    print("Failed to set group: \(error)")
+})
+
 // Access current config
 let config = Popin.shared?.getConfig()
 ```
+
+### setGroup
+
+Assigns the user to a group. This must be called **after** initialization is complete (i.e., inside the `onInitComplete()` callback). If called before initialization, the `onFailure` callback returns `"Not initialised yet"`.
+
+```swift
+Popin.shared?.setGroup(identifier: "group-abc-123", onSuccess: {
+    print("Group set successfully")
+}, onFailure: { error in
+    print("Failed to set group: \(error)")
+})
+```
+
+| Parameter | Type | Description |
+|-----------|------|-------------|
+| `identifier` | `String` | The group ID to assign the user to |
+| `onSuccess` | `() -> Void` | Called when the group is set successfully |
+| `onFailure` | `(String) -> Void` | Called with an error message on failure |
 
 ### PopinConfig.Builder
 

@@ -112,6 +112,14 @@ public class Popin : PopinPusherDelegate, CallAcceptanceListener {
         return config
     }
 
+    public func setGroup(identifier: String, onSuccess: @escaping () -> Void, onFailure: @escaping (String) -> Void) {
+        guard popinPresenter.isUserRegistered() else {
+            onFailure("Not initialised yet")
+            return
+        }
+        popinPresenter.setGroup(identifier: identifier, onSuccess: onSuccess, onFailure: onFailure)
+    }
+
     public func startCall() {
         guard Self.isSupported else {
             config.eventsListener?.onCallFailed()

@@ -68,6 +68,15 @@ class PopinInteractor {
         }
     }
     
+    func setGroup(identifier: String) async throws {
+        let parameters: [String: Any] = ["groupId": identifier]
+        let urlString = serverURL + "/user/group"
+        let response: StatusModel = try await Utilities.shared.request(urlString: urlString, method: "POST", parameters: parameters)
+        if response.status != 1 {
+            throw InteractorError.apiError(response.message)
+        }
+    }
+
     func getCallDetails(callId: Int) async throws -> TalkModel {
         let urlString = serverURL + "/user/call/\(callId)"
         

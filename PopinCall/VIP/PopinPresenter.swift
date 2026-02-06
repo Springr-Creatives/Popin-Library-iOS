@@ -65,6 +65,27 @@ class PopinPresenter {
         }
     }
 
+    func setGroup(identifier: String, onSuccess success: @escaping () -> Void, onFailure failure: @escaping (String) -> Void) {
+        Task {
+            do {
+                try await popinInteractor.setGroup(identifier: identifier)
+                await MainActor.run {
+                    success()
+                }
+            } catch {
+                let errorMessage: String
+                if case let PopinInteractor.InteractorError.apiError(message) = error, let message = message {
+                    errorMessage = message
+                } else {
+                    errorMessage = error.localizedDescription
+                }
+                await MainActor.run {
+                    failure(errorMessage)
+                }
+            }
+        }
+    }
+
     func getCallDetails(callId: Int, onSuccess success: @escaping (TalkModel) -> Void, onFailure failure: @escaping () -> Void) {
         Task {
             do {

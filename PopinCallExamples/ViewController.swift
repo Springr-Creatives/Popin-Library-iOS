@@ -74,6 +74,12 @@ class ViewController: UIViewController {
 
 extension ViewController: PopinInitListener {
     func onInitComplete() {
+        // Set a group after initialization is complete
+        Popin.shared?.setGroup(identifier: "group-abc-123", onSuccess: {
+            print("Group set successfully")
+        }, onFailure: { error in
+            print("Failed to set group: \(error)")
+        })
     }
 
     func onInitFailed(reason: String) {
