@@ -106,6 +106,35 @@ public class Popin : PopinPusherDelegate, CallAcceptanceListener {
         }
     }
 
+    // MARK: - Incoming Calls (PushKit)
+
+    /// Forward the VoIP push token to the Popin server.
+    /// Call this from your `PKPushRegistryDelegate.pushRegistry(_:didUpdate:for:)`.
+    /// If the SDK is not yet initialized, the token is stored locally and sent automatically during the next initialization.
+    public static func setVoIPToken(_ token: String) {
+        // TODO: Implement token forwarding logic
+        Utilities.shared.savePushToken(token: token)
+        if Utilities.shared.getUser() != nil {
+            Utilities.shared.sendPushToken(token: token)
+        }
+    }
+
+    /// Handle an incoming VoIP push notification.
+    /// Call this from your `PKPushRegistryDelegate.pushRegistry(_:didReceiveIncomingPushWith:for:completion:)`.
+    /// Returns `true` if the push was handled by the Popin SDK, `false` otherwise.
+    /// - Important: On iOS, PushKit **requires** that you report a CallKit call for every VoIP push received.
+    ///   The SDK handles this automatically when this method returns `true`.
+    public static func onVoIPPushReceived(payload: [AnyHashable: Any], completion: @escaping () -> Void) -> Bool {
+        // TODO: Implement incoming call handling logic
+        // Check if this is a Popin push (payload contains "source": "popin")
+        guard let source = payload["source"] as? String, source == "popin" else {
+            return false
+        }
+
+        PopinCallManager.shared.handleIncomingPush(payload: payload, completion: completion)
+        return true
+    }
+
     // MARK: - Public API (matches Android Popin methods)
 
     public func getConfig() -> PopinConfig {

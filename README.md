@@ -188,6 +188,123 @@ extension ViewController: PopinEventsListener {
 }
 ```
 
+## Receiving Incoming Calls via PushKit
+
+To receive incoming call notifications, enable the feature in your `PopinConfig`:
+
+```swift
+let config = PopinConfig.Builder()
+    .enableIncomingCalls(true)
+    // ... other configurations
+    .build()
+```
+
+You must also forward VoIP push tokens and incoming push payloads from your `AppDelegate` to the SDK so it can notify users of incoming calls.
+
+### Step 1: Register for VoIP Pushes
+
+Set up a `PKPushRegistry` in your `AppDelegate` and adopt the `PKPushRegistryDelegate` protocol:
+
+```swift
+import PushKit
+import PopinCall
+
+@main
+class AppDelegate: UIResponder, UIApplicationDelegate {
+
+    var pushRegistry: PKPushRegistry!
+
+    func application(_ application: UIApplication,
+                     didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
+        // Register for VoIP pushes
+        pushRegistry = PKPushRegistry(queue: .main)
+        pushRegistry.delegate = self
+        pushRegistry.desiredPushTypes = [.voIP]
+
+        return true
+    }
+}
+```
+
+### Step 2: Forward the VoIP Token
+
+Call `Popin.setVoIPToken()` from your `PKPushRegistryDelegate` when a new token is received. The SDK registers this token with the Popin server so it can send incoming call notifications to the device. If the SDK is not yet initialized, the token is stored locally and sent automatically during the next initialization.
+
+```swift
+extension AppDelegate: PKPushRegistryDelegate {
+
+    func pushRegistry(_ registry: PKPushRegistry,
+                      didUpdate pushCredentials: PKPushCredentials,
+                      for type: PKPushType) {
+        guard type == .voIP else { return }
+
+        let token = pushCredentials.token
+            .map { String(format: "%02x", $0) }
+            .joined()
+
+        Popin.setVoIPToken(token)
+    }
+}
+```
+
+### Step 3: Forward Incoming Call Pushes
+
+Call `Popin.onVoIPPushReceived(payload:completion:)` from your `PKPushRegistryDelegate` when an incoming push is received. The SDK checks whether the payload is an incoming call notification and handles it accordingly. It returns `true` if the push was handled by Popin, so you can skip your own processing for those pushes.
+
+> **Important:** On iOS, PushKit **requires** that a CallKit call is reported for every VoIP push received, or the system will terminate your app. The Popin SDK handles this automatically when the push is identified as a Popin notification.
+
+```swift
+extension AppDelegate: PKPushRegistryDelegate {
+
+    func pushRegistry(_ registry: PKPushRegistry,
+                      didUpdate pushCredentials: PKPushCredentials,
+                      for type: PKPushType) {
+        guard type == .voIP else { return }
+
+        let token = pushCredentials.token
+            .map { String(format: "%02x", $0) }
+            .joined()
+
+        Popin.setVoIPToken(token)
+    }
+
+    func pushRegistry(_ registry: PKPushRegistry,
+                      didReceiveIncomingPushWith payload: PKPushPayload,
+                      for type: PKPushType,
+                      completion: @escaping () -> Void) {
+        guard type == .voIP else {
+            completion()
+            return
+        }
+
+        // Let Popin SDK handle incoming call notifications
+        if Popin.onVoIPPushReceived(payload: payload.dictionaryPayload, completion: completion) {
+            return
+        }
+
+        // Handle your own VoIP pushes here
+        completion()
+    }
+
+    func pushRegistry(_ registry: PKPushRegistry,
+                      didInvalidatePushTokenFor type: PKPushType) {
+        // Token invalidated
+    }
+}
+```
+
+> **Note:** Popin incoming call messages contain `"source": "popin"` in their data payload. The SDK uses this to identify its own messages.
+
+### PushKit Flow
+
+1. App registers for VoIP pushes via `PKPushRegistry`
+2. iOS delivers a VoIP token, which the app forwards to the SDK via `Popin.setVoIPToken()`
+3. The SDK sends the token to the Popin server
+4. When a call is initiated, the Popin server sends a VoIP push to the device
+5. The app receives the push and forwards it to the SDK via `Popin.onVoIPPushReceived()`
+6. The SDK reports the call to CallKit and displays the native incoming call UI
+7. When the user answers, the SDK connects the video call
+
 ## API Reference
 
 ### Popin
@@ -211,6 +328,12 @@ Popin.shared?.setGroup(identifier: "group-id", onSuccess: {
 
 // Access current config
 let config = Popin.shared?.getConfig()
+
+// Forward VoIP push token to SDK
+Popin.setVoIPToken(token)
+
+// Handle incoming VoIP push (returns true if handled by Popin)
+let handled = Popin.onVoIPPushReceived(payload: payload, completion: completion)
 ```
 
 ### setGroup
@@ -250,6 +373,7 @@ Popin.shared?.setGroup(identifier: "group-abc-123", onSuccess: {
 | `.hideMuteAudioButton(Bool)` | `false` | Hide the mic toggle button |
 | `.hideBackButton(Bool)` | `false` | Hide the PiP/back button |
 | `.persistenceMode(Bool)` | `true` | Maintain user session across app restarts |
+| `.enableIncomingCalls(Bool)` | `false` | Enable receiving incoming calls via PushKit. Requires VoIP background mode and PushKit delegate setup |
 
 ### PopinProduct
 

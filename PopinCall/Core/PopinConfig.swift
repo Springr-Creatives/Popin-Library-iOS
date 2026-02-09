@@ -24,6 +24,7 @@ public class PopinConfig {
     public let hideBackButton: Bool
     public let hideChatButton: Bool
     public let persistenceMode: Bool
+    public let enableIncomingCalls: Bool
 
     // MARK: - Mutable runtime state
 
@@ -47,6 +48,7 @@ public class PopinConfig {
         self.hideBackButton = builder.hideBackButton
         self.hideChatButton = builder.hideChatButton
         self.persistenceMode = builder.persistenceMode
+        self.enableIncomingCalls = builder.enableIncomingCalls
         self.product = builder.product
         self.callerId = builder.callerId
         self.meta = builder.meta
@@ -68,6 +70,7 @@ public class PopinConfig {
         var hideBackButton: Bool = false
         var hideChatButton: Bool = false
         var persistenceMode: Bool = true
+        var enableIncomingCalls: Bool = false
         var product: PopinProduct?
         var callerId: String?
         var meta: [String: String] = [:]
@@ -149,6 +152,12 @@ public class PopinConfig {
         @discardableResult
         public func persistenceMode(_ persistenceMode: Bool) -> Builder {
             self.persistenceMode = persistenceMode
+            return self
+        }
+
+        @discardableResult
+        public func enableIncomingCalls(_ enable: Bool) -> Builder {
+            self.enableIncomingCalls = enable
             return self
         }
 
