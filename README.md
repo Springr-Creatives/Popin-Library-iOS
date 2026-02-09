@@ -297,13 +297,7 @@ extension AppDelegate: PKPushRegistryDelegate {
 
 ### PushKit Flow
 
-1. App registers for VoIP pushes via `PKPushRegistry`
-2. iOS delivers a VoIP token, which the app forwards to the SDK via `Popin.setVoIPToken()`
-3. The SDK sends the token to the Popin server
-4. When a call is initiated, the Popin server sends a VoIP push to the device
-5. The app receives the push and forwards it to the SDK via `Popin.onVoIPPushReceived()`
-6. The SDK reports the call to CallKit and displays the native incoming call UI
-7. When the user answers, the SDK connects the video call
+![PushKit Flow Diagram](docs/flow_diagram.png)
 
 ## API Reference
 
