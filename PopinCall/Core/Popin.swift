@@ -92,6 +92,8 @@ public class Popin : PopinPusherDelegate, CallAcceptanceListener {
     }
 
     private func setup() {
+        PopinLogger.shared.isEnabled = config.enableDebugMode
+
         // Ensure CallManager is initialized early for PushKit/CallKit registration
         #if canImport(UIKit)
         _ = CallManager.shared
@@ -119,7 +121,6 @@ public class Popin : PopinPusherDelegate, CallAcceptanceListener {
     /// Call this from your `PKPushRegistryDelegate.pushRegistry(_:didUpdate:for:)`.
     /// If the SDK is not yet initialized, the token is stored locally and sent automatically during the next initialization.
     public static func setVoIPToken(_ token: String) {
-        // TODO: Implement token forwarding logic
         Utilities.shared.savePushToken(token: token)
         if Utilities.shared.getUser() != nil {
             Utilities.shared.sendPushToken(token: token)
@@ -132,7 +133,6 @@ public class Popin : PopinPusherDelegate, CallAcceptanceListener {
     /// - Important: On iOS, PushKit **requires** that you report a CallKit call for every VoIP push received.
     ///   The SDK handles this automatically when this method returns `true`.
     public static func onVoIPPushReceived(payload: [AnyHashable: Any], completion: @escaping () -> Void) -> Bool {
-        // TODO: Implement incoming call handling logic
         // Check if this is a Popin push (payload contains "source": "popin")
         guard let source = payload["source"] as? String, source == "popin" else {
             return false
@@ -142,7 +142,7 @@ public class Popin : PopinPusherDelegate, CallAcceptanceListener {
         return true
     }
 
-    // MARK: - Public API (matches Android Popin methods)
+    // MARK: - Public API
 
     public func getConfig() -> PopinConfig {
         return config
@@ -162,7 +162,7 @@ public class Popin : PopinPusherDelegate, CallAcceptanceListener {
             return
         }
 
-        print("[Popin] startCall() called, callStarted=\(callStarted), pusherConnected=\(pusherConnected), isConnected=\(Utilities.shared.isConnected())")
+        PopinLogger.shared.log("startCall() called, callStarted=\(callStarted), pusherConnected=\(pusherConnected), isConnected=\(Utilities.shared.isConnected())")
 
         self.eventsListener = config.eventsListener
         callStarted = true
@@ -176,9 +176,9 @@ public class Popin : PopinPusherDelegate, CallAcceptanceListener {
     }
 
     private func initiateCall() {
-        print("[Popin] initiateCall() - starting connection API call")
+        PopinLogger.shared.log("initiateCall() - starting connection API call")
         popinPresenter.startConnection(seller_id: sellerToken, onSuccess: { [weak self] callQueueId in
-            print("[Popin] initiateCall() - API success, callQueueId=\(callQueueId)")
+            PopinLogger.shared.log("initiateCall() - API success, callQueueId=\(callQueueId)")
             self?.eventsListener?.onCallStart()
 
             // Present call UI immediately with "Connecting..." state
@@ -188,13 +188,13 @@ public class Popin : PopinPusherDelegate, CallAcceptanceListener {
 
             self?.startWaitingForAcceptance(callQueueId: callQueueId)
         }, onFailure: { [weak self] in
-            print("[Popin] initiateCall() - API failed")
+            PopinLogger.shared.log("initiateCall() - API failed")
             self?.eventsListener?.onCallFailed()
         })
     }
 
     public func cancelCall() {
-        print("[Popin] cancelCall()")
+        PopinLogger.shared.log("cancelCall()")
         waitHandler?.stopWaitingForAcceptance()
         waitHandler = nil
 
@@ -287,31 +287,31 @@ public class Popin : PopinPusherDelegate, CallAcceptanceListener {
     }
 
     func onCallAccepted(callId: Int) {
-        print("[Popin] onCallAccepted: callId=\(callId), currentCallVC=\(currentCallViewController != nil ? "exists" : "nil")")
+        PopinLogger.shared.log("onCallAccepted: callId=\(callId), currentCallVC=\(currentCallViewController != nil ? "exists" : "nil")")
         waitHandler = nil
         connectToCall(callId: callId)
     }
 
     private func connectToCall(callId: Int) {
-        print("[Popin] connectToCall: callId=\(callId)")
+        PopinLogger.shared.log("connectToCall: callId=\(callId)")
         popinPresenter.getCallDetails(callId: callId, onSuccess: { [weak self] talkModel in
-            print("[Popin] connectToCall: Got call details, currentCallVC=\(self?.currentCallViewController != nil ? "exists" : "nil")")
+            PopinLogger.shared.log("connectToCall: Got call details, currentCallVC=\(self?.currentCallViewController != nil ? "exists" : "nil")")
             self?.eventsListener?.onCallConnected()
             DispatchQueue.main.async {
                 #if canImport(UIKit)
                 // If we already have a call VC (outgoing call), just load the call data
                 if let existingVC = self?.currentCallViewController {
-                    print("[Popin] connectToCall: Loading call into existing VC")
+                    PopinLogger.shared.log("connectToCall: Loading call into existing VC")
                     existingVC.loadCall(call: talkModel)
                 } else {
                     // For incoming calls or fallback, present a new VC
-                    print("[Popin] connectToCall: No existing VC, presenting new one")
+                    PopinLogger.shared.log("connectToCall: No existing VC, presenting new one")
                     self?.presentCallViewController(talkModel: talkModel)
                 }
                 #endif
             }
         }, onFailure: { [weak self] in
-            print("[Popin] connectToCall: Failed to get call details")
+            PopinLogger.shared.log("connectToCall: Failed to get call details")
             self?.eventsListener?.onCallFailed()
             #if canImport(UIKit)
             DispatchQueue.main.async {
@@ -324,7 +324,7 @@ public class Popin : PopinPusherDelegate, CallAcceptanceListener {
     #if canImport(UIKit)
     /// Present call view controller for outgoing calls (with "Connecting..." state)
     private func presentOutgoingCallViewController(callQueueId: Int) {
-        print("[Popin] presentOutgoingCallViewController: queueId=\(callQueueId)")
+        PopinLogger.shared.log("presentOutgoingCallViewController: queueId=\(callQueueId)")
         let callVC = PopinCallViewController()
         self.currentCallViewController = callVC
         self.pendingCallViewController = callVC  // Strong ref to prevent deallocation
@@ -333,7 +333,7 @@ public class Popin : PopinPusherDelegate, CallAcceptanceListener {
         callVC.callQueueId = callQueueId
         callVC.isOutgoingCall = true
         callVC.onCallEnd = { [weak self] in
-            print("[Popin] onCallEnd callback fired (outgoing)")
+            PopinLogger.shared.log("onCallEnd callback fired (outgoing)")
             self?.cleanupAfterCallEnd()
         }
 
@@ -389,14 +389,14 @@ public class Popin : PopinPusherDelegate, CallAcceptanceListener {
 
     /// Present call view controller for incoming calls (legacy flow)
     private func presentCallViewController(talkModel: TalkModel) {
-        print("[Popin] presentCallViewController: incoming/fallback, callId=\(talkModel.id ?? -1)")
+        PopinLogger.shared.log("presentCallViewController: incoming/fallback, callId=\(talkModel.id ?? -1)")
         let callVC = PopinCallViewController()
         self.currentCallViewController = callVC
         self.pendingCallViewController = callVC  // Strong ref to prevent deallocation
         callVC.modalPresentationStyle = .overFullScreen
         callVC.popinConfig = config
         callVC.onCallEnd = { [weak self] in
-            print("[Popin] onCallEnd callback fired (incoming)")
+            PopinLogger.shared.log("onCallEnd callback fired (incoming)")
             self?.cleanupAfterCallEnd()
         }
 
@@ -410,23 +410,23 @@ public class Popin : PopinPusherDelegate, CallAcceptanceListener {
         guard let rootVC = UIApplication.shared.connectedScenes
             .compactMap({ ($0 as? UIWindowScene)?.keyWindow?.rootViewController })
             .first else {
-            print("[Popin] presentCallVCFromRoot: Could not find root view controller")
+            PopinLogger.shared.log("presentCallVCFromRoot: Could not find root view controller")
             self.pendingCallViewController = nil
             return
         }
 
         // If there's already a presented VC (e.g. old call still dismissing), dismiss it first
         if rootVC.presentedViewController != nil {
-            print("[Popin] presentCallVCFromRoot: Existing presented VC found, dismissing first")
+            PopinLogger.shared.log("presentCallVCFromRoot: Existing presented VC found, dismissing first")
             rootVC.dismiss(animated: false) { [weak self] in
-                print("[Popin] presentCallVCFromRoot: Dismissed old VC, now presenting new call VC")
+                PopinLogger.shared.log("presentCallVCFromRoot: Dismissed old VC, now presenting new call VC")
                 rootVC.present(callVC, animated: true) {
                     self?.pendingCallViewController = nil
                     completion?()
                 }
             }
         } else {
-            print("[Popin] presentCallVCFromRoot: Presenting call VC directly")
+            PopinLogger.shared.log("presentCallVCFromRoot: Presenting call VC directly")
             rootVC.present(callVC, animated: true) { [weak self] in
                 self?.pendingCallViewController = nil
                 completion?()
@@ -441,7 +441,7 @@ public class Popin : PopinPusherDelegate, CallAcceptanceListener {
         pendingCallViewController = nil
         Utilities.shared.clearConnected()
         eventsListener?.onCallEnd()
-        print("[Popin] cleanupAfterCallEnd: State reset complete")
+        PopinLogger.shared.log("cleanupAfterCallEnd: State reset complete")
     }
 
     private static func topViewController(base: UIViewController? = nil) -> UIViewController? {
@@ -466,7 +466,7 @@ public class Popin : PopinPusherDelegate, CallAcceptanceListener {
     #endif
 
     func onCallMissed() {
-        print("[Popin] onCallMissed()")
+        PopinLogger.shared.log("onCallMissed()")
         waitHandler = nil
         self.eventsListener?.onCallMissed()
 
@@ -495,7 +495,7 @@ public class Popin : PopinPusherDelegate, CallAcceptanceListener {
     }
 
     func onCallDisconnected() {
-        print("[Popin] onCallDisconnected() - remote cancel")
+        PopinLogger.shared.log("onCallDisconnected() - remote cancel")
         #if canImport(UIKit)
         DispatchQueue.main.async { [weak self] in
             guard let self = self else { return }
@@ -503,7 +503,7 @@ public class Popin : PopinPusherDelegate, CallAcceptanceListener {
             // Ignore stale Pusher disconnect from a previous call if we're
             // currently waiting for a new outgoing call to be accepted
             if let vc = self.currentCallViewController, vc.isOutgoingCall && !vc.callConnected {
-                print("[Popin] onCallDisconnected: Ignoring stale disconnect - outgoing call not yet connected (queueId=\(vc.callQueueId ?? -1))")
+                PopinLogger.shared.log("onCallDisconnected: Ignoring stale disconnect - outgoing call not yet connected (queueId=\(vc.callQueueId ?? -1))")
                 return
             }
 

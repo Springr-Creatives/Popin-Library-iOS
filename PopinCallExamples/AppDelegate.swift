@@ -21,6 +21,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         pushRegistry = PKPushRegistry(queue: .main)
         pushRegistry.delegate = self
         pushRegistry.desiredPushTypes = [.voIP]
+        
         return true
     }
 

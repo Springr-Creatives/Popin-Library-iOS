@@ -48,7 +48,7 @@ class PopinPusher : PusherDelegate{
                             let message = json["message"] as? [String: Any],
                             let type = message["type"] as? Int {
 
-                             print("[PopinPusher] user.message received, type=\(type)")
+                             PopinLogger.shared.log("PopinPusher: user.message received, type=\(type)")
                              if (type == 1) {
                                  // Chat message - forward to ChatManager
                                  ChatManager.shared.handlePusherMessage(dataString)
@@ -65,7 +65,7 @@ class PopinPusher : PusherDelegate{
             }
         });
         pusherChannel.bind(eventName: "user.call_cancel", eventCallback: { (event: PusherEvent) -> Void in
-            print("[PopinPusher] user.call_cancel received")
+            PopinLogger.shared.log("PopinPusher: user.call_cancel received")
             self.delegate?.onCallDisconnected();
         });
         

@@ -77,7 +77,6 @@ class Utilities: NSObject {
         // Assuming serverURL is globally available
         let urlString = serverURL + "/user/fcm/update";
         let parameters: [String: Any] = ["mobile_token": token];
-        
         Task {
             do {
                 let _: String? = try await request(urlString: urlString, method: "POST", parameters: parameters)
@@ -146,9 +145,16 @@ class Utilities: NSObject {
             }
         }
         
+        PopinLogger.shared.log("API Request: \(method) \(request.url?.absoluteString ?? urlString)")
+        if let parameters = parameters {
+            PopinLogger.shared.log("API Parameters: \(parameters)")
+        }
+
         let (data, response) = try await URLSession.shared.data(for: request)
-        
+
         if let httpResponse = response as? HTTPURLResponse {
+            let responseText = String(data: data, encoding: .utf8) ?? "<non-utf8 data>"
+            PopinLogger.shared.log("API Response: \(httpResponse.statusCode) \(responseText)")
             if !(200...299).contains(httpResponse.statusCode) {
                  // Try to decode error if possible, or throw server error
                  // For now, throw generic server error
