@@ -31,7 +31,7 @@ class PopinInteractor {
 
         var parameters: [String: Any] = [
             "seller_id": seller_id,
-            "is_mobile": isEmail ? 0 : 1,
+            "is_mobile": 3, //3 for iosSDK
             "device": "iosSdk",
             "name": name
         ]

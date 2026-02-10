@@ -10,10 +10,6 @@
 		3170C0C9DB3C1E5806DC5B13 /* PopinProduct.swift in Sources */ = {isa = PBXBuildFile; fileRef = CF1D09E39EFC62DD51F4244B /* PopinProduct.swift */; };
 		3B0A147CEC443BD9BE47A57A /* PopinInitListener.swift in Sources */ = {isa = PBXBuildFile; fileRef = C1C6537A1A2AEDB3B404AE28 /* PopinInitListener.swift */; };
 		44BAE20E3443AFBB9D98E770 /* PopinConfigEnvironment.swift in Sources */ = {isa = PBXBuildFile; fileRef = 59E728E5D8CAB13CCE470BC6 /* PopinConfigEnvironment.swift */; };
-		CF17CHAT22F27407B00AE48E7 /* ChatMessage.swift in Sources */ = {isa = PBXBuildFile; fileRef = CF17CHAT12F27407B00AE48E7 /* ChatMessage.swift */; };
-		CF17CHAT42F27407B00AE48E7 /* ChatManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = CF17CHAT32F27407B00AE48E7 /* ChatManager.swift */; };
-		CF17CHAT62F27407B00AE48E7 /* ChatView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CF17CHAT52F27407B00AE48E7 /* ChatView.swift */; };
-		CF17CHAT82F27407B00AE48E7 /* ChatDetailsToast.swift in Sources */ = {isa = PBXBuildFile; fileRef = CF17CHAT72F27407B00AE48E7 /* ChatDetailsToast.swift */; };
 		CF1742572F273FF600AE48E7 /* PusherSwift in Frameworks */ = {isa = PBXBuildFile; productRef = CF1742562F273FF600AE48E7 /* PusherSwift */; };
 		CF1742602F27404400AE48E7 /* LiveKitComponents in Frameworks */ = {isa = PBXBuildFile; productRef = CF17425F2F27404400AE48E7 /* LiveKitComponents */; };
 		CF17427E2F27407B00AE48E7 /* PopinPusher.swift in Sources */ = {isa = PBXBuildFile; fileRef = CF1742742F27407B00AE48E7 /* PopinPusher.swift */; };
@@ -45,6 +41,10 @@
 		CF17429A2F27407B00AE48E7 /* PopinCallDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = CF17426C2F27407B00AE48E7 /* PopinCallDelegate.swift */; };
 		CF17429F2F27844400AE48E7 /* ObjectSavable.swift in Sources */ = {isa = PBXBuildFile; fileRef = CF17429E2F27844400AE48E7 /* ObjectSavable.swift */; };
 		CF174AA02F27407B00AE48E7 /* CallAcceptanceWaitHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = CF174AA12F27407B00AE48E7 /* CallAcceptanceWaitHandler.swift */; };
+		CF17CHAT22F27407B00AE48E7 /* ChatMessage.swift in Sources */ = {isa = PBXBuildFile; fileRef = CF17CHAT12F27407B00AE48E7 /* ChatMessage.swift */; };
+		CF17CHAT42F27407B00AE48E7 /* ChatManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = CF17CHAT32F27407B00AE48E7 /* ChatManager.swift */; };
+		CF17CHAT62F27407B00AE48E7 /* ChatView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CF17CHAT52F27407B00AE48E7 /* ChatView.swift */; };
+		CF17CHAT82F27407B00AE48E7 /* ChatDetailsToast.swift in Sources */ = {isa = PBXBuildFile; fileRef = CF17CHAT72F27407B00AE48E7 /* ChatDetailsToast.swift */; };
 		CFA4CD962F28D0A7009EB444 /* LiveKit in Frameworks */ = {isa = PBXBuildFile; productRef = CFA4CD952F28D0A7009EB444 /* LiveKit */; };
 		CFA4CD972F28D0B8009EB444 /* LiveKit in Frameworks */ = {isa = PBXBuildFile; productRef = CFA4CD9C2F28D0C0009EB444 /* LiveKit */; };
 		CFA4CD982F28D0B8009EB444 /* LiveKitComponents in Frameworks */ = {isa = PBXBuildFile; productRef = CFA4CD9D2F28D0C0009EB444 /* LiveKitComponents */; };
@@ -101,10 +101,6 @@
 		738BD7405113A3EA9EC44AD0 /* PopinConfig.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = PopinConfig.swift; sourceTree = "<group>"; };
 		7CA7F3AC314C5F58CA18AA74 /* Pods_PopinCallExamples.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_PopinCallExamples.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		C1C6537A1A2AEDB3B404AE28 /* PopinInitListener.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = PopinInitListener.swift; sourceTree = "<group>"; };
-		CF17CHAT12F27407B00AE48E7 /* ChatMessage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatMessage.swift; sourceTree = "<group>"; };
-		CF17CHAT32F27407B00AE48E7 /* ChatManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatManager.swift; sourceTree = "<group>"; };
-		CF17CHAT52F27407B00AE48E7 /* ChatView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatView.swift; sourceTree = "<group>"; };
-		CF17CHAT72F27407B00AE48E7 /* ChatDetailsToast.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatDetailsToast.swift; sourceTree = "<group>"; };
 		CF1742612F27407B00AE48E7 /* AudienceRow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AudienceRow.swift; sourceTree = "<group>"; };
 		CF1742622F27407B00AE48E7 /* BroadcastPickerWrapper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BroadcastPickerWrapper.swift; sourceTree = "<group>"; };
 		CF1742632F27407B00AE48E7 /* CallManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CallManager.swift; sourceTree = "<group>"; };
@@ -134,6 +130,10 @@
 		CF17427D2F27407B00AE48E7 /* VideoCallViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VideoCallViewModel.swift; sourceTree = "<group>"; };
 		CF17429E2F27844400AE48E7 /* ObjectSavable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ObjectSavable.swift; sourceTree = "<group>"; };
 		CF174AA12F27407B00AE48E7 /* CallAcceptanceWaitHandler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CallAcceptanceWaitHandler.swift; sourceTree = "<group>"; };
+		CF17CHAT12F27407B00AE48E7 /* ChatMessage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatMessage.swift; sourceTree = "<group>"; };
+		CF17CHAT32F27407B00AE48E7 /* ChatManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatManager.swift; sourceTree = "<group>"; };
+		CF17CHAT52F27407B00AE48E7 /* ChatView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatView.swift; sourceTree = "<group>"; };
+		CF17CHAT72F27407B00AE48E7 /* ChatDetailsToast.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatDetailsToast.swift; sourceTree = "<group>"; };
 		CF1D09E39EFC62DD51F4244B /* PopinProduct.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = PopinProduct.swift; sourceTree = "<group>"; };
 		CFA4CDDE2F2A4C2A009EB444 /* BottomControls.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BottomControls.swift; sourceTree = "<group>"; };
 		CFB63D8C292908EF005F265D /* PopinPusherDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PopinPusherDelegate.swift; sourceTree = "<group>"; };

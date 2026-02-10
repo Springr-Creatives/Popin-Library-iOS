@@ -95,6 +95,7 @@ public class PopinCallViewController: UIViewController {
     }
     
     func handleRemoteCancel() {
+        print("[PopinCallVC] handleRemoteCancel: callConnected=\(callConnected), isOutgoingCall=\(isOutgoingCall), closedCall=\(closedCall)")
         shouldSkipEndApi = true
         // Close UI and end CallKit call
         closeViewController(shouldNotEndCX: false)
@@ -335,7 +336,9 @@ public class PopinCallViewController: UIViewController {
     }
     
     func closeViewController(shouldNotEndCX: Bool) {
+        print("[PopinCallVC] closeViewController: shouldNotEndCX=\(shouldNotEndCX), closedCall=\(closedCall), callConnected=\(callConnected)")
         if closedCall {
+            print("[PopinCallVC] closeViewController: Already closed, returning")
             return
         }
         closedCall = true
@@ -389,6 +392,7 @@ extension PopinCallViewController: VideoCallView {
     }
 
     func loadCall(call: TalkModel) {
+        print("[PopinCallVC] loadCall: callId=\(call.id ?? -1), setting callConnected=true")
         _sdkCallId = call.id
         callConnected = true
         viewModel.isWaitingForAcceptance = false

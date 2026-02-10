@@ -109,6 +109,10 @@ class Utilities: NSObject {
     func saveConnected() {
         UserDefaults.standard.set(Date().timeIntervalSince1970, forKey: "agent_connect")
     }
+
+    func clearConnected() {
+        UserDefaults.standard.removeObject(forKey: "agent_connect")
+    }
     
     // MARK: - Network Helper
     
