@@ -81,7 +81,6 @@ extension ViewController: PopinInitListener {
 //        }, onFailure: { error in
 //            print("Failed to set group: \(error)")
 //        })
-        Popin.setVoIPToken("ASHWIN_TOKEN")
     }
 
     func onInitFailed(reason: String) {
