@@ -70,7 +70,7 @@ public class Popin : PopinPusherDelegate, CallAcceptanceListener {
                 shared = newInstance
                 newInstance.setup()
             } else {
-                config.initListener?.onInitComplete()
+                config.initListener?.onInitComplete(userId: Utilities.shared.getUser()?.user_id ?? 0)
             }
         } else {
             let newInstance = Popin(token: token, config: config)
@@ -105,13 +105,13 @@ public class Popin : PopinPusherDelegate, CallAcceptanceListener {
         }
 
         if !popinPresenter.isUserRegistered() {
-            popinPresenter.registerUser(seller_id: sellerToken, name: config.userName, contactInfo: config.contactInfo, campaign: getEnhancedMeta(), onSucess: { [self] in
-                self.config.initListener?.onInitComplete()
+            popinPresenter.registerUser(seller_id: sellerToken, name: config.userName, contactInfo: config.contactInfo, campaign: getEnhancedMeta(), onSucess: { [self] userId in
+                self.config.initListener?.onInitComplete(userId: userId)
             }, onFailure: { [weak self] reason in
                 self?.config.initListener?.onInitFailed(reason: reason)
             })
         } else {
-            config.initListener?.onInitComplete()
+            config.initListener?.onInitComplete(userId: Utilities.shared.getUser()?.user_id ?? 0)
         }
     }
 
@@ -218,7 +218,7 @@ public class Popin : PopinPusherDelegate, CallAcceptanceListener {
         Utilities.shared.saveSeller(seller_id: token)
 
         if !popinPresenter.isUserRegistered() {
-            popinPresenter.registerUser(seller_id: token, name: config.userName, contactInfo: config.contactInfo, campaign: getEnhancedMeta(), onSucess: {
+            popinPresenter.registerUser(seller_id: token, name: config.userName, contactInfo: config.contactInfo, campaign: getEnhancedMeta(), onSucess: { _ in
                 self.connectPusher(seller_id: token)
                 self.initiateCall()
             }, onFailure: { reason in

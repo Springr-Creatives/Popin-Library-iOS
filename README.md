@@ -134,8 +134,8 @@ Popin.shared?.startCall()
 // MARK: - PopinInitListener
 
 extension ViewController: PopinInitListener {
-    func onInitComplete() {
-        print("Popin initialized")
+    func onInitComplete(userId: Int) {
+        print("Popin initialized, userId: \(userId)")
     }
 
     func onInitFailed(reason: String) {
@@ -332,7 +332,7 @@ let handled = Popin.onVoIPPushReceived(payload: payload, completion: completion)
 
 ### setGroup
 
-Assigns the user to a group. This must be called **after** initialization is complete (i.e., inside the `onInitComplete()` callback). If called before initialization, the `onFailure` callback returns `"Not initialised yet"`.
+Assigns the user to a group. This must be called **after** initialization is complete (i.e., inside the `onInitComplete(userId:)` callback). If called before initialization, the `onFailure` callback returns `"Not initialised yet"`.
 
 ```swift
 Popin.shared?.setGroup(identifier: "group-abc-123", onSuccess: {
@@ -386,7 +386,7 @@ PopinProduct(
 
 | Method | Description |
 |--------|-------------|
-| `onInitComplete()` | SDK initialization succeeded |
+| `onInitComplete(userId:)` | SDK initialization succeeded. Returns the user ID from the server |
 | `onInitFailed(reason:)` | SDK initialization failed |
 
 ### PopinEventsListener

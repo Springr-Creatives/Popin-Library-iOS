@@ -15,7 +15,7 @@ class PopinInteractor {
         case invalidResponse
     }
 
-    func registerUser(seller_id: Int, name: String, contactInfo: String, campaign: String) async throws {
+    func registerUser(seller_id: Int, name: String, contactInfo: String, campaign: String) async throws -> Int {
         let isEmail = contactInfo.contains("@")
         
         // Basic validation
@@ -55,6 +55,7 @@ class PopinInteractor {
         
         if (userModel.status == 1) {
             Utilities.shared.saveUser(user: userModel)
+            return userModel.user_id ?? 0
         } else {
             throw InteractorError.apiError(userModel.message)
         }
@@ -97,6 +98,7 @@ class PopinInteractor {
 
 struct UserModel : Codable{
     let status: Int;
+    let user_id: Int?;
     let token: String?;
     let channel: String?;
     let message: String?;

@@ -39,6 +39,7 @@ class ViewController: UIViewController {
 
             // Environment
             .sandboxMode(true)
+            .enableDebugMode(true)
 
             // Product info to display in TopControls during call
             .product(product)
@@ -73,7 +74,7 @@ class ViewController: UIViewController {
 // MARK: - PopinInitListener
 
 extension ViewController: PopinInitListener {
-    func onInitComplete() {
+    func onInitComplete(userId: Int) {
         // Set a group after initialization is complete
 //        Popin.shared?.setGroup(identifier: "group-abc-123", onSuccess: {
 //            print("Group set successfully")

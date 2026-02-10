@@ -8,6 +8,6 @@
 import Foundation
 
 public protocol PopinInitListener: AnyObject {
-    func onInitComplete()
+    func onInitComplete(userId: Int)
     func onInitFailed(reason: String)
 }

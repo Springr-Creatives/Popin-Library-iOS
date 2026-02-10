@@ -19,8 +19,8 @@ class PopinPresenter {
         return Utilities.shared.getUserToken().count > 0;
     }
     
-    func registerUser(seller_id: Int, name: String, contactInfo: String, campaign: [String: String], onSucess sucess: @escaping () -> Void, onFailure failure: @escaping (String) -> Void) {
-        
+    func registerUser(seller_id: Int, name: String, contactInfo: String, campaign: [String: String], onSucess sucess: @escaping (Int) -> Void, onFailure failure: @escaping (String) -> Void) {
+
         var campaignString = ""
         if !campaign.isEmpty {
             if let jsonData = try? JSONSerialization.data(withJSONObject: campaign, options: []),
@@ -28,12 +28,12 @@ class PopinPresenter {
                 campaignString = jsonString
             }
         }
-        
+
         Task {
             do {
-                try await popinInteractor.registerUser(seller_id: seller_id, name: name, contactInfo: contactInfo, campaign: campaignString)
+                let userId = try await popinInteractor.registerUser(seller_id: seller_id, name: name, contactInfo: contactInfo, campaign: campaignString)
                 await MainActor.run {
-                    sucess()
+                    sucess(userId)
                 }
             } catch {
                 let errorMessage: String
