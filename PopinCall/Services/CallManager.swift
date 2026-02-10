@@ -192,7 +192,7 @@ extension CallManager: CXProviderDelegate {
         // If no delegate (VC not yet presented), reject via API and clean up
         if delegate == nil, let callData = PopinCallManager.shared.callData {
             let presenter = VideoCallPresenter(videoCallInteractor: VideoCallInteractor())
-            presenter.rejectCall(callComponentId: callData.callComponentId)
+            presenter.rejectCall(callId: callData.callId)
             PopinCallManager.shared.clearCallState()
         }
 
@@ -289,22 +289,16 @@ extension CallManager: PKPushRegistryDelegate {
             return
         }
 
-        // Ensure user is logged in
-        guard Utilities.shared.getUser() != nil else {
-            completion()
-            return
-        }
-
         // Configure audio session early (workaround for mic initialization issue)
         do {
             let session = AVAudioSession.sharedInstance()
             try session.setCategory(.playAndRecord, mode: .videoChat, options: [.mixWithOthers, .allowBluetooth, .allowBluetoothA2DP, .defaultToSpeaker, .allowAirPlay])
             try session.overrideOutputAudioPort(.speaker)
-            
         } catch {
         }
 
-        // Forward to PopinCallManager for handling
+        // PushKit REQUIRES reporting an incoming call for every VoIP push.
+        // Always forward to handleIncomingPush which guarantees a reportIncomingCall.
         PopinCallManager.shared.handleIncomingPush(payload: payload.dictionaryPayload, completion: completion)
     }
 }
@@ -346,10 +340,10 @@ public struct Product: Codable {
 
 public struct PushCallData: Codable {
     public let callId: Int
-    public let callComponentId: Int
-    public let role: Int
+    public let callComponentId: Int?
+    public let role: Int?
     public let displayName: String
-    public let primaryProductInfo: String
+    public let primaryProductInfo: String?
     public let artifact: String?
     public let productId: String?
     public let productName: String?
@@ -357,12 +351,13 @@ public struct PushCallData: Codable {
     public let product: Product?
     public let timeout: Int?
     public let start: Int?
-    
+    public let type: String?
+
     enum CodingKeys: String, CodingKey {
         case callId = "call_id"
         case callComponentId = "component_id"
         case role
-        case displayName = "display_name"
+        case displayName = "name"
         case primaryProductInfo = "primary_product_info"
         case artifact
         case productId = "product_id"
@@ -371,6 +366,32 @@ public struct PushCallData: Codable {
         case product
         case timeout
         case start
+        case type
+    }
+
+    public init(from decoder: Decoder) throws {
+        let container = try decoder.container(keyedBy: CodingKeys.self)
+        callId = try container.decode(Int.self, forKey: .callId)
+        callComponentId = try container.decodeIfPresent(Int.self, forKey: .callComponentId)
+        role = try container.decodeIfPresent(Int.self, forKey: .role)
+        displayName = try container.decode(String.self, forKey: .displayName)
+        primaryProductInfo = try container.decodeIfPresent(String.self, forKey: .primaryProductInfo)
+        artifact = try container.decodeIfPresent(String.self, forKey: .artifact)
+        productId = try container.decodeIfPresent(String.self, forKey: .productId)
+        productName = try container.decodeIfPresent(String.self, forKey: .productName)
+        productImage = try container.decodeIfPresent(String.self, forKey: .productImage)
+        product = try container.decodeIfPresent(Product.self, forKey: .product)
+        timeout = try container.decodeIfPresent(Int.self, forKey: .timeout)
+        type = try container.decodeIfPresent(String.self, forKey: .type)
+
+        // Server sends `start` as a string — handle both Int and String
+        if let intValue = try? container.decodeIfPresent(Int.self, forKey: .start) {
+            start = intValue
+        } else if let strValue = try? container.decodeIfPresent(String.self, forKey: .start) {
+            start = Int(strValue)
+        } else {
+            start = nil
+        }
     }
 }
 
@@ -385,32 +406,35 @@ public class PopinCallManager {
     private init() {}
     
     public func handleIncomingPush(payload: [AnyHashable: Any], completion: @escaping () -> Void) {
+        // PushKit REQUIRES reporting an incoming call for every VoIP push.
+        // We MUST call reportIncomingCall before completion(), otherwise iOS kills the app.
+
+        let uuid = UUID()
+        self.callUUID = uuid
+
         // Attempt to decode the payload into PushCallData
-        // Note: Payload structure from PushKit/APNs might differ from internal JSON.
-        // We'll try to convert the dictionary to JSON data and decode it.
-        
         do {
             let data = try JSONSerialization.data(withJSONObject: payload, options: [])
             let decoder = JSONDecoder()
             self.callData = try decoder.decode(PushCallData.self, from: data)
-            
-            // Generate a UUID for this call
-            let uuid = UUID()
-            self.callUUID = uuid
-            
-            // Report to CallManager (CallKit)
-            let handle = self.callData?.displayName ?? "Incoming Call"
-            CallManager.shared.reportIncomingCall(uuid: uuid, handle: handle) { error in
-                if error == nil {
-                    // Present the incoming call UI (NotConnectedView)
-                    DispatchQueue.main.async {
-                        Popin.shared?.presentIncomingCallUI()
-                    }
-                }
-                completion()
-            }
         } catch {
-            // Fallback manual parsing if needed, or just fail
+            self.callData = nil
+        }
+
+        let handle = self.callData?.displayName ?? "Incoming Call"
+        let isValidCall = self.callData != nil && Utilities.shared.getUser() != nil
+
+        // Always report to CallKit (mandatory for PushKit)
+        CallManager.shared.reportIncomingCall(uuid: uuid, handle: handle) { [weak self] error in
+            if error == nil && isValidCall {
+                // Present the incoming call UI (NotConnectedView)
+                DispatchQueue.main.async {
+                    Popin.shared?.presentIncomingCallUI()
+                }
+            } else if error == nil {
+                // Invalid call data or user not logged in — end the call immediately
+                CallManager.shared.endCall()
+            }
             completion()
         }
     }

@@ -33,7 +33,7 @@ class ViewController: UIViewController {
         // Initialize Popin with config (matches Android Popin.init)
         let config = PopinConfig.Builder()
             // User information
-            .userName("Demo User")
+            .userName("Demo iUser")
             .contactInfo("demo@example.com") //email or phone
             .callerId("user-12345")
 

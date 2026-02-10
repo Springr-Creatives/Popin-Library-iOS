@@ -25,22 +25,22 @@ class VideoCallPresenter {
         videoCallView = nil
     }
     
-//    func acceptCall(callComponentId: Int, callRole: Int) {
-//        self.videoCallInteractor.notifyAccept(callComponentId: callComponentId, callRole: callRole,  onAccept: { (videoCall) in
-//            if (videoCall.status == 1) {
-//                self.videoCallView?.loadCall(call: videoCall)
-//                self.videoCallView?.finishLoading()
-//            } else {
-//                self.videoCallView?.closeCall(message: "Sorry. The call request has expired.")
-//            }
-//        }, onFailure: { (error) in
-//            self.videoCallView?.finishLoading()
-//            self.videoCallView?.showMessage(message: error)
-//        })
-//    }
-    
-    func rejectCall(callComponentId: Int) {
-      //  self.videoCallInteractor.notifyReject(callComponentId: callComponentId)
+    func acceptCall(callId: Int) {
+        Task {
+            do {
+                try await videoCallInteractor.acceptCall(callId: callId)
+            } catch {
+            }
+        }
+    }
+
+    func rejectCall(callId: Int) {
+        Task {
+            do {
+                try await videoCallInteractor.rejectCall(callId: callId)
+            } catch {
+            }
+        }
     }
 
     func endCall(callId: Int, onSuccess: @escaping () -> Void, onFailure: @escaping (String) -> Void) {

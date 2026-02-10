@@ -9,6 +9,18 @@ import Foundation
 
 class VideoCallInteractor {
 
+    func acceptCall(callId: Int) async throws {
+        let urlString = serverURL + "/user/call/accept"
+        let parameters: [String: Any] = ["call_id": callId]
+        let _: StatusModel = try await Utilities.shared.request(urlString: urlString, method: "POST", parameters: parameters)
+    }
+
+    func rejectCall(callId: Int) async throws {
+        let urlString = serverURL + "/user/call/reject"
+        let parameters: [String: Any] = ["call_id": callId]
+        let _: StatusModel = try await Utilities.shared.request(urlString: urlString, method: "POST", parameters: parameters)
+    }
+
     func endCall(callId: Int) async throws {
         let urlString = serverURL + "/user/call/end"
         let parameters: [String: Any] = ["call_id": callId]

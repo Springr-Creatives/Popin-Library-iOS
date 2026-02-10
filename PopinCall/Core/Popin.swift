@@ -129,17 +129,13 @@ public class Popin : PopinPusherDelegate, CallAcceptanceListener {
 
     /// Handle an incoming VoIP push notification.
     /// Call this from your `PKPushRegistryDelegate.pushRegistry(_:didReceiveIncomingPushWith:for:completion:)`.
-    /// Returns `true` if the push was handled by the Popin SDK, `false` otherwise.
     /// - Important: On iOS, PushKit **requires** that you report a CallKit call for every VoIP push received.
-    ///   The SDK handles this automatically when this method returns `true`.
-    public static func onVoIPPushReceived(payload: [AnyHashable: Any], completion: @escaping () -> Void) -> Bool {
-        // Check if this is a Popin push (payload contains "source": "popin")
-        guard let source = payload["source"] as? String, source == "popin" else {
-            return false
-        }
-
+    ///   This method always reports an incoming call to CallKit to prevent iOS from killing the app.
+    ///   If the push is not a valid Popin call, the reported call is ended immediately.
+    public static func onVoIPPushReceived(payload: [AnyHashable: Any], completion: @escaping () -> Void) {
+        // Always forward to handleIncomingPush — it guarantees a reportIncomingCall
+        // to satisfy PushKit's requirement and prevent app termination.
         PopinCallManager.shared.handleIncomingPush(payload: payload, completion: completion)
-        return true
     }
 
     // MARK: - Public API
@@ -377,6 +373,10 @@ public class Popin : PopinPusherDelegate, CallAcceptanceListener {
 
         // Mark call as accepted in the VC
         currentCallViewController?.handleCallKitAnswerCall()
+
+        // Notify server that the call was accepted
+        let presenter = VideoCallPresenter(videoCallInteractor: VideoCallInteractor())
+        presenter.acceptCall(callId: callData.callId)
 
         // Connect pusher if not already
         if !pusherConnected {

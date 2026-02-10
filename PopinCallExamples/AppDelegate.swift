@@ -66,11 +66,8 @@ extension AppDelegate: PKPushRegistryDelegate {
         }
 
         print("GOT_PUSH")
-        if Popin.onVoIPPushReceived(payload: payload.dictionaryPayload, completion: completion) {
-            return
-        }
-
-        completion()
+        // Always forward to SDK — it guarantees a reportIncomingCall to satisfy PushKit
+        Popin.onVoIPPushReceived(payload: payload.dictionaryPayload, completion: completion)
     }
 
     func pushRegistry(_ registry: PKPushRegistry,

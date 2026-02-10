@@ -481,7 +481,7 @@ extension PopinCallViewController: CallManagerDelegate {
                     }
                 })
             } else {
-                self.videoCallPresenter.rejectCall(callComponentId: self.callComponentId)
+                self.videoCallPresenter.rejectCall(callId: self.callId)
                 
                 // Also exit if this was an external reject (e.g. "Decline" on incoming GSM interrupt)
                 if !self.isAppInitiatedDisconnect {
