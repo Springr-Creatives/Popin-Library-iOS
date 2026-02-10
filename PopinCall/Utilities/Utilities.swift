@@ -75,8 +75,8 @@ class Utilities: NSObject {
     func sendPushToken(token: String) {
         // Implementation stub or copied from working example if needed
         // Assuming serverURL is globally available
-        let urlString = serverURL + "/seller/fcm/update";
-        let parameters: [String: Any] = ["push_token": token];
+        let urlString = serverURL + "/user/fcm/update";
+        let parameters: [String: Any] = ["mobile_token": token];
         
         Task {
             do {

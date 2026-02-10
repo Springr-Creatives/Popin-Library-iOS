@@ -44,6 +44,10 @@ class PopinInteractor {
         if !campaign.isEmpty {
             parameters["campaign"] = campaign
         }
+        let mobileToken = Utilities.shared.getPushToken()
+        if !mobileToken.isEmpty {
+            parameters["mobile_token"] = mobileToken
+        }
         let urlString = serverURL + "/website/user/login"
         
         let userModel: UserModel = try await Utilities.shared.request(urlString: urlString, method: "POST", parameters: parameters)
