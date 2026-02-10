@@ -143,13 +143,16 @@ public class PopinCallViewController: UIViewController {
         viewModel.onEndCall = { [weak self] in
             guard let self = self else { return }
             self.isAppInitiatedDisconnect = true
+            self.shouldSkipEndApi = true
             self.videoCallPresenter.endCall(callId: self.callId, onSuccess: {
                 DispatchQueue.main.async {
+                    CallManager.shared.endCall()
                     self.closeViewController(shouldNotEndCX: true)
                     self.dismiss(animated: true)
                 }
             }, onFailure: { error in
                 DispatchQueue.main.async {
+                    CallManager.shared.endCall()
                     self.closeViewController(shouldNotEndCX: true)
                     self.dismiss(animated: true)
                 }

@@ -398,7 +398,17 @@ public struct PushCallData: Codable {
 
     public init(from decoder: Decoder) throws {
         let container = try decoder.container(keyedBy: CodingKeys.self)
-        callId = try container.decode(Int.self, forKey: .callId)
+        
+        // Handle callId as both Int and String
+        if let intValue = try? container.decode(Int.self, forKey: .callId) {
+            callId = intValue
+        } else if let strValue = try? container.decode(String.self, forKey: .callId), let intValue = Int(strValue) {
+            callId = intValue
+        } else {
+            // Fallback or throw if call_id is missing/invalid
+            callId = try container.decode(Int.self, forKey: .callId)
+        }
+
         callComponentId = try container.decodeIfPresent(Int.self, forKey: .callComponentId)
         role = try container.decodeIfPresent(Int.self, forKey: .role)
         displayName = try container.decode(String.self, forKey: .displayName)

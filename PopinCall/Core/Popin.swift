@@ -362,8 +362,12 @@ public class Popin : PopinPusherDelegate, CallAcceptanceListener {
 
     /// Called when an incoming call is answered (via CallKit native UI or NotConnectedView Accept button)
     func onIncomingCallAnswered() {
-        guard let callData = PopinCallManager.shared.callData else { return }
+        guard let callData = PopinCallManager.shared.callData else {
+            PopinLogger.shared.log("onIncomingCallAnswered: No callData found, cannot connect.")
+            return
+        }
 
+        PopinLogger.shared.log("onIncomingCallAnswered: callId=\(callData.callId)")
         self.eventsListener = config.eventsListener
         
         // Notify PopinCallManager immediately to stop timers
