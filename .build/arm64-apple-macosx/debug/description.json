@@ -3576,12 +3576,12 @@
           "name" : "/Users/ashwin/Developer/Popin-Library-iOS/.build/arm64-apple-macosx/debug/Modules/OrderedCollections.swiftmodule"
         },
         {
-          "kind" : "directory",
-          "name" : "/Users/ashwin/Developer/Popin-Library-iOS/.build/arm64-apple-macosx/debug/LiveKitWebRTC.framework"
-        },
-        {
           "kind" : "file",
           "name" : "/Users/ashwin/Developer/Popin-Library-iOS/.build/arm64-apple-macosx/debug/liblivekit_uniffi.a"
+        },
+        {
+          "kind" : "directory",
+          "name" : "/Users/ashwin/Developer/Popin-Library-iOS/.build/arm64-apple-macosx/debug/LiveKitWebRTC.framework"
         },
         {
           "kind" : "file",
@@ -6646,6 +6646,10 @@
         },
         {
           "kind" : "file",
+          "name" : "/Users/ashwin/Developer/Popin-Library-iOS/PopinCall/Views/NetworkToastView.swift"
+        },
+        {
+          "kind" : "file",
           "name" : "/Users/ashwin/Developer/Popin-Library-iOS/PopinCall/Views/NotConnectedView.swift"
         },
         {
@@ -6693,12 +6697,12 @@
           "name" : "/Users/ashwin/Developer/Popin-Library-iOS/.build/arm64-apple-macosx/debug/Modules/LiveKitComponents.swiftmodule"
         },
         {
-          "kind" : "file",
-          "name" : "/Users/ashwin/Developer/Popin-Library-iOS/.build/arm64-apple-macosx/debug/liblivekit_uniffi.a"
-        },
-        {
           "kind" : "directory",
           "name" : "/Users/ashwin/Developer/Popin-Library-iOS/.build/arm64-apple-macosx/debug/LiveKitWebRTC.framework"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/ashwin/Developer/Popin-Library-iOS/.build/arm64-apple-macosx/debug/liblivekit_uniffi.a"
         },
         {
           "kind" : "file",
@@ -6740,6 +6744,7 @@
         "/Users/ashwin/Developer/Popin-Library-iOS/.build/arm64-apple-macosx/debug/PopinCall.build/BottomControls.swift.o",
         "/Users/ashwin/Developer/Popin-Library-iOS/.build/arm64-apple-macosx/debug/PopinCall.build/ChatDetailsToast.swift.o",
         "/Users/ashwin/Developer/Popin-Library-iOS/.build/arm64-apple-macosx/debug/PopinCall.build/ChatView.swift.o",
+        "/Users/ashwin/Developer/Popin-Library-iOS/.build/arm64-apple-macosx/debug/PopinCall.build/NetworkToastView.swift.o",
         "/Users/ashwin/Developer/Popin-Library-iOS/.build/arm64-apple-macosx/debug/PopinCall.build/NotConnectedView.swift.o",
         "/Users/ashwin/Developer/Popin-Library-iOS/.build/arm64-apple-macosx/debug/PopinCall.build/ParticipantCell.swift.o",
         "/Users/ashwin/Developer/Popin-Library-iOS/.build/arm64-apple-macosx/debug/PopinCall.build/ParticipantLayout.swift.o",
@@ -6958,6 +6963,10 @@
         },
         {
           "kind" : "file",
+          "name" : "/Users/ashwin/Developer/Popin-Library-iOS/.build/arm64-apple-macosx/debug/PopinCall.build/NetworkToastView.swift.o"
+        },
+        {
+          "kind" : "file",
           "name" : "/Users/ashwin/Developer/Popin-Library-iOS/.build/arm64-apple-macosx/debug/PopinCall.build/NotConnectedView.swift.o"
         },
         {
@@ -7026,6 +7035,7 @@
         "/Users/ashwin/Developer/Popin-Library-iOS/PopinCall/Views/BottomControls.swift",
         "/Users/ashwin/Developer/Popin-Library-iOS/PopinCall/Views/ChatDetailsToast.swift",
         "/Users/ashwin/Developer/Popin-Library-iOS/PopinCall/Views/ChatView.swift",
+        "/Users/ashwin/Developer/Popin-Library-iOS/PopinCall/Views/NetworkToastView.swift",
         "/Users/ashwin/Developer/Popin-Library-iOS/PopinCall/Views/NotConnectedView.swift",
         "/Users/ashwin/Developer/Popin-Library-iOS/PopinCall/Views/ParticipantCell.swift",
         "/Users/ashwin/Developer/Popin-Library-iOS/PopinCall/Views/ParticipantLayout.swift",
@@ -13684,6 +13694,7 @@
       "/Users/ashwin/Developer/Popin-Library-iOS/PopinCall/Views/BottomControls.swift",
       "/Users/ashwin/Developer/Popin-Library-iOS/PopinCall/Views/ChatDetailsToast.swift",
       "/Users/ashwin/Developer/Popin-Library-iOS/PopinCall/Views/ChatView.swift",
+      "/Users/ashwin/Developer/Popin-Library-iOS/PopinCall/Views/NetworkToastView.swift",
       "/Users/ashwin/Developer/Popin-Library-iOS/PopinCall/Views/NotConnectedView.swift",
       "/Users/ashwin/Developer/Popin-Library-iOS/PopinCall/Views/ParticipantCell.swift",
       "/Users/ashwin/Developer/Popin-Library-iOS/PopinCall/Views/ParticipantLayout.swift",
@@ -17152,6 +17163,10 @@
         },
         {
           "kind" : "file",
+          "name" : "/Users/ashwin/Developer/Popin-Library-iOS/PopinCall/Views/NetworkToastView.swift"
+        },
+        {
+          "kind" : "file",
           "name" : "/Users/ashwin/Developer/Popin-Library-iOS/PopinCall/Views/NotConnectedView.swift"
         },
         {
@@ -18757,6 +18772,10 @@
         {
           "kind" : "file",
           "name" : "/Users/ashwin/Developer/Popin-Library-iOS/.build/arm64-apple-macosx/debug/PopinCall.build/MyCustomRendererView.swift.o"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/ashwin/Developer/Popin-Library-iOS/.build/arm64-apple-macosx/debug/PopinCall.build/NetworkToastView.swift.o"
         },
         {
           "kind" : "file",

@@ -26,6 +26,23 @@ final class VideoCallViewModel: ObservableObject {
     /// Pre-call camera state (set during waiting screen, applied when call connects)
     @Published var preCallCameraEnabled: Bool = true
 
+    // MARK: - Network state tracking (matches Android CallActivity)
+
+    /// Customer's own network issue (tracked via Pusher connection state)
+    @Published var hasCustomerNetworkIssue: Bool = false
+
+    /// Seller/agent network issue (tracked via LiveKit connection quality)
+    @Published var hasSellerNetworkIssue: Bool = false
+
+    /// Temporarily show "You're back online" when customer network recovers
+    @Published var showCustomerBackOnlineMessage: Bool = false
+
+    /// Temporarily show "Expert rejoined" when seller network recovers
+    @Published var showSellerRejoinedMessage: Bool = false
+
+    /// Timer tracking how long without qualifying participants (in ms)
+    @Published var noQualifyingParticipantsTimer: Int = 0
+
     var onEndCall: (() -> Void)?
     var onRoomDisconnected: (() -> Void)?
 

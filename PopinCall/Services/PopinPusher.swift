@@ -74,6 +74,15 @@ class PopinPusher : PusherDelegate{
     func changedConnectionState(from old: ConnectionState, to new: ConnectionState) {
         if (new.stringValue() == "connected") {
             self.delegate?.onPusherConnected()
+            // Notify that customer network is back online
+            NotificationCenter.default.post(name: .pusherConnectionStateChanged, object: nil, userInfo: ["isConnected": true])
+        } else if (new.stringValue() == "disconnected" || new.stringValue() == "disconnecting") {
+            // Notify that customer network is lost
+            NotificationCenter.default.post(name: .pusherConnectionStateChanged, object: nil, userInfo: ["isConnected": false])
         }
     }
+}
+
+extension Notification.Name {
+    static let pusherConnectionStateChanged = Notification.Name("PopinPusherConnectionStateChanged")
 }

@@ -47,6 +47,11 @@ struct PopinConnectedView: View {
     @ObservedObject private var chatManager = ChatManager.shared
     @State private var toastMessage: String? = nil
     @State private var toastTimer: Timer? = nil
+
+    // Network state tracking (matches Android CallActivity)
+    @State private var previousHasCustomerNetworkIssue: Bool = false
+    @State private var previousHasSellerNetworkIssue: Bool = false
+    @State private var participantCheckTimer: Timer? = nil
     
     
     private func enableHardware() async {
@@ -198,6 +203,36 @@ struct PopinConnectedView: View {
         configHolder.config.product?.extra
     }
 
+    /// Determines which network badge to show (only one at a time, by priority)
+    @ViewBuilder
+    private var networkBadge: some View {
+        if viewModel.hasCustomerNetworkIssue && !viewModel.showCustomerBackOnlineMessage && !viewModel.showSellerRejoinedMessage {
+            // Priority 1: Customer's own network lost
+            NetworkToastView(text: "Your network lost", type: .warning)
+                .transition(.opacity)
+        } else if viewModel.hasSellerNetworkIssue && !viewModel.showCustomerBackOnlineMessage && !viewModel.showSellerRejoinedMessage && !viewModel.hasCustomerNetworkIssue {
+            // Priority 2: Seller/agent network lost
+            NetworkToastView(text: "Expert's network lost", type: .warning)
+                .transition(.opacity)
+        } else if viewModel.showCustomerBackOnlineMessage && !viewModel.showSellerRejoinedMessage {
+            // Priority 3: Customer back online (temporary, 5 sec)
+            NetworkToastView(text: "You're back online", type: .success)
+                .transition(.opacity)
+        } else if viewModel.showSellerRejoinedMessage {
+            // Priority 4: Seller rejoined (temporary, 5 sec)
+            NetworkToastView(text: "Expert rejoined", type: .success)
+                .transition(.opacity)
+        } else if viewModel.noQualifyingParticipantsTimer > 5000 && !viewModel.hasCustomerNetworkIssue && !viewModel.hasSellerNetworkIssue {
+            // Priority 5: Trying to reconnect (no qualifying participants for > 5 sec)
+            NetworkToastView(text: "Trying to reconnect...", type: .warning)
+                .transition(.opacity)
+        } else if !_room.localParticipant.isMicrophoneEnabled() && !showChat {
+            // Priority 6 (lowest): You're on mute
+            NetworkToastView(text: "You're on mute", type: .info)
+                .transition(.opacity)
+        }
+    }
+
     @ViewBuilder
     private var overlayControls: some View {
         VStack(spacing: 0) {
@@ -215,34 +250,14 @@ struct PopinConnectedView: View {
                 productExtra: productExtra
             )
 
-            // "You're on mute" badge - shown when mic is muted (lowest priority)
-            if !_room.localParticipant.isMicrophoneEnabled() && toastMessage == nil && !showChat {
-                HStack(spacing: 6) {
-                    Image(systemName: "info.circle.fill")
-                        .font(.system(size: 18))
-                        .foregroundColor(.white)
-                    Text("You're on mute")
-                        .font(.system(size: 14, weight: .medium))
-                        .foregroundColor(.white)
-                }
-                .padding(.horizontal, 12)
-                .padding(.vertical, 6)
-                .background(
-                    Capsule()
-                        .fill(Color.black.opacity(0.4))
-                )
-                .background(
-                    Capsule()
-                        .fill(.ultraThinMaterial)
-                )
-                .clipShape(Capsule())
-                .overlay(
-                    Capsule()
-                        .stroke(Color.black.opacity(0.1), lineWidth: 1)
-                )
+            // Network / status badge (one at a time, by priority)
+            networkBadge
                 .padding(.top, 8)
-                .transition(.opacity)
-            }
+                .animation(.easeInOut(duration: 0.3), value: viewModel.hasCustomerNetworkIssue)
+                .animation(.easeInOut(duration: 0.3), value: viewModel.hasSellerNetworkIssue)
+                .animation(.easeInOut(duration: 0.3), value: viewModel.showCustomerBackOnlineMessage)
+                .animation(.easeInOut(duration: 0.3), value: viewModel.showSellerRejoinedMessage)
+                .animation(.easeInOut(duration: 0.3), value: viewModel.noQualifyingParticipantsTimer)
 
             Spacer()
 
@@ -370,6 +385,75 @@ struct PopinConnectedView: View {
             // Show toast when new incoming message arrives
             if let message = newMessage, let text = message.text, !text.isEmpty, !showChat {
                 showToast(message: text)
+            }
+        }
+        // MARK: - Network Monitoring
+
+        // Listen for Pusher connection state changes (customer's own network)
+        .onReceive(NotificationCenter.default.publisher(for: .pusherConnectionStateChanged)) { notification in
+            if let isConnected = notification.userInfo?["isConnected"] as? Bool {
+                viewModel.hasCustomerNetworkIssue = !isConnected
+            }
+        }
+        // Track when customer network issue resolves -> show "You're back online" for 5 sec
+        .onChange(of: viewModel.hasCustomerNetworkIssue) { newValue in
+            if previousHasCustomerNetworkIssue && !newValue {
+                viewModel.showCustomerBackOnlineMessage = true
+                DispatchQueue.main.asyncAfter(deadline: .now() + 5) {
+                    viewModel.showCustomerBackOnlineMessage = false
+                }
+            }
+            previousHasCustomerNetworkIssue = newValue
+        }
+        // Track when seller network issue resolves -> show "Expert rejoined" for 5 sec
+        .onChange(of: viewModel.hasSellerNetworkIssue) { newValue in
+            if previousHasSellerNetworkIssue && !newValue {
+                viewModel.showSellerRejoinedMessage = true
+                DispatchQueue.main.asyncAfter(deadline: .now() + 5) {
+                    viewModel.showSellerRejoinedMessage = false
+                }
+            }
+            previousHasSellerNetworkIssue = newValue
+        }
+        // Monitor remote participant connection quality for seller network issues
+        .onReceive(Timer.publish(every: 1, on: .main, in: .common).autoconnect()) { _ in
+            guard _room.connectionState == .connected else { return }
+
+            // Check connection quality for seller/agent participants
+            for (_, participant) in _room.remoteParticipants {
+                let identity = participant.identity?.stringValue ?? ""
+                if identity.lowercased().hasPrefix("s") {
+                    let hasNetworkIssue = participant.connectionQuality == .lost
+                    if viewModel.hasSellerNetworkIssue != hasNetworkIssue {
+                        viewModel.hasSellerNetworkIssue = hasNetworkIssue
+                    }
+                }
+            }
+
+            // Monitor no-qualifying-participants timer (matching Android 30-sec auto-end)
+            var hasQualifyingParticipant = false
+            for (_, participant) in _room.remoteParticipants {
+                let identity = participant.identity?.stringValue ?? ""
+                if identity.lowercased().hasPrefix("s") || identity.lowercased().hasPrefix("q") {
+                    if !viewModel.hasCustomerNetworkIssue {
+                        hasQualifyingParticipant = true
+                    }
+                }
+            }
+
+            if hasQualifyingParticipant {
+                viewModel.noQualifyingParticipantsTimer = 0
+            } else {
+                viewModel.noQualifyingParticipantsTimer += 1000
+
+                // End call if no qualifying participants for 30 seconds
+                if viewModel.noQualifyingParticipantsTimer >= 30000 {
+                    viewModel.isUserEndingCall = true
+                    viewModel.onEndCall?()
+                    Task {
+                        await _room.disconnect()
+                    }
+                }
             }
         }
     }
