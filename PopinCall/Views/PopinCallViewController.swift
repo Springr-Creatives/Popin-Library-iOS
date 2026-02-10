@@ -136,11 +136,8 @@ public class PopinCallViewController: UIViewController {
        // productLabel.text = artifact
         setupNotifications()
 
-        // Set self as CallManager delegate if in foreground
-        let appState = UIApplication.shared.applicationState
-        if appState == .active {
-            CallManager.shared.delegate = self
-        }
+        // Set self as CallManager delegate for CallKit callbacks
+        CallManager.shared.delegate = self
 
         // Set up end call callback
         viewModel.onEndCall = { [weak self] in
@@ -434,7 +431,8 @@ extension PopinCallViewController {
 
     /// Called when CallKit answers the call (from PopinCallManager delegation)
     func handleCallKitAnswerCall() {
-       // videoCallPresenter.acceptCall(callComponentId: self.callComponentId, callRole: self.callRole)
+        // Guard against double calls (CallKit delegate + Popin.onIncomingCallAnswered)
+        guard !viewModel.callAccepted else { return }
         callConnected = true
         viewModel.callAccepted = true
     }
@@ -449,11 +447,10 @@ extension PopinCallViewController: CallManagerDelegate {
     }
 
     func callManager(_ manager: CallManager, didAnswerCall callUUID: UUID) {
-        
         // Notify PopinCallManager that call was answered to stop status checks and update state
         PopinCallManager.shared.callAnswered()
-        
-        // This happens when user accepts via CallKit or custom UI
+
+        // Mark call as accepted in VC (idempotent — also called by Popin.onIncomingCallAnswered)
         handleCallKitAnswerCall()
     }
 

@@ -6,15 +6,21 @@
 //
 
 import UIKit
+import PushKit
+import PopinCall
 
 @main
 class AppDelegate: UIResponder, UIApplicationDelegate {
 
 
 
-    func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
-        NSLog("=== DID FINISH ===")
-        // Override point for customization after application launch.
+    var pushRegistry: PKPushRegistry!
+
+    func application(_ application: UIApplication,
+                     didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]? = nil) -> Bool {
+        pushRegistry = PKPushRegistry(queue: .main)
+        pushRegistry.delegate = self
+        pushRegistry.desiredPushTypes = [.voIP]
         return true
     }
 
@@ -35,3 +41,39 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
 }
 
+extension AppDelegate: PKPushRegistryDelegate {
+
+    func pushRegistry(_ registry: PKPushRegistry,
+                      didUpdate pushCredentials: PKPushCredentials,
+                      for type: PKPushType) {
+        guard type == .voIP else { return }
+
+        let token = pushCredentials.token
+            .map { String(format: "%02x", $0) }
+            .joined()
+        print("GOT TOKEN: \(token)")
+        Popin.setVoIPToken(token)
+    }
+
+    func pushRegistry(_ registry: PKPushRegistry,
+                      didReceiveIncomingPushWith payload: PKPushPayload,
+                      for type: PKPushType,
+                      completion: @escaping () -> Void) {
+        guard type == .voIP else {
+            completion()
+            return
+        }
+
+        print("GOT_PUSH")
+        if Popin.onVoIPPushReceived(payload: payload.dictionaryPayload, completion: completion) {
+            return
+        }
+
+        completion()
+    }
+
+    func pushRegistry(_ registry: PKPushRegistry,
+                      didInvalidatePushTokenFor type: PKPushType) {
+        // Token invalidated
+    }
+}

@@ -169,27 +169,32 @@ extension CallManager: CXProviderDelegate {
 
         delegate?.callManager(self, didAnswerCall: action.callUUID)
 
+        // Notify SDK to handle incoming call answer (present UI if needed, fetch call details)
+        if PopinCallManager.shared.callData != nil {
+            DispatchQueue.main.async {
+                Popin.shared?.onIncomingCallAnswered()
+            }
+        }
+
         action.fulfill(withDateConnected: Date())
         callState = .connected(action.callUUID)
     }
 
     func provider(_ provider: CXProvider, perform action: CXEndCallAction) {
         callState = .ended
-        
+
         // Explicitly disable audio session to ensure clean cleanup
         // This is important for "End & Accept" scenarios where didDeactivate might be skipped/delayed
         try? AudioManager.shared.setEngineAvailability(.none)
-        
-        // Attempt to deactivate the system audio session
-        // Commenting out manual deactivation to prevent cutting off session during "End & Accept" transitions
-        /*
-        do {
-            try AVAudioSession.sharedInstance().setActive(false, options: .notifyOthersOnDeactivation)
-        } catch {
-        }
-        */
 
         delegate?.callManager(self, didEndCall: action.callUUID)
+
+        // If no delegate (VC not yet presented), reject via API and clean up
+        if delegate == nil, let callData = PopinCallManager.shared.callData {
+            let presenter = VideoCallPresenter(videoCallInteractor: VideoCallInteractor())
+            presenter.rejectCall(callComponentId: callData.callComponentId)
+            PopinCallManager.shared.clearCallState()
+        }
 
         action.fulfill()
         clearCurrentCall()
@@ -396,6 +401,12 @@ public class PopinCallManager {
             // Report to CallManager (CallKit)
             let handle = self.callData?.displayName ?? "Incoming Call"
             CallManager.shared.reportIncomingCall(uuid: uuid, handle: handle) { error in
+                if error == nil {
+                    // Present the incoming call UI (NotConnectedView)
+                    DispatchQueue.main.async {
+                        Popin.shared?.presentIncomingCallUI()
+                    }
+                }
                 completion()
             }
         } catch {

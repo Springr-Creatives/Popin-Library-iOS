@@ -92,6 +92,11 @@ public class Popin : PopinPusherDelegate, CallAcceptanceListener {
     }
 
     private func setup() {
+        // Ensure CallManager is initialized early for PushKit/CallKit registration
+        #if canImport(UIKit)
+        _ = CallManager.shared
+        #endif
+
         if !config.persistenceMode {
             // Non-persistence mode: clear saved session and always re-register
             Utilities.shared.saveUser(user: nil)
@@ -333,6 +338,53 @@ public class Popin : PopinPusherDelegate, CallAcceptanceListener {
         }
 
         presentCallVCFromRoot(callVC)
+    }
+
+    /// Present the incoming call UI (NotConnectedView) when a VoIP push is received
+    func presentIncomingCallUI() {
+        guard let pushData = PopinCallManager.shared.callData,
+              let callUUID = PopinCallManager.shared.callUUID else { return }
+
+        // Don't present if already showing a call
+        guard currentCallViewController == nil else { return }
+
+        let callVC = PopinCallViewController()
+        callVC.pushCallData = pushData
+        callVC.callUUID = callUUID
+        callVC.modalPresentationStyle = .overFullScreen
+        callVC.popinConfig = config
+        callVC.isOutgoingCall = false
+        callVC.onCallEnd = { [weak self] in
+            self?.cleanupAfterCallEnd()
+        }
+
+        self.currentCallViewController = callVC
+        self.pendingCallViewController = callVC
+
+        presentCallVCFromRoot(callVC)
+    }
+
+    /// Called when an incoming call is answered (via CallKit native UI or NotConnectedView Accept button)
+    func onIncomingCallAnswered() {
+        guard let callData = PopinCallManager.shared.callData else { return }
+
+        self.eventsListener = config.eventsListener
+
+        // If VC not yet presented (background answer), present it now
+        if currentCallViewController == nil {
+            presentIncomingCallUI()
+        }
+
+        // Mark call as accepted in the VC
+        currentCallViewController?.handleCallKitAnswerCall()
+
+        // Connect pusher if not already
+        if !pusherConnected {
+            connectPusher(seller_id: sellerToken)
+        }
+
+        // Fetch call details and connect
+        connectToCall(callId: callData.callId)
     }
 
     /// Present call view controller for incoming calls (legacy flow)
