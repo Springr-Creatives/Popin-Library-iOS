@@ -95,6 +95,7 @@ class CallManager: NSObject {
         hasVideo: Bool = true,
         completion: ((Error?) -> Void)? = nil
     ) {
+        PopinLogger.shared.log("CallManager: reportIncomingCall: uuid=\(uuid), handle=\(handle)")
         currentCallUUID = uuid
         callState = .ringing(uuid)
 
@@ -108,8 +109,11 @@ class CallManager: NSObject {
 
         provider.reportNewIncomingCall(with: uuid, update: update) { [weak self] error in
             if let error = error {
+                PopinLogger.shared.log("CallManager: reportNewIncomingCall failed: \(error.localizedDescription)")
                 self?.callState = .idle
                 self?.currentCallUUID = nil
+            } else {
+                PopinLogger.shared.log("CallManager: reportNewIncomingCall success")
             }
             completion?(error)
         }
@@ -118,9 +122,11 @@ class CallManager: NSObject {
     /// Answer the current call
     func answerCall() {
         guard let uuid = currentCallUUID else {
+            PopinLogger.shared.log("CallManager: answerCall failed: no currentCallUUID")
             return
         }
 
+        PopinLogger.shared.log("CallManager: answerCall: requesting transaction for \(uuid)")
         let answerAction = CXAnswerCallAction(call: uuid)
         let transaction = CXTransaction(action: answerAction)
         requestTransaction(transaction)
@@ -129,9 +135,11 @@ class CallManager: NSObject {
     /// End the current call
     func endCall() {
         guard let uuid = currentCallUUID else {
+            PopinLogger.shared.log("CallManager: endCall failed: no currentCallUUID")
             return
         }
 
+        PopinLogger.shared.log("CallManager: endCall: requesting transaction for \(uuid)")
         let endAction = CXEndCallAction(call: uuid)
         let transaction = CXTransaction(action: endAction)
         requestTransaction(transaction)
@@ -156,6 +164,7 @@ class CallManager: NSObject {
 extension CallManager: CXProviderDelegate {
 
     func providerDidReset(_ provider: CXProvider) {
+        PopinLogger.shared.log("CallManager: providerDidReset")
         if let uuid = currentCallUUID {
             callState = .ended
             delegate?.callManager(self, didEndCall: uuid)
@@ -165,6 +174,7 @@ extension CallManager: CXProviderDelegate {
     }
 
     func provider(_ provider: CXProvider, perform action: CXAnswerCallAction) {
+        PopinLogger.shared.log("CallManager: CXAnswerCallAction for \(action.callUUID)")
         callState = .connecting(action.callUUID)
 
         delegate?.callManager(self, didAnswerCall: action.callUUID)
@@ -181,6 +191,7 @@ extension CallManager: CXProviderDelegate {
     }
 
     func provider(_ provider: CXProvider, perform action: CXEndCallAction) {
+        PopinLogger.shared.log("CallManager: CXEndCallAction for \(action.callUUID)")
         callState = .ended
 
         // Explicitly disable audio session to ensure clean cleanup
@@ -191,6 +202,7 @@ extension CallManager: CXProviderDelegate {
 
         // If no delegate (VC not yet presented), reject via API and clean up
         if delegate == nil, let callData = PopinCallManager.shared.callData {
+            PopinLogger.shared.log("CallManager: CXEndCallAction: No delegate, rejecting call via API")
             let presenter = VideoCallPresenter(videoCallInteractor: VideoCallInteractor())
             presenter.rejectCall(callId: callData.callId)
             PopinCallManager.shared.clearCallState()
@@ -201,15 +213,18 @@ extension CallManager: CXProviderDelegate {
     }
 
     func provider(_ provider: CXProvider, perform action: CXSetMutedCallAction) {
+        PopinLogger.shared.log("CallManager: CXSetMutedCallAction muted=\(action.isMuted)")
         action.fulfill()
     }
 
     func provider(_ provider: CXProvider, perform action: CXSetHeldCallAction) {
+        PopinLogger.shared.log("CallManager: CXSetHeldCallAction onHold=\(action.isOnHold)")
         delegate?.callManager(self, didHoldCall: action.callUUID, isOnHold: action.isOnHold)
         action.fulfill()
     }
 
     func provider(_ provider: CXProvider, didActivate audioSession: AVAudioSession) {
+        PopinLogger.shared.log("CallManager: didActivateAudioSession")
         // Configure audio session for LiveKit video calls
         do {
             // WebRTC generally prefers 48kHz and NO mixWithOthers for VoiceProcessingIO
@@ -225,14 +240,17 @@ extension CallManager: CXProviderDelegate {
 
             delegate?.callManager(self, didActivateAudioSession: audioSession)
         } catch {
+            PopinLogger.shared.log("CallManager: Failed to configure audio session: \(error)")
         }
     }
 
     func provider(_ provider: CXProvider, didDeactivate audioSession: AVAudioSession) {
+        PopinLogger.shared.log("CallManager: didDeactivateAudioSession")
         // Deactivate LiveKit audio session
         do {
             try AudioManager.shared.setEngineAvailability(.none)
         } catch {
+            PopinLogger.shared.log("CallManager: Failed to deactivate audio session: \(error)")
         }
 
         delegate?.callManager(self, didDeactivateAudioSession: audioSession)
@@ -251,6 +269,7 @@ extension CallManager: PKPushRegistryDelegate {
         guard type == .voIP else { return }
 
         let token = pushCredentials.token.map { String(format: "%02x", $0) }.joined()
+        PopinLogger.shared.log("CallManager: PKPushRegistry: didUpdate token=\(token)")
         voipToken = token
 
         // Save and send token to server
@@ -273,6 +292,7 @@ extension CallManager: PKPushRegistryDelegate {
         _ registry: PKPushRegistry,
         didInvalidatePushTokenFor type: PKPushType
     ) {
+        PopinLogger.shared.log("CallManager: PKPushRegistry: didInvalidatePushToken")
         guard type == .voIP else { return }
 
         voipToken = nil
@@ -284,6 +304,7 @@ extension CallManager: PKPushRegistryDelegate {
         for type: PKPushType,
         completion: @escaping () -> Void
     ) {
+        PopinLogger.shared.log("CallManager: PKPushRegistry: didReceiveIncomingPushWith payload=\(payload.dictionaryPayload)")
         guard type == .voIP else {
             completion()
             return
@@ -295,6 +316,7 @@ extension CallManager: PKPushRegistryDelegate {
             try session.setCategory(.playAndRecord, mode: .videoChat, options: [.mixWithOthers, .allowBluetooth, .allowBluetoothA2DP, .defaultToSpeaker, .allowAirPlay])
             try session.overrideOutputAudioPort(.speaker)
         } catch {
+            PopinLogger.shared.log("CallManager: PKPushRegistry: Early audio configuration failed: \(error)")
         }
 
         // PushKit REQUIRES reporting an incoming call for every VoIP push.
@@ -307,16 +329,21 @@ extension CallManager: PKPushRegistryDelegate {
 
 extension CallManager: CXCallObserverDelegate {
     func callObserver(_ callObserver: CXCallObserver, callChanged call: CXCall) {
+        PopinLogger.shared.log("CallManager: CXCallObserver: callChanged uuid=\(call.uuid), hasEnded=\(call.hasEnded), isOutgoing=\(call.isOutgoing)")
         guard let currentUUID = currentCallUUID else { return }
         
         // Check if this is a different call (e.g. GSM call) and if it has ended
         if call.uuid != currentUUID && call.hasEnded {
+            PopinLogger.shared.log("CallManager: CXCallObserver: External call ended, unholding current call \(currentUUID)")
             
             // Construct request to unhold the current call
             let setHeldAction = CXSetHeldCallAction(call: currentUUID, onHold: false)
             let transaction = CXTransaction(action: setHeldAction)
             
             callController.request(transaction) { error in
+                if let error = error {
+                    PopinLogger.shared.log("CallManager: CXCallObserver: Failed to unhold call: \(error.localizedDescription)")
+                }
             }
         }
     }
@@ -381,8 +408,16 @@ public struct PushCallData: Codable {
         productName = try container.decodeIfPresent(String.self, forKey: .productName)
         productImage = try container.decodeIfPresent(String.self, forKey: .productImage)
         product = try container.decodeIfPresent(Product.self, forKey: .product)
-        timeout = try container.decodeIfPresent(Int.self, forKey: .timeout)
         type = try container.decodeIfPresent(String.self, forKey: .type)
+
+        // Handle timeout as both Int and String
+        if let intValue = try? container.decodeIfPresent(Int.self, forKey: .timeout) {
+            timeout = intValue
+        } else if let strValue = try? container.decodeIfPresent(String.self, forKey: .timeout) {
+            timeout = Int(strValue)
+        } else {
+            timeout = nil
+        }
 
         // Server sends `start` as a string — handle both Int and String
         if let intValue = try? container.decodeIfPresent(Int.self, forKey: .start) {
@@ -402,6 +437,7 @@ public class PopinCallManager {
     
     public var callData: PushCallData?
     public var callUUID: UUID?
+    private var timeoutTimer: Timer?
     
     private init() {}
     
@@ -417,19 +453,41 @@ public class PopinCallManager {
             let data = try JSONSerialization.data(withJSONObject: payload, options: [])
             let decoder = JSONDecoder()
             self.callData = try decoder.decode(PushCallData.self, from: data)
+            PopinLogger.shared.log("PopinCallManager: Decoded push data: \(self.callData!)")
         } catch {
+            PopinLogger.shared.log("PopinCallManager: Failed to decode push data: \(error)")
             self.callData = nil
         }
 
         let handle = self.callData?.displayName ?? "Incoming Call"
-        let isValidCall = self.callData != nil && Utilities.shared.getUser() != nil
+        let user = Utilities.shared.getUser()
+        let isValidCall = self.callData != nil && user != nil
+        
+        if !isValidCall {
+            PopinLogger.shared.log("PopinCallManager: Invalid call. Data present: \(self.callData != nil), User present: \(user != nil)")
+        }
 
         // Always report to CallKit (mandatory for PushKit)
         CallManager.shared.reportIncomingCall(uuid: uuid, handle: handle) { [weak self] error in
+            if let error = error {
+                PopinLogger.shared.log("PopinCallManager: reportIncomingCall error: \(error.localizedDescription)")
+            }
+            
             if error == nil && isValidCall {
                 // Present the incoming call UI (NotConnectedView)
                 DispatchQueue.main.async {
                     Popin.shared?.presentIncomingCallUI()
+                    
+                    // Start timeout timer if specified
+                    if let timeout = self?.callData?.timeout, timeout > 0 {
+                        self?.timeoutTimer?.invalidate()
+                        self?.timeoutTimer = Timer.scheduledTimer(withTimeInterval: TimeInterval(timeout), repeats: false) { _ in
+                            if CallManager.shared.currentCallUUID == uuid {
+                                PopinLogger.shared.log("PopinCallManager: Call timed out after \(timeout) seconds")
+                                CallManager.shared.endCall()
+                            }
+                        }
+                    }
                 }
             } else if error == nil {
                 // Invalid call data or user not logged in — end the call immediately
@@ -442,9 +500,13 @@ public class PopinCallManager {
     public func clearCallState() {
         self.callData = nil
         self.callUUID = nil
+        self.timeoutTimer?.invalidate()
+        self.timeoutTimer = nil
     }
     
     public func callAnswered() {
+        self.timeoutTimer?.invalidate()
+        self.timeoutTimer = nil
     }
     
     public func stopStatusChecking() {

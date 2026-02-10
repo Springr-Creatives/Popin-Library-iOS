@@ -365,6 +365,9 @@ public class Popin : PopinPusherDelegate, CallAcceptanceListener {
         guard let callData = PopinCallManager.shared.callData else { return }
 
         self.eventsListener = config.eventsListener
+        
+        // Notify PopinCallManager immediately to stop timers
+        PopinCallManager.shared.callAnswered()
 
         // If VC not yet presented (background answer), present it now
         if currentCallViewController == nil {
