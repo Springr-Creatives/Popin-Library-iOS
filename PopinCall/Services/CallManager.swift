@@ -64,6 +64,8 @@ class CallManager: NSObject {
     // MARK: - Initialization
 
     private override init() {
+        NSLog("[Popin] CallManager.init() START")
+
         // Setup CallKit provider
         let configuration = CXProviderConfiguration(localizedName: "Popin Seller")
         configuration.supportsVideo = true
@@ -74,16 +76,25 @@ class CallManager: NSObject {
         configuration.includesCallsInRecents = false
 
         provider = CXProvider(configuration: configuration)
+        NSLog("[Popin] CallManager: CXProvider created")
 
         super.init()
 
         // Setup delegates
         provider.setDelegate(self, queue: .main)
         callObserver.setDelegate(self, queue: nil)
+        NSLog("[Popin] CallManager: CallKit delegates set")
 
         // Setup PushKit
+        NSLog("[Popin] CallManager: Setting up PushKit registry, desiredPushTypes = [.voIP]")
         pushRegistry.delegate = self
         pushRegistry.desiredPushTypes = [.voIP]
+
+        // Check if token already cached from previous registration
+        let existingToken = pushRegistry.pushToken(for: .voIP)
+        NSLog("[Popin] CallManager: PushKit existing cached token = \(existingToken != nil ? "YES (\(existingToken!.count) bytes)" : "nil")")
+
+        NSLog("[Popin] CallManager.init() END - waiting for token callback")
     }
 
     // MARK: - Public Methods
@@ -266,16 +277,21 @@ extension CallManager: PKPushRegistryDelegate {
         didUpdate pushCredentials: PKPushCredentials,
         for type: PKPushType
     ) {
+        NSLog("[Popin] CallManager: pushRegistry didUpdate pushCredentials, type=\(type.rawValue)")
         guard type == .voIP else { return }
 
         let token = pushCredentials.token.map { String(format: "%02x", $0) }.joined()
+        NSLog("[Popin] CallManager: VoIP push token received: \(token)")
         PopinLogger.shared.log("CallManager: PKPushRegistry: didUpdate token=\(token)")
         voipToken = token
 
         // Save and send token to server
         Utilities.shared.savePushToken(token: token)
         if Utilities.shared.getUser() != nil {
+            NSLog("[Popin] CallManager: User exists, sending push token to server")
             Utilities.shared.sendPushToken(token: token)
+        } else {
+            NSLog("[Popin] CallManager: No user yet, token saved locally but not sent to server")
         }
     }
     
@@ -292,6 +308,7 @@ extension CallManager: PKPushRegistryDelegate {
         _ registry: PKPushRegistry,
         didInvalidatePushTokenFor type: PKPushType
     ) {
+        NSLog("[Popin] CallManager: pushRegistry didInvalidatePushToken, type=\(type.rawValue)")
         PopinLogger.shared.log("CallManager: PKPushRegistry: didInvalidatePushToken")
         guard type == .voIP else { return }
 

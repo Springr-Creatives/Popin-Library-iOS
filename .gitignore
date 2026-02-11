@@ -17,6 +17,7 @@ DerivedData/
 
 # Build artifacts
 build/
+demo-app
 
 # macOS
 .DS_Store
