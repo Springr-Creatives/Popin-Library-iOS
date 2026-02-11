@@ -165,6 +165,7 @@ public class PopinCallViewController: UIViewController {
             self.isAppInitiatedDisconnect = true
             DispatchQueue.main.async {
                 self.closeViewController(shouldNotEndCX: false)
+                self.dismiss(animated: true)
             }
         }
 
