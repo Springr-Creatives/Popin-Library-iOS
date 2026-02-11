@@ -42,23 +42,6 @@ struct PopinConference: View {
         // Get call information from PopinCallManager
         let manager = PopinCallManager.shared
 
-        // Extract product information
-        let productId: String?
-        let productName: String?
-        let productImage: String?
-
-        if let product = manager.callData?.product {
-            // Use parsed product from JSON if available
-            productId = product.externalId ?? product.id?.description
-            productName = product.name
-            productImage = product.image
-        } else {
-            // Fall back to individual product fields
-            productId = manager.callData?.productId
-            productName = manager.callData?.productName
-            productImage = manager.callData?.productImage
-        }
-
         return NotConnectedView(
             callerName: manager.callData?.displayName ?? "Unknown Caller",
             callId: manager.callData?.callId ?? 0,
@@ -66,9 +49,6 @@ struct PopinConference: View {
             callUUID: manager.callUUID ?? UUID(),
             artifact: manager.callData?.artifact ?? "",
             callRole: manager.callData?.role ?? 0,
-            productId: productId,
-            productName: productName,
-            productImage: productImage,
             timeout: manager.callData?.timeout ?? 100,
             start: manager.callData?.start ?? 0,
             onAccept: {

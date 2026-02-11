@@ -16,11 +16,6 @@ struct NotConnectedView: View {
     let artifact: String
     let callRole: Int
 
-    // Product information
-    let productId: String?
-    let productName: String?
-    let productImage: String?
-
     // Timer information
     let timeout: Int
     let start: Int
@@ -42,9 +37,6 @@ struct NotConnectedView: View {
         callUUID: UUID = UUID(),
         artifact: String = "",
         callRole: Int = 0,
-        productId: String? = nil,
-        productName: String? = nil,
-        productImage: String? = nil,
         timeout: Int = 100,
         start: Int = 0,
         onAccept: @escaping () -> Void = {},
@@ -56,9 +48,6 @@ struct NotConnectedView: View {
         self.callUUID = callUUID
         self.artifact = artifact
         self.callRole = callRole
-        self.productId = productId
-        self.productName = productName
-        self.productImage = productImage
         self.timeout = timeout
         self.start = start
         self.onAccept = onAccept
@@ -92,63 +81,6 @@ struct NotConnectedView: View {
                     .foregroundColor(.white)
                     .font(.system(size: 20, weight: .bold))
                     .padding(.bottom, 24)
-
-                // Product card
-                if productId != nil || productName != nil {
-                    HStack(spacing: 12) {
-                        // Product image
-                        if let imageURL = productImage, let url = URL(string: imageURL) {
-                            AsyncImage(url: url) { image in
-                                image
-                                    .resizable()
-                                    .aspectRatio(contentMode: .fill)
-                            } placeholder: {
-                                Color.gray.opacity(0.3)
-                            }
-                            .frame(width: 110, height: 120)
-                            .clipShape(RoundedRectangle(cornerRadius: 16))
-                        } else {
-                            RoundedRectangle(cornerRadius: 16)
-                                .fill(Color.gray.opacity(0.3))
-                                .frame(width: 110, height: 120)
-                                .overlay(
-                                    Image(systemName: "photo")
-                                        .font(.system(size: 30))
-                                        .foregroundColor(.white.opacity(0.5))
-                                )
-                        }
-
-                        // Product details
-                        VStack(alignment: .leading, spacing: 4) {
-                            Spacer()
-
-                            if let productId = productId {
-                                Text(productId)
-                                    .foregroundColor(.white)
-                                    .font(.system(size: 17, weight: .medium))
-                                    .lineLimit(2)
-                            }
-
-                            if let productName = productName {
-                                Text(productName)
-                                    .foregroundColor(.white.opacity(0.7))
-                                    .font(.system(size: 15, weight: .bold))
-                                    .lineLimit(2)
-                            }
-
-                            Spacer()
-                        }
-
-                        Spacer()
-                    }
-                    .padding(.horizontal, 16)
-                    .frame(height: 120)
-                    .background(
-                        RoundedRectangle(cornerRadius: 16)
-                            .fill(Color(white: 0.15))
-                    )
-                    .padding(.horizontal, 16)
-                }
 
                 Spacer()
 
@@ -310,9 +242,6 @@ struct NotConnectedView_Previews: PreviewProvider {
             callUUID: UUID(),
             artifact: "Premium Widget",
             callRole: 1,
-            productId: "SKU-12345",
-            productName: "Premium Product Name",
-            productImage: "https://example.com/product.jpg",
             timeout: 100,
             start: Int(Date().timeIntervalSince1970 * 1000),
             onAccept: { },
