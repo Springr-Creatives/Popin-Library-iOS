@@ -9,10 +9,21 @@ import Foundation
 
 class PopinInteractor {
     
-    enum InteractorError: Error {
+    enum InteractorError: LocalizedError {
         case validationFailed
         case apiError(String?)
-        case invalidResponse
+        case invalidResponse(statusCode: Int)
+
+        var errorDescription: String? {
+            switch self {
+            case .validationFailed:
+                return "Validation failed: please check the provided contact info."
+            case .apiError(let message):
+                return message ?? "An unknown API error occurred."
+            case .invalidResponse(let statusCode):
+                return "Invalid response from server (HTTP \(statusCode))."
+            }
+        }
     }
 
     func registerUser(seller_id: Int, name: String, contactInfo: String, campaign: String) async throws -> Int {

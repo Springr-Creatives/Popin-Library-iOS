@@ -11,11 +11,24 @@ import Foundation
 import UIKit
 #endif
 
-enum NetworkError: Error {
+enum NetworkError: LocalizedError {
     case invalidURL
     case noData
     case decodingError
     case serverError(statusCode: Int)
+
+    var errorDescription: String? {
+        switch self {
+        case .invalidURL:
+            return "Invalid URL."
+        case .noData:
+            return "No data received from server."
+        case .decodingError:
+            return "Failed to decode server response."
+        case .serverError(let statusCode):
+            return "Server error (HTTP \(statusCode))."
+        }
+    }
 }
 
 class Utilities: NSObject {
@@ -156,9 +169,7 @@ class Utilities: NSObject {
             let responseText = String(data: data, encoding: .utf8) ?? "<non-utf8 data>"
             PopinLogger.shared.log("API Response: \(httpResponse.statusCode) \(responseText)")
             if !(200...299).contains(httpResponse.statusCode) {
-                 // Try to decode error if possible, or throw server error
-                 // For now, throw generic server error
-                 // throw NetworkError.serverError(statusCode: httpResponse.statusCode)
+                 throw NetworkError.serverError(statusCode: httpResponse.statusCode)
             }
         }
         
