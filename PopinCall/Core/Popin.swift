@@ -117,25 +117,16 @@ public class Popin : PopinPusherDelegate, CallAcceptanceListener {
 
     // MARK: - Incoming Calls (PushKit)
 
-    /// Forward the VoIP push token to the Popin server.
-    /// Call this from your `PKPushRegistryDelegate.pushRegistry(_:didUpdate:for:)`.
-    /// If the SDK is not yet initialized, the token is stored locally and sent automatically during the next initialization.
-    public static func setVoIPToken(_ token: String) {
-        Utilities.shared.savePushToken(token: token)
-        if Utilities.shared.getUser() != nil {
-            Utilities.shared.sendPushToken(token: token)
-        }
-    }
-
-    /// Handle an incoming VoIP push notification.
-    /// Call this from your `PKPushRegistryDelegate.pushRegistry(_:didReceiveIncomingPushWith:for:completion:)`.
-    /// - Important: On iOS, PushKit **requires** that you report a CallKit call for every VoIP push received.
-    ///   This method always reports an incoming call to CallKit to prevent iOS from killing the app.
-    ///   If the push is not a valid Popin call, the reported call is ended immediately.
-    public static func onVoIPPushReceived(payload: [AnyHashable: Any], completion: @escaping () -> Void) {
-        // Always forward to handleIncomingPush — it guarantees a reportIncomingCall
-        // to satisfy PushKit's requirement and prevent app termination.
-        PopinCallManager.shared.handleIncomingPush(payload: payload, completion: completion)
+    /// Register for VoIP pushes early, before `initialize()` is called.
+    /// Call this in `application(_:didFinishLaunchingWithOptions:)` to ensure
+    /// PushKit is ready to receive tokens and incoming pushes on cold launch.
+    /// Safe to call multiple times — subsequent calls are no-ops.
+    public static func registerForVoIPPushes() {
+        PopinLogger.shared.log("Popin: registerForVoIPPushes called, initializing CallManager for PushKit")
+        #if canImport(UIKit)
+        _ = CallManager.shared
+        PopinLogger.shared.log("Popin: CallManager initialized, PushKit registry active")
+        #endif
     }
 
     // MARK: - Public API

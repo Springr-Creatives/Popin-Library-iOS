@@ -6,22 +6,16 @@
 //
 
 import UIKit
-import PushKit
 import PopinCall
 
 @main
 class AppDelegate: UIResponder, UIApplicationDelegate {
 
-
-
-    var pushRegistry: PKPushRegistry!
-
     func application(_ application: UIApplication,
                      didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]? = nil) -> Bool {
-        pushRegistry = PKPushRegistry(queue: .main)
-        pushRegistry.delegate = self
-        pushRegistry.desiredPushTypes = [.voIP]
-        
+        // Register PushKit early so VoIP tokens/pushes are handled on cold launch,
+        // even before Popin.initialize() is called.
+        Popin.registerForVoIPPushes()
         return true
     }
 
@@ -40,38 +34,4 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     }
 
 
-}
-
-extension AppDelegate: PKPushRegistryDelegate {
-
-    func pushRegistry(_ registry: PKPushRegistry,
-                      didUpdate pushCredentials: PKPushCredentials,
-                      for type: PKPushType) {
-        guard type == .voIP else { return }
-
-        let token = pushCredentials.token
-            .map { String(format: "%02x", $0) }
-            .joined()
-        print("GOT TOKEN: \(token)")
-        Popin.setVoIPToken(token)
-    }
-
-    func pushRegistry(_ registry: PKPushRegistry,
-                      didReceiveIncomingPushWith payload: PKPushPayload,
-                      for type: PKPushType,
-                      completion: @escaping () -> Void) {
-        guard type == .voIP else {
-            completion()
-            return
-        }
-
-        print("GOT_PUSH")
-        // Always forward to SDK — it guarantees a reportIncomingCall to satisfy PushKit
-        Popin.onVoIPPushReceived(payload: payload.dictionaryPayload, completion: completion)
-    }
-
-    func pushRegistry(_ registry: PKPushRegistry,
-                      didInvalidatePushTokenFor type: PKPushType) {
-        // Token invalidated
-    }
 }

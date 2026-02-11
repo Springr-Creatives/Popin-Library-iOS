@@ -31,7 +31,6 @@
 		CF1742902F27407B00AE48E7 /* Popin.swift in Sources */ = {isa = PBXBuildFile; fileRef = CF17426B2F27407B00AE48E7 /* Popin.swift */; };
 		CF1742912F27407B00AE48E7 /* VideoCallPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = CF17427B2F27407B00AE48E7 /* VideoCallPresenter.swift */; };
 		CF1742922F27407B00AE48E7 /* DarwinNotificationCenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = CF1742642F27407B00AE48E7 /* DarwinNotificationCenter.swift */; };
-		CF17LOG12F27407B00AE48E7 /* PopinLogger.swift in Sources */ = {isa = PBXBuildFile; fileRef = CF17LOG02F27407B00AE48E7 /* PopinLogger.swift */; };
 		CF1742932F27407B00AE48E7 /* PopinConnectedView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CF1742712F27407B00AE48E7 /* PopinConnectedView.swift */; };
 		CF1742942F27407B00AE48E7 /* TopControls.swift in Sources */ = {isa = PBXBuildFile; fileRef = CF1742772F27407B00AE48E7 /* TopControls.swift */; };
 		CF1742952F27407B00AE48E7 /* CallManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = CF1742632F27407B00AE48E7 /* CallManager.swift */; };
@@ -46,6 +45,7 @@
 		CF17CHAT42F27407B00AE48E7 /* ChatManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = CF17CHAT32F27407B00AE48E7 /* ChatManager.swift */; };
 		CF17CHAT62F27407B00AE48E7 /* ChatView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CF17CHAT52F27407B00AE48E7 /* ChatView.swift */; };
 		CF17CHAT82F27407B00AE48E7 /* ChatDetailsToast.swift in Sources */ = {isa = PBXBuildFile; fileRef = CF17CHAT72F27407B00AE48E7 /* ChatDetailsToast.swift */; };
+		CF17LOG12F27407B00AE48E7 /* PopinLogger.swift in Sources */ = {isa = PBXBuildFile; fileRef = CF17LOG02F27407B00AE48E7 /* PopinLogger.swift */; };
 		CFA4CD962F28D0A7009EB444 /* LiveKit in Frameworks */ = {isa = PBXBuildFile; productRef = CFA4CD952F28D0A7009EB444 /* LiveKit */; };
 		CFA4CD972F28D0B8009EB444 /* LiveKit in Frameworks */ = {isa = PBXBuildFile; productRef = CFA4CD9C2F28D0C0009EB444 /* LiveKit */; };
 		CFA4CD982F28D0B8009EB444 /* LiveKitComponents in Frameworks */ = {isa = PBXBuildFile; productRef = CFA4CD9D2F28D0C0009EB444 /* LiveKitComponents */; };
@@ -107,7 +107,6 @@
 		CF1742622F27407B00AE48E7 /* BroadcastPickerWrapper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BroadcastPickerWrapper.swift; sourceTree = "<group>"; };
 		CF1742632F27407B00AE48E7 /* CallManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CallManager.swift; sourceTree = "<group>"; };
 		CF1742642F27407B00AE48E7 /* DarwinNotificationCenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DarwinNotificationCenter.swift; sourceTree = "<group>"; };
-		CF17LOG02F27407B00AE48E7 /* PopinLogger.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PopinLogger.swift; sourceTree = "<group>"; };
 		CF1742652F27407B00AE48E7 /* MyCustomRendererView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyCustomRendererView.swift; sourceTree = "<group>"; };
 		CF1742662F27407B00AE48E7 /* NotConnectedView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotConnectedView.swift; sourceTree = "<group>"; };
 		CF1742672F27407B00AE48E7 /* ParticipantCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ParticipantCell.swift; sourceTree = "<group>"; };
@@ -137,6 +136,7 @@
 		CF17CHAT32F27407B00AE48E7 /* ChatManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatManager.swift; sourceTree = "<group>"; };
 		CF17CHAT52F27407B00AE48E7 /* ChatView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatView.swift; sourceTree = "<group>"; };
 		CF17CHAT72F27407B00AE48E7 /* ChatDetailsToast.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatDetailsToast.swift; sourceTree = "<group>"; };
+		CF17LOG02F27407B00AE48E7 /* PopinLogger.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PopinLogger.swift; sourceTree = "<group>"; };
 		CF1D09E39EFC62DD51F4244B /* PopinProduct.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = PopinProduct.swift; sourceTree = "<group>"; };
 		CFA4CDDE2F2A4C2A009EB444 /* BottomControls.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BottomControls.swift; sourceTree = "<group>"; };
 		CFB63D8C292908EF005F265D /* PopinPusherDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PopinPusherDelegate.swift; sourceTree = "<group>"; };
