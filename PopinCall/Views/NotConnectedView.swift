@@ -84,38 +84,6 @@ struct NotConnectedView: View {
 
                 Spacer()
 
-                // Circular timer
-                ZStack {
-                    // Progress circle background
-                    Circle()
-                        .stroke(Color.black, lineWidth: 8)
-                        .frame(width: 250, height: 250)
-
-                    // Progress circle
-                    Circle()
-                        .trim(from: 0, to: CGFloat(timeRemaining) / CGFloat(initialTimeout))
-                        .stroke(
-                            Color(red: 0.88, green: 0.44, blue: 0),
-                            style: StrokeStyle(lineWidth: 8, lineCap: .round)
-                        )
-                        .frame(width: 250, height: 250)
-                        .rotationEffect(.degrees(-90))
-
-                    // Timer text
-                    VStack(spacing: 4) {
-                        Text("\(timeRemaining)")
-                            .foregroundColor(.white)
-                            .font(.system(size: 52, weight: .bold))
-
-                        Text("SECONDS")
-                            .foregroundColor(.white)
-                            .font(.system(size: 14, weight: .bold))
-                    }
-                }
-                .padding(.vertical, 24)
-
-                Spacer()
-
                 // Accept/Reject buttons
                 HStack(spacing: 8) {
                     // Reject button
