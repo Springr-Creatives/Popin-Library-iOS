@@ -8,7 +8,9 @@
 import UIKit
 import PopinCall
 
-class ViewController: UIViewController {
+class ViewController: UIViewController, UITableViewDataSource {
+
+    private let dummyItems: [String] = (1...50).map { "Item \($0) — Lorem ipsum dolor sit amet, consectetur adipiscing elit." }
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -62,11 +64,55 @@ class ViewController: UIViewController {
             .build()
 
         Popin.initialize(token: 51, config: config)
+
+        setupUI()
     }
 
-    @IBAction func makeCall(_ sender: Any) {
-        // Start a call (matches Android Popin.getInstance().startCall)
+    private func setupUI() {
+        let callButton = UIButton(type: .system)
+        callButton.setTitle("Call", for: .normal)
+        callButton.titleLabel?.font = UIFont(name: "HelveticaNeue", size: 25)
+        callButton.setTitleColor(.black, for: .normal)
+        callButton.backgroundColor = UIColor(red: 0.709, green: 1.0, blue: 0.593, alpha: 1.0)
+        callButton.layer.cornerRadius = 10
+        callButton.translatesAutoresizingMaskIntoConstraints = false
+        callButton.addTarget(self, action: #selector(makeCall), for: .touchUpInside)
+        view.addSubview(callButton)
+
+        let tableView = UITableView(frame: .zero, style: .plain)
+        tableView.translatesAutoresizingMaskIntoConstraints = false
+        tableView.dataSource = self
+        tableView.register(UITableViewCell.self, forCellReuseIdentifier: "Cell")
+        view.addSubview(tableView)
+
+        NSLayoutConstraint.activate([
+            callButton.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 16),
+            callButton.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 20),
+            callButton.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -20),
+            callButton.heightAnchor.constraint(equalToConstant: 55),
+
+            tableView.topAnchor.constraint(equalTo: callButton.bottomAnchor, constant: 16),
+            tableView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
+            tableView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
+            tableView.bottomAnchor.constraint(equalTo: view.bottomAnchor),
+        ])
+    }
+
+    @objc func makeCall(_ sender: Any) {
         Popin.shared?.startCall()
+    }
+
+    // MARK: - UITableViewDataSource
+
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        dummyItems.count
+    }
+
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        let cell = tableView.dequeueReusableCell(withIdentifier: "Cell", for: indexPath)
+        cell.textLabel?.text = dummyItems[indexPath.row]
+        cell.textLabel?.numberOfLines = 0
+        return cell
     }
 
 }

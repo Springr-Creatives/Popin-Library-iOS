@@ -16,30 +16,8 @@
                     <view key="view" contentMode="scaleToFill" id="8bC-Xf-vdC">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="812"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                        <subviews>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="dTO-bL-QQy">
-                                <rect key="frame" x="87.666666666666686" y="418" width="200" height="55"/>
-                                <constraints>
-                                    <constraint firstAttribute="height" constant="55" id="865-XZ-njr"/>
-                                    <constraint firstAttribute="width" constant="200" id="HAL-MJ-fO6"/>
-                                </constraints>
-                                <state key="normal" title="Button"/>
-                                <buttonConfiguration key="configuration" style="filled" title="Call">
-                                    <fontDescription key="titleFontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="25"/>
-                                    <color key="baseForegroundColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                    <color key="baseBackgroundColor" name="Color"/>
-                                </buttonConfiguration>
-                                <connections>
-                                    <action selector="makeCall:" destination="BYZ-38-t0r" eventType="touchUpInside" id="zkO-Tc-To8"/>
-                                </connections>
-                            </button>
-                        </subviews>
                         <viewLayoutGuide key="safeArea" id="6Tk-OE-BBY"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                        <constraints>
-                            <constraint firstItem="dTO-bL-QQy" firstAttribute="centerX" secondItem="6Tk-OE-BBY" secondAttribute="centerX" id="7S0-hg-MxS"/>
-                            <constraint firstItem="dTO-bL-QQy" firstAttribute="centerY" secondItem="6Tk-OE-BBY" secondAttribute="centerY" id="gu3-1i-u6e"/>
-                        </constraints>
                     </view>
                     <navigationItem key="navigationItem" id="kMD-fO-b0A"/>
                 </viewController>

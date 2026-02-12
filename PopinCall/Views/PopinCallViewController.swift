@@ -322,18 +322,26 @@ public class PopinCallViewController: UIViewController {
     }
 
     @objc private func handlePiPDidStart() {
-        UIView.animate(withDuration: 0.3) {
-            self.view.alpha = 0
-        } completion: { _ in
-            self.view.isHidden = true
+        // Hide the view and disable touch interception on all presentation
+        // container views so the screen behind becomes interactive during PiP
+        self.view.isHidden = true
+        var v: UIView? = self.view
+        while let current = v?.superview {
+            if current is UIWindow { break }
+            current.isUserInteractionEnabled = false
+            v = current
         }
     }
 
     @objc private func handlePiPDidStop() {
-        self.view.isHidden = false
-        UIView.animate(withDuration: 0.3) {
-            self.view.alpha = 1
+        // Re-enable touch interception on presentation container views
+        var v: UIView? = self.view
+        while let current = v?.superview {
+            if current is UIWindow { break }
+            current.isUserInteractionEnabled = true
+            v = current
         }
+        self.view.isHidden = false
     }
     
     func closeViewController(shouldNotEndCX: Bool) {
