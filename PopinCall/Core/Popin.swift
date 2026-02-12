@@ -22,6 +22,9 @@ public class Popin : PopinPusherDelegate, CallAcceptanceListener {
 
     public private(set) static var shared: Popin?
 
+    /// SDK version
+    public static let sdkVersion = "1.0.40"
+
     /// Minimum iOS version required for SDK functionality
     public static let minimumIOSVersion = 17
 
@@ -54,11 +57,11 @@ public class Popin : PopinPusherDelegate, CallAcceptanceListener {
 
     @discardableResult
     public static func initialize(token: Int, config: PopinConfig) -> Popin {
-        NSLog("[Popin] Popin.initialize() called, token=\(token), isSupported=\(isSupported)")
+        PopinLogger.shared.log("Popin.initialize() called, token=\(token), isSupported=\(isSupported)")
 
         // Check iOS version requirement
         guard isSupported else {
-            NSLog("[Popin] Popin.initialize() FAILED - iOS version not supported")
+            PopinLogger.shared.log("Popin.initialize() FAILED - iOS version not supported")
             config.initListener?.onInitFailed(reason: "PopinCall SDK requires iOS \(minimumIOSVersion) or later.")
             // Return a non-functional instance
             let instance = Popin(token: token, config: config)
@@ -67,7 +70,7 @@ public class Popin : PopinPusherDelegate, CallAcceptanceListener {
         }
 
         if let existing = shared {
-            NSLog("[Popin] Popin.initialize() existing instance found, persistenceMode=\(existing.config.persistenceMode)")
+            PopinLogger.shared.log("Popin.initialize() existing instance found, persistenceMode=\(existing.config.persistenceMode)")
             existing.config = config
             if !existing.config.persistenceMode {
                 let newInstance = Popin(token: token, config: config)
@@ -77,7 +80,7 @@ public class Popin : PopinPusherDelegate, CallAcceptanceListener {
                 config.initListener?.onInitComplete(userId: Utilities.shared.getUser()?.user_id ?? 0)
             }
         } else {
-            NSLog("[Popin] Popin.initialize() creating new instance")
+            PopinLogger.shared.log("Popin.initialize() creating new instance")
             let newInstance = Popin(token: token, config: config)
             shared = newInstance
             newInstance.setup()
@@ -97,13 +100,18 @@ public class Popin : PopinPusherDelegate, CallAcceptanceListener {
     }
 
     private func setup() {
-        NSLog("[Popin] setup() START - debugMode=\(config.enableDebugMode), persistenceMode=\(config.persistenceMode)")
+        PopinLogger.shared.log("setup() START - debugMode=\(config.enableDebugMode), persistenceMode=\(config.persistenceMode)")
         PopinLogger.shared.isEnabled = config.enableDebugMode
 
-        // Ensure CallManager is initialized early for PushKit/CallKit registration
+        // Initialize CallManager for CallKit; only register VoIP pushes if incoming calls are enabled
         #if canImport(UIKit)
         _ = CallManager.shared
-        NSLog("[Popin] setup() CallManager.shared accessed, voipToken=\(CallManager.shared.voipToken ?? "nil")")
+        if config.enableIncomingCalls {
+            CallManager.shared.registerForVoIPPushes()
+            PopinLogger.shared.log("setup() VoIP pushes registered, voipToken=\(CallManager.shared.voipToken ?? "nil")")
+        } else {
+            PopinLogger.shared.log("setup() Incoming calls disabled, skipping VoIP push registration")
+        }
         #endif
 
         if !config.persistenceMode {
@@ -112,26 +120,26 @@ public class Popin : PopinPusherDelegate, CallAcceptanceListener {
         }
 
         let savedPushToken = Utilities.shared.getPushToken()
-        NSLog("[Popin] setup() savedPushToken=\(savedPushToken.isEmpty ? "empty" : savedPushToken)")
-        NSLog("[Popin] setup() isUserRegistered=\(popinPresenter.isUserRegistered())")
+        PopinLogger.shared.log("setup() savedPushToken=\(savedPushToken.isEmpty ? "empty" : savedPushToken)")
+        PopinLogger.shared.log("setup() isUserRegistered=\(popinPresenter.isUserRegistered())")
 
         if !popinPresenter.isUserRegistered() {
-            NSLog("[Popin] setup() registering user...")
+            PopinLogger.shared.log("setup() registering user...")
             popinPresenter.registerUser(seller_id: sellerToken, name: config.userName, contactInfo: config.contactInfo, campaign: getEnhancedMeta(), onSucess: { [self] userId in
-                NSLog("[Popin] setup() registerUser SUCCESS, userId=\(userId)")
+                PopinLogger.shared.log("setup() registerUser SUCCESS, userId=\(userId)")
                 // Send saved push token now that user is registered
                 let token = Utilities.shared.getPushToken()
                 if !token.isEmpty {
-                    NSLog("[Popin] setup() sending saved push token to server after registration")
+                    PopinLogger.shared.log("setup() sending saved push token to server after registration")
                     Utilities.shared.sendPushToken(token: token)
                 }
                 self.config.initListener?.onInitComplete(userId: userId)
             }, onFailure: { [weak self] reason in
-                NSLog("[Popin] setup() registerUser FAILED: \(reason)")
+                PopinLogger.shared.log("setup() registerUser FAILED: \(reason)")
                 self?.config.initListener?.onInitFailed(reason: reason)
             })
         } else {
-            NSLog("[Popin] setup() user already registered")
+            PopinLogger.shared.log("setup() user already registered")
             config.initListener?.onInitComplete(userId: Utilities.shared.getUser()?.user_id ?? 0)
         }
     }
@@ -143,12 +151,10 @@ public class Popin : PopinPusherDelegate, CallAcceptanceListener {
     /// PushKit is ready to receive tokens and incoming pushes on cold launch.
     /// Safe to call multiple times — subsequent calls are no-ops.
     public static func registerForVoIPPushes() {
-        NSLog("[Popin] registerForVoIPPushes called")
-        PopinLogger.shared.log("Popin: registerForVoIPPushes called, initializing CallManager for PushKit")
+        PopinLogger.shared.log("registerForVoIPPushes called, initializing CallManager for PushKit")
         #if canImport(UIKit)
-        _ = CallManager.shared
-        NSLog("[Popin] CallManager.shared initialized, PushKit registry active")
-        PopinLogger.shared.log("Popin: CallManager initialized, PushKit registry active")
+        CallManager.shared.registerForVoIPPushes()
+        PopinLogger.shared.log("CallManager initialized, PushKit registry active")
         #endif
     }
 

@@ -15,6 +15,7 @@ class AuthRequestBuilder: AuthRequestBuilderProtocol {
         request.addValue("Bearer " + Utilities.shared.getUserToken(), forHTTPHeaderField: "Authorization")
         request.addValue("application/x-www-form-urlencoded", forHTTPHeaderField: "Content-Type")
         request.addValue("application/json", forHTTPHeaderField: "Accept")
+        request.addValue("PopinSDK/iOS/\(Popin.sdkVersion)", forHTTPHeaderField: "User-Agent")
         request.httpBody = "socket_id=\(socketID)&channel_name=\(channelName)".data(using: String.Encoding.utf8)
         return request
     }

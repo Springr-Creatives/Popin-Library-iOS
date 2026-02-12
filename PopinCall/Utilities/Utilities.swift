@@ -42,12 +42,14 @@ class Utilities: NSObject {
     
     func getHeaders() -> [String: String] {
         var headers: [String: String] = [:]
-        
+
+        headers["User-Agent"] = "PopinSDK/iOS/\(Popin.sdkVersion)"
+
         if let token = getUser()?.token {
             headers["Accept"] = "application/json"
             headers["Authorization"] = "Bearer" + " " + token
         }
-        
+
         return headers
     }
     
