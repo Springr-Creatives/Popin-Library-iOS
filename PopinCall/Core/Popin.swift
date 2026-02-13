@@ -6,6 +6,7 @@
 //
 
 import Foundation
+import AVFoundation
 #if canImport(UIKit)
 import UIKit
 #endif
@@ -46,6 +47,9 @@ public class Popin : PopinPusherDelegate, CallAcceptanceListener {
     private var pusherConnected: Bool = false
     private var sellerToken: Int = 0
     private var waitHandler: CallAcceptanceWaitHandler?
+
+    /// Tracks camera permission result from pre-call check; applied to VC's viewModel
+    private var preCallCameraGranted: Bool = true
 
     #if canImport(UIKit)
     private weak var currentCallViewController: PopinCallViewController?
@@ -188,7 +192,32 @@ public class Popin : PopinPusherDelegate, CallAcceptanceListener {
             connectPusher(seller_id: sellerToken)
         }
 
-        initiateCall()
+        requestPermissionsAndStartCall()
+    }
+
+    private func requestPermissionsAndStartCall() {
+        AVCaptureDevice.requestAccess(for: .audio) { [weak self] micGranted in
+            guard let self = self else { return }
+
+            if !micGranted {
+                PopinLogger.shared.log("requestPermissions: Microphone denied, aborting call")
+                DispatchQueue.main.async {
+                    self.eventsListener?.onCallFailed()
+                }
+                return
+            }
+
+            AVCaptureDevice.requestAccess(for: .video) { [weak self] cameraGranted in
+                guard let self = self else { return }
+                PopinLogger.shared.log("requestPermissions: mic=granted, camera=\(cameraGranted)")
+
+                self.preCallCameraGranted = cameraGranted
+
+                DispatchQueue.main.async {
+                    self.initiateCall()
+                }
+            }
+        }
     }
 
     private func initiateCall() {
@@ -236,14 +265,14 @@ public class Popin : PopinPusherDelegate, CallAcceptanceListener {
         if !popinPresenter.isUserRegistered() {
             popinPresenter.registerUser(seller_id: token, name: config.userName, contactInfo: config.contactInfo, campaign: getEnhancedMeta(), onSucess: { _ in
                 self.connectPusher(seller_id: token)
-                self.initiateCall()
+                self.requestPermissionsAndStartCall()
             }, onFailure: { reason in
                 self.eventsListener?.onCallFailed()
                 self.config.initListener?.onInitFailed(reason: reason)
             })
         } else {
             self.connectPusher(seller_id: token)
-            self.initiateCall()
+            self.requestPermissionsAndStartCall()
         }
     }
 
@@ -342,6 +371,7 @@ public class Popin : PopinPusherDelegate, CallAcceptanceListener {
     private func presentOutgoingCallViewController(callQueueId: Int) {
         PopinLogger.shared.log("presentOutgoingCallViewController: queueId=\(callQueueId)")
         let callVC = PopinCallViewController()
+        callVC.initialCameraPermissionGranted = preCallCameraGranted
         self.currentCallViewController = callVC
         self.pendingCallViewController = callVC  // Strong ref to prevent deallocation
         callVC.modalPresentationStyle = .overFullScreen
@@ -389,7 +419,7 @@ public class Popin : PopinPusherDelegate, CallAcceptanceListener {
 
         PopinLogger.shared.log("onIncomingCallAnswered: callId=\(callData.callId)")
         self.eventsListener = config.eventsListener
-        
+
         // Notify PopinCallManager immediately to stop timers
         PopinCallManager.shared.callAnswered()
 
@@ -410,8 +440,33 @@ public class Popin : PopinPusherDelegate, CallAcceptanceListener {
             connectPusher(seller_id: sellerToken)
         }
 
-        // Fetch call details and connect
-        connectToCall(callId: callData.callId)
+        // Request permissions before connecting
+        requestPermissionsAndConnectIncoming(callId: callData.callId)
+    }
+
+    private func requestPermissionsAndConnectIncoming(callId: Int) {
+        AVCaptureDevice.requestAccess(for: .audio) { [weak self] micGranted in
+            guard let self = self else { return }
+
+            if !micGranted {
+                PopinLogger.shared.log("requestPermissionsIncoming: Microphone denied, ending call")
+                DispatchQueue.main.async {
+                    CallManager.shared.endCall()
+                    self.currentCallViewController?.closeCall(message: "Microphone access is required for calls. Please enable it in Settings.")
+                }
+                return
+            }
+
+            AVCaptureDevice.requestAccess(for: .video) { [weak self] cameraGranted in
+                guard let self = self else { return }
+                PopinLogger.shared.log("requestPermissionsIncoming: mic=granted, camera=\(cameraGranted)")
+
+                DispatchQueue.main.async {
+                    self.currentCallViewController?.updateCameraPermission(cameraGranted)
+                    self.connectToCall(callId: callId)
+                }
+            }
+        }
     }
 
     /// Present call view controller for incoming calls (legacy flow)

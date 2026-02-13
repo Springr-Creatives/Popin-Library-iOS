@@ -44,6 +44,9 @@ public class PopinCallViewController: UIViewController {
     /// Indicates this is an outgoing call (started by user via startCall)
     var isOutgoingCall: Bool = false
 
+    /// Camera permission result from pre-call check; applied to viewModel on setup
+    var initialCameraPermissionGranted: Bool = true
+
     var closedCall : Bool = false;
     var callConnected : Bool = false;
     
@@ -191,6 +194,12 @@ public class PopinCallViewController: UIViewController {
         if isOutgoingCall {
             viewModel.isWaitingForAcceptance = true
         }
+
+        // Apply pre-call camera permission result
+        if !initialCameraPermissionGranted {
+            viewModel.cameraPermissionGranted = false
+            viewModel.preCallCameraEnabled = false
+        }
     }
 
     
@@ -246,7 +255,6 @@ public class PopinCallViewController: UIViewController {
     
     public override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
-        checkCameraAndMicrophonePermissions(presentingViewController: self)
     }
     
     
@@ -263,41 +271,6 @@ public class PopinCallViewController: UIViewController {
     }
     
 
-    func checkCameraAndMicrophonePermissions(presentingViewController: UIViewController) {
-        let cameraStatus = AVCaptureDevice.authorizationStatus(for: .video)
-        let micStatus = AVCaptureDevice.authorizationStatus(for: .audio)
-        
-        var missingPermissions: [String] = []
-        
-        switch cameraStatus {
-        case .denied, .restricted:
-            missingPermissions.append("Camera")
-        default:
-            break
-        }
-        
-        switch micStatus {
-        case .denied, .restricted:
-            missingPermissions.append("Microphone")
-        default:
-            break
-        }
-        
-        if !missingPermissions.isEmpty {
-            let message = "Please allow access to the following in Settings:\n\n" + missingPermissions.joined(separator: ", ")
-            let alert = UIAlertController(title: "Permissions Required",
-                                          message: message,
-                                          preferredStyle: .alert)
-            alert.addAction(UIAlertAction(title: "Open Settings", style: .default) { _ in
-                if let url = URL(string: UIApplication.openSettingsURLString),
-                   UIApplication.shared.canOpenURL(url) {
-                    UIApplication.shared.open(url)
-                }
-            })
-            alert.addAction(UIAlertAction(title: "Cancel", style: .cancel))
-            presentingViewController.present(alert, animated: true)
-        }
-    }
     
     
     
@@ -440,6 +413,14 @@ extension PopinCallViewController: VideoCallView {
 // MARK: - CallKit Integration
 
 extension PopinCallViewController {
+
+    /// Update camera permission state (called after permission request for incoming calls)
+    func updateCameraPermission(_ granted: Bool) {
+        viewModel.cameraPermissionGranted = granted
+        if !granted {
+            viewModel.preCallCameraEnabled = false
+        }
+    }
 
     /// Called when CallKit answers the call (from PopinCallManager delegation)
     func handleCallKitAnswerCall() {

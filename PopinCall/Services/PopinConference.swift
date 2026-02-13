@@ -283,7 +283,11 @@ struct WaitingBottomControls: View {
                 backgroundColor: viewModel.preCallCameraEnabled ? Color.black.opacity(0.5) : .white,
                 iconColor: viewModel.preCallCameraEnabled ? .white : .black,
                 action: {
-                    viewModel.preCallCameraEnabled.toggle()
+                    if viewModel.cameraPermissionGranted {
+                        viewModel.preCallCameraEnabled.toggle()
+                    } else {
+                        requestCameraPermission()
+                    }
                 }
             )
 
@@ -309,6 +313,25 @@ struct WaitingBottomControls: View {
         .padding(.horizontal, 24)
         .padding(.bottom, 32)
         .padding(.top, 12)
+    }
+
+    private func requestCameraPermission() {
+        let status = AVCaptureDevice.authorizationStatus(for: .video)
+        if status == .notDetermined {
+            AVCaptureDevice.requestAccess(for: .video) { granted in
+                DispatchQueue.main.async {
+                    if granted {
+                        viewModel.cameraPermissionGranted = true
+                        viewModel.preCallCameraEnabled = true
+                    }
+                }
+            }
+        } else {
+            // Already denied — direct to Settings
+            if let url = URL(string: UIApplication.openSettingsURLString) {
+                UIApplication.shared.open(url)
+            }
+        }
     }
 }
 #endif

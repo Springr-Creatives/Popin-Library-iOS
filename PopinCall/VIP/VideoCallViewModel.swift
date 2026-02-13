@@ -26,6 +26,9 @@ final class VideoCallViewModel: ObservableObject {
     /// Pre-call camera state (set during waiting screen, applied when call connects)
     @Published var preCallCameraEnabled: Bool = true
 
+    /// Whether camera permission has been granted (used to disable flip button)
+    @Published var cameraPermissionGranted: Bool = true
+
     // MARK: - Network state tracking (matches Android CallActivity)
 
     /// Customer's own network issue (tracked via Pusher connection state)

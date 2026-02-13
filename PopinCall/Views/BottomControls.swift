@@ -8,6 +8,7 @@
 import SwiftUI
 import LiveKit
 import LiveKitComponents
+import AVFoundation
 
 #if canImport(UIKit)
 import ReplayKit
@@ -82,11 +83,12 @@ struct BottomControls: View {
                         showOverflowMenu: $showOverflowMenu,
                         items: overflowButtons,
                         unreadCount: chatManager.unreadCount,
+                        cameraPermissionGranted: viewModel.cameraPermissionGranted,
                         onInviteTapped: { generateInviteLink() },
                         onChatTapped: { showChat = true },
                         onFlipTapped: { flipCamera() },
                         onMicTapped: { toggleMic() },
-                        onVideoTapped: { toggleVideo() }
+                        onVideoTapped: { viewModel.cameraPermissionGranted ? toggleVideo() : requestCameraAndToggleVideo() }
                     )
                     .modifier(SheetPresentationModifier(height: CGFloat(80 + overflowButtons.count * 76)))
                 }
@@ -169,30 +171,47 @@ struct BottomControls: View {
             )
             .buttonStyle(PlainButtonStyle())
         case .video:
-            CameraToggleButton(
-                label: {
-                    ControlCircleButtonView(
-                        iconName: "video.slash.fill",
-                        backgroundColor: .white,
-                        iconColor: .black
-                    )
-                },
-                published: {
-                    ControlCircleButtonView(
-                        iconName: "video.fill",
-                        backgroundColor: Color.black.opacity(0.5),
-                        iconColor: .white
-                    )
-                }
-            )
-            .buttonStyle(PlainButtonStyle())
+            if viewModel.cameraPermissionGranted {
+                CameraToggleButton(
+                    label: {
+                        ControlCircleButtonView(
+                            iconName: "video.slash.fill",
+                            backgroundColor: .white,
+                            iconColor: .black
+                        )
+                    },
+                    published: {
+                        ControlCircleButtonView(
+                            iconName: "video.fill",
+                            backgroundColor: Color.black.opacity(0.5),
+                            iconColor: .white
+                        )
+                    }
+                )
+                .buttonStyle(PlainButtonStyle())
+            } else {
+                ControlCircleButton(
+                    iconName: "video.slash.fill",
+                    backgroundColor: .white,
+                    iconColor: .black,
+                    action: { requestCameraAndToggleVideo() }
+                )
+            }
         case .flip:
-            ControlCircleButton(
-                iconName: "arrow.triangle.2.circlepath.camera.fill",
-                backgroundColor: Color.black.opacity(0.5),
-                iconColor: .white,
-                action: { flipCamera() }
-            )
+            if viewModel.cameraPermissionGranted {
+                ControlCircleButton(
+                    iconName: "arrow.triangle.2.circlepath.camera.fill",
+                    backgroundColor: Color.black.opacity(0.5),
+                    iconColor: .white,
+                    action: { flipCamera() }
+                )
+            } else {
+                ControlCircleButtonView(
+                    iconName: "arrow.triangle.2.circlepath.camera.fill",
+                    backgroundColor: Color.black.opacity(0.3),
+                    iconColor: .white.opacity(0.4)
+                )
+            }
         case .invite:
             ControlCircleButton(
                 iconName: "person.badge.plus",
@@ -245,6 +264,25 @@ struct BottomControls: View {
             let videoTrack = room.localParticipant.firstCameraVideoTrack as? LocalVideoTrack
             if let track = videoTrack {
                 try? await room.localParticipant.setCamera(enabled: track.isMuted)
+            }
+        }
+    }
+
+    private func requestCameraAndToggleVideo() {
+        let status = AVCaptureDevice.authorizationStatus(for: .video)
+        if status == .notDetermined {
+            AVCaptureDevice.requestAccess(for: .video) { granted in
+                DispatchQueue.main.async {
+                    if granted {
+                        viewModel.cameraPermissionGranted = true
+                        toggleVideo()
+                    }
+                }
+            }
+        } else {
+            // Already denied — direct to Settings
+            if let url = URL(string: UIApplication.openSettingsURLString) {
+                UIApplication.shared.open(url)
             }
         }
     }
@@ -307,6 +345,7 @@ struct OverflowMenuSheet: View {
     @Binding var showOverflowMenu: Bool
     var items: [ControlButtonID]
     var unreadCount: Int = 0
+    var cameraPermissionGranted: Bool = true
     var onInviteTapped: () -> Void
     var onChatTapped: () -> Void
     var onFlipTapped: () -> Void
@@ -368,11 +407,20 @@ struct OverflowMenuSheet: View {
             }
             .buttonStyle(PlainButtonStyle())
         case .flip:
-            overflowButton(
-                title: "Flip camera",
-                icon: "arrow.triangle.2.circlepath.camera.fill",
-                action: { showOverflowMenu = false; onFlipTapped() }
-            )
+            if cameraPermissionGranted {
+                overflowButton(
+                    title: "Flip camera",
+                    icon: "arrow.triangle.2.circlepath.camera.fill",
+                    action: { showOverflowMenu = false; onFlipTapped() }
+                )
+            } else {
+                overflowButton(
+                    title: "Flip camera",
+                    icon: "arrow.triangle.2.circlepath.camera.fill",
+                    action: {}
+                )
+                .opacity(0.4)
+            }
         case .mic:
             overflowButton(
                 title: "Mute / Unmute",
