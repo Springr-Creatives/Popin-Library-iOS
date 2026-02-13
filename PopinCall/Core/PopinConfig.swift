@@ -17,7 +17,6 @@ public class PopinConfig {
     public weak var initListener: PopinInitListener?
     public weak var eventsListener: PopinEventsListener?
     public let hideDisconnectButton: Bool
-    public let hideScreenShareButton: Bool
     public let hideFlipCameraButton: Bool
     public let hideMuteVideoButton: Bool
     public let hideMuteAudioButton: Bool
@@ -42,7 +41,6 @@ public class PopinConfig {
         self.initListener = builder.initListener
         self.eventsListener = builder.eventsListener
         self.hideDisconnectButton = builder.hideDisconnectButton
-        self.hideScreenShareButton = builder.hideScreenShareButton
         self.hideFlipCameraButton = builder.hideFlipCameraButton
         self.hideMuteVideoButton = builder.hideMuteVideoButton
         self.hideMuteAudioButton = builder.hideMuteAudioButton
@@ -65,7 +63,6 @@ public class PopinConfig {
         var initListener: PopinInitListener?
         var eventsListener: PopinEventsListener?
         var hideDisconnectButton: Bool = false
-        var hideScreenShareButton: Bool = false
         var hideFlipCameraButton: Bool = false
         var hideMuteVideoButton: Bool = false
         var hideMuteAudioButton: Bool = false
@@ -113,12 +110,6 @@ public class PopinConfig {
         @discardableResult
         public func hideDisconnectButton(_ hide: Bool) -> Builder {
             self.hideDisconnectButton = hide
-            return self
-        }
-
-        @discardableResult
-        public func hideScreenShareButton(_ hide: Bool) -> Builder {
-            self.hideScreenShareButton = hide
             return self
         }
 

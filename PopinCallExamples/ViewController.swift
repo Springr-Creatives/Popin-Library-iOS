@@ -55,8 +55,7 @@ class ViewController: UIViewController, UITableViewDataSource {
 
             // UI visibility options (all visible by default)
             .hideDisconnectButton(false)      // Show end call button
-            .hideScreenShareButton(false)     // Show screen share option
-            .hideFlipCameraButton(false)      // Show flip camera button
+            .hideFlipCameraButton(true)      // Show flip camera button
             .hideMuteVideoButton(false)       // Show video toggle button
             .hideMuteAudioButton(false)       // Show mic toggle button
             .hideBackButton(false)            // Show PiP/back button

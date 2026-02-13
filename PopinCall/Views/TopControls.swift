@@ -93,15 +93,15 @@ struct TopControls: View {
     let productExtra: String?
 
     var body: some View {
-        HStack(alignment: .center, spacing: 12) {
+        HStack(alignment: .center, spacing: 4) {
             // PiP/Back Button (Top Left)
             if !configHolder.config.hideBackButton {
                 Button(action: onPipClick) {
                     Image(systemName: "pip.enter")
                         .font(.system(size: 20))
                         .foregroundColor(.white)
-                        .padding(12)
-                        .background(Color.black.opacity(0.4))
+                        .frame(width: 40, height: 40)
+                        .background(Color(hex: "433F40"))
                         .clipShape(Circle())
                 }
                 .buttonStyle(PlainButtonStyle())

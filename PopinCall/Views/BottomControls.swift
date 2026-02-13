@@ -27,6 +27,16 @@ struct SheetPresentationModifier: ViewModifier {
     }
 }
 
+// MARK: - Button Priority System
+
+enum ControlButtonID: Int, CaseIterable {
+    case mic = 1
+    case video = 2
+    case flip = 3
+    case invite = 4
+    case chat = 5
+}
+
 struct BottomControls: View {
     @EnvironmentObject private var room: Room
     @EnvironmentObject private var configHolder: PopinConfigHolder
@@ -43,109 +53,56 @@ struct BottomControls: View {
     @ObservedObject private var chatManager = ChatManager.shared
 
     private let videoCallInteractor = VideoCallInteractor()
-    
+
+    private var visibleButtons: [ControlButtonID] {
+        var buttons: [ControlButtonID] = []
+        if !configHolder.config.hideMuteAudioButton { buttons.append(.mic) }
+        if !configHolder.config.hideMuteVideoButton { buttons.append(.video) }
+        if !configHolder.config.hideFlipCameraButton { buttons.append(.flip) }
+        buttons.append(.invite) // always visible
+        if !configHolder.config.hideChatButton && viewModel.call?.id != nil { buttons.append(.chat) }
+        return buttons.sorted { $0.rawValue < $1.rawValue }
+    }
+
+    private var needsOverflow: Bool { visibleButtons.count > 4 }
+    private var directButtons: [ControlButtonID] { needsOverflow ? Array(visibleButtons.prefix(3)) : visibleButtons }
+    private var overflowButtons: [ControlButtonID] { needsOverflow ? Array(visibleButtons.dropFirst(3)) : [] }
+
     var body: some View {
         HStack(spacing: 0) {
             Spacer()
 
-            // 1. Overflow Menu
-            ControlCircleButton(
-                iconName: "ellipsis",
-                backgroundColor: Color.black.opacity(0.5),
-                iconColor: .white,
-                action: { showOverflowMenu = true }
-            )
-            .sheet(isPresented: $showOverflowMenu) {
-                OverflowMenuSheet(
-                    showOverflowMenu: $showOverflowMenu,
-                    hideScreenShareButton: configHolder.config.hideScreenShareButton,
-                    hideChatButton: configHolder.config.hideChatButton || viewModel.call?.id == nil,
-                    unreadCount: chatManager.unreadCount,
-                    onInviteTapped: {
-                        generateInviteLink()
-                    },
-                    onChatTapped: {
-                        showChat = true
-                    }
-                )
-                .modifier(SheetPresentationModifier(height: 320))
-            }
-            
-            Spacer()
-            
-            // 2. Mic Toggle
-            if !configHolder.config.hideMuteAudioButton {
-                MicrophoneToggleButton(
-                    label: {
-                        // Muted (Off) -> White background, Black icon
-                        ControlCircleButtonView(
-                            iconName: "mic.slash.fill",
-                            backgroundColor: .white,
-                            iconColor: .black
-                        )
-                    },
-                    published: {
-                        // Unmuted (On) -> Dark background, White icon
-                        ControlCircleButtonView(
-                            iconName: "mic.fill",
-                            backgroundColor: Color.black.opacity(0.5),
-                            iconColor: .white
-                        )
-                    }
-                )
-                .buttonStyle(PlainButtonStyle())
-            } else {
-                 // Placeholder to keep spacing if hidden? Or just nothing.
-                 // If hidden, the Spacer() logic might need adjustment for perfect distribution,
-                 // but for now we just omit it.
-            }
-            
-            Spacer()
-            
-            // 3. Video Toggle
-            if !configHolder.config.hideMuteVideoButton {
-                CameraToggleButton(
-                    label: {
-                        // Video Off -> White background, Black icon
-                        ControlCircleButtonView(
-                            iconName: "video.slash.fill",
-                            backgroundColor: .white,
-                            iconColor: .black
-                        )
-                    },
-                    published: {
-                        // Video On -> Dark background, White icon
-                        ControlCircleButtonView(
-                            iconName: "video.fill",
-                            backgroundColor: Color.black.opacity(0.5),
-                            iconColor: .white
-                        )
-                    }
-                )
-                .buttonStyle(PlainButtonStyle())
-            }
-            
-            Spacer()
-
-            // 4. Flip Camera Button
-            if !configHolder.config.hideFlipCameraButton {
+            // 1. Overflow button (only if needed)
+            if needsOverflow {
                 ControlCircleButton(
-                    iconName: "arrow.triangle.2.circlepath.camera.fill",
+                    iconName: "ellipsis",
                     backgroundColor: Color.black.opacity(0.5),
                     iconColor: .white,
-                    action: {
-                        Task {
-                            let videoTrack = room.localParticipant.firstCameraVideoTrack as? LocalVideoTrack
-                            let cameraCapturer = videoTrack?.capturer as? CameraCapturer
-                            try? await cameraCapturer?.switchCameraPosition()
-                        }
-                    }
+                    action: { showOverflowMenu = true }
                 )
+                .sheet(isPresented: $showOverflowMenu) {
+                    OverflowMenuSheet(
+                        showOverflowMenu: $showOverflowMenu,
+                        items: overflowButtons,
+                        unreadCount: chatManager.unreadCount,
+                        onInviteTapped: { generateInviteLink() },
+                        onChatTapped: { showChat = true },
+                        onFlipTapped: { flipCamera() },
+                        onMicTapped: { toggleMic() },
+                        onVideoTapped: { toggleVideo() }
+                    )
+                    .modifier(SheetPresentationModifier(height: CGFloat(80 + overflowButtons.count * 76)))
+                }
+                Spacer()
             }
 
-            Spacer()
+            // 2. Direct buttons
+            ForEach(directButtons, id: \.rawValue) { button in
+                directButtonView(for: button)
+                Spacer()
+            }
 
-            // 5. End Call
+            // 3. End call button
             if !configHolder.config.hideDisconnectButton {
                 ControlCircleButton(
                     iconName: "phone.down.fill",
@@ -153,9 +110,8 @@ struct BottomControls: View {
                     iconColor: .white,
                     action: onEndCall
                 )
+                Spacer()
             }
-
-            Spacer()
         }
         .padding(.horizontal, 16)
         .padding(.bottom, 32)
@@ -193,6 +149,110 @@ struct BottomControls: View {
         .fullScreenCover(isPresented: $showChat) {
             if let callId = viewModel.call?.id {
                 ChatView(callId: callId, onClose: { showChat = false })
+            }
+        }
+    }
+
+    // MARK: - Direct button rendering
+
+    @ViewBuilder
+    private func directButtonView(for button: ControlButtonID) -> some View {
+        switch button {
+        case .mic:
+            MicrophoneToggleButton(
+                label: {
+                    ControlCircleButtonView(
+                        iconName: "mic.slash.fill",
+                        backgroundColor: .white,
+                        iconColor: .black
+                    )
+                },
+                published: {
+                    ControlCircleButtonView(
+                        iconName: "mic.fill",
+                        backgroundColor: Color.black.opacity(0.5),
+                        iconColor: .white
+                    )
+                }
+            )
+            .buttonStyle(PlainButtonStyle())
+        case .video:
+            CameraToggleButton(
+                label: {
+                    ControlCircleButtonView(
+                        iconName: "video.slash.fill",
+                        backgroundColor: .white,
+                        iconColor: .black
+                    )
+                },
+                published: {
+                    ControlCircleButtonView(
+                        iconName: "video.fill",
+                        backgroundColor: Color.black.opacity(0.5),
+                        iconColor: .white
+                    )
+                }
+            )
+            .buttonStyle(PlainButtonStyle())
+        case .flip:
+            ControlCircleButton(
+                iconName: "arrow.triangle.2.circlepath.camera.fill",
+                backgroundColor: Color.black.opacity(0.5),
+                iconColor: .white,
+                action: { flipCamera() }
+            )
+        case .invite:
+            ControlCircleButton(
+                iconName: "person.badge.plus",
+                backgroundColor: Color.black.opacity(0.5),
+                iconColor: .white,
+                action: { generateInviteLink() }
+            )
+        case .chat:
+            ZStack(alignment: .topTrailing) {
+                ControlCircleButton(
+                    iconName: "bubble.left.fill",
+                    backgroundColor: Color.black.opacity(0.5),
+                    iconColor: .white,
+                    action: { showChat = true }
+                )
+                if chatManager.unreadCount > 0 {
+                    Text("\(chatManager.unreadCount)")
+                        .font(.system(size: 10, weight: .bold))
+                        .foregroundColor(.white)
+                        .frame(minWidth: 16, minHeight: 16)
+                        .background(Color.red)
+                        .clipShape(Circle())
+                        .offset(x: 4, y: -4)
+                }
+            }
+        }
+    }
+
+    // MARK: - Actions
+
+    private func flipCamera() {
+        Task {
+            let videoTrack = room.localParticipant.firstCameraVideoTrack as? LocalVideoTrack
+            let cameraCapturer = videoTrack?.capturer as? CameraCapturer
+            try? await cameraCapturer?.switchCameraPosition()
+        }
+    }
+
+    private func toggleMic() {
+        Task {
+            let micTrack = room.localParticipant.firstAudioTrack as? LocalAudioTrack
+            if let track = micTrack {
+                try? await room.localParticipant.setMicrophone(enabled: track.isMuted)
+            }
+        }
+    }
+
+    private func toggleVideo() {
+        Task {
+            let videoTrack = room.localParticipant.firstCameraVideoTrack as? LocalVideoTrack
+            if let track = videoTrack {
+                try? await room.localParticipant.setCamera(enabled: track.isMuted)
             }
         }
     }
@@ -266,97 +326,105 @@ struct ControlCircleButtonView: View {
 
 struct OverflowMenuSheet: View {
     @Binding var showOverflowMenu: Bool
-    var hideScreenShareButton: Bool = false
-    var hideChatButton: Bool = false
+    var items: [ControlButtonID]
     var unreadCount: Int = 0
     var onInviteTapped: () -> Void
     var onChatTapped: () -> Void
+    var onFlipTapped: () -> Void
+    var onMicTapped: () -> Void
+    var onVideoTapped: () -> Void
 
     var body: some View {
         ZStack {
             Color(hex: "2A2F33").ignoresSafeArea()
 
             VStack(spacing: 16) {
-                // Invite Row
-                Button(action: {
-                    showOverflowMenu = false
-                    onInviteTapped()
-                }) {
-                    HStack {
-                        Text("Invite a friend")
-                            .font(.system(size: 16, weight: .regular))
-                            .foregroundColor(.white)
-                        Spacer()
-                        Image(systemName: "person.badge.plus")
-                            .foregroundColor(.white)
-                            .font(.system(size: 20))
-                    }
-                    .padding(20)
-                    .background(Color(hex: "3E4347"))
-                    .cornerRadius(12)
+                ForEach(items, id: \.rawValue) { item in
+                    overflowRow(for: item)
                 }
-                .buttonStyle(PlainButtonStyle())
-
-                // Chat Row
-                if !hideChatButton {
-                    Button(action: {
-                        showOverflowMenu = false
-                        onChatTapped()
-                    }) {
-                        HStack {
-                            Text("Chat")
-                                .font(.system(size: 16, weight: .regular))
-                                .foregroundColor(.white)
-                            Spacer()
-                            ZStack(alignment: .topTrailing) {
-                                Image(systemName: "bubble.left.fill")
-                                    .foregroundColor(.white)
-                                    .font(.system(size: 20))
-                                if unreadCount > 0 {
-                                    Text("\(unreadCount)")
-                                        .font(.system(size: 10, weight: .bold))
-                                        .foregroundColor(.white)
-                                        .frame(minWidth: 16, minHeight: 16)
-                                        .background(Color.red)
-                                        .clipShape(Circle())
-                                        .offset(x: 8, y: -8)
-                                }
-                            }
-                        }
-                        .padding(20)
-                        .background(Color(hex: "3E4347"))
-                        .cornerRadius(12)
-                    }
-                    .buttonStyle(PlainButtonStyle())
-                }
-
-                // Screen Share Row
-                if !hideScreenShareButton {
-                    ZStack {
-                        // Visual
-                        HStack {
-                            Text("Share screen")
-                                .font(.system(size: 16, weight: .regular))
-                                .foregroundColor(.white)
-                            Spacer()
-                            Image(systemName: "rectangle.on.rectangle")
-                                .foregroundColor(.white)
-                                .font(.system(size: 20))
-                        }
-                        .padding(20)
-                        .background(Color(hex: "3E4347"))
-                        .cornerRadius(12)
-
-                        // Invisible Picker
-                        BroadcastPickerRowWrapper()
-                    }
-                }
-
                 Spacer()
             }
             .padding(.top, 32)
             .padding(.horizontal, 16)
         }
+    }
+
+    @ViewBuilder
+    private func overflowRow(for item: ControlButtonID) -> some View {
+        switch item {
+        case .invite:
+            overflowButton(
+                title: "Invite a friend",
+                icon: "person.badge.plus",
+                action: { showOverflowMenu = false; onInviteTapped() }
+            )
+        case .chat:
+            Button(action: {
+                showOverflowMenu = false
+                onChatTapped()
+            }) {
+                HStack {
+                    Text("Chat")
+                        .font(.system(size: 16, weight: .regular))
+                        .foregroundColor(.white)
+                    Spacer()
+                    ZStack(alignment: .topTrailing) {
+                        Image(systemName: "bubble.left.fill")
+                            .foregroundColor(.white)
+                            .font(.system(size: 20))
+                        if unreadCount > 0 {
+                            Text("\(unreadCount)")
+                                .font(.system(size: 10, weight: .bold))
+                                .foregroundColor(.white)
+                                .frame(minWidth: 16, minHeight: 16)
+                                .background(Color.red)
+                                .clipShape(Circle())
+                                .offset(x: 8, y: -8)
+                        }
+                    }
+                }
+                .padding(20)
+                .background(Color(hex: "3E4347"))
+                .cornerRadius(12)
+            }
+            .buttonStyle(PlainButtonStyle())
+        case .flip:
+            overflowButton(
+                title: "Flip camera",
+                icon: "arrow.triangle.2.circlepath.camera.fill",
+                action: { showOverflowMenu = false; onFlipTapped() }
+            )
+        case .mic:
+            overflowButton(
+                title: "Mute / Unmute",
+                icon: "mic.fill",
+                action: { showOverflowMenu = false; onMicTapped() }
+            )
+        case .video:
+            overflowButton(
+                title: "Turn off / on video",
+                icon: "video.fill",
+                action: { showOverflowMenu = false; onVideoTapped() }
+            )
+        }
+    }
+
+    private func overflowButton(title: String, icon: String, action: @escaping () -> Void) -> some View {
+        Button(action: action) {
+            HStack {
+                Text(title)
+                    .font(.system(size: 16, weight: .regular))
+                    .foregroundColor(.white)
+                Spacer()
+                Image(systemName: icon)
+                    .foregroundColor(.white)
+                    .font(.system(size: 20))
+            }
+            .padding(20)
+            .background(Color(hex: "3E4347"))
+            .cornerRadius(12)
+        }
+        .buttonStyle(PlainButtonStyle())
     }
 }
 
