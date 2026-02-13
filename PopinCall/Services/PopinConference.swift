@@ -137,6 +137,25 @@ struct PopinConference: View {
             }
             .ignoresSafeArea()
 
+            // Gradient overlay at bottom for controls visibility
+            VStack {
+                Spacer()
+                LinearGradient(
+                    stops: [
+                        .init(color: Color.black.opacity(0), location: 0.0),
+                        .init(color: Color.black.opacity(0), location: 0.3),
+                        .init(color: Color.black.opacity(0.2), location: 0.5),
+                        .init(color: Color.black.opacity(0.4), location: 0.7),
+                        .init(color: Color.black.opacity(0.6), location: 0.85),
+                        .init(color: Color.black.opacity(0.6), location: 1.0),
+                    ],
+                    startPoint: .top,
+                    endPoint: .bottom
+                )
+                .frame(height: 240)
+            }
+            .ignoresSafeArea()
+
             // Content overlay
             VStack {
                 // "Connecting..." label at top center
