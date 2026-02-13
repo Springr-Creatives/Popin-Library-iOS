@@ -11,7 +11,8 @@
       "Bash(find:*)",
       "WebFetch(domain:github.com)",
       "Bash(swift package:*)",
-      "Bash(xargs:*)"
+      "Bash(xargs:*)",
+      "Bash(xcodebuild:*)"
     ]
   }
 }

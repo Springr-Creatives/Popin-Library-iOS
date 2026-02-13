@@ -45,10 +45,7 @@ struct BottomControls: View {
     let onEndCall: () -> Void
 
     @State private var showOverflowMenu = false
-    @State private var showInviteDialog = false
-    @State private var inviteUrl: String? = nil
-    @State private var inviteError: String? = nil
-    @State private var isLoadingInvite = false
+    @State private var shareItems: [Any]? = nil
     @Binding var showChat: Bool
     @ObservedObject private var chatManager = ChatManager.shared
 
@@ -133,18 +130,13 @@ struct BottomControls: View {
             .frame(maxWidth: .infinity),
             alignment: .bottom
         )
-        .sheet(isPresented: $showInviteDialog) {
-            InviteDialogSheet(
-                inviteUrl: inviteUrl,
-                inviteError: inviteError,
-                isLoading: isLoadingInvite,
-                onDismiss: {
-                    showInviteDialog = false
-                    inviteUrl = nil
-                    inviteError = nil
-                }
-            )
-            .modifier(SheetPresentationModifier(height: 200))
+        .sheet(isPresented: Binding(
+            get: { shareItems != nil },
+            set: { if !$0 { shareItems = nil } }
+        )) {
+            if let items = shareItems {
+                ShareSheet(activityItems: items)
+            }
         }
         .fullScreenCover(isPresented: $showChat) {
             if let callId = viewModel.call?.id {
@@ -258,29 +250,16 @@ struct BottomControls: View {
     }
 
     private func generateInviteLink() {
-        guard let callId = viewModel.call?.id else {
-            inviteError = "Call ID not available"
-            showInviteDialog = true
-            return
-        }
-
-        isLoadingInvite = true
-        inviteError = nil
-        inviteUrl = nil
-        showInviteDialog = true
+        guard let callId = viewModel.call?.id else { return }
 
         Task {
             do {
                 let url = try await videoCallInteractor.inviteParticipant(callId: callId)
                 await MainActor.run {
-                    inviteUrl = url
-                    isLoadingInvite = false
+                    shareItems = ["You have been invited to a call. Join by going to \(url)"]
                 }
             } catch {
-                await MainActor.run {
-                    inviteError = error.localizedDescription
-                    isLoadingInvite = false
-                }
+                print("Failed to generate invite link: \(error.localizedDescription)")
             }
         }
     }
@@ -425,112 +404,6 @@ struct OverflowMenuSheet: View {
             .cornerRadius(12)
         }
         .buttonStyle(PlainButtonStyle())
-    }
-}
-
-struct InviteDialogSheet: View {
-    let inviteUrl: String?
-    let inviteError: String?
-    let isLoading: Bool
-    let onDismiss: () -> Void
-
-    @State private var showCopiedToast = false
-    @State private var showShareSheet = false
-
-    var body: some View {
-        ZStack {
-            Color(hex: "2A2F33").ignoresSafeArea()
-
-            VStack(spacing: 20) {
-                Text("Invite a Friend")
-                    .font(.system(size: 18, weight: .semibold))
-                    .foregroundColor(.white)
-
-                if isLoading {
-                    ProgressView()
-                        .progressViewStyle(CircularProgressViewStyle(tint: .white))
-                        .scaleEffect(1.2)
-                } else if let error = inviteError {
-                    Text(error)
-                        .font(.system(size: 14))
-                        .foregroundColor(.red)
-                        .multilineTextAlignment(.center)
-                } else if let url = inviteUrl {
-                    Text(url)
-                        .font(.system(size: 14))
-                        .foregroundColor(.white.opacity(0.8))
-                        .lineLimit(2)
-                        .truncationMode(.middle)
-                        .padding(.horizontal)
-
-                    HStack(spacing: 12) {
-                        Button(action: {
-                            UIPasteboard.general.string = url
-                            showCopiedToast = true
-                            DispatchQueue.main.asyncAfter(deadline: .now() + 2) {
-                                showCopiedToast = false
-                            }
-                        }) {
-                            HStack {
-                                Image(systemName: "doc.on.doc")
-                                Text("Copy Link")
-                            }
-                            .font(.system(size: 16, weight: .medium))
-                            .foregroundColor(.white)
-                            .padding(.horizontal, 24)
-                            .padding(.vertical, 12)
-                            .background(Color(hex: "4CAF50"))
-                            .cornerRadius(8)
-                        }
-                        .buttonStyle(PlainButtonStyle())
-
-                        Button(action: {
-                            showShareSheet = true
-                        }) {
-                            HStack {
-                                Image(systemName: "square.and.arrow.up")
-                                Text("Share")
-                            }
-                            .font(.system(size: 16, weight: .medium))
-                            .foregroundColor(.white)
-                            .padding(.horizontal, 24)
-                            .padding(.vertical, 12)
-                            .background(Color(hex: "2196F3"))
-                            .cornerRadius(8)
-                        }
-                        .buttonStyle(PlainButtonStyle())
-                        .sheet(isPresented: $showShareSheet) {
-                            ShareSheet(activityItems: [url])
-                        }
-                    }
-                }
-
-                Button(action: onDismiss) {
-                    Text("Close")
-                        .font(.system(size: 16, weight: .medium))
-                        .foregroundColor(.white.opacity(0.7))
-                }
-                .buttonStyle(PlainButtonStyle())
-            }
-            .padding(.top, 24)
-
-            // Toast message
-            if showCopiedToast {
-                VStack {
-                    Spacer()
-                    Text("Invite link copied")
-                        .font(.system(size: 14, weight: .medium))
-                        .foregroundColor(.white)
-                        .padding(.horizontal, 16)
-                        .padding(.vertical, 10)
-                        .background(Color.black.opacity(0.8))
-                        .cornerRadius(8)
-                        .padding(.bottom, 20)
-                }
-                .transition(.opacity)
-                .animation(.easeInOut(duration: 0.3), value: showCopiedToast)
-            }
-        }
     }
 }
 
