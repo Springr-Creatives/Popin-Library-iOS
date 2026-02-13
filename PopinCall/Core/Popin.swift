@@ -196,6 +196,17 @@ public class Popin : PopinPusherDelegate, CallAcceptanceListener {
     }
 
     private func requestPermissionsAndStartCall() {
+        #if canImport(UIKit)
+        // If microphone permission was previously denied, show settings alert
+        if AVCaptureDevice.authorizationStatus(for: .audio) == .denied {
+            PopinLogger.shared.log("requestPermissions: Microphone previously denied, showing settings alert")
+            DispatchQueue.main.async { [weak self] in
+                self?.showPermissionsDeniedAlert()
+            }
+            return
+        }
+        #endif
+
         AVCaptureDevice.requestAccess(for: .audio) { [weak self] micGranted in
             guard let self = self else { return }
 
@@ -219,6 +230,38 @@ public class Popin : PopinPusherDelegate, CallAcceptanceListener {
             }
         }
     }
+
+    #if canImport(UIKit)
+    private func showPermissionsDeniedAlert() {
+        guard let rootVC = UIApplication.shared.connectedScenes
+            .compactMap({ ($0 as? UIWindowScene)?.keyWindow?.rootViewController })
+            .first else {
+            eventsListener?.onCallFailed()
+            return
+        }
+
+        let topVC = Self.topViewController(base: rootVC) ?? rootVC
+
+        let alert = UIAlertController(
+            title: "Microphone Permission Required",
+            message: "Microphone access is required for calls. Please enable it in Settings.",
+            preferredStyle: .alert
+        )
+
+        alert.addAction(UIAlertAction(title: "Open Settings", style: .default) { _ in
+            if let settingsURL = URL(string: UIApplication.openSettingsURLString) {
+                UIApplication.shared.open(settingsURL)
+            }
+        })
+
+        alert.addAction(UIAlertAction(title: "Cancel", style: .cancel) { [weak self] _ in
+            self?.callStarted = false
+            self?.eventsListener?.onCallFailed()
+        })
+
+        topVC.present(alert, animated: true)
+    }
+    #endif
 
     private func initiateCall() {
         PopinLogger.shared.log("initiateCall() - starting connection API call")
