@@ -50,10 +50,18 @@ class PopinPresenter {
         }
     }
     
-    func startConnection(seller_id: Int, onSuccess success: @escaping (Int) -> Void, onFailure failure: @escaping () -> Void) {
+    func startConnection(seller_id: Int, campaign: [String: String], onSuccess success: @escaping (Int) -> Void, onFailure failure: @escaping () -> Void) {
+        var campaignString = ""
+        if !campaign.isEmpty {
+            if let jsonData = try? JSONSerialization.data(withJSONObject: campaign, options: []),
+               let jsonString = String(data: jsonData, encoding: .utf8) {
+                campaignString = jsonString
+            }
+        }
+
         Task {
             do {
-                let callQueueId = try await popinInteractor.startConnection(seller_id: seller_id)
+                let callQueueId = try await popinInteractor.startConnection(seller_id: seller_id, campaign: campaignString)
                 await MainActor.run {
                     success(callQueueId)
                 }

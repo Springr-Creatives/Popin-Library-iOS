@@ -91,7 +91,7 @@ class Utilities: NSObject {
         // Implementation stub or copied from working example if needed
         // Assuming serverURL is globally available
         let urlString = serverURL + "/user/fcm/update";
-        let parameters: [String: Any] = ["mobile_token": token];
+        let parameters: [String: Any] = ["mobile_token": token, "type" : 2];
         Task {
             do {
                 let _: String? = try await request(urlString: urlString, method: "POST", parameters: parameters)

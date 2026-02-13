@@ -188,6 +188,30 @@ extension ViewController: PopinEventsListener {
 }
 ```
 
+## Runtime Configuration Updates
+
+You can update `meta`, `callerId`, and `product` at any time before starting a call — without reinitializing the SDK:
+
+```swift
+let config = Popin.shared?.getConfig()
+config?.product = PopinProduct(
+    id: "NEW-SKU",
+    name: "New Product",
+    image: "https://example.com/new.jpg",
+    url: "https://example.com/new",
+    description: "Updated product",
+    extra: "$199.99"
+)
+config?.callerId = "new_caller_id"
+config?.meta = [
+    "source": "ios_app",
+    "campaign": "winter_sale"
+]
+
+// Now start the call — it will use the updated values
+Popin.shared?.startCall()
+```
+
 ## Receiving Incoming Calls via PushKit
 
 The SDK handles PushKit internally — it manages its own `PKPushRegistry`, receives VoIP tokens, sends them to the server, and processes incoming push payloads. You do **not** need to implement `PKPushRegistryDelegate` yourself.

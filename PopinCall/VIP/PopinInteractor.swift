@@ -72,9 +72,12 @@ class PopinInteractor {
         }
     }
     
-    func startConnection(seller_id: Int) async throws -> Int {
-        let parameters: [String: Any] = ["seller_id":seller_id];
-        let urlString = serverURL + "/user/connect";
+    func startConnection(seller_id: Int, campaign: String) async throws -> Int {
+        var parameters: [String: Any] = ["seller_id":seller_id];
+        if !campaign.isEmpty {
+            parameters["campaign"] = campaign
+        }
+        let urlString = serverURL + "/user/call/start";
         
         let statusModel: StatusModel = try await Utilities.shared.request(urlString: urlString, method: "POST", parameters: parameters)
         

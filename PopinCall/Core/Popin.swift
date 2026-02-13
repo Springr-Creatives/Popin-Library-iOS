@@ -193,7 +193,7 @@ public class Popin : PopinPusherDelegate, CallAcceptanceListener {
 
     private func initiateCall() {
         PopinLogger.shared.log("initiateCall() - starting connection API call")
-        popinPresenter.startConnection(seller_id: sellerToken, onSuccess: { [weak self] callQueueId in
+        popinPresenter.startConnection(seller_id: sellerToken, campaign: getEnhancedMeta(), onSuccess: { [weak self] callQueueId in
             PopinLogger.shared.log("initiateCall() - API success, callQueueId=\(callQueueId)")
             self?.eventsListener?.onCallStart()
 
