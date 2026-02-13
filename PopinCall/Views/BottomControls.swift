@@ -47,6 +47,7 @@ struct BottomControls: View {
 
     @State private var showOverflowMenu = false
     @State private var shareItems: [Any]? = nil
+    @State private var showCameraPermissionAlert = false
     @Binding var showChat: Bool
     @ObservedObject private var chatManager = ChatManager.shared
 
@@ -144,6 +145,11 @@ struct BottomControls: View {
             if let callId = viewModel.call?.id {
                 ChatView(callId: callId, onClose: { showChat = false })
             }
+        }
+        .alert("Camera Access Required", isPresented: $showCameraPermissionAlert) {
+            Button("OK", role: .cancel) {}
+        } message: {
+            Text("Camera access was denied. Please enable it in Settings after the call ends to use video.")
         }
     }
 
@@ -280,10 +286,8 @@ struct BottomControls: View {
                 }
             }
         } else {
-            // Already denied — direct to Settings
-            if let url = URL(string: UIApplication.openSettingsURLString) {
-                UIApplication.shared.open(url)
-            }
+            // Already denied — show alert instead of opening Settings (which kills the app mid-call)
+            showCameraPermissionAlert = true
         }
     }
 

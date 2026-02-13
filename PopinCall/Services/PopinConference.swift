@@ -253,6 +253,7 @@ class LocalCameraPreviewUIView: UIView {
 struct WaitingBottomControls: View {
     @ObservedObject var viewModel: VideoCallViewModel
     let onCancelCall: () -> Void
+    @State private var showCameraPermissionAlert = false
 
     var body: some View {
         HStack(spacing: 0) {
@@ -313,6 +314,11 @@ struct WaitingBottomControls: View {
         .padding(.horizontal, 24)
         .padding(.bottom, 32)
         .padding(.top, 12)
+        .alert("Camera Access Required", isPresented: $showCameraPermissionAlert) {
+            Button("OK", role: .cancel) {}
+        } message: {
+            Text("Camera access was denied. Please enable it in Settings after the call ends to use video.")
+        }
     }
 
     private func requestCameraPermission() {
@@ -327,10 +333,8 @@ struct WaitingBottomControls: View {
                 }
             }
         } else {
-            // Already denied — direct to Settings
-            if let url = URL(string: UIApplication.openSettingsURLString) {
-                UIApplication.shared.open(url)
-            }
+            // Already denied — show alert instead of opening Settings (which kills the app mid-call)
+            showCameraPermissionAlert = true
         }
     }
 }
