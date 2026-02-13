@@ -375,10 +375,18 @@ struct PopinConnectedView: View {
             }
         }
         .onReceive(NotificationCenter.default.publisher(for: .pipDidStop)) { _ in
-            // PiP stopped (e.g. user restored from PiP window)
+            // PiP restored (user tapped fullscreen button)
             // If chat is open, close it to show full screen video
             if showChat {
                 showChat = false
+            }
+        }
+        .onReceive(NotificationCenter.default.publisher(for: .pipDidClose)) { _ in
+            // PiP closed (user tapped X button) — disconnect the call
+            viewModel.isUserEndingCall = true
+            viewModel.onEndCall?()
+            Task {
+                await _room.disconnect()
             }
         }
         .onChange(of: chatManager.latestIncomingMessage) { newMessage in

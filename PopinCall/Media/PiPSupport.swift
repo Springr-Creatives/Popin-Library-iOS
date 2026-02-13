@@ -15,6 +15,7 @@ import SwiftUI
 extension Notification.Name {
     static let pipDidStart = Notification.Name("pipDidStart")
     static let pipDidStop = Notification.Name("pipDidStop")
+    static let pipDidClose = Notification.Name("pipDidClose")
 }
 
 // MARK: - PiP View Controllers
@@ -209,6 +210,7 @@ struct PiPView: UIViewControllerRepresentable {
         let previewController: PiPPreviewViewController
         let videoCallController: PiPVideoCallViewController
         private var track: VideoTrack
+        private var isRestoringFromPiP = false
 
         init(controller: AVPictureInPictureController,
              previewController: PiPPreviewViewController,
@@ -263,9 +265,24 @@ struct PiPView: UIViewControllerRepresentable {
         func pictureInPictureControllerDidStopPictureInPicture(_ pictureInPictureController: AVPictureInPictureController) {
             // Show the main view's video again when PiP stops
             previewController.view.isHidden = false
-            // Notify to show the call view controller
-            NotificationCenter.default.post(name: .pipDidStop, object: nil)
-            PopinCallManager.shared.exitPiPMode()
+
+            if isRestoringFromPiP {
+                // User tapped fullscreen/restore button — go back to full screen call
+                isRestoringFromPiP = false
+                NotificationCenter.default.post(name: .pipDidStop, object: nil)
+                PopinCallManager.shared.exitPiPMode()
+            } else {
+                // User tapped close (X) button — disconnect the call
+                NotificationCenter.default.post(name: .pipDidClose, object: nil)
+                PopinCallManager.shared.exitPiPMode()
+            }
+        }
+
+        func pictureInPictureController(_ pictureInPictureController: AVPictureInPictureController,
+                                       restoreUserInterfaceForPictureInPictureStopWithCompletionHandler completionHandler: @escaping (Bool) -> Void) {
+            // Called when user taps the fullscreen/restore button (not the close button)
+            isRestoringFromPiP = true
+            completionHandler(true)
         }
 
         func pictureInPictureController(_ pictureInPictureController: AVPictureInPictureController,

@@ -292,6 +292,12 @@ public class PopinCallViewController: UIViewController {
             name: .pipDidStop,
             object: nil
         )
+        NotificationCenter.default.addObserver(
+            self,
+            selector: #selector(handlePiPDidStop),
+            name: .pipDidClose,
+            object: nil
+        )
     }
 
     @objc private func handlePiPDidStart() {
