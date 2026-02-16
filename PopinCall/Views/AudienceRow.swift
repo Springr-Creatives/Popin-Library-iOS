@@ -19,9 +19,9 @@ struct AudienceRow: View {
     var body: some View {
         ScrollView(.horizontal, showsIndicators: false) {
             HStack(spacing: 8) {
-                // Agent Tile (Static)
+                // Agent Tile
                 if let agent = agent {
-                    AgentTile(agent: agent, participant: agentParticipant)
+                    AgentTile(agent: agent, participant: agentParticipant, primaryParticipantId: $primaryParticipantId)
                 }
 
                 ForEach(participants) { participant in
@@ -37,12 +37,27 @@ struct AudienceRow: View {
 private struct AgentTile: View {
     let agent: Agent
     let participant: Participant?
+    @Binding var primaryParticipantId: String?
 
     var body: some View {
         ZStack(alignment: .bottom) {
-            // Agent Image Container
+            // Video or Static Image
             ZStack {
-                if let imageUrl = agent.image, let url = URL(string: imageUrl) {
+                if let participant = participant {
+                    ParticipantView(showInformation: false)
+                        .environmentObject(participant)
+                        .frame(width: 90, height: 120)
+
+                    if !participant.isCameraEnabled() {
+                        Rectangle()
+                            .fill(Color.black.opacity(0.8))
+                            .frame(width: 90, height: 120)
+
+                        Image(systemName: "video.slash.fill")
+                            .font(.system(size: 24))
+                            .foregroundColor(.white.opacity(0.6))
+                    }
+                } else if let imageUrl = agent.image, let url = URL(string: imageUrl) {
                     AsyncImage(url: url) { phase in
                         if let image = phase.image {
                             image
@@ -65,6 +80,13 @@ private struct AgentTile: View {
                         )
                 }
             }
+            .onTapGesture {
+                if let sid = participant?.sid?.stringValue {
+                    withAnimation(.easeInOut(duration: 0.3)) {
+                        primaryParticipantId = sid
+                    }
+                }
+            }
 
             // Bottom Gradient Overlay
             LinearGradient(
@@ -73,6 +95,7 @@ private struct AgentTile: View {
                 endPoint: .bottom
             )
             .frame(height: 45)
+            .allowsHitTesting(false)
 
             // Name and Role (Expert)
             VStack(alignment: .leading, spacing: 0) {
@@ -91,14 +114,17 @@ private struct AgentTile: View {
             .padding(.leading, 8)
             .padding(.bottom, 8)
             .frame(maxWidth: .infinity, alignment: .leading)
+            .allowsHitTesting(false)
             
             // Indicators (Mute & Signal) at Top Right
             if let participant = participant {
                 AgentIndicators(participant: participant)
+                    .allowsHitTesting(false)
             }
         }
         .frame(width: 90, height: 120)
         .cornerRadius(12)
+        .contentShape(Rectangle())
         .overlay(
             RoundedRectangle(cornerRadius: 12)
                 .stroke(Color(hex: "FFFFFF"), lineWidth: 0.5)
@@ -169,6 +195,7 @@ private struct AudienceRowTile: View {
                 endPoint: .bottom
             )
             .frame(height: 45)
+            .allowsHitTesting(false)
 
             // Participant name
             Text(participant.name ?? "Unknown")
@@ -180,6 +207,7 @@ private struct AudienceRowTile: View {
                 .padding(.leading, 8)
                 .padding(.bottom, 8)
                 .frame(maxWidth: .infinity, alignment: .leading)
+                .allowsHitTesting(false)
 
             // Top Right Indicators
             VStack(spacing: 4) {
@@ -208,9 +236,11 @@ private struct AudienceRowTile: View {
             }
             .padding(6)
             .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .topTrailing)
+            .allowsHitTesting(false)
         }
         .frame(width: 90, height: 120)
         .cornerRadius(12)
+        .contentShape(Rectangle())
         .overlay(
             RoundedRectangle(cornerRadius: 12)
                 .stroke(Color(hex: "FFFFFF"), lineWidth: 0.5)

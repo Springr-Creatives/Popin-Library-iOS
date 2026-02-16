@@ -103,16 +103,24 @@ struct PopinConnectedView: View {
             return (p1.sid?.stringValue ?? "") < (p2.sid?.stringValue ?? "")
         }
         
-        // 5. Append new SIDs
+        // 5. Append new SIDs - but prioritize sellers to the front if no seller is currently primary
         for p in sortedNew {
             if let sid = p.sid?.stringValue {
+                let identity = p.identity?.stringValue ?? ""
+                if identity.hasPrefix("s") && !newOrder.isEmpty {
+                    // Check if the current primary is a seller
+                    let firstSid = newOrder[0]
+                    let firstParticipant = _room.allParticipants.values.first(where: { $0.sid?.stringValue == firstSid })
+                    let firstIsSeller = firstParticipant?.identity?.stringValue.hasPrefix("s") ?? false
+                    
+                    if !firstIsSeller {
+                        newOrder.insert(sid, at: 0)
+                        continue
+                    }
+                }
                 newOrder.append(sid)
             }
         }
-        
-        // 6. If LocalParticipant is present but wasn't at index 0 initially (and no primary selected),
-        // we might want to enforce it? No, let the natural sort handle it.
-        // However, we must ensure the list is not empty if participants exist.
         
         if participantOrder != newOrder {
             participantOrder = newOrder
@@ -305,8 +313,17 @@ struct PopinConnectedView: View {
             }()
 
             if sortedParticipants.count > 1 || currentAgent != nil {
+                // Filter out the agent participant from the audience row if we're showing the static AgentTile
+                let audienceParticipants = Array(sortedParticipants.dropFirst())
+                let filteredAudience = audienceParticipants.filter { p in
+                    if let agentPart = agentParticipant {
+                        return p.sid?.stringValue != agentPart.sid?.stringValue
+                    }
+                    return true
+                }
+                
                 AudienceRow(
-                    participants: sortedParticipants.count > 1 ? Array(sortedParticipants.dropFirst()) : [],
+                    participants: filteredAudience,
                     agent: currentAgent,
                     agentParticipant: agentParticipant,
                     primaryParticipantId: $primaryParticipantId
@@ -382,6 +399,9 @@ struct PopinConnectedView: View {
                      }
                  }
              }
+             
+             // Reset to allow re-selection if they move back to audience
+             primaryParticipantId = nil
         }
         .onChangeCompatible(of: scenePhase) { newPhase in
             // Automatically enable PiP when app goes to background
