@@ -35,4 +35,11 @@ struct VideoCall : Codable {
     let access_token: String?
     let room: String?
     let websocket: String?
+    let agent: Agent?
+    let seller_id: Int?
+    let agent_id: Int?
+    let user_name: String?
+    let user_mobile: String?
+    let agents: [Agent]?
+    let created_at: Double?
 }

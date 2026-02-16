@@ -381,7 +381,7 @@ public class Popin : PopinPusherDelegate, CallAcceptanceListener {
     }
 
     private func connectToCall(callId: Int) {
-        PopinLogger.shared.log("connectToCall: callId=\(callId)")
+//        PopinLogger.shared.log("connectToCall: callId=\(callId)")
         popinPresenter.getCallDetails(callId: callId, onSuccess: { [weak self] talkModel in
             PopinLogger.shared.log("connectToCall: Got call details, currentCallVC=\(self?.currentCallViewController != nil ? "exists" : "nil")")
             self?.eventsListener?.onCallConnected()

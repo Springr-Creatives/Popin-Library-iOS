@@ -7,16 +7,38 @@
 
 import Foundation
 
-public struct TalkModel : Codable{
-    public let id: Int?;
-    public let user_id: Int?;
-    public let token: String?;
-    public let room: String?;
-    public let websocket: String?; // LiveKit websocket URL
-    public let status: Int;
+public struct Agent: Codable {
+    public let id: Int?
+    public let name: String?
+    public let image: String?
+}
+
+public struct TalkModel : Codable {
+    public let id: Int?
+    public let user_id: Int?
+    public let room: String?
+    public let websocket: String? // LiveKit websocket URL
+    public let status: Int
+    
+    public let agent: Agent?
+    public let seller_id: Int?
+    public let agent_id: Int?
+    public let user_name: String?
+    public let user_mobile: String?
+    public let agents: [Agent]?
+    public let created_at: Double?
+    
+    private let token: String?
+    private let server_access_token: String?
     
     public var access_token: String? {
-        return token
+        return server_access_token ?? token
+    }
+    
+    enum CodingKeys: String, CodingKey {
+        case id, user_id, token, room, websocket, status
+        case agent, seller_id, agent_id, user_name, user_mobile, agents, created_at
+        case server_access_token = "access_token"
     }
 }
 
