@@ -189,7 +189,7 @@ struct PiPView: UIViewControllerRepresentable {
         )
         let controller = AVPictureInPictureController(contentSource: contentSource)
         controller.canStartPictureInPictureAutomaticallyFromInline = true
-        controller.setValue(1, forKey: "controlsStyle") // Display close/fullscreen buttons
+        controller.setValue(2, forKey: "controlsStyle") // Hide all buttons; tapping PiP restores full view
 
         let coordinator = Coordinator(
             controller: controller,
