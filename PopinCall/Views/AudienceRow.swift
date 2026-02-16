@@ -17,6 +17,7 @@ struct AudienceRow: View {
     @Binding var primaryParticipantId: String?
 
     var body: some View {
+        let _ = PopinLogger.shared.log("AudienceRow: agent=\(agent?.name ?? "nil"), agentParticipant=\(agentParticipant?.identity?.stringValue ?? "nil"), participants=\(participants.map { $0.identity?.stringValue ?? "?" })")
         ScrollView(.horizontal, showsIndicators: false) {
             HStack(spacing: 8) {
                 // Agent Tile
@@ -147,88 +148,92 @@ private struct AudienceRowTile: View {
     @Binding var primaryParticipantId: String?
 
     var body: some View {
-        ZStack(alignment: .bottom) {
-            // Video view or no video placeholder
-            ZStack {
-                ParticipantView(showInformation: false)
-                    .environmentObject(participant)
-                    .frame(width: 90, height: 120)
-
-                if !participant.isCameraEnabled() {
-                    Rectangle()
-                        .fill(Color.black.opacity(0.8))
+        Button {
+            let sid = participant.sid?.stringValue
+            let identity = participant.identity?.stringValue
+            PopinLogger.shared.log("AudienceRowTile tapped: identity=\(identity ?? "nil"), sid=\(sid ?? "nil"), name=\(participant.name ?? "nil")")
+            if let sid = sid {
+                withAnimation(.easeInOut(duration: 0.3)) {
+                    primaryParticipantId = sid
+                }
+            } else {
+                PopinLogger.shared.log("AudienceRowTile: tap ignored — participant SID is nil")
+            }
+        } label: {
+            ZStack(alignment: .bottom) {
+                // Video view or no video placeholder
+                ZStack {
+                    ParticipantView(showInformation: false)
+                        .environmentObject(participant)
                         .frame(width: 90, height: 120)
 
-                    Image(systemName: "video.slash.fill")
-                        .font(.system(size: 24))
-                        .foregroundColor(.white.opacity(0.6))
+                    if !participant.isCameraEnabled() {
+                        Rectangle()
+                            .fill(Color.black.opacity(0.8))
+                            .frame(width: 90, height: 120)
+
+                        Image(systemName: "video.slash.fill")
+                            .font(.system(size: 24))
+                            .foregroundColor(.white.opacity(0.6))
+                    }
                 }
-            }
 
-            // Bottom Gradient Overlay
-            LinearGradient(
-                gradient: Gradient(colors: [Color.black.opacity(0), Color(hex: "080060").opacity(0.5)]),
-                startPoint: .top,
-                endPoint: .bottom
-            )
-            .frame(height: 45)
-            .allowsHitTesting(false)
+                // Bottom Gradient Overlay
+                LinearGradient(
+                    gradient: Gradient(colors: [Color.black.opacity(0), Color(hex: "080060").opacity(0.5)]),
+                    startPoint: .top,
+                    endPoint: .bottom
+                )
+                .frame(height: 45)
 
-            // Participant name
-            Text(participant.name ?? "Unknown")
-                .font(.system(size: 12))
-                .fontWeight(.medium)
-                .foregroundColor(.white)
-                .lineLimit(1)
-                .truncationMode(.tail)
-                .padding(.leading, 8)
-                .padding(.bottom, 8)
-                .frame(maxWidth: .infinity, alignment: .leading)
-                .allowsHitTesting(false)
+                // Participant name
+                Text(participant.name ?? "Unknown")
+                    .font(.system(size: 12))
+                    .fontWeight(.medium)
+                    .foregroundColor(.white)
+                    .lineLimit(1)
+                    .truncationMode(.tail)
+                    .padding(.leading, 8)
+                    .padding(.bottom, 8)
+                    .frame(maxWidth: .infinity, alignment: .leading)
 
-            // Top Right Indicators
-            VStack(spacing: 4) {
-                // Mute indicator
-                if !participant.isMicrophoneEnabled() {
+                // Top Right Indicators
+                VStack(spacing: 4) {
+                    // Mute indicator
+                    if !participant.isMicrophoneEnabled() {
+                        ZStack {
+                            Circle()
+                                .fill(Color.black.opacity(0.7))
+                                .frame(width: 20, height: 20)
+
+                            Image(systemName: "mic.slash.fill")
+                                .font(.system(size: 10))
+                                .foregroundColor(.white)
+                        }
+                    }
+
+                    // Signal strength
                     ZStack {
                         Circle()
                             .fill(Color.black.opacity(0.7))
                             .frame(width: 20, height: 20)
 
-                        Image(systemName: "mic.slash.fill")
-                            .font(.system(size: 10))
-                            .foregroundColor(.white)
+                        SignalStrengthView(quality: participant.connectionQuality)
+                            .scaleEffect(0.7)
                     }
                 }
-
-                // Signal strength
-                ZStack {
-                    Circle()
-                        .fill(Color.black.opacity(0.7))
-                        .frame(width: 20, height: 20)
-                    
-                    SignalStrengthView(quality: participant.connectionQuality)
-                        .scaleEffect(0.7)
-                }
+                .padding(6)
+                .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .topTrailing)
             }
-            .padding(6)
-            .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .topTrailing)
-            .allowsHitTesting(false)
+            .frame(width: 90, height: 120)
+            .cornerRadius(12)
+            .contentShape(Rectangle())
+            .overlay(
+                RoundedRectangle(cornerRadius: 12)
+                    .stroke(Color(hex: "FFFFFF"), lineWidth: 0.5)
+            )
         }
-        .frame(width: 90, height: 120)
-        .cornerRadius(12)
-        .contentShape(Rectangle())
-        .overlay(
-            RoundedRectangle(cornerRadius: 12)
-                .stroke(Color(hex: "FFFFFF"), lineWidth: 0.5)
-        )
-        .onTapGesture {
-            if let sid = participant.sid?.stringValue {
-                withAnimation(.easeInOut(duration: 0.3)) {
-                    primaryParticipantId = sid
-                }
-            }
-        }
+        .buttonStyle(.plain)
     }
 }
 

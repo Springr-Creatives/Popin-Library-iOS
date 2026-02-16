@@ -321,6 +321,7 @@ struct PopinConnectedView: View {
                     }
                     return true
                 }
+                let _ = PopinLogger.shared.log("AudienceRow build: sorted=\(sortedParticipants.map { "\($0.identity?.stringValue ?? "?")(\($0.sid?.stringValue ?? "noSid"))" }), primary=\(sortedParticipants.first?.identity?.stringValue ?? "nil"), audienceCount=\(filteredAudience.count), agentParticipant=\(agentParticipant?.identity?.stringValue ?? "nil")")
                 
                 AudienceRow(
                     participants: filteredAudience,
@@ -389,17 +390,28 @@ struct PopinConnectedView: View {
         }
         // Handle Primary Participant Selection (Swap Logic)
         .onChange(of: primaryParticipantId) { newId in
-             guard let newId = newId, !participantOrder.isEmpty else { return }
-             
+             guard let newId = newId, !participantOrder.isEmpty else {
+                 PopinLogger.shared.log("Swap: ignored — newId=\(newId ?? "nil"), orderEmpty=\(participantOrder.isEmpty)")
+                 return
+             }
+
+             PopinLogger.shared.log("Swap: requested sid=\(newId), participantOrder=\(participantOrder)")
+
              if let targetIndex = participantOrder.firstIndex(of: newId) {
                  if targetIndex != 0 {
+                     PopinLogger.shared.log("Swap: swapping index 0 (\(participantOrder[0])) with index \(targetIndex) (\(participantOrder[targetIndex]))")
                      // Perform the swap on the persistent state
                      withAnimation {
                          participantOrder.swapAt(0, targetIndex)
                      }
+                     PopinLogger.shared.log("Swap: new order=\(participantOrder)")
+                 } else {
+                     PopinLogger.shared.log("Swap: already at index 0, no swap needed")
                  }
+             } else {
+                 PopinLogger.shared.log("Swap: sid \(newId) NOT found in participantOrder")
              }
-             
+
              // Reset to allow re-selection if they move back to audience
              primaryParticipantId = nil
         }
