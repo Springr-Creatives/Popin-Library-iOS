@@ -321,7 +321,6 @@ struct PopinConnectedView: View {
                     }
                     return true
                 }
-                let _ = PopinLogger.shared.log("AudienceRow build: sorted=\(sortedParticipants.map { "\($0.identity?.stringValue ?? "?")(\($0.sid?.stringValue ?? "noSid"))" }), primary=\(sortedParticipants.first?.identity?.stringValue ?? "nil"), audienceCount=\(filteredAudience.count), agentParticipant=\(agentParticipant?.identity?.stringValue ?? "nil")")
                 
                 AudienceRow(
                     participants: filteredAudience,
