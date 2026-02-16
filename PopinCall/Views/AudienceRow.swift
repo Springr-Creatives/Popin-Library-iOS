@@ -39,9 +39,9 @@ private struct AgentTile: View {
     let participant: Participant?
 
     var body: some View {
-        VStack(spacing: 4) {
+        ZStack(alignment: .bottom) {
             // Agent Image Container
-            ZStack(alignment: .bottomLeading) {
+            ZStack {
                 if let imageUrl = agent.image, let url = URL(string: imageUrl) {
                     AsyncImage(url: url) { phase in
                         if let image = phase.image {
@@ -54,42 +54,55 @@ private struct AgentTile: View {
                     }
                     .frame(width: 90, height: 120)
                     .clipped()
-                    .cornerRadius(8)
-                    .overlay(
-                        RoundedRectangle(cornerRadius: 8)
-                            .stroke(Color.white.opacity(0.3), lineWidth: 1)
-                    )
                 } else {
                     // Fallback if no image URL
-                    RoundedRectangle(cornerRadius: 8)
-                        .fill(Color.gray.opacity(0.3))
+                    Color.gray.opacity(0.3)
                         .frame(width: 90, height: 120)
                         .overlay(
                             Image(systemName: "person.fill")
                                 .font(.system(size: 24))
                                 .foregroundColor(.white.opacity(0.6))
                         )
-                        .overlay(
-                            RoundedRectangle(cornerRadius: 8)
-                                .stroke(Color.white.opacity(0.3), lineWidth: 1)
-                        )
-                }
-                
-                // Indicators (Mute & Signal)
-                if let participant = participant {
-                    AgentIndicators(participant: participant)
                 }
             }
 
-            // Agent Name
-            Text(agent.name ?? "Agent")
-                .font(.system(size: 12))
-                .fontWeight(.medium)
-                .foregroundColor(.white)
-                .lineLimit(1)
-                .truncationMode(.tail)
-                .frame(width: 90)
+            // Bottom Gradient Overlay
+            LinearGradient(
+                gradient: Gradient(colors: [Color.black.opacity(0), Color(hex: "080060").opacity(0.5)]),
+                startPoint: .top,
+                endPoint: .bottom
+            )
+            .frame(height: 45)
+
+            // Name and Role (Expert)
+            VStack(alignment: .leading, spacing: 0) {
+                Text("Expert")
+                    .font(.system(size: 10))
+                    .fontWeight(.bold)
+                    .foregroundColor(.white)
+                
+                Text(agent.name ?? "Agent")
+                    .font(.system(size: 12))
+                    .fontWeight(.medium)
+                    .foregroundColor(.white)
+                    .lineLimit(1)
+                    .truncationMode(.tail)
+            }
+            .padding(.leading, 8)
+            .padding(.bottom, 8)
+            .frame(maxWidth: .infinity, alignment: .leading)
+            
+            // Indicators (Mute & Signal) at Top Right
+            if let participant = participant {
+                AgentIndicators(participant: participant)
+            }
         }
+        .frame(width: 90, height: 120)
+        .cornerRadius(12)
+        .overlay(
+            RoundedRectangle(cornerRadius: 12)
+                .stroke(Color(hex: "7063FF"), lineWidth: 0.5)
+        )
     }
 }
 
@@ -97,13 +110,13 @@ private struct AgentIndicators: View {
     @ObservedObject var participant: Participant
     
     var body: some View {
-        HStack {
+        VStack(spacing: 4) {
             // Mute indicator
             if !participant.isMicrophoneEnabled() {
                 ZStack {
                     Circle()
-                        .fill(Color.black.opacity(0.6))
-                        .frame(width: 24, height: 24)
+                        .fill(Color.black.opacity(0.7))
+                        .frame(width: 20, height: 20)
 
                     Image(systemName: "mic.slash.fill")
                         .font(.system(size: 10))
@@ -111,12 +124,18 @@ private struct AgentIndicators: View {
                 }
             }
 
-            Spacer()
-
             // Signal strength
-            SignalStrengthView(quality: participant.connectionQuality)
+            ZStack {
+                Circle()
+                    .fill(Color.black.opacity(0.7))
+                    .frame(width: 20, height: 20)
+                
+                SignalStrengthView(quality: participant.connectionQuality)
+                    .scaleEffect(0.6)
+            }
         }
         .padding(6)
+        .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .topTrailing)
     }
 }
 
@@ -125,52 +144,31 @@ private struct AudienceRowTile: View {
     @Binding var primaryParticipantId: String?
 
     var body: some View {
-        VStack(spacing: 4) {
-            ZStack(alignment: .bottomLeading) {
-                // Video view or no video placeholder
-                ZStack {
-                    ParticipantView(showInformation: false)
-                        .environmentObject(participant)
+        ZStack(alignment: .bottom) {
+            // Video view or no video placeholder
+            ZStack {
+                ParticipantView(showInformation: false)
+                    .environmentObject(participant)
+                    .frame(width: 90, height: 120)
+
+                if !participant.isCameraEnabled() {
+                    Rectangle()
+                        .fill(Color.black.opacity(0.8))
                         .frame(width: 90, height: 120)
-                        .cornerRadius(8)
-                        .overlay(
-                            RoundedRectangle(cornerRadius: 8)
-                                .stroke(Color.white.opacity(0.3), lineWidth: 1)
-                        )
 
-                    if !participant.isCameraEnabled() {
-                        RoundedRectangle(cornerRadius: 8)
-                            .fill(Color.black.opacity(0.8))
-                            .frame(width: 90, height: 120)
-
-                        Image(systemName: "video.slash.fill")
-                            .font(.system(size: 24))
-                            .foregroundColor(.white.opacity(0.6))
-                    }
+                    Image(systemName: "video.slash.fill")
+                        .font(.system(size: 24))
+                        .foregroundColor(.white.opacity(0.6))
                 }
-
-                // Bottom overlay: mute indicator (left) and signal strength (right)
-                HStack {
-                    // Mute indicator
-                    if !participant.isMicrophoneEnabled() {
-                        ZStack {
-                            Circle()
-                                .fill(Color.black.opacity(0.6))
-                                .frame(width: 24, height: 24)
-
-                            Image(systemName: "mic.slash.fill")
-                                .font(.system(size: 10))
-                                .foregroundColor(.white)
-                        }
-                    }
-
-                    Spacer()
-
-                    // Signal strength
-                    SignalStrengthView(quality: participant.connectionQuality)
-                }
-                .padding(6)
             }
+
+            // Bottom Gradient Overlay
+            LinearGradient(
+                gradient: Gradient(colors: [Color.black.opacity(0), Color(hex: "080060").opacity(0.5)]),
+                startPoint: .top,
+                endPoint: .bottom
+            )
+            .frame(height: 45)
 
             // Participant name
             Text(participant.name ?? "Unknown")
@@ -179,8 +177,44 @@ private struct AudienceRowTile: View {
                 .foregroundColor(.white)
                 .lineLimit(1)
                 .truncationMode(.tail)
-                .frame(width: 90)
+                .padding(.leading, 8)
+                .padding(.bottom, 8)
+                .frame(maxWidth: .infinity, alignment: .leading)
+
+            // Top Right Indicators
+            VStack(spacing: 4) {
+                // Mute indicator
+                if !participant.isMicrophoneEnabled() {
+                    ZStack {
+                        Circle()
+                            .fill(Color.black.opacity(0.7))
+                            .frame(width: 20, height: 20)
+
+                        Image(systemName: "mic.slash.fill")
+                            .font(.system(size: 10))
+                            .foregroundColor(.white)
+                    }
+                }
+
+                // Signal strength
+                ZStack {
+                    Circle()
+                        .fill(Color.black.opacity(0.7))
+                        .frame(width: 20, height: 20)
+                    
+                    SignalStrengthView(quality: participant.connectionQuality)
+                        .scaleEffect(0.7)
+                }
+            }
+            .padding(6)
+            .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .topTrailing)
         }
+        .frame(width: 90, height: 120)
+        .cornerRadius(12)
+        .overlay(
+            RoundedRectangle(cornerRadius: 12)
+                .stroke(Color(hex: "7063FF"), lineWidth: 0.5)
+        )
         .onTapGesture {
             if let sid = participant.sid?.stringValue {
                 withAnimation(.easeInOut(duration: 0.3)) {
@@ -196,10 +230,10 @@ private struct SignalStrengthView: View {
 
     private var barCount: Int {
         switch quality {
-        case .excellent: return 3
-        case .good: return 2
-        case .poor: return 1
-        default: return 0
+        case .excellent: return 4
+        case .good: return 3
+        case .poor: return 2
+        default: return 1
         }
     }
 
@@ -213,17 +247,12 @@ private struct SignalStrengthView: View {
     }
 
     var body: some View {
-        if quality != .unknown {
-            HStack(alignment: .bottom, spacing: 1.5) {
-                ForEach(0..<3, id: \.self) { index in
-                    RoundedRectangle(cornerRadius: 1)
-                        .fill(index < barCount ? barColor : Color.white.opacity(0.3))
-                        .frame(width: 3, height: CGFloat(6 + index * 4))
-                }
+        HStack(alignment: .bottom, spacing: 1.5) {
+            ForEach(0..<4, id: \.self) { index in
+                RoundedRectangle(cornerRadius: 1)
+                    .fill(quality != .unknown && index < barCount ? barColor : Color.white.opacity(0.3))
+                    .frame(width: 3, height: CGFloat(6 + index * 4))
             }
-            .padding(4)
-            .background(Color.black.opacity(0.6))
-            .cornerRadius(4)
         }
     }
 }
