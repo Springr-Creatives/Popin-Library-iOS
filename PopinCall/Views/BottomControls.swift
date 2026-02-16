@@ -258,7 +258,9 @@ struct BottomControls: View {
             do {
                 let url = try await videoCallInteractor.inviteParticipant(callId: callId)
                 await MainActor.run {
-                    shareItems = ["You have been invited to a call. Join by going to \(url)"]
+                    let agentName = viewModel.call?.agent?.name ?? viewModel.call?.agents?.first?.name ?? "an agent"
+                    let productName = configHolder.config.product?.name ?? PopinCallManager.shared.callData?.productName ?? "a product"
+                    shareItems = ["Hey,\nI'm on a live video call with \(agentName) checking out \(productName)\nJoin in and see it with me 👇\n\n\(url)"]
                 }
             } catch {
                 print("Failed to generate invite link: \(error.localizedDescription)")
