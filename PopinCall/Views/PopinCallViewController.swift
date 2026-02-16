@@ -470,21 +470,10 @@ extension PopinCallViewController: CallManagerDelegate {
             if self.shouldSkipEndApi {
             } else if self.callConnected || self.viewModel.callAccepted {
                 self.videoCallPresenter.endCall(callId: self.callId, onSuccess: {
-                    if !self.isAppInitiatedDisconnect {
-                        exit(0)
-                    }
                 }, onFailure: { error in
-                    if !self.isAppInitiatedDisconnect {
-                        exit(0)
-                    }
                 })
             } else {
                 self.videoCallPresenter.rejectCall(callId: self.callId)
-                
-                // Also exit if this was an external reject (e.g. "Decline" on incoming GSM interrupt)
-                if !self.isAppInitiatedDisconnect {
-                     exit(0)
-                }
             }
             
             self.closeViewController(shouldNotEndCX: true)
