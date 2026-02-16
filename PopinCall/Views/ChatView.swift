@@ -194,6 +194,14 @@ struct ChatBubble: View {
                             .cornerRadius(18)
                     }
                 }
+                
+                // Timestamp
+                if !message.timestamp.isEmpty {
+                    Text(message.timestamp)
+                        .font(.system(size: 10))
+                        .foregroundColor(.gray)
+                        .padding(.horizontal, 4)
+                }
             }
 
             if !message.isMe {
