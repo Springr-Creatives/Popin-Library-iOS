@@ -260,8 +260,8 @@ struct WaitingBottomControls: View {
             // 1. Overflow Menu (disabled)
             ControlCircleButtonView(
                 iconName: "ellipsis",
-                backgroundColor: Color.black.opacity(0.3),
-                iconColor: .white.opacity(0.4)
+                backgroundColor: Color.black.opacity(0.15),
+                iconColor: .white.opacity(0.2)
             )
 
             Spacer()
@@ -279,26 +279,29 @@ struct WaitingBottomControls: View {
             Spacer()
 
             // 3. Video Toggle
-            ControlCircleButton(
-                iconName: viewModel.preCallCameraEnabled ? "video.fill" : "video.slash.fill",
-                backgroundColor: viewModel.preCallCameraEnabled ? Color.black.opacity(0.5) : .white,
-                iconColor: viewModel.preCallCameraEnabled ? .white : .black,
-                action: {
-                    if viewModel.cameraPermissionGranted {
+            if viewModel.cameraPermissionGranted {
+                ControlCircleButton(
+                    iconName: viewModel.preCallCameraEnabled ? "video.fill" : "video.slash.fill",
+                    backgroundColor: viewModel.preCallCameraEnabled ? Color.black.opacity(0.5) : .white,
+                    iconColor: viewModel.preCallCameraEnabled ? .white : .black,
+                    action: {
                         viewModel.preCallCameraEnabled.toggle()
-                    } else {
-                        requestCameraPermission()
                     }
+                )
+            } else {
+                Button(action: { requestCameraPermission() }) {
+                    WaitingWarnCameraIconView()
                 }
-            )
+                .buttonStyle(PlainButtonStyle())
+            }
 
             Spacer()
 
             // 4. Flip Camera (disabled)
             ControlCircleButtonView(
                 iconName: "arrow.triangle.2.circlepath.camera.fill",
-                backgroundColor: Color.black.opacity(0.3),
-                iconColor: .white.opacity(0.4)
+                backgroundColor: Color.black.opacity(0.15),
+                iconColor: .white.opacity(0.2)
             )
 
             Spacer()
@@ -315,9 +318,14 @@ struct WaitingBottomControls: View {
         .padding(.bottom, 32)
         .padding(.top, 12)
         .alert("Camera Access Required", isPresented: $showCameraPermissionAlert) {
-            Button("OK", role: .cancel) {}
+            Button("Cancel", role: .cancel) {}
+            Button("Settings") {
+                if let url = URL(string: UIApplication.openSettingsURLString) {
+                    UIApplication.shared.open(url)
+                }
+            }
         } message: {
-            Text("Camera access was denied. Please enable it in Settings after the call ends to use video.")
+            Text("Camera access was denied. Please enable it in Settings to use video.")
         }
     }
 
@@ -335,6 +343,32 @@ struct WaitingBottomControls: View {
         } else {
             // Already denied — show alert instead of opening Settings (which kills the app mid-call)
             showCameraPermissionAlert = true
+        }
+    }
+}
+
+struct WaitingWarnCameraIconView: View {
+    var body: some View {
+        ZStack {
+            Circle()
+                .fill(Color.white)
+                .frame(width: 56, height: 56)
+            
+            Image(systemName: "video.slash.fill")
+                .font(.system(size: 24))
+                .foregroundColor(Color(hex: "0F172B"))
+            
+            // Red warning badge
+            ZStack {
+                Circle()
+                    .fill(Color(hex: "FFC9C9"))
+                    .frame(width: 20, height: 20)
+                
+                Image(systemName: "exclamationmark")
+                    .font(.system(size: 12, weight: .bold))
+                    .foregroundColor(Color(hex: "C10007"))
+            }
+            .offset(x: 18, y: -18)
         }
     }
 }

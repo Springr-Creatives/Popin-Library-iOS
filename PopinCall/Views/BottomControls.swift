@@ -147,9 +147,14 @@ struct BottomControls: View {
             }
         }
         .alert("Camera Access Required", isPresented: $showCameraPermissionAlert) {
-            Button("OK", role: .cancel) {}
+            Button("Cancel", role: .cancel) {}
+            Button("Settings") {
+                if let url = URL(string: UIApplication.openSettingsURLString) {
+                    UIApplication.shared.open(url)
+                }
+            }
         } message: {
-            Text("Camera access was denied. Please enable it in Settings after the call ends to use video.")
+            Text("Camera access was denied. Please enable it in Settings to use video.")
         }
     }
 
@@ -196,12 +201,10 @@ struct BottomControls: View {
                 )
                 .buttonStyle(PlainButtonStyle())
             } else {
-                ControlCircleButton(
-                    iconName: "video.slash.fill",
-                    backgroundColor: .white,
-                    iconColor: .black,
-                    action: { requestCameraAndToggleVideo() }
-                )
+                Button(action: { requestCameraAndToggleVideo() }) {
+                    WarnCameraIconView()
+                }
+                .buttonStyle(PlainButtonStyle())
             }
         case .flip:
             if viewModel.cameraPermissionGranted {
@@ -214,8 +217,8 @@ struct BottomControls: View {
             } else {
                 ControlCircleButtonView(
                     iconName: "arrow.triangle.2.circlepath.camera.fill",
-                    backgroundColor: Color.black.opacity(0.3),
-                    iconColor: .white.opacity(0.4)
+                    backgroundColor: Color.black.opacity(0.15),
+                    iconColor: .white.opacity(0.2)
                 )
             }
         case .invite:
@@ -308,6 +311,32 @@ struct BottomControls: View {
 }
 
 // MARK: - Helper Views
+
+struct WarnCameraIconView: View {
+    var body: some View {
+        ZStack {
+            Circle()
+                .fill(Color.white)
+                .frame(width: 56, height: 56)
+            
+            Image(systemName: "video.slash.fill")
+                .font(.system(size: 24))
+                .foregroundColor(Color(hex: "0F172B"))
+            
+            // Red warning badge
+            ZStack {
+                Circle()
+                    .fill(Color(hex: "FFC9C9"))
+                    .frame(width: 20, height: 20)
+                
+                Image(systemName: "exclamationmark")
+                    .font(.system(size: 12, weight: .bold))
+                    .foregroundColor(Color(hex: "C10007"))
+            }
+            .offset(x: 18, y: -18)
+        }
+    }
+}
 
 struct ControlCircleButton: View {
     let iconName: String
@@ -423,7 +452,7 @@ struct OverflowMenuSheet: View {
                     icon: "arrow.triangle.2.circlepath.camera.fill",
                     action: {}
                 )
-                .opacity(0.4)
+                .opacity(0.15)
             }
         case .mic:
             overflowButton(
@@ -432,11 +461,36 @@ struct OverflowMenuSheet: View {
                 action: { showOverflowMenu = false; onMicTapped() }
             )
         case .video:
-            overflowButton(
-                title: "Turn off / on video",
-                icon: "video.fill",
-                action: { showOverflowMenu = false; onVideoTapped() }
-            )
+            if cameraPermissionGranted {
+                overflowButton(
+                    title: "Turn off / on video",
+                    icon: "video.fill",
+                    action: { showOverflowMenu = false; onVideoTapped() }
+                )
+            } else {
+                Button(action: { showOverflowMenu = false; onVideoTapped() }) {
+                    HStack {
+                        Text("Turn off / on video")
+                            .font(.system(size: 16, weight: .regular))
+                            .foregroundColor(.white)
+                        Spacer()
+                        ZStack {
+                            Image(systemName: "video.slash.fill")
+                                .foregroundColor(.white)
+                                .font(.system(size: 20))
+                            
+                            Image(systemName: "exclamationmark.circle.fill")
+                                .foregroundColor(Color(hex: "FFC9C9"))
+                                .font(.system(size: 10))
+                                .offset(x: 10, y: -10)
+                        }
+                    }
+                    .padding(20)
+                    .background(Color(hex: "3E4347"))
+                    .cornerRadius(12)
+                }
+                .buttonStyle(PlainButtonStyle())
+            }
         }
     }
 
