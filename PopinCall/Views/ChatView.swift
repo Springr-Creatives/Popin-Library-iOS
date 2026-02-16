@@ -29,14 +29,14 @@ struct ChatView: View {
             // Messages List
             ScrollViewReader { proxy in
                 ScrollView {
-                    LazyVStack(spacing: 8) {
+                    LazyVStack(spacing: 16) {
                         ForEach(messages) { message in
                             ChatBubble(message: message)
                                 .id(message.id)
                         }
                     }
                     .padding(.horizontal, 16)
-                    .padding(.vertical, 12)
+                    .padding(.vertical, 16)
                 }
                 .onChange(of: messages.count) { _ in
                     if let lastMessage = messages.last {
@@ -59,7 +59,7 @@ struct ChatView: View {
                 onSend: sendMessage
             )
         }
-        .background(Color(hex: "1A1D21"))
+        .background(Color.white)
         .onTapGesture {
             UIApplication.shared.sendAction(#selector(UIResponder.resignFirstResponder), to: nil, from: nil, for: nil)
         }
@@ -99,26 +99,28 @@ struct ChatTopBar: View {
     let onClose: () -> Void
 
     var body: some View {
-        HStack {
-            Text("Chat with expert")
-                .font(.system(size: 18, weight: .semibold))
-                .foregroundColor(.white)
+        VStack(spacing: 0) {
+            HStack {
+                Text("Chat with expert")
+                    .font(.system(size: 18, weight: .semibold))
+                    .foregroundColor(.black)
 
-            Spacer()
+                Spacer()
 
-            Button(action: onClose) {
-                Image(systemName: "xmark")
-                    .font(.system(size: 16, weight: .medium))
-                    .foregroundColor(.white)
-                    .padding(8)
-                    .background(Color.white.opacity(0.2))
-                    .clipShape(Circle())
+                Button(action: onClose) {
+                    Image(systemName: "xmark")
+                        .font(.system(size: 16, weight: .medium))
+                        .foregroundColor(.black)
+                        .padding(8)
+                }
+                .buttonStyle(PlainButtonStyle())
             }
-            .buttonStyle(PlainButtonStyle())
+            .padding(.horizontal, 16)
+            .padding(.vertical, 12)
+            
+            Divider()
         }
-        .padding(.horizontal, 16)
-        .padding(.vertical, 12)
-        .background(Color(hex: "2A2F33"))
+        .background(Color.white)
     }
 }
 
@@ -128,9 +130,9 @@ struct ChatBubble: View {
     let message: ChatMessage
 
     var body: some View {
-        HStack {
+        HStack(alignment: .bottom, spacing: 8) {
             if message.isMe {
-                Spacer(minLength: 60)
+                Spacer(minLength: 40)
             }
 
             VStack(alignment: message.isMe ? .trailing : .leading, spacing: 4) {
@@ -138,54 +140,64 @@ struct ChatBubble: View {
                 if !message.isMe, let senderName = message.senderName {
                     Text(senderName)
                         .font(.system(size: 12, weight: .medium))
-                        .foregroundColor(.white.opacity(0.7))
+                        .foregroundColor(.gray)
                 }
 
                 // Message content
-                VStack(alignment: .leading, spacing: 8) {
+                VStack(alignment: .leading, spacing: 4) {
                     // Image if present
                     if let imageUrl = message.imageUrl, let url = URL(string: imageUrl) {
-                        AsyncImage(url: url) { phase in
-                            switch phase {
-                            case .empty:
-                                ProgressView()
-                                    .frame(width: 200, height: 150)
-                            case .success(let image):
-                                image
-                                    .resizable()
-                                    .aspectRatio(contentMode: .fit)
-                                    .frame(maxWidth: 200)
-                                    .cornerRadius(8)
-                            case .failure:
-                                Image(systemName: "photo")
-                                    .foregroundColor(.gray)
-                                    .frame(width: 200, height: 150)
-                            @unknown default:
-                                EmptyView()
+                        ZStack(alignment: .topTrailing) {
+                            AsyncImage(url: url) { phase in
+                                switch phase {
+                                case .empty:
+                                    ProgressView()
+                                        .frame(width: 240, height: 180)
+                                case .success(let image):
+                                    image
+                                        .resizable()
+                                        .aspectRatio(contentMode: .fill)
+                                        .frame(width: 240, height: 180)
+                                        .clipped()
+                                        .cornerRadius(12)
+                                case .failure:
+                                    Image(systemName: "photo")
+                                        .foregroundColor(.gray)
+                                        .frame(width: 240, height: 180)
+                                        .background(Color.gray.opacity(0.1))
+                                        .cornerRadius(12)
+                                @unknown default:
+                                    EmptyView()
+                                }
                             }
+                            
+                            // Expand icon as seen in Figma
+                            Image(systemName: "arrow.up.left.and.arrow.down.right")
+                                .font(.system(size: 12, weight: .bold))
+                                .foregroundColor(.white)
+                                .padding(6)
+                                .background(Color.black.opacity(0.4))
+                                .clipShape(Circle())
+                                .padding(8)
                         }
+                        .shadow(color: Color.black.opacity(0.1), radius: 4, x: 0, y: 2)
                     }
 
                     // Text if present
                     if let text = message.text, !text.isEmpty {
                         Text(text)
                             .font(.system(size: 15))
-                            .foregroundColor(.white)
+                            .foregroundColor(message.isMe ? .white : .black)
+                            .padding(.horizontal, 14)
+                            .padding(.vertical, 10)
+                            .background(message.isMe ? Color(hex: "3B82F6") : Color(hex: "F3F4F6"))
+                            .cornerRadius(18)
                     }
-
-                    // Timestamp
-                    Text(message.timestamp)
-                        .font(.system(size: 11))
-                        .foregroundColor(.white.opacity(0.5))
                 }
-                .padding(.horizontal, 12)
-                .padding(.vertical, 8)
-                .background(message.isMe ? Color(hex: "4CAF50") : Color(hex: "3E4347"))
-                .cornerRadius(16)
             }
 
             if !message.isMe {
-                Spacer(minLength: 60)
+                Spacer(minLength: 40)
             }
         }
     }
@@ -199,36 +211,42 @@ struct MessageInputBar: View {
     let onSend: () -> Void
 
     var body: some View {
-        HStack(spacing: 12) {
-            TextField("Type a message...", text: $messageText)
-                .textFieldStyle(PlainTextFieldStyle())
-                .padding(.horizontal, 16)
-                .padding(.vertical, 12)
-                .background(Color(hex: "3E4347"))
-                .cornerRadius(24)
-                .foregroundColor(.white)
+        VStack(spacing: 0) {
+            Divider()
+            
+            HStack(spacing: 12) {
+                TextField("Write your message here", text: $messageText)
+                    .textFieldStyle(PlainTextFieldStyle())
+                    .padding(.horizontal, 16)
+                    .padding(.vertical, 10)
+                    .background(
+                        RoundedRectangle(cornerRadius: 20)
+                            .stroke(Color(hex: "E5E7EB"), lineWidth: 1)
+                    )
+                    .foregroundColor(.black)
 
-            Button(action: onSend) {
-                if isSending {
-                    ProgressView()
-                        .progressViewStyle(CircularProgressViewStyle(tint: .white))
-                        .frame(width: 44, height: 44)
-                } else {
-                    Image(systemName: "paperplane.fill")
-                        .font(.system(size: 20))
-                        .foregroundColor(.white)
-                        .frame(width: 44, height: 44)
-                        .background(Color(hex: "4CAF50"))
-                        .clipShape(Circle())
+                Button(action: onSend) {
+                    if isSending {
+                        ProgressView()
+                            .progressViewStyle(CircularProgressViewStyle(tint: .white))
+                            .frame(width: 40, height: 40)
+                    } else {
+                        Image(systemName: "paperplane.fill")
+                            .font(.system(size: 18))
+                            .foregroundColor(.white)
+                            .frame(width: 40, height: 40)
+                            .background(Color(hex: "3B82F6"))
+                            .clipShape(Circle())
+                    }
                 }
+                .buttonStyle(PlainButtonStyle())
+                .disabled(messageText.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty || isSending)
+                .opacity(messageText.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty ? 0.6 : 1.0)
             }
-            .buttonStyle(PlainButtonStyle())
-            .disabled(messageText.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty || isSending)
-            .opacity(messageText.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty ? 0.5 : 1.0)
+            .padding(.horizontal, 16)
+            .padding(.vertical, 12)
+            .background(Color.white)
         }
-        .padding(.horizontal, 16)
-        .padding(.vertical, 12)
-        .background(Color(hex: "2A2F33"))
     }
 }
 
