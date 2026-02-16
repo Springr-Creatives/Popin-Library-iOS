@@ -148,13 +148,13 @@ struct BottomControls: View {
         }
         .alert("Camera Access Required", isPresented: $showCameraPermissionAlert) {
             Button("Cancel", role: .cancel) {}
-            Button("Settings") {
+            Button("Open Settings (Ends Call)") {
                 if let url = URL(string: UIApplication.openSettingsURLString) {
                     UIApplication.shared.open(url)
                 }
             }
         } message: {
-            Text("Camera access was denied. Please enable it in Settings to use video.")
+            Text("Camera access was denied. To enable it, go to Settings — but note this will end the current call.")
         }
     }
 
