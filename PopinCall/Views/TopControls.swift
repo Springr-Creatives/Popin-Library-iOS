@@ -25,10 +25,7 @@ struct ProductDetailsView: View {
     }
 
     private var secondaryText: String {
-        if productName != nil {
-            return productId ?? ""
-        }
-        return productExtra ?? ""
+        return "Details"
     }
 
     private func openProductUrl() {
@@ -43,31 +40,28 @@ struct ProductDetailsView: View {
         if let id = productId, !id.isEmpty {
             Button(action: openProductUrl) {
                 HStack(alignment: .center, spacing: 8) {
-                    // Product image - square, matching Android 48dp
-                    if let imageURL = productImageUrl, !imageURL.isEmpty, let url = URL(string: imageURL) {
-                        AsyncImage(url: url) { image in
-                            image
-                                .resizable()
-                                .aspectRatio(contentMode: .fill)
-                        } placeholder: {
-                            Color.gray.opacity(0.3)
-                        }
-                        .frame(width: 48, height: 48)
-                        .clipShape(RoundedRectangle(cornerRadius: 8))
-                    }
-
-                    // Text content
+                    // Text content - two lines
                     VStack(alignment: .leading, spacing: 2) {
                         Text(primaryText)
                             .font(.system(size: 14, weight: .semibold))
                             .foregroundColor(.white)
                             .lineLimit(1)
 
-                        if !secondaryText.isEmpty {
+                        HStack(spacing: 4) {
                             Text(secondaryText)
                                 .font(.system(size: 12, weight: .regular))
                                 .foregroundColor(.white.opacity(0.7))
                                 .lineLimit(1)
+
+                            // Right arrow in circle
+                            ZStack {
+                                Circle()
+                                    .fill(Color(red: 2/255, green: 6/255, blue: 24/255).opacity(0.2))
+                                    .frame(width: 14, height: 14)
+                                Image(systemName: "chevron.right")
+                                    .font(.system(size: 6, weight: .medium))
+                                    .foregroundColor(.white)
+                            }
                         }
                     }
                 }
