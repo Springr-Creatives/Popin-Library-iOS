@@ -101,7 +101,7 @@ private struct AgentTile: View {
         .cornerRadius(12)
         .overlay(
             RoundedRectangle(cornerRadius: 12)
-                .stroke(Color(hex: "7063FF"), lineWidth: 0.5)
+                .stroke(Color(hex: "FFFFFF"), lineWidth: 0.5)
         )
     }
 }
@@ -213,7 +213,7 @@ private struct AudienceRowTile: View {
         .cornerRadius(12)
         .overlay(
             RoundedRectangle(cornerRadius: 12)
-                .stroke(Color(hex: "7063FF"), lineWidth: 0.5)
+                .stroke(Color(hex: "FFFFFF"), lineWidth: 0.5)
         )
         .onTapGesture {
             if let sid = participant.sid?.stringValue {
