@@ -278,9 +278,37 @@ struct PopinConnectedView: View {
             }
 
             // Remote participants Row
-            if sortedParticipants.count > 1 {
+            let currentAgent = viewModel.call?.agent
+            
+            // Find participant for agent (to show mute/signal status)
+            let agentParticipant: Participant? = {
+                guard let agentId = currentAgent?.id else { return nil }
+                let idString = String(agentId)
+                
+                // Try exact match first
+                if let exact = _room.allParticipants.values.first(where: {
+                    let identity = $0.identity?.stringValue ?? ""
+                    return identity == idString || identity == "s\(idString)"
+                }) {
+                    return exact
+                }
+                
+                // Try prefix match (s{id}*)
+                if let prefixMatch = _room.allParticipants.values.first(where: {
+                    let identity = $0.identity?.stringValue ?? ""
+                    return identity.hasPrefix("s\(idString)")
+                }) {
+                    return prefixMatch
+                }
+                
+                return nil
+            }()
+
+            if sortedParticipants.count > 1 || currentAgent != nil {
                 AudienceRow(
-                    participants: Array(sortedParticipants.dropFirst()),
+                    participants: sortedParticipants.count > 1 ? Array(sortedParticipants.dropFirst()) : [],
+                    agent: currentAgent,
+                    agentParticipant: agentParticipant,
                     primaryParticipantId: $primaryParticipantId
                 )
                 .padding(.bottom, 8)

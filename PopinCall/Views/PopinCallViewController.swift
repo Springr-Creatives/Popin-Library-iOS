@@ -380,7 +380,6 @@ extension PopinCallViewController: VideoCallView {
     }
 
     func loadCall(call: TalkModel) {
-        PopinLogger.shared.log("PopinCallVC: loadCall: callId=\(call.id ?? -1), setting callConnected=true")
         _sdkCallId = call.id
         callConnected = true
         viewModel.isWaitingForAcceptance = false

@@ -12,11 +12,18 @@ import LiveKitComponents
 #if canImport(UIKit)
 struct AudienceRow: View {
     let participants: [Participant]
+    let agent: Agent?
+    let agentParticipant: Participant?
     @Binding var primaryParticipantId: String?
 
     var body: some View {
         ScrollView(.horizontal, showsIndicators: false) {
             HStack(spacing: 8) {
+                // Agent Tile (Static)
+                if let agent = agent {
+                    AgentTile(agent: agent, participant: agentParticipant)
+                }
+
                 ForEach(participants) { participant in
                     AudienceRowTile(participant: participant, primaryParticipantId: $primaryParticipantId)
                 }
@@ -24,6 +31,92 @@ struct AudienceRow: View {
             .padding(.leading, 10)
             .padding(.trailing, 16)
         }
+    }
+}
+
+private struct AgentTile: View {
+    let agent: Agent
+    let participant: Participant?
+
+    var body: some View {
+        VStack(spacing: 4) {
+            // Agent Image Container
+            ZStack(alignment: .bottomLeading) {
+                if let imageUrl = agent.image, let url = URL(string: imageUrl) {
+                    AsyncImage(url: url) { phase in
+                        if let image = phase.image {
+                            image
+                                .resizable()
+                                .aspectRatio(contentMode: .fill)
+                        } else {
+                            Color.gray.opacity(0.3) // Placeholder
+                        }
+                    }
+                    .frame(width: 90, height: 120)
+                    .clipped()
+                    .cornerRadius(8)
+                    .overlay(
+                        RoundedRectangle(cornerRadius: 8)
+                            .stroke(Color.white.opacity(0.3), lineWidth: 1)
+                    )
+                } else {
+                    // Fallback if no image URL
+                    RoundedRectangle(cornerRadius: 8)
+                        .fill(Color.gray.opacity(0.3))
+                        .frame(width: 90, height: 120)
+                        .overlay(
+                            Image(systemName: "person.fill")
+                                .font(.system(size: 24))
+                                .foregroundColor(.white.opacity(0.6))
+                        )
+                        .overlay(
+                            RoundedRectangle(cornerRadius: 8)
+                                .stroke(Color.white.opacity(0.3), lineWidth: 1)
+                        )
+                }
+                
+                // Indicators (Mute & Signal)
+                if let participant = participant {
+                    AgentIndicators(participant: participant)
+                }
+            }
+
+            // Agent Name
+            Text(agent.name ?? "Agent")
+                .font(.system(size: 12))
+                .fontWeight(.medium)
+                .foregroundColor(.white)
+                .lineLimit(1)
+                .truncationMode(.tail)
+                .frame(width: 90)
+        }
+    }
+}
+
+private struct AgentIndicators: View {
+    @ObservedObject var participant: Participant
+    
+    var body: some View {
+        HStack {
+            // Mute indicator
+            if !participant.isMicrophoneEnabled() {
+                ZStack {
+                    Circle()
+                        .fill(Color.black.opacity(0.6))
+                        .frame(width: 24, height: 24)
+
+                    Image(systemName: "mic.slash.fill")
+                        .font(.system(size: 10))
+                        .foregroundColor(.white)
+                }
+            }
+
+            Spacer()
+
+            // Signal strength
+            SignalStrengthView(quality: participant.connectionQuality)
+        }
+        .padding(6)
     }
 }
 
