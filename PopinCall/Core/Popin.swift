@@ -48,8 +48,6 @@ public class Popin : PopinPusherDelegate, CallAcceptanceListener {
     private var sellerToken: Int = 0
     private var waitHandler: CallAcceptanceWaitHandler?
 
-    /// Tracks camera permission result from pre-call check; applied to VC's viewModel
-    private var preCallCameraGranted: Bool = true
 
     #if canImport(UIKit)
     private weak var currentCallViewController: PopinCallViewController?
@@ -196,10 +194,21 @@ public class Popin : PopinPusherDelegate, CallAcceptanceListener {
     }
 
     private func requestPermissionsAndStartCall() {
+        let audioOnly = config.audioOnlyMode
+
         #if canImport(UIKit)
         // If microphone permission was previously denied, show settings alert
         if AVCaptureDevice.authorizationStatus(for: .audio) == .denied {
             PopinLogger.shared.log("requestPermissions: Microphone previously denied, showing settings alert")
+            DispatchQueue.main.async { [weak self] in
+                self?.showPermissionsDeniedAlert()
+            }
+            return
+        }
+
+        // If not audio-only and camera permission was previously denied, show settings alert
+        if !audioOnly && AVCaptureDevice.authorizationStatus(for: .video) == .denied {
+            PopinLogger.shared.log("requestPermissions: Camera previously denied, showing settings alert")
             DispatchQueue.main.async { [weak self] in
                 self?.showPermissionsDeniedAlert()
             }
@@ -218,14 +227,29 @@ public class Popin : PopinPusherDelegate, CallAcceptanceListener {
                 return
             }
 
-            AVCaptureDevice.requestAccess(for: .video) { [weak self] cameraGranted in
-                guard let self = self else { return }
-                PopinLogger.shared.log("requestPermissions: mic=granted, camera=\(cameraGranted)")
-
-                self.preCallCameraGranted = cameraGranted
-
+            if audioOnly {
+                // Audio-only mode: skip camera permission entirely
+                PopinLogger.shared.log("requestPermissions: mic=granted, audioOnlyMode=true, skipping camera")
                 DispatchQueue.main.async {
                     self.initiateCall()
+                }
+            } else {
+                // Normal mode: camera permission is mandatory
+                AVCaptureDevice.requestAccess(for: .video) { [weak self] cameraGranted in
+                    guard let self = self else { return }
+                    PopinLogger.shared.log("requestPermissions: mic=granted, camera=\(cameraGranted)")
+
+                    if !cameraGranted {
+                        PopinLogger.shared.log("requestPermissions: Camera denied, aborting call")
+                        DispatchQueue.main.async {
+                            self.eventsListener?.onCallFailed()
+                        }
+                        return
+                    }
+
+                    DispatchQueue.main.async {
+                        self.initiateCall()
+                    }
                 }
             }
         }
@@ -242,9 +266,15 @@ public class Popin : PopinPusherDelegate, CallAcceptanceListener {
 
         let topVC = Self.topViewController(base: rootVC) ?? rootVC
 
+        let needsCamera = !config.audioOnlyMode
+        let title = needsCamera ? "Permissions Required" : "Microphone Permission Required"
+        let message = needsCamera
+            ? "Microphone and camera access are required for calls. Please enable them in Settings."
+            : "Microphone access is required for calls. Please enable it in Settings."
+
         let alert = UIAlertController(
-            title: "Microphone Permission Required",
-            message: "Microphone access is required for calls. Please enable it in Settings.",
+            title: title,
+            message: message,
             preferredStyle: .alert
         )
 
@@ -414,7 +444,6 @@ public class Popin : PopinPusherDelegate, CallAcceptanceListener {
     private func presentOutgoingCallViewController(callQueueId: Int) {
         PopinLogger.shared.log("presentOutgoingCallViewController: queueId=\(callQueueId)")
         let callVC = PopinCallViewController()
-        callVC.initialCameraPermissionGranted = preCallCameraGranted
         self.currentCallViewController = callVC
         self.pendingCallViewController = callVC  // Strong ref to prevent deallocation
         callVC.modalPresentationStyle = .overFullScreen
@@ -488,6 +517,8 @@ public class Popin : PopinPusherDelegate, CallAcceptanceListener {
     }
 
     private func requestPermissionsAndConnectIncoming(callId: Int) {
+        let audioOnly = config.audioOnlyMode
+
         AVCaptureDevice.requestAccess(for: .audio) { [weak self] micGranted in
             guard let self = self else { return }
 
@@ -500,13 +531,28 @@ public class Popin : PopinPusherDelegate, CallAcceptanceListener {
                 return
             }
 
-            AVCaptureDevice.requestAccess(for: .video) { [weak self] cameraGranted in
-                guard let self = self else { return }
-                PopinLogger.shared.log("requestPermissionsIncoming: mic=granted, camera=\(cameraGranted)")
-
+            if audioOnly {
+                PopinLogger.shared.log("requestPermissionsIncoming: mic=granted, audioOnlyMode=true, skipping camera")
                 DispatchQueue.main.async {
-                    self.currentCallViewController?.updateCameraPermission(cameraGranted)
                     self.connectToCall(callId: callId)
+                }
+            } else {
+                AVCaptureDevice.requestAccess(for: .video) { [weak self] cameraGranted in
+                    guard let self = self else { return }
+                    PopinLogger.shared.log("requestPermissionsIncoming: mic=granted, camera=\(cameraGranted)")
+
+                    if !cameraGranted {
+                        PopinLogger.shared.log("requestPermissionsIncoming: Camera denied, ending call")
+                        DispatchQueue.main.async {
+                            CallManager.shared.endCall()
+                            self.currentCallViewController?.closeCall(message: "Camera access is required for calls. Please enable it in Settings.")
+                        }
+                        return
+                    }
+
+                    DispatchQueue.main.async {
+                        self.connectToCall(callId: callId)
+                    }
                 }
             }
         }

@@ -17,6 +17,7 @@ import Foundation
 
 struct VideoCallSwiftUIView: View {
     @EnvironmentObject private var _room: Room
+    @EnvironmentObject private var configHolder: PopinConfigHolder
     @Environment(\.presentationMode) var presentationMode
     @ObservedObject var viewModel: VideoCallViewModel
 
@@ -65,7 +66,8 @@ struct VideoCallSwiftUIView: View {
                     do {
                         try await _room.connect(url: websocket, token: token)
                         try await _room.localParticipant.setMicrophone(enabled: viewModel.preCallMicEnabled)
-                        try await _room.localParticipant.setCamera(enabled: viewModel.preCallCameraEnabled)
+                        let cameraEnabled = configHolder.config.audioOnlyMode ? false : viewModel.preCallCameraEnabled
+                        try await _room.localParticipant.setCamera(enabled: cameraEnabled)
 
 //                        // Enable multitasking camera access for PiP immediately after enabling camera
 //                        // This must be set before the AVCaptureSession starts
@@ -116,19 +118,17 @@ struct VideoCallSwiftUIView: View {
                         // Toggle camera and microphone based on hold status
                         // If on hold, disable (mute). If not on hold, enable (unmute).
                         let shouldEnable = !isOnHold
-                        
-                        // Check if we have tracks before trying to set them
-                        // Note: In a real app we might want to respect previous state (e.g. if user had muted self)
-                        // For now we assume we want to restore audio/video when unholding
-                        
-                        if _room.localParticipant.firstCameraVideoTrack != nil || shouldEnable {
-                             try await _room.localParticipant.setCamera(enabled: shouldEnable)
+
+                        if !configHolder.config.audioOnlyMode {
+                            if _room.localParticipant.firstCameraVideoTrack != nil || shouldEnable {
+                                 try await _room.localParticipant.setCamera(enabled: shouldEnable)
+                            }
                         }
-                        
+
                         if _room.localParticipant.firstAudioTrack != nil || shouldEnable {
                             try await _room.localParticipant.setMicrophone(enabled: shouldEnable)
                         }
-                        
+
                     } catch {
                     }
                 }

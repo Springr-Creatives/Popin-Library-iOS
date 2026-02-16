@@ -8,7 +8,6 @@
 import SwiftUI
 import LiveKit
 import LiveKitComponents
-import AVFoundation
 
 #if canImport(UIKit)
 import ReplayKit
@@ -47,17 +46,17 @@ struct BottomControls: View {
 
     @State private var showOverflowMenu = false
     @State private var shareItems: [Any]? = nil
-    @State private var showCameraPermissionAlert = false
     @Binding var showChat: Bool
     @ObservedObject private var chatManager = ChatManager.shared
 
     private let videoCallInteractor = VideoCallInteractor()
 
     private var visibleButtons: [ControlButtonID] {
+        let audioOnly = configHolder.config.audioOnlyMode
         var buttons: [ControlButtonID] = []
         if !configHolder.config.hideMuteAudioButton { buttons.append(.mic) }
-        if !configHolder.config.hideMuteVideoButton { buttons.append(.video) }
-        if !configHolder.config.hideFlipCameraButton { buttons.append(.flip) }
+        if !audioOnly && !configHolder.config.hideMuteVideoButton { buttons.append(.video) }
+        if !audioOnly && !configHolder.config.hideFlipCameraButton { buttons.append(.flip) }
         buttons.append(.invite) // always visible
         if !configHolder.config.hideChatButton && viewModel.call?.id != nil { buttons.append(.chat) }
         return buttons.sorted { $0.rawValue < $1.rawValue }
@@ -84,12 +83,11 @@ struct BottomControls: View {
                         showOverflowMenu: $showOverflowMenu,
                         items: overflowButtons,
                         unreadCount: chatManager.unreadCount,
-                        cameraPermissionGranted: viewModel.cameraPermissionGranted,
                         onInviteTapped: { generateInviteLink() },
                         onChatTapped: { showChat = true },
                         onFlipTapped: { flipCamera() },
                         onMicTapped: { toggleMic() },
-                        onVideoTapped: { viewModel.cameraPermissionGranted ? toggleVideo() : requestCameraAndToggleVideo() }
+                        onVideoTapped: { toggleVideo() }
                     )
                     .modifier(SheetPresentationModifier(height: CGFloat(80 + overflowButtons.count * 76)))
                 }
@@ -146,16 +144,6 @@ struct BottomControls: View {
                 ChatView(callId: callId, onClose: { showChat = false })
             }
         }
-        .alert("Camera Access Required", isPresented: $showCameraPermissionAlert) {
-            Button("Cancel", role: .cancel) {}
-            Button("Open Settings (Ends Call)") {
-                if let url = URL(string: UIApplication.openSettingsURLString) {
-                    UIApplication.shared.open(url)
-                }
-            }
-        } message: {
-            Text("Camera access was denied. To enable it, go to Settings — but note this will end the current call.")
-        }
     }
 
     // MARK: - Direct button rendering
@@ -182,45 +170,30 @@ struct BottomControls: View {
             )
             .buttonStyle(PlainButtonStyle())
         case .video:
-            if viewModel.cameraPermissionGranted {
-                CameraToggleButton(
-                    label: {
-                        ControlCircleButtonView(
-                            iconName: "video.slash.fill",
-                            backgroundColor: .white,
-                            iconColor: .black
-                        )
-                    },
-                    published: {
-                        ControlCircleButtonView(
-                            iconName: "video.fill",
-                            backgroundColor: Color.black.opacity(0.5),
-                            iconColor: .white
-                        )
-                    }
-                )
-                .buttonStyle(PlainButtonStyle())
-            } else {
-                Button(action: { requestCameraAndToggleVideo() }) {
-                    WarnCameraIconView()
+            CameraToggleButton(
+                label: {
+                    ControlCircleButtonView(
+                        iconName: "video.slash.fill",
+                        backgroundColor: .white,
+                        iconColor: .black
+                    )
+                },
+                published: {
+                    ControlCircleButtonView(
+                        iconName: "video.fill",
+                        backgroundColor: Color.black.opacity(0.5),
+                        iconColor: .white
+                    )
                 }
-                .buttonStyle(PlainButtonStyle())
-            }
+            )
+            .buttonStyle(PlainButtonStyle())
         case .flip:
-            if viewModel.cameraPermissionGranted {
-                ControlCircleButton(
-                    iconName: "arrow.triangle.2.circlepath.camera.fill",
-                    backgroundColor: Color.black.opacity(0.5),
-                    iconColor: .white,
-                    action: { flipCamera() }
-                )
-            } else {
-                ControlCircleButtonView(
-                    iconName: "arrow.triangle.2.circlepath.camera.fill",
-                    backgroundColor: Color.black.opacity(0.15),
-                    iconColor: .white.opacity(0.2)
-                )
-            }
+            ControlCircleButton(
+                iconName: "arrow.triangle.2.circlepath.camera.fill",
+                backgroundColor: Color.black.opacity(0.5),
+                iconColor: .white,
+                action: { flipCamera() }
+            )
         case .invite:
             ControlCircleButton(
                 iconName: "person.badge.plus",
@@ -277,22 +250,6 @@ struct BottomControls: View {
         }
     }
 
-    private func requestCameraAndToggleVideo() {
-        let status = AVCaptureDevice.authorizationStatus(for: .video)
-        if status == .notDetermined {
-            AVCaptureDevice.requestAccess(for: .video) { granted in
-                DispatchQueue.main.async {
-                    if granted {
-                        viewModel.cameraPermissionGranted = true
-                        toggleVideo()
-                    }
-                }
-            }
-        } else {
-            // Already denied — show alert instead of opening Settings (which kills the app mid-call)
-            showCameraPermissionAlert = true
-        }
-    }
 
     private func generateInviteLink() {
         guard let callId = viewModel.call?.id else { return }
@@ -311,32 +268,6 @@ struct BottomControls: View {
 }
 
 // MARK: - Helper Views
-
-struct WarnCameraIconView: View {
-    var body: some View {
-        ZStack {
-            Circle()
-                .fill(Color.white)
-                .frame(width: 56, height: 56)
-            
-            Image(systemName: "video.slash.fill")
-                .font(.system(size: 24))
-                .foregroundColor(Color(hex: "0F172B"))
-            
-            // Red warning badge
-            ZStack {
-                Circle()
-                    .fill(Color(hex: "FFC9C9"))
-                    .frame(width: 20, height: 20)
-                
-                Image(systemName: "exclamationmark")
-                    .font(.system(size: 12, weight: .bold))
-                    .foregroundColor(Color(hex: "C10007"))
-            }
-            .offset(x: 18, y: -18)
-        }
-    }
-}
 
 struct ControlCircleButton: View {
     let iconName: String
@@ -378,7 +309,6 @@ struct OverflowMenuSheet: View {
     @Binding var showOverflowMenu: Bool
     var items: [ControlButtonID]
     var unreadCount: Int = 0
-    var cameraPermissionGranted: Bool = true
     var onInviteTapped: () -> Void
     var onChatTapped: () -> Void
     var onFlipTapped: () -> Void
@@ -440,20 +370,11 @@ struct OverflowMenuSheet: View {
             }
             .buttonStyle(PlainButtonStyle())
         case .flip:
-            if cameraPermissionGranted {
-                overflowButton(
-                    title: "Flip camera",
-                    icon: "arrow.triangle.2.circlepath.camera.fill",
-                    action: { showOverflowMenu = false; onFlipTapped() }
-                )
-            } else {
-                overflowButton(
-                    title: "Flip camera",
-                    icon: "arrow.triangle.2.circlepath.camera.fill",
-                    action: {}
-                )
-                .opacity(0.15)
-            }
+            overflowButton(
+                title: "Flip camera",
+                icon: "arrow.triangle.2.circlepath.camera.fill",
+                action: { showOverflowMenu = false; onFlipTapped() }
+            )
         case .mic:
             overflowButton(
                 title: "Mute / Unmute",
@@ -461,36 +382,11 @@ struct OverflowMenuSheet: View {
                 action: { showOverflowMenu = false; onMicTapped() }
             )
         case .video:
-            if cameraPermissionGranted {
-                overflowButton(
-                    title: "Turn off / on video",
-                    icon: "video.fill",
-                    action: { showOverflowMenu = false; onVideoTapped() }
-                )
-            } else {
-                Button(action: { showOverflowMenu = false; onVideoTapped() }) {
-                    HStack {
-                        Text("Turn off / on video")
-                            .font(.system(size: 16, weight: .regular))
-                            .foregroundColor(.white)
-                        Spacer()
-                        ZStack {
-                            Image(systemName: "video.slash.fill")
-                                .foregroundColor(.white)
-                                .font(.system(size: 20))
-                            
-                            Image(systemName: "exclamationmark.circle.fill")
-                                .foregroundColor(Color(hex: "FFC9C9"))
-                                .font(.system(size: 10))
-                                .offset(x: 10, y: -10)
-                        }
-                    }
-                    .padding(20)
-                    .background(Color(hex: "3E4347"))
-                    .cornerRadius(12)
-                }
-                .buttonStyle(PlainButtonStyle())
-            }
+            overflowButton(
+                title: "Turn off / on video",
+                icon: "video.fill",
+                action: { showOverflowMenu = false; onVideoTapped() }
+            )
         }
     }
 

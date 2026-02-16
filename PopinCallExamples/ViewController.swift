@@ -41,7 +41,7 @@ class ViewController: UIViewController, UITableViewDataSource {
 
             // Environment
             .sandboxMode(true)
-            .enableDebugMode(true)
+            //.enableDebugMode(true)
 
             // Product info to display in TopControls during call
             .product(product)

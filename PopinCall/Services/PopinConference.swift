@@ -26,6 +26,7 @@ struct PopinConference: View {
     @EnvironmentObject private var _room: Room
     @Environment(\.liveKitUIOptions) private var _ui: UIOptions
     @EnvironmentObject private var viewModel: VideoCallViewModel
+    @EnvironmentObject private var configHolder: PopinConfigHolder
 
     @State private var primaryParticipantId: String?
     @State private var hasConnected = false
@@ -117,7 +118,7 @@ struct PopinConference: View {
     func buildWaitingForAcceptanceView() -> some View {
         ZStack {
             // Full screen self video preview or black screen when camera is off
-            if viewModel.preCallCameraEnabled {
+            if !configHolder.config.audioOnlyMode && viewModel.preCallCameraEnabled {
                 LocalCameraPreview()
                     .ignoresSafeArea()
             } else {
@@ -171,7 +172,7 @@ struct PopinConference: View {
                 Spacer()
 
                 // Bottom controls matching BottomControls.swift style
-                WaitingBottomControls(viewModel: viewModel, onCancelCall: {
+                WaitingBottomControls(viewModel: viewModel, audioOnlyMode: configHolder.config.audioOnlyMode, onCancelCall: {
                     viewModel.onCancelCall?()
                 })
             }
@@ -252,9 +253,8 @@ class LocalCameraPreviewUIView: UIView {
 
 struct WaitingBottomControls: View {
     @ObservedObject var viewModel: VideoCallViewModel
+    let audioOnlyMode: Bool
     let onCancelCall: () -> Void
-    @State private var showCameraPermissionAlert = false
-
     var body: some View {
         HStack(spacing: 0) {
             // 1. Overflow Menu (disabled)
@@ -278,8 +278,8 @@ struct WaitingBottomControls: View {
 
             Spacer()
 
-            // 3. Video Toggle
-            if viewModel.cameraPermissionGranted {
+            if !audioOnlyMode {
+                // 3. Video Toggle
                 ControlCircleButton(
                     iconName: viewModel.preCallCameraEnabled ? "video.fill" : "video.slash.fill",
                     backgroundColor: viewModel.preCallCameraEnabled ? Color.black.opacity(0.5) : .white,
@@ -288,23 +288,18 @@ struct WaitingBottomControls: View {
                         viewModel.preCallCameraEnabled.toggle()
                     }
                 )
-            } else {
-                Button(action: { requestCameraPermission() }) {
-                    WaitingWarnCameraIconView()
-                }
-                .buttonStyle(PlainButtonStyle())
+
+                Spacer()
+
+                // 4. Flip Camera (disabled)
+                ControlCircleButtonView(
+                    iconName: "arrow.triangle.2.circlepath.camera.fill",
+                    backgroundColor: Color.black.opacity(0.15),
+                    iconColor: .white.opacity(0.2)
+                )
+
+                Spacer()
             }
-
-            Spacer()
-
-            // 4. Flip Camera (disabled)
-            ControlCircleButtonView(
-                iconName: "arrow.triangle.2.circlepath.camera.fill",
-                backgroundColor: Color.black.opacity(0.15),
-                iconColor: .white.opacity(0.2)
-            )
-
-            Spacer()
 
             // 5. End Call (enabled)
             ControlCircleButton(
@@ -317,59 +312,7 @@ struct WaitingBottomControls: View {
         .padding(.horizontal, 24)
         .padding(.bottom, 32)
         .padding(.top, 12)
-        .alert("Camera Access Required", isPresented: $showCameraPermissionAlert) {
-            Button("Cancel", role: .cancel) {}
-            Button("Settings") {
-                if let url = URL(string: UIApplication.openSettingsURLString) {
-                    UIApplication.shared.open(url)
-                }
-            }
-        } message: {
-            Text("Camera access was denied. Please enable it in Settings to use video.")
-        }
-    }
-
-    private func requestCameraPermission() {
-        let status = AVCaptureDevice.authorizationStatus(for: .video)
-        if status == .notDetermined {
-            AVCaptureDevice.requestAccess(for: .video) { granted in
-                DispatchQueue.main.async {
-                    if granted {
-                        viewModel.cameraPermissionGranted = true
-                        viewModel.preCallCameraEnabled = true
-                    }
-                }
-            }
-        } else {
-            // Already denied — show alert instead of opening Settings (which kills the app mid-call)
-            showCameraPermissionAlert = true
-        }
     }
 }
 
-struct WaitingWarnCameraIconView: View {
-    var body: some View {
-        ZStack {
-            Circle()
-                .fill(Color.white)
-                .frame(width: 56, height: 56)
-            
-            Image(systemName: "video.slash.fill")
-                .font(.system(size: 24))
-                .foregroundColor(Color(hex: "0F172B"))
-            
-            // Red warning badge
-            ZStack {
-                Circle()
-                    .fill(Color(hex: "FFC9C9"))
-                    .frame(width: 20, height: 20)
-                
-                Image(systemName: "exclamationmark")
-                    .font(.system(size: 12, weight: .bold))
-                    .foregroundColor(Color(hex: "C10007"))
-            }
-            .offset(x: 18, y: -18)
-        }
-    }
-}
 #endif

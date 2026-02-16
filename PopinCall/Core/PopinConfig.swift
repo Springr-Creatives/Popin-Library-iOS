@@ -22,6 +22,7 @@ public class PopinConfig {
     public let hideMuteAudioButton: Bool
     public let hideBackButton: Bool
     public let hideChatButton: Bool
+    public let audioOnlyMode: Bool
     public let persistenceMode: Bool
     public let enableIncomingCalls: Bool
     public let enableDebugMode: Bool
@@ -46,6 +47,7 @@ public class PopinConfig {
         self.hideMuteAudioButton = builder.hideMuteAudioButton
         self.hideBackButton = builder.hideBackButton
         self.hideChatButton = builder.hideChatButton
+        self.audioOnlyMode = builder.audioOnlyMode
         self.persistenceMode = builder.persistenceMode
         self.enableIncomingCalls = builder.enableIncomingCalls
         self.enableDebugMode = builder.enableDebugMode
@@ -68,6 +70,7 @@ public class PopinConfig {
         var hideMuteAudioButton: Bool = false
         var hideBackButton: Bool = false
         var hideChatButton: Bool = false
+        var audioOnlyMode: Bool = false
         var persistenceMode: Bool = true
         var enableIncomingCalls: Bool = false
         var enableDebugMode: Bool = false
@@ -140,6 +143,12 @@ public class PopinConfig {
         @discardableResult
         public func hideChatButton(_ hide: Bool) -> Builder {
             self.hideChatButton = hide
+            return self
+        }
+
+        @discardableResult
+        public func audioOnlyMode(_ audioOnly: Bool) -> Builder {
+            self.audioOnlyMode = audioOnly
             return self
         }
 

@@ -44,9 +44,6 @@ public class PopinCallViewController: UIViewController {
     /// Indicates this is an outgoing call (started by user via startCall)
     var isOutgoingCall: Bool = false
 
-    /// Camera permission result from pre-call check; applied to viewModel on setup
-    var initialCameraPermissionGranted: Bool = true
-
     var closedCall : Bool = false;
     var callConnected : Bool = false;
     
@@ -195,11 +192,6 @@ public class PopinCallViewController: UIViewController {
             viewModel.isWaitingForAcceptance = true
         }
 
-        // Apply pre-call camera permission result
-        if !initialCameraPermissionGranted {
-            viewModel.cameraPermissionGranted = false
-            viewModel.preCallCameraEnabled = false
-        }
     }
 
     
@@ -420,13 +412,6 @@ extension PopinCallViewController: VideoCallView {
 extension PopinCallViewController {
 
     /// Update camera permission state (called after permission request for incoming calls)
-    func updateCameraPermission(_ granted: Bool) {
-        viewModel.cameraPermissionGranted = granted
-        if !granted {
-            viewModel.preCallCameraEnabled = false
-        }
-    }
-
     /// Called when CallKit answers the call (from PopinCallManager delegation)
     func handleCallKitAnswerCall() {
         // Guard against double calls (CallKit delegate + Popin.onIncomingCallAnswered)
