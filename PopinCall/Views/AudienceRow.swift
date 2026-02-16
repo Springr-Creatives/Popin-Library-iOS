@@ -41,51 +41,28 @@ private struct AgentTile: View {
 
     var body: some View {
         ZStack(alignment: .bottom) {
-            // Video or Static Image
-            ZStack {
-                if let participant = participant {
-                    ParticipantView(showInformation: false)
-                        .environmentObject(participant)
-                        .frame(width: 90, height: 120)
-
-                    if !participant.isCameraEnabled() {
-                        Rectangle()
-                            .fill(Color.black.opacity(0.8))
-                            .frame(width: 90, height: 120)
-
-                        Image(systemName: "video.slash.fill")
+            // Always show static agent image as background
+            if let imageUrl = agent.image, let url = URL(string: imageUrl) {
+                AsyncImage(url: url) { phase in
+                    if let image = phase.image {
+                        image
+                            .resizable()
+                            .aspectRatio(contentMode: .fill)
+                    } else {
+                        Color.gray.opacity(0.3)
+                    }
+                }
+                .frame(width: 90, height: 120)
+                .clipped()
+            } else {
+                // Fallback if no image URL
+                Color.gray.opacity(0.3)
+                    .frame(width: 90, height: 120)
+                    .overlay(
+                        Image(systemName: "person.fill")
                             .font(.system(size: 24))
                             .foregroundColor(.white.opacity(0.6))
-                    }
-                } else if let imageUrl = agent.image, let url = URL(string: imageUrl) {
-                    AsyncImage(url: url) { phase in
-                        if let image = phase.image {
-                            image
-                                .resizable()
-                                .aspectRatio(contentMode: .fill)
-                        } else {
-                            Color.gray.opacity(0.3) // Placeholder
-                        }
-                    }
-                    .frame(width: 90, height: 120)
-                    .clipped()
-                } else {
-                    // Fallback if no image URL
-                    Color.gray.opacity(0.3)
-                        .frame(width: 90, height: 120)
-                        .overlay(
-                            Image(systemName: "person.fill")
-                                .font(.system(size: 24))
-                                .foregroundColor(.white.opacity(0.6))
-                        )
-                }
-            }
-            .onTapGesture {
-                if let sid = participant?.sid?.stringValue {
-                    withAnimation(.easeInOut(duration: 0.3)) {
-                        primaryParticipantId = sid
-                    }
-                }
+                    )
             }
 
             // Bottom Gradient Overlay
