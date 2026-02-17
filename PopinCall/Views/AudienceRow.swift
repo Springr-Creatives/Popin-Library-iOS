@@ -169,20 +169,18 @@ private struct AudienceRowTile: View {
     }
 
     var body: some View {
-        let _ = PopinLogger.shared.log("🔵 AudienceRowTile rendering: identity=\(participant.identity?.stringValue ?? "nil"), sid=\(participant.sid?.stringValue ?? "nil"), name=\(participant.name ?? "nil")")
+
 
         Button(action: {
             let sid = participant.sid?.stringValue
             let identity = participant.identity?.stringValue
-            PopinLogger.shared.log("🟢 AudienceRowTile TAP DETECTED: identity=\(identity ?? "nil"), sid=\(sid ?? "nil"), name=\(participant.name ?? "nil")")
+        
             if let sid = sid {
                 withAnimation(.easeInOut(duration: 0.3)) {
-                    PopinLogger.shared.log("🟢 Setting primaryParticipantId to: \(sid)")
+                   
                     primaryParticipantId = sid
                 }
-            } else {
-                PopinLogger.shared.log("🔴 AudienceRowTile: tap ignored — participant SID is nil")
-            }
+            } 
         }) {
             ZStack(alignment: .bottom) {
                 // Video view with mirroring support

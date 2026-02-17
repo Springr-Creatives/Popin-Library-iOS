@@ -72,7 +72,6 @@ struct PopinConnectedView: View {
             // We'll check the device's camera position
             if let device = cameraCapturer.captureSession.inputs.first as? AVCaptureDeviceInput {
                 isFrontCamera = device.device.position == .front
-                PopinLogger.shared.log("📷 Camera position: \(isFrontCamera ? "front" : "back")")
             }
         }
     }
@@ -336,8 +335,6 @@ struct PopinConnectedView: View {
                 // Get audience participants (everyone except the first/primary)
                 let audienceParticipants = Array(sortedParticipants.dropFirst())
 
-                let _ = PopinLogger.shared.log("🟣 Audience participants: \(audienceParticipants.map { $0.sid?.stringValue ?? "?" })")
-                let _ = PopinLogger.shared.log("🟣 Current agent: \(currentAgent?.name ?? "nil")")
 
                 // Always show static AgentTile (if agent exists)
                 // Don't filter out agent from audience - they can appear as both static tile AND live video tile
