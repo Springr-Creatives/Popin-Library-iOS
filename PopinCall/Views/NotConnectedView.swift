@@ -30,6 +30,14 @@ struct NotConnectedView: View {
     @State private var timerActive = true
     @State private var timer: Timer?
 
+    // Pre-call mic/camera state
+    @State private var micEnabled = true
+    @State private var cameraEnabled = true
+
+    // Access to config
+    @EnvironmentObject private var configHolder: PopinConfigHolder
+    @ObservedObject private var chatManager = ChatManager.shared
+
     init(
         callerName: String = "Unknown Caller",
         callId: Int = 0,
@@ -54,6 +62,23 @@ struct NotConnectedView: View {
         self.onReject = onReject
     }
 
+    // Compute visible buttons - show chat button (disabled) if it will appear in connected view
+    private var visibleButtons: [ControlButtonID] {
+        let audioOnly = configHolder.config.audioOnlyMode
+        var buttons: [ControlButtonID] = []
+        if !configHolder.config.hideMuteAudioButton { buttons.append(.mic) }
+        if !audioOnly && !configHolder.config.hideMuteVideoButton { buttons.append(.video) }
+        if !audioOnly && !configHolder.config.hideFlipCameraButton { buttons.append(.flip) }
+        buttons.append(.invite) // always visible
+        // Show chat button if it's not hidden in config (will be disabled in incoming call view)
+        if !configHolder.config.hideChatButton { buttons.append(.chat) }
+        return buttons.sorted { $0.rawValue < $1.rawValue }
+    }
+
+    private var needsOverflow: Bool { visibleButtons.count > 4 }
+    private var directButtons: [ControlButtonID] { needsOverflow ? Array(visibleButtons.prefix(3)) : visibleButtons }
+    private var overflowButtons: [ControlButtonID] { needsOverflow ? Array(visibleButtons.dropFirst(3)) : [] }
+
     var body: some View {
         ZStack {
             // Black background
@@ -70,7 +95,7 @@ struct NotConnectedView: View {
                     .foregroundColor(.white.opacity(0.8))
                     .padding(.bottom, 8)
 
-                // "You have a new chat from" text
+                // "New video call from" text
                 Text("New video call from")
                     .foregroundColor(.white)
                     .font(.system(size: 18, weight: .medium))
@@ -84,58 +109,49 @@ struct NotConnectedView: View {
 
                 Spacer()
 
-                // Accept/Reject buttons
-                HStack(spacing: 8) {
-                    // Reject button
-                    Button(action: {
+                // Accept button
+                Button(action: {
+                    timerActive = false
+                    timer?.invalidate()
+                    onAccept()
+                }) {
+                    HStack(spacing: 16) {
+                        Text("Accept")
+                            .font(.system(size: 21, weight: .medium))
+                            .foregroundColor(.white)
+
+                        Image(systemName: "phone.fill")
+                            .font(.system(size: 20))
+                            .foregroundColor(.white)
+                    }
+                    .frame(maxWidth: .infinity)
+                    .frame(height: 56)
+                    .background(
+                        RoundedRectangle(cornerRadius: 28)
+                            .fill(Color(red: 0.2, green: 0.7, blue: 0.3))
+                    )
+                }
+                .buttonStyle(PlainButtonStyle())
+                .padding(.horizontal, 16)
+                .padding(.bottom, 16)
+
+                // Dynamic bottom controls (matching connected screen layout)
+                IncomingCallBottomControls(
+                    micEnabled: $micEnabled,
+                    cameraEnabled: $cameraEnabled,
+                    audioOnlyMode: configHolder.config.audioOnlyMode,
+                    visibleButtons: visibleButtons,
+                    needsOverflow: needsOverflow,
+                    directButtons: directButtons,
+                    overflowButtons: overflowButtons,
+                    unreadCount: chatManager.unreadCount,
+                    hideDisconnectButton: configHolder.config.hideDisconnectButton,
+                    onEndCall: {
                         timerActive = false
                         timer?.invalidate()
                         onReject()
-                    }) {
-                        HStack(spacing: 16) {
-                            Text("Reject")
-                                .font(.system(size: 21, weight: .medium))
-                                .foregroundColor(.white)
-
-                            Image(systemName: "phone.down.fill")
-                                .font(.system(size: 20))
-                                .foregroundColor(.white)
-                        }
-                        .frame(maxWidth: .infinity)
-                        .frame(height: 56)
-                        .background(
-                            RoundedRectangle(cornerRadius: 28)
-                                .fill(Color(red: 0.8, green: 0.2, blue: 0.2))
-                        )
                     }
-                    .buttonStyle(PlainButtonStyle())
-
-                    // Accept button
-                    Button(action: {
-                        timerActive = false
-                        timer?.invalidate()
-                        onAccept()
-                    }) {
-                        HStack(spacing: 16) {
-                            Text("Accept")
-                                .font(.system(size: 21, weight: .medium))
-                                .foregroundColor(.white)
-
-                            Image(systemName: "phone.fill")
-                                .font(.system(size: 20))
-                                .foregroundColor(.white)
-                        }
-                        .frame(maxWidth: .infinity)
-                        .frame(height: 56)
-                        .background(
-                            RoundedRectangle(cornerRadius: 28)
-                                .fill(Color(red: 0.2, green: 0.7, blue: 0.3))
-                        )
-                    }
-                    .buttonStyle(PlainButtonStyle())
-                }
-                .padding(.horizontal, 8)
-                .padding(.bottom, 24)
+                )
             }
         }
         .onAppear {
@@ -190,19 +206,136 @@ struct NotConnectedView: View {
     }
 }
 
-// Custom button style for call buttons
-struct CallButtonStyle: ButtonStyle {
-    func makeBody(configuration: Configuration) -> some View {
-        configuration.label
-            .scaleEffect(configuration.isPressed ? 0.92 : 1.0)
-            .opacity(configuration.isPressed ? 0.8 : 1.0)
-            .animation(.easeInOut(duration: 0.15), value: configuration.isPressed)
+// MARK: - Incoming Call Bottom Controls
+
+struct IncomingCallBottomControls: View {
+    @Binding var micEnabled: Bool
+    @Binding var cameraEnabled: Bool
+    let audioOnlyMode: Bool
+    let visibleButtons: [ControlButtonID]
+    let needsOverflow: Bool
+    let directButtons: [ControlButtonID]
+    let overflowButtons: [ControlButtonID]
+    let unreadCount: Int
+    let hideDisconnectButton: Bool
+    let onEndCall: () -> Void
+
+    var body: some View {
+        HStack(spacing: 0) {
+            Spacer()
+
+            // 1. Overflow button (disabled during incoming call)
+            if needsOverflow {
+                ControlCircleButtonView(
+                    iconName: "ellipsis",
+                    backgroundColor: Color.black.opacity(0.15),
+                    iconColor: .white.opacity(0.2)
+                )
+                Spacer()
+            }
+
+            // 2. Direct buttons
+            ForEach(directButtons, id: \.rawValue) { button in
+                incomingCallButtonView(for: button)
+                Spacer()
+            }
+
+            // 3. End call button (enabled)
+            if !hideDisconnectButton {
+                ControlCircleButton(
+                    iconName: "phone.down.fill",
+                    backgroundColor: Color(hex: "E53935"),
+                    iconColor: .white,
+                    action: onEndCall
+                )
+                Spacer()
+            }
+        }
+        .padding(.horizontal, 16)
+        .padding(.bottom, 32)
+        .padding(.top, 12)
+        .background(
+            LinearGradient(
+                stops: [
+                    .init(color: Color.black.opacity(0), location: 0.0),
+                    .init(color: Color.black.opacity(0), location: 0.3),
+                    .init(color: Color.black.opacity(0.2), location: 0.5),
+                    .init(color: Color.black.opacity(0.4), location: 0.7),
+                    .init(color: Color.black.opacity(0.6), location: 0.85),
+                    .init(color: Color.black.opacity(0.6), location: 1.0),
+                ],
+                startPoint: .top,
+                endPoint: .bottom
+            )
+            .frame(height: 240)
+            .frame(maxWidth: .infinity),
+            alignment: .bottom
+        )
+    }
+
+    @ViewBuilder
+    private func incomingCallButtonView(for button: ControlButtonID) -> some View {
+        switch button {
+        case .mic:
+            // Mic toggle - ENABLED
+            ControlCircleButton(
+                iconName: micEnabled ? "mic.fill" : "mic.slash.fill",
+                backgroundColor: micEnabled ? Color.black.opacity(0.5) : .white,
+                iconColor: micEnabled ? .white : .black,
+                action: { micEnabled.toggle() }
+            )
+        case .video:
+            // Camera toggle - ENABLED
+            if !audioOnlyMode {
+                ControlCircleButton(
+                    iconName: cameraEnabled ? "video.fill" : "video.slash.fill",
+                    backgroundColor: cameraEnabled ? Color.black.opacity(0.5) : .white,
+                    iconColor: cameraEnabled ? .white : .black,
+                    action: { cameraEnabled.toggle() }
+                )
+            }
+        case .flip:
+            // Flip camera - DISABLED
+            if !audioOnlyMode {
+                ControlCircleButtonView(
+                    iconName: "arrow.triangle.2.circlepath.camera.fill",
+                    backgroundColor: Color.black.opacity(0.15),
+                    iconColor: .white.opacity(0.2)
+                )
+            }
+        case .invite:
+            // Invite - DISABLED
+            ControlCircleButtonView(
+                iconName: "person.badge.plus",
+                backgroundColor: Color.black.opacity(0.15),
+                iconColor: .white.opacity(0.2)
+            )
+        case .chat:
+            // Chat - DISABLED (with badge if unread messages exist)
+            ZStack(alignment: .topTrailing) {
+                ControlCircleButtonView(
+                    iconName: "bubble.left.fill",
+                    backgroundColor: Color.black.opacity(0.15),
+                    iconColor: .white.opacity(0.2)
+                )
+                if unreadCount > 0 {
+                    Text("\(unreadCount)")
+                        .font(.system(size: 10, weight: .bold))
+                        .foregroundColor(.white)
+                        .frame(minWidth: 16, minHeight: 16)
+                        .background(Color.red.opacity(0.5))
+                        .clipShape(Circle())
+                        .offset(x: 4, y: -4)
+                }
+            }
+        }
     }
 }
 
 // Preview
 struct NotConnectedView_Previews: PreviewProvider {
     static var previews: some View {
+        let config = PopinConfig.Builder().build()
         NotConnectedView(
             callerName: "John Doe",
             callId: 12345,
@@ -215,6 +348,7 @@ struct NotConnectedView_Previews: PreviewProvider {
             onAccept: { },
             onReject: { }
         )
+        .environmentObject(PopinConfigHolder(config: config))
     }
 }
 #endif
