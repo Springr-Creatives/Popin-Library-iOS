@@ -128,7 +128,8 @@ struct BottomControls: View {
                 endPoint: .bottom
             )
             .frame(height: 240)
-            .frame(maxWidth: .infinity),
+            .frame(maxWidth: .infinity)
+            .allowsHitTesting(false),
             alignment: .bottom
         )
         .sheet(isPresented: Binding(
