@@ -88,36 +88,58 @@ struct TopControls: View {
     let productExtra: String?
 
     var body: some View {
-        HStack(alignment: .center, spacing: 4) {
-            // PiP/Back Button (Top Left)
-            if !configHolder.config.hideBackButton {
-                Button(action: onPipClick) {
-                    Image(systemName: "pip.enter")
-                        .font(.system(size: 20))
-                        .foregroundColor(.white)
-                        .frame(width: 40, height: 40)
-                        .background(Color(hex: "433F40"))
-                        .clipShape(Circle())
-                }
-                .buttonStyle(PlainButtonStyle())
+        ZStack(alignment: .top) {
+            // Gradient background - extends to top of screen
+            VStack {
+                LinearGradient(
+                    stops: [
+                        .init(color: Color.black.opacity(0.6), location: 0.0),
+                        .init(color: Color.black.opacity(0.6), location: 0.15),
+                        .init(color: Color.black.opacity(0.4), location: 0.3),
+                        .init(color: Color.black.opacity(0.2), location: 0.5),
+                        .init(color: Color.black.opacity(0), location: 0.7),
+                        .init(color: Color.black.opacity(0), location: 1.0),
+                    ],
+                    startPoint: .top,
+                    endPoint: .bottom
+                )
+                .frame(height: 240)
+                Spacer()
             }
+            .ignoresSafeArea(.all, edges: .top)
 
-            // Product Details
-            ProductDetailsView(
-                productId: productId,
-                productName: productName,
-                productUrl: productUrl,
-                productImageUrl: productImageUrl,
-                productDescription: productDescription,
-                productExtra: productExtra,
-                onBackClick: onPipClick,
-                secondaryProductText: configHolder.config.secondaryProductText
-            )
+            // Controls content
+            HStack(alignment: .center, spacing: 4) {
+                // PiP/Back Button (Top Left)
+                if !configHolder.config.hideBackButton {
+                    Button(action: onPipClick) {
+                        Image(systemName: "pip.enter")
+                            .font(.system(size: 20))
+                            .foregroundColor(.white)
+                            .frame(width: 40, height: 40)
+                            .background(Color(hex: "433F40"))
+                            .clipShape(Circle())
+                    }
+                    .buttonStyle(PlainButtonStyle())
+                }
 
-            Spacer()
+                // Product Details
+                ProductDetailsView(
+                    productId: productId,
+                    productName: productName,
+                    productUrl: productUrl,
+                    productImageUrl: productImageUrl,
+                    productDescription: productDescription,
+                    productExtra: productExtra,
+                    onBackClick: onPipClick,
+                    secondaryProductText: configHolder.config.secondaryProductText
+                )
+
+                Spacer()
+            }
+            .padding(.top, 16)
+            .padding(.horizontal, 16)
         }
-        .padding(.top, 16)
-        .padding(.horizontal, 16)
     }
 }
 #endif
