@@ -10,6 +10,7 @@ import SwiftUI
 import LiveKit
 import LiveKitComponents
 import AVKit
+import AVFoundation
 
 // Helper for cross-version onChange compatibility
 extension View {
@@ -39,6 +40,9 @@ struct PopinConnectedView: View {
     // Maintain a persistent order of participant SIDs to prevents random shifting
     @State private var participantOrder: [String] = []
 
+    // Track camera position for mirroring
+    @State private var isFrontCamera = true  // Default to front camera
+
     // Get view model and config from environment
     @EnvironmentObject private var viewModel: VideoCallViewModel
     @EnvironmentObject private var configHolder: PopinConfigHolder
@@ -58,6 +62,19 @@ struct PopinConnectedView: View {
         // Camera and microphone are already enabled in VideoCallSwiftUIView
         // This function is kept for potential future hardware configuration
         // but currently does nothing to avoid re-enabling already active devices
+    }
+
+    private func updateCameraPosition() {
+        // Check current camera position
+        if let videoTrack = _room.localParticipant.firstCameraVideoTrack as? LocalVideoTrack,
+           let cameraCapturer = videoTrack.capturer as? CameraCapturer {
+            // In LiveKit, front camera is typically position .front
+            // We'll check the device's camera position
+            if let device = cameraCapturer.captureSession.inputs.first as? AVCaptureDeviceInput {
+                isFrontCamera = device.device.position == .front
+                PopinLogger.shared.log("📷 Camera position: \(isFrontCamera ? "front" : "back")")
+            }
+        }
     }
     
     private func syncParticipantOrder() {
@@ -329,7 +346,9 @@ struct PopinConnectedView: View {
                     agent: currentAgent,  // Always show static AgentTile if agent exists
                     agentParticipant: agentParticipant,
                     primaryParticipantId: $primaryParticipantId,
-                    expertDesignation: configHolder.config.expertDesignation
+                    expertDesignation: configHolder.config.expertDesignation,
+                    localParticipantSid: _room.localParticipant.sid?.stringValue,
+                    isFrontCamera: isFrontCamera
                 )
                 .padding(.bottom, 8)
             }
@@ -357,7 +376,9 @@ struct PopinConnectedView: View {
                 PrimaryParticipantView(
                     participant: primaryParticipant,
                     pipHandler: pipHandler,
-                    pipSupported: pipSupported
+                    pipSupported: pipSupported,
+                    localParticipantSid: _room.localParticipant.sid?.stringValue,
+                    isFrontCamera: isFrontCamera
                 )
             } else {
                 Color.black
@@ -371,6 +392,8 @@ struct PopinConnectedView: View {
             await enableHardware()
             // Initial sync
             syncParticipantOrder()
+            // Check initial camera position
+            updateCameraPosition()
         }
         // Watch for participant changes to sync order
         .onChange(of: _room.remoteParticipants.count) { _ in
@@ -383,11 +406,19 @@ struct PopinConnectedView: View {
         .onChange(of: _room.connectionState) { newState in
             if newState == .connected {
                 syncParticipantOrder()
+                // Update camera position when connected
+                updateCameraPosition()
             }
-            
+
             // Handle room disconnection (when not user-initiated)
             if newState == .disconnected && !viewModel.isUserEndingCall {
                 viewModel.onRoomDisconnected?()
+            }
+        }
+        // Periodically check camera position (in case it changes via flip button)
+        .onReceive(Timer.publish(every: 0.5, on: .main, in: .common).autoconnect()) { _ in
+            if _room.connectionState == .connected {
+                updateCameraPosition()
             }
         }
         // Handle Primary Participant Selection (Swap Logic)
@@ -532,6 +563,8 @@ struct PrimaryParticipantView: View {
     @ObservedObject var participant: Participant
     let pipHandler: PiPHandler
     let pipSupported: Bool
+    let localParticipantSid: String?
+    let isFrontCamera: Bool
 
     // Prefer screen share track over camera (matching Android PrimarySpeakerView)
     private var preferredVideoTrack: VideoTrack? {
@@ -541,18 +574,30 @@ struct PrimaryParticipantView: View {
         return participant.firstCameraVideoTrack
     }
 
+    // Check if this is the local participant and should be mirrored
+    private var shouldMirror: Bool {
+        guard let localSid = localParticipantSid,
+              let participantSid = participant.sid?.stringValue else {
+            return false
+        }
+        // Mirror if this is local participant AND front camera is active AND showing camera (not screen share)
+        return localSid == participantSid && isFrontCamera && participant.firstScreenShareVideoTrack == nil
+    }
+
     var body: some View {
         ZStack {
             if pipSupported, let track = preferredVideoTrack {
                 PiPView(track: track, pipHandler: pipHandler)
                     .frame(maxWidth: .infinity, maxHeight: .infinity)
                     .background(Color.black)
+                    .scaleEffect(x: shouldMirror ? -1 : 1, y: 1)  // Mirror horizontally if front camera
                     .ignoresSafeArea()
             } else {
                 ParticipantView(showInformation: false)
                     .environmentObject(participant)
                     .frame(maxWidth: .infinity, maxHeight: .infinity)
                     .background(Color.black)
+                    .scaleEffect(x: shouldMirror ? -1 : 1, y: 1)  // Mirror horizontally if front camera
             }
 
             // Show no video icon when no video is available

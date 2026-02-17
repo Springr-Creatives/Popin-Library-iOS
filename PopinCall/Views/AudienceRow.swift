@@ -16,6 +16,8 @@ struct AudienceRow: View {
     let agentParticipant: Participant?
     @Binding var primaryParticipantId: String?
     let expertDesignation: String
+    let localParticipantSid: String?
+    let isFrontCamera: Bool
 
     var body: some View {
         let _ = PopinLogger.shared.log("AudienceRow: agent=\(agent?.name ?? "nil"), agentParticipant=\(agentParticipant?.identity?.stringValue ?? "nil"), participants=\(participants.map { $0.identity?.stringValue ?? "?" })")
@@ -27,7 +29,12 @@ struct AudienceRow: View {
                 }
 
                 ForEach(participants) { participant in
-                    AudienceRowTile(participant: participant, primaryParticipantId: $primaryParticipantId)
+                    AudienceRowTile(
+                        participant: participant,
+                        primaryParticipantId: $primaryParticipantId,
+                        localParticipantSid: localParticipantSid,
+                        isFrontCamera: isFrontCamera
+                    )
                 }
             }
             .padding(.leading, 10)
@@ -148,6 +155,18 @@ private struct AgentIndicators: View {
 private struct AudienceRowTile: View {
     @ObservedObject var participant: Participant
     @Binding var primaryParticipantId: String?
+    let localParticipantSid: String?
+    let isFrontCamera: Bool
+
+    // Check if this is the local participant and should be mirrored
+    private var shouldMirror: Bool {
+        guard let localSid = localParticipantSid,
+              let participantSid = participant.sid?.stringValue else {
+            return false
+        }
+        // Mirror if this is local participant AND front camera is active AND showing camera (not screen share)
+        return localSid == participantSid && isFrontCamera && participant.firstScreenShareVideoTrack == nil
+    }
 
     var body: some View {
         let _ = PopinLogger.shared.log("🔵 AudienceRowTile rendering: identity=\(participant.identity?.stringValue ?? "nil"), sid=\(participant.sid?.stringValue ?? "nil"), name=\(participant.name ?? "nil")")
@@ -170,6 +189,7 @@ private struct AudienceRowTile: View {
                 ParticipantView(showInformation: false)
                     .environmentObject(participant)
                     .frame(width: 90, height: 120)
+                    .scaleEffect(x: shouldMirror ? -1 : 1, y: 1)  // Mirror horizontally if front camera
 
                 if !participant.isCameraEnabled() {
                     Rectangle()
