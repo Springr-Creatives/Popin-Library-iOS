@@ -26,6 +26,8 @@ public class PopinConfig {
     public let persistenceMode: Bool
     public let enableIncomingCalls: Bool
     public let enableDebugMode: Bool
+    public let secondaryProductText: String
+    public let expertDesignation: String
 
     // MARK: - Mutable runtime state
 
@@ -51,6 +53,8 @@ public class PopinConfig {
         self.persistenceMode = builder.persistenceMode
         self.enableIncomingCalls = builder.enableIncomingCalls
         self.enableDebugMode = builder.enableDebugMode
+        self.secondaryProductText = builder.secondaryProductText
+        self.expertDesignation = builder.expertDesignation
         self.product = builder.product
         self.callerId = builder.callerId
         self.meta = builder.meta
@@ -74,6 +78,8 @@ public class PopinConfig {
         var persistenceMode: Bool = true
         var enableIncomingCalls: Bool = false
         var enableDebugMode: Bool = false
+        var secondaryProductText: String = "Product details"
+        var expertDesignation: String = "Product expert"
         var product: PopinProduct?
         var callerId: String?
         var meta: [String: String] = [:]
@@ -167,6 +173,18 @@ public class PopinConfig {
         @discardableResult
         public func enableDebugMode(_ enable: Bool) -> Builder {
             self.enableDebugMode = enable
+            return self
+        }
+
+        @discardableResult
+        public func secondaryProductText(_ text: String) -> Builder {
+            self.secondaryProductText = text
+            return self
+        }
+
+        @discardableResult
+        public func expertDesignation(_ designation: String) -> Builder {
+            self.expertDesignation = designation
             return self
         }
 

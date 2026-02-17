@@ -15,6 +15,7 @@ struct AudienceRow: View {
     let agent: Agent?
     let agentParticipant: Participant?
     @Binding var primaryParticipantId: String?
+    let expertDesignation: String
 
     var body: some View {
         let _ = PopinLogger.shared.log("AudienceRow: agent=\(agent?.name ?? "nil"), agentParticipant=\(agentParticipant?.identity?.stringValue ?? "nil"), participants=\(participants.map { $0.identity?.stringValue ?? "?" })")
@@ -22,7 +23,7 @@ struct AudienceRow: View {
             HStack(spacing: 8) {
                 // Agent Tile
                 if let agent = agent {
-                    AgentTile(agent: agent, participant: agentParticipant, primaryParticipantId: $primaryParticipantId)
+                    AgentTile(agent: agent, participant: agentParticipant, primaryParticipantId: $primaryParticipantId, expertDesignation: expertDesignation)
                 }
 
                 ForEach(participants) { participant in
@@ -39,6 +40,7 @@ private struct AgentTile: View {
     let agent: Agent
     let participant: Participant?
     @Binding var primaryParticipantId: String?
+    let expertDesignation: String
 
     var body: some View {
         ZStack(alignment: .bottom) {
@@ -77,7 +79,7 @@ private struct AgentTile: View {
 
             // Name and Role (Expert)
             VStack(alignment: .leading, spacing: 0) {
-                Text("Expert")
+                Text(expertDesignation)
                     .font(.system(size: 10))
                     .fontWeight(.bold)
                     .foregroundColor(.white)
@@ -164,6 +166,7 @@ private struct AudienceRowTile: View {
                 Image(systemName: "video.slash.fill")
                     .font(.system(size: 24))
                     .foregroundColor(.white.opacity(0.6))
+                    .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .center)
                     .allowsHitTesting(false)
             }
 

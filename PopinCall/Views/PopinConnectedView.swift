@@ -326,7 +326,8 @@ struct PopinConnectedView: View {
                     participants: filteredAudience,
                     agent: currentAgent,
                     agentParticipant: agentParticipant,
-                    primaryParticipantId: $primaryParticipantId
+                    primaryParticipantId: $primaryParticipantId,
+                    expertDesignation: configHolder.config.expertDesignation
                 )
                 .padding(.bottom, 8)
             }

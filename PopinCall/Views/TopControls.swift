@@ -19,13 +19,14 @@ struct ProductDetailsView: View {
     let productDescription: String?
     let productExtra: String?
     let onBackClick: (() -> Void)?
+    let secondaryProductText: String
 
     private var primaryText: String {
         return productName ?? productId ?? ""
     }
 
     private var secondaryText: String {
-        return "Details"
+        return secondaryProductText
     }
 
     private func openProductUrl() {
@@ -109,7 +110,8 @@ struct TopControls: View {
                 productImageUrl: productImageUrl,
                 productDescription: productDescription,
                 productExtra: productExtra,
-                onBackClick: onPipClick
+                onBackClick: onPipClick,
+                secondaryProductText: configHolder.config.secondaryProductText
             )
 
             Spacer()

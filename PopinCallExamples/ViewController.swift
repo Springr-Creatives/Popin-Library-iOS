@@ -48,7 +48,8 @@ class ViewController: UIViewController, UITableViewDataSource {
 
             // Custom metadata
             .meta(metadata)
-
+            .secondaryProductText("Car details") // Custom text
+            .expertDesignation("Car Expert")
             // Listeners
             .initListener(self)
             .eventsListener(self)
