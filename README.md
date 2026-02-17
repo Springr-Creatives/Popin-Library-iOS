@@ -101,6 +101,10 @@ let config = PopinConfig.Builder()
     // Custom metadata
     .meta(metadata)
 
+    // UI customization text
+    .secondaryProductText("Car details")  // Label shown below product name in top bar
+    .expertDesignation("Car Expert")      // Label shown below expert name during call
+
     // Listeners
     .initListener(self)
     .eventsListener(self)
@@ -158,8 +162,8 @@ extension ViewController: PopinEventsListener {
         print("Call started")
     }
 
-    func onCallCancel() {
-        print("Call cancelled")
+    func onCallAbandoned() {
+        print("Call abandoned")
     }
 
     func onQueuePositionChanged(position: Int) {
@@ -311,6 +315,8 @@ Popin.shared?.setGroup(identifier: "group-abc-123", onSuccess: {
 | `.sandboxMode(Bool)` | `false` | Use sandbox environment |
 | `.product(PopinProduct)` | `nil` | Product context for the call |
 | `.meta([String: String])` | `[:]` | Custom metadata key-value pairs |
+| `.secondaryProductText(String)` | `"Product details"` | Label shown below product name in top controls |
+| `.expertDesignation(String)` | `"Product expert"` | Role/designation label shown below expert's name during call |
 | `.initListener(PopinInitListener)` | `nil` | Listener for initialization events |
 | `.eventsListener(PopinEventsListener)` | `nil` | Listener for call events |
 | `.hideDisconnectButton(Bool)` | `false` | Hide the end call button |
@@ -349,7 +355,7 @@ PopinProduct(
 | `onPermissionGiven()` | Camera and microphone permissions were granted |
 | `onPermissionDenied()` | Camera or microphone permissions were denied |
 | `onCallStart()` | Call has been queued and is waiting for an agent |
-| `onCallCancel()` | Call was cancelled (e.g., all experts busy) |
+| `onCallAbandoned()` | Call was abandoned by user during connecting screen |
 | `onQueuePositionChanged(position:)` | Your position in the queue has changed |
 | `onCallMissed()` | No agent answered in time |
 | `onCallNetworkFailure()` | A network error occurred |

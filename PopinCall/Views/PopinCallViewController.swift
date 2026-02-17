@@ -173,6 +173,10 @@ public class PopinCallViewController: UIViewController {
         viewModel.onCancelCall = { [weak self] in
             guard let self = self else { return }
             self.isAppInitiatedDisconnect = true
+
+            // Notify events listener that call was abandoned
+            Popin.shared?.getConfig().eventsListener?.onCallAbandoned()
+
             Popin.shared?.cancelCall()
 
             if let queueId = self.callQueueId {

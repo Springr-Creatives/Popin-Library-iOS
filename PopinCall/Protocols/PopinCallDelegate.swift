@@ -11,7 +11,7 @@ public protocol PopinEventsListener: AnyObject {
     func onPermissionGiven()
     func onPermissionDenied()
     func onCallStart()
-    func onCallCancel()
+    func onCallAbandoned()
     func onQueuePositionChanged(position: Int)
     func onCallMissed()
     func onCallNetworkFailure()

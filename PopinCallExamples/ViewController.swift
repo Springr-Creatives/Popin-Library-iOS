@@ -145,7 +145,7 @@ extension ViewController: PopinEventsListener {
     func onCallStart() {
     }
 
-    func onCallCancel() {
+    func onCallAbandoned() {
     }
 
     func onQueuePositionChanged(position: Int) {

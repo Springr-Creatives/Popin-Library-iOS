@@ -658,7 +658,7 @@ public class Popin : PopinPusherDelegate, CallAcceptanceListener {
     }
 
     func onAllExpertsBusy() {
-        self.eventsListener?.onCallCancel()
+        self.eventsListener?.onCallMissed()
     }
 
     func onCallConnected() {
