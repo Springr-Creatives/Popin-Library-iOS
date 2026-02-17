@@ -587,10 +587,9 @@ struct PrimaryParticipantView: View {
     var body: some View {
         ZStack {
             if pipSupported, let track = preferredVideoTrack {
-                PiPView(track: track, pipHandler: pipHandler)
+                PiPView(track: track, pipHandler: pipHandler, shouldMirror: shouldMirror)
                     .frame(maxWidth: .infinity, maxHeight: .infinity)
                     .background(Color.black)
-                    .scaleEffect(x: shouldMirror ? -1 : 1, y: 1)  // Mirror horizontally if front camera
                     .ignoresSafeArea()
             } else {
                 ParticipantView(showInformation: false)

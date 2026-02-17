@@ -23,6 +23,7 @@ extension Notification.Name {
 final class PiPPreviewViewController: UIViewController, VideoRenderer {
     private lazy var renderingView = PiPSampleRenderingView()
     private var frameCount = 0
+    var shouldMirror = false
 
     override func loadView() {
         renderingView.sampleBufferDisplayLayer.videoGravity = .resizeAspectFill
@@ -54,7 +55,15 @@ final class PiPPreviewViewController: UIViewController, VideoRenderer {
             } else {
                 layer.enqueue(sampleBuffer)
             }
-            layer.setAffineTransform(CGAffineTransform(rotationAngle: frame.rotation.rotationAngle))
+
+            // Combine rotation and mirroring transforms
+            // Apply mirroring BEFORE rotation for correct coordinate system
+            var transform = CGAffineTransform.identity
+            if shouldMirror {
+                transform = transform.scaledBy(x: -1, y: 1)
+            }
+            transform = transform.rotated(by: frame.rotation.rotationAngle)
+            layer.setAffineTransform(transform)
         }
     }
 }
@@ -62,6 +71,7 @@ final class PiPPreviewViewController: UIViewController, VideoRenderer {
 final class PiPVideoCallViewController: AVPictureInPictureVideoCallViewController, VideoRenderer {
     private lazy var renderingView = PiPSampleRenderingView()
     private var frameCount = 0
+    var shouldMirror = false
 
     override func loadView() {
         renderingView.sampleBufferDisplayLayer.videoGravity = .resizeAspectFill
@@ -93,7 +103,15 @@ final class PiPVideoCallViewController: AVPictureInPictureVideoCallViewControlle
             } else {
                 layer.enqueue(sampleBuffer)
             }
-            layer.setAffineTransform(CGAffineTransform(rotationAngle: frame.rotation.rotationAngle))
+
+            // Combine rotation and mirroring transforms
+            // Apply mirroring BEFORE rotation for correct coordinate system
+            var transform = CGAffineTransform.identity
+            if shouldMirror {
+                transform = transform.scaledBy(x: -1, y: 1)
+            }
+            transform = transform.rotated(by: frame.rotation.rotationAngle)
+            layer.setAffineTransform(transform)
             preferredContentSize = frame.rotatedSize
         }
     }
@@ -153,6 +171,7 @@ class PiPHandler: ObservableObject {
 struct PiPView: UIViewControllerRepresentable {
     let track: VideoTrack
     let pipHandler: PiPHandler
+    let shouldMirror: Bool
 
     func makeUIViewController(context: Context) -> UIViewController {
         // Make sure view controllers are loaded before adding renderers
@@ -171,8 +190,9 @@ struct PiPView: UIViewControllerRepresentable {
         if pipHandler.controller == nil {
             pipHandler.controller = context.coordinator.controller
         }
-        
+
         context.coordinator.updateTrack(track)
+        context.coordinator.updateMirroring(shouldMirror)
     }
 
     static func dismantleUIViewController(_ uiViewController: UIViewController, coordinator: Coordinator) {
@@ -195,13 +215,14 @@ struct PiPView: UIViewControllerRepresentable {
             controller: controller,
             previewController: previewController,
             videoCallController: videoCallController,
-            track: track
+            track: track,
+            shouldMirror: shouldMirror
         )
         controller.delegate = coordinator
-        
+
         // Assign controller to handler
         pipHandler.controller = controller
-        
+
         return coordinator
     }
 
@@ -211,31 +232,40 @@ struct PiPView: UIViewControllerRepresentable {
         let videoCallController: PiPVideoCallViewController
         private var track: VideoTrack
         private var isRestoringFromPiP = false
+        private var shouldMirror: Bool
 
         init(controller: AVPictureInPictureController,
              previewController: PiPPreviewViewController,
              videoCallController: PiPVideoCallViewController,
-             track: VideoTrack) {
+             track: VideoTrack,
+             shouldMirror: Bool) {
             self.controller = controller
             self.previewController = previewController
             self.videoCallController = videoCallController
             self.track = track
+            self.shouldMirror = shouldMirror
             super.init()
         }
-        
+
         func updateTrack(_ newTrack: VideoTrack) {
             guard newTrack.sid != track.sid else { return }
-            
+
             // Remove renderers from old track
             track.remove(videoRenderer: previewController)
             track.remove(videoRenderer: videoCallController)
-            
+
             // Update track
             track = newTrack
-            
+
             // Add renderers to new track
             track.add(videoRenderer: previewController)
             track.add(videoRenderer: videoCallController)
+        }
+
+        func updateMirroring(_ mirror: Bool) {
+            shouldMirror = mirror
+            previewController.shouldMirror = mirror
+            videoCallController.shouldMirror = mirror
         }
 
         func cleanup() {
