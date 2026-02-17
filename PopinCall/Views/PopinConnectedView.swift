@@ -244,28 +244,31 @@ struct PopinConnectedView: View {
     @ViewBuilder
     private var overlayControls: some View {
         VStack(spacing: 0) {
-            // Top controls with PiP button and product details
-            TopControls(
-                onPipClick: {
-                    // Enable PiP when PiP button is clicked
-                    pipHandler.startPictureInPicture()
-                },
-                productId: productId,
-                productName: productName,
-                productUrl: productUrl,
-                productImageUrl: productImageUrl,
-                productDescription: productDescription,
-                productExtra: productExtra
-            )
+            VStack(spacing: 0) {
+                // Top controls with PiP button and product details
+                TopControls(
+                    onPipClick: {
+                        // Enable PiP when PiP button is clicked
+                        pipHandler.startPictureInPicture()
+                    },
+                    productId: productId,
+                    productName: productName,
+                    productUrl: productUrl,
+                    productImageUrl: productImageUrl,
+                    productDescription: productDescription,
+                    productExtra: productExtra
+                )
 
-            // Network / status badge (one at a time, by priority)
-            networkBadge
-                .padding(.top, 8)
-                .animation(.easeInOut(duration: 0.3), value: viewModel.hasCustomerNetworkIssue)
-                .animation(.easeInOut(duration: 0.3), value: viewModel.hasSellerNetworkIssue)
-                .animation(.easeInOut(duration: 0.3), value: viewModel.showCustomerBackOnlineMessage)
-                .animation(.easeInOut(duration: 0.3), value: viewModel.showSellerRejoinedMessage)
-                .animation(.easeInOut(duration: 0.3), value: viewModel.noQualifyingParticipantsTimer)
+                // Network / status badge (one at a time, by priority)
+                networkBadge
+                    .padding(.top, 8)
+                    .animation(.easeInOut(duration: 0.3), value: viewModel.hasCustomerNetworkIssue)
+                    .animation(.easeInOut(duration: 0.3), value: viewModel.hasSellerNetworkIssue)
+                    .animation(.easeInOut(duration: 0.3), value: viewModel.showCustomerBackOnlineMessage)
+                    .animation(.easeInOut(duration: 0.3), value: viewModel.showSellerRejoinedMessage)
+                    .animation(.easeInOut(duration: 0.3), value: viewModel.noQualifyingParticipantsTimer)
+            }
+            .frame(maxWidth: .infinity, alignment: .top)
 
             Spacer()
 

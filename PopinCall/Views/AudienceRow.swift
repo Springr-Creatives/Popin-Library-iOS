@@ -150,93 +150,88 @@ private struct AudienceRowTile: View {
     @Binding var primaryParticipantId: String?
 
     var body: some View {
-        ZStack(alignment: .bottom) {
-            // Video view or no video placeholder
-            ParticipantView(showInformation: false)
-                .environmentObject(participant)
-                .frame(width: 90, height: 120)
-                .allowsHitTesting(false)
+        let _ = PopinLogger.shared.log("🔵 AudienceRowTile rendering: identity=\(participant.identity?.stringValue ?? "nil"), sid=\(participant.sid?.stringValue ?? "nil"), name=\(participant.name ?? "nil")")
 
-            if !participant.isCameraEnabled() {
-                Rectangle()
-                    .fill(Color.black.opacity(0.8))
-                    .frame(width: 90, height: 120)
-                    .allowsHitTesting(false)
-
-                Image(systemName: "video.slash.fill")
-                    .font(.system(size: 24))
-                    .foregroundColor(.white.opacity(0.6))
-                    .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .center)
-                    .allowsHitTesting(false)
+        Button(action: {
+            let sid = participant.sid?.stringValue
+            let identity = participant.identity?.stringValue
+            PopinLogger.shared.log("🟢 AudienceRowTile TAP DETECTED: identity=\(identity ?? "nil"), sid=\(sid ?? "nil"), name=\(participant.name ?? "nil")")
+            if let sid = sid {
+                withAnimation(.easeInOut(duration: 0.3)) {
+                    PopinLogger.shared.log("🟢 Setting primaryParticipantId to: \(sid)")
+                    primaryParticipantId = sid
+                }
+            } else {
+                PopinLogger.shared.log("🔴 AudienceRowTile: tap ignored — participant SID is nil")
             }
+        }) {
+            ZStack(alignment: .bottom) {
+                // Video view or no video placeholder
+                ParticipantView(showInformation: false)
+                    .environmentObject(participant)
+                    .frame(width: 90, height: 120)
 
-            // Bottom Gradient Overlay
-            LinearGradient(
-                gradient: Gradient(colors: [Color.black.opacity(0), Color(hex: "080060").opacity(0.5)]),
-                startPoint: .top,
-                endPoint: .bottom
-            )
-            .frame(height: 45)
-            .allowsHitTesting(false)
+                if !participant.isCameraEnabled() {
+                    Rectangle()
+                        .fill(Color.black.opacity(0.8))
+                        .frame(width: 90, height: 120)
 
-            // Participant name
-            Text(participant.name ?? "Unknown")
-                .font(.system(size: 12))
-                .fontWeight(.medium)
-                .foregroundColor(.white)
-                .lineLimit(1)
-                .truncationMode(.tail)
-                .padding(.leading, 8)
-                .padding(.bottom, 8)
-                .frame(maxWidth: .infinity, alignment: .leading)
-                .allowsHitTesting(false)
+                    Image(systemName: "video.slash.fill")
+                        .font(.system(size: 24))
+                        .foregroundColor(.white.opacity(0.6))
+                        .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .center)
+                }
 
-            // Top Right Indicators
-            VStack(spacing: 4) {
-                if !participant.isMicrophoneEnabled() {
+                // Bottom Gradient Overlay
+                LinearGradient(
+                    gradient: Gradient(colors: [Color.black.opacity(0), Color(hex: "080060").opacity(0.5)]),
+                    startPoint: .top,
+                    endPoint: .bottom
+                )
+                .frame(height: 45)
+
+                // Participant name
+                Text(participant.name ?? "Unknown")
+                    .font(.system(size: 12))
+                    .fontWeight(.medium)
+                    .foregroundColor(.white)
+                    .lineLimit(1)
+                    .truncationMode(.tail)
+                    .padding(.leading, 8)
+                    .padding(.bottom, 8)
+                    .frame(maxWidth: .infinity, alignment: .leading)
+
+                // Top Right Indicators
+                VStack(spacing: 4) {
+                    if !participant.isMicrophoneEnabled() {
+                        ZStack {
+                            Circle()
+                                .fill(Color.black.opacity(0.7))
+                                .frame(width: 20, height: 20)
+                            Image(systemName: "mic.slash.fill")
+                                .font(.system(size: 10))
+                                .foregroundColor(.white)
+                        }
+                    }
                     ZStack {
                         Circle()
                             .fill(Color.black.opacity(0.7))
                             .frame(width: 20, height: 20)
-                        Image(systemName: "mic.slash.fill")
-                            .font(.system(size: 10))
-                            .foregroundColor(.white)
+                        SignalStrengthView(quality: participant.connectionQuality)
+                            .scaleEffect(0.7)
                     }
                 }
-                ZStack {
-                    Circle()
-                        .fill(Color.black.opacity(0.7))
-                        .frame(width: 20, height: 20)
-                    SignalStrengthView(quality: participant.connectionQuality)
-                        .scaleEffect(0.7)
-                }
+                .padding(6)
+                .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .topTrailing)
             }
-            .padding(6)
-            .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .topTrailing)
-            .allowsHitTesting(false)
-
-            // Transparent tap overlay — on top of everything including UIKit-backed ParticipantView
-            Color.white.opacity(0.001)
-                .frame(width: 90, height: 120)
-                .onTapGesture {
-                    let sid = participant.sid?.stringValue
-                    let identity = participant.identity?.stringValue
-                    PopinLogger.shared.log("AudienceRowTile tapped: identity=\(identity ?? "nil"), sid=\(sid ?? "nil"), name=\(participant.name ?? "nil")")
-                    if let sid = sid {
-                        withAnimation(.easeInOut(duration: 0.3)) {
-                            primaryParticipantId = sid
-                        }
-                    } else {
-                        PopinLogger.shared.log("AudienceRowTile: tap ignored — participant SID is nil")
-                    }
-                }
+            .frame(width: 90, height: 120)
+            .cornerRadius(12)
+            .overlay(
+                RoundedRectangle(cornerRadius: 12)
+                    .stroke(Color(hex: "FFFFFF"), lineWidth: 0.5)
+            )
         }
-        .frame(width: 90, height: 120)
-        .cornerRadius(12)
-        .overlay(
-            RoundedRectangle(cornerRadius: 12)
-                .stroke(Color(hex: "FFFFFF"), lineWidth: 0.5)
-        )
+        .buttonStyle(PlainButtonStyle())
     }
 }
 

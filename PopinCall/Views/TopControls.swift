@@ -88,7 +88,38 @@ struct TopControls: View {
     let productExtra: String?
 
     var body: some View {
-        ZStack(alignment: .top) {
+        // Controls content
+        HStack(alignment: .center, spacing: 4) {
+            // PiP/Back Button (Top Left)
+            if !configHolder.config.hideBackButton {
+                Button(action: onPipClick) {
+                    Image(systemName: "pip.enter")
+                        .font(.system(size: 20))
+                        .foregroundColor(.white)
+                        .frame(width: 40, height: 40)
+                        .background(Color(hex: "433F40"))
+                        .clipShape(Circle())
+                }
+                .buttonStyle(PlainButtonStyle())
+            }
+
+            // Product Details
+            ProductDetailsView(
+                productId: productId,
+                productName: productName,
+                productUrl: productUrl,
+                productImageUrl: productImageUrl,
+                productDescription: productDescription,
+                productExtra: productExtra,
+                onBackClick: onPipClick,
+                secondaryProductText: configHolder.config.secondaryProductText
+            )
+
+            Spacer()
+        }
+        .padding(.top, 16)
+        .padding(.horizontal, 16)
+        .background(
             // Gradient background - extends to top of screen
             VStack {
                 LinearGradient(
@@ -104,42 +135,9 @@ struct TopControls: View {
                     endPoint: .bottom
                 )
                 .frame(height: 240)
-                Spacer()
             }
             .ignoresSafeArea(.all, edges: .top)
-
-            // Controls content
-            HStack(alignment: .center, spacing: 4) {
-                // PiP/Back Button (Top Left)
-                if !configHolder.config.hideBackButton {
-                    Button(action: onPipClick) {
-                        Image(systemName: "pip.enter")
-                            .font(.system(size: 20))
-                            .foregroundColor(.white)
-                            .frame(width: 40, height: 40)
-                            .background(Color(hex: "433F40"))
-                            .clipShape(Circle())
-                    }
-                    .buttonStyle(PlainButtonStyle())
-                }
-
-                // Product Details
-                ProductDetailsView(
-                    productId: productId,
-                    productName: productName,
-                    productUrl: productUrl,
-                    productImageUrl: productImageUrl,
-                    productDescription: productDescription,
-                    productExtra: productExtra,
-                    onBackClick: onPipClick,
-                    secondaryProductText: configHolder.config.secondaryProductText
-                )
-
-                Spacer()
-            }
-            .padding(.top, 16)
-            .padding(.horizontal, 16)
-        }
+        )
     }
 }
 #endif
