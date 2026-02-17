@@ -46,6 +46,7 @@
 		CF17CHAT62F27407B00AE48E7 /* ChatView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CF17CHAT52F27407B00AE48E7 /* ChatView.swift */; };
 		CF17CHAT82F27407B00AE48E7 /* ChatDetailsToast.swift in Sources */ = {isa = PBXBuildFile; fileRef = CF17CHAT72F27407B00AE48E7 /* ChatDetailsToast.swift */; };
 		CF17LOG12F27407B00AE48E7 /* PopinLogger.swift in Sources */ = {isa = PBXBuildFile; fileRef = CF17LOG02F27407B00AE48E7 /* PopinLogger.swift */; };
+		CF967A842F44320300F5A268 /* MirroredParticipantView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CF967A832F44320300F5A268 /* MirroredParticipantView.swift */; };
 		CFA4CD962F28D0A7009EB444 /* LiveKit in Frameworks */ = {isa = PBXBuildFile; productRef = CFA4CD952F28D0A7009EB444 /* LiveKit */; };
 		CFA4CD972F28D0B8009EB444 /* LiveKit in Frameworks */ = {isa = PBXBuildFile; productRef = CFA4CD9C2F28D0C0009EB444 /* LiveKit */; };
 		CFA4CD982F28D0B8009EB444 /* LiveKitComponents in Frameworks */ = {isa = PBXBuildFile; productRef = CFA4CD9D2F28D0C0009EB444 /* LiveKitComponents */; };
@@ -138,6 +139,7 @@
 		CF17CHAT72F27407B00AE48E7 /* ChatDetailsToast.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatDetailsToast.swift; sourceTree = "<group>"; };
 		CF17LOG02F27407B00AE48E7 /* PopinLogger.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PopinLogger.swift; sourceTree = "<group>"; };
 		CF1D09E39EFC62DD51F4244B /* PopinProduct.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = PopinProduct.swift; sourceTree = "<group>"; };
+		CF967A832F44320300F5A268 /* MirroredParticipantView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MirroredParticipantView.swift; sourceTree = "<group>"; };
 		CFA4CDDE2F2A4C2A009EB444 /* BottomControls.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BottomControls.swift; sourceTree = "<group>"; };
 		CFB63D8C292908EF005F265D /* PopinPusherDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PopinPusherDelegate.swift; sourceTree = "<group>"; };
 		CFBBD5662923EA3100D241A9 /* PopinCall.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = PopinCall.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -210,6 +212,7 @@
 				CF1742662F27407B00AE48E7 /* NotConnectedView.swift */,
 				CF1742712F27407B00AE48E7 /* PopinConnectedView.swift */,
 				CF17427C2F27407B00AE48E7 /* VideoCallSwiftUIView.swift */,
+				CF967A832F44320300F5A268 /* MirroredParticipantView.swift */,
 				CF1742672F27407B00AE48E7 /* ParticipantCell.swift */,
 				CF1742682F27407B00AE48E7 /* ParticipantLayout.swift */,
 				CF1742692F27407B00AE48E7 /* ParticipantTile.swift */,
@@ -509,6 +512,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				CF967A842F44320300F5A268 /* MirroredParticipantView.swift in Sources */,
 				CF17CHAT22F27407B00AE48E7 /* ChatMessage.swift in Sources */,
 				CF17CHAT42F27407B00AE48E7 /* ChatManager.swift in Sources */,
 				CF17CHAT62F27407B00AE48E7 /* ChatView.swift in Sources */,

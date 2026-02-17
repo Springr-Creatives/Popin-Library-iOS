@@ -185,11 +185,9 @@ private struct AudienceRowTile: View {
             }
         }) {
             ZStack(alignment: .bottom) {
-                // Video view or no video placeholder
-                ParticipantView(showInformation: false)
-                    .environmentObject(participant)
+                // Video view with mirroring support
+                MirroredParticipantView(participant: participant, shouldMirror: shouldMirror)
                     .frame(width: 90, height: 120)
-                    .scaleEffect(x: shouldMirror ? -1 : 1, y: 1)  // Mirror horizontally if front camera
 
                 if !participant.isCameraEnabled() {
                     Rectangle()
