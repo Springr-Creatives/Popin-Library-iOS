@@ -316,18 +316,17 @@ struct PopinConnectedView: View {
             }()
 
             if sortedParticipants.count > 1 || currentAgent != nil {
-                // Filter out the agent participant from the audience row if we're showing the static AgentTile
+                // Get audience participants (everyone except the first/primary)
                 let audienceParticipants = Array(sortedParticipants.dropFirst())
-                let filteredAudience = audienceParticipants.filter { p in
-                    if let agentPart = agentParticipant {
-                        return p.sid?.stringValue != agentPart.sid?.stringValue
-                    }
-                    return true
-                }
-                
+
+                let _ = PopinLogger.shared.log("🟣 Audience participants: \(audienceParticipants.map { $0.sid?.stringValue ?? "?" })")
+                let _ = PopinLogger.shared.log("🟣 Current agent: \(currentAgent?.name ?? "nil")")
+
+                // Always show static AgentTile (if agent exists)
+                // Don't filter out agent from audience - they can appear as both static tile AND live video tile
                 AudienceRow(
-                    participants: filteredAudience,
-                    agent: currentAgent,
+                    participants: audienceParticipants,
+                    agent: currentAgent,  // Always show static AgentTile if agent exists
                     agentParticipant: agentParticipant,
                     primaryParticipantId: $primaryParticipantId,
                     expertDesignation: configHolder.config.expertDesignation
@@ -414,9 +413,6 @@ struct PopinConnectedView: View {
              } else {
                  PopinLogger.shared.log("Swap: sid \(newId) NOT found in participantOrder")
              }
-
-             // Reset to allow re-selection if they move back to audience
-             primaryParticipantId = nil
         }
         .onChangeCompatible(of: scenePhase) { newPhase in
             // Automatically enable PiP when app goes to background

@@ -83,7 +83,7 @@ private struct AgentTile: View {
                     .font(.system(size: 10))
                     .fontWeight(.bold)
                     .foregroundColor(.white)
-                
+
                 Text(agent.name ?? "Agent")
                     .font(.system(size: 12))
                     .fontWeight(.medium)
@@ -95,7 +95,7 @@ private struct AgentTile: View {
             .padding(.bottom, 8)
             .frame(maxWidth: .infinity, alignment: .leading)
             .allowsHitTesting(false)
-            
+
             // Indicators (Mute & Signal) at Top Right
             if let participant = participant {
                 AgentIndicators(participant: participant)
