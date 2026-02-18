@@ -30,13 +30,11 @@ struct NotConnectedView: View {
     @State private var timerActive = true
     @State private var timer: Timer?
 
-    // Pre-call mic/camera state
-    @State private var micEnabled = true
-    @State private var cameraEnabled = true
+    // Pulse animation state
+    @State private var pulse = false
 
     // Access to config
     @EnvironmentObject private var configHolder: PopinConfigHolder
-    @ObservedObject private var chatManager = ChatManager.shared
 
     init(
         callerName: String = "Unknown Caller",
@@ -62,273 +60,172 @@ struct NotConnectedView: View {
         self.onReject = onReject
     }
 
-    // Compute visible buttons - show chat button (disabled) if it will appear in connected view
-    private var visibleButtons: [ControlButtonID] {
-        let audioOnly = configHolder.config.audioOnlyMode
-        var buttons: [ControlButtonID] = []
-        if !configHolder.config.hideMuteAudioButton { buttons.append(.mic) }
-        if !audioOnly && !configHolder.config.hideMuteVideoButton { buttons.append(.video) }
-        if !audioOnly && !configHolder.config.hideFlipCameraButton { buttons.append(.flip) }
-        buttons.append(.invite) // always visible
-        // Show chat button if it's not hidden in config (will be disabled in incoming call view)
-        if !configHolder.config.hideChatButton { buttons.append(.chat) }
-        return buttons.sorted { $0.rawValue < $1.rawValue }
+    private var callTypeLabel: String {
+        configHolder.config.audioOnlyMode ? "Popin Audio" : "Popin Video"
     }
-
-    private var needsOverflow: Bool { visibleButtons.count > 4 }
-    private var directButtons: [ControlButtonID] { needsOverflow ? Array(visibleButtons.prefix(3)) : visibleButtons }
-    private var overflowButtons: [ControlButtonID] { needsOverflow ? Array(visibleButtons.dropFirst(3)) : [] }
 
     var body: some View {
         ZStack {
-            // Black background
-            Color.black
-                .ignoresSafeArea()
+            // Background — dark blue-grey gradient matching CallKit
+            LinearGradient(
+                colors: [
+                    Color(red: 0.11, green: 0.13, blue: 0.20),
+                    Color(red: 0.06, green: 0.07, blue: 0.12)
+                ],
+                startPoint: .top,
+                endPoint: .bottom
+            )
+            .ignoresSafeArea()
 
             VStack(spacing: 0) {
+
+                // ── Top section ──────────────────────────────────────────
                 Spacer()
-                    .frame(height: 60)
 
-                // User icon
-                Image(systemName: "person.circle.fill")
-                    .font(.system(size: 60))
-                    .foregroundColor(.white.opacity(0.8))
-                    .padding(.bottom, 8)
+                // Pulse rings behind avatar
+                ZStack {
+                    Circle()
+                        .stroke(Color.white.opacity(0.08), lineWidth: 1)
+                        .frame(width: pulse ? 160 : 120, height: pulse ? 160 : 120)
+                        .animation(
+                            Animation.easeInOut(duration: 1.4).repeatForever(autoreverses: true),
+                            value: pulse
+                        )
 
-                // "New video call from" text
-                Text("New video call from")
-                    .foregroundColor(.white)
-                    .font(.system(size: 18, weight: .medium))
-                    .padding(.bottom, 4)
+                    Circle()
+                        .stroke(Color.white.opacity(0.05), lineWidth: 1)
+                        .frame(width: pulse ? 200 : 150, height: pulse ? 200 : 150)
+                        .animation(
+                            Animation.easeInOut(duration: 1.4).delay(0.2).repeatForever(autoreverses: true),
+                            value: pulse
+                        )
+
+                    // Avatar circle
+                    ZStack {
+                        Circle()
+                            .fill(Color.white.opacity(0.12))
+                            .frame(width: 104, height: 104)
+
+                        Image(systemName: "person.fill")
+                            .font(.system(size: 52))
+                            .foregroundColor(.white.opacity(0.85))
+                    }
+                }
+                .padding(.bottom, 28)
+
+                // Call type label  (e.g. "Popin Video")
+                Text(callTypeLabel)
+                    .font(.system(size: 16, weight: .regular))
+                    .foregroundColor(.white.opacity(0.55))
+                    .padding(.bottom, 10)
 
                 // Caller name
                 Text(callerName)
+                    .font(.system(size: 34, weight: .bold))
                     .foregroundColor(.white)
-                    .font(.system(size: 20, weight: .bold))
-                    .padding(.bottom, 24)
+                    .multilineTextAlignment(.center)
+                    .padding(.horizontal, 32)
 
                 Spacer()
 
-                // Accept button
-                Button(action: {
-                    timerActive = false
-                    timer?.invalidate()
-                    onAccept()
-                }) {
-                    HStack(spacing: 16) {
-                        Text("Accept")
-                            .font(.system(size: 21, weight: .medium))
-                            .foregroundColor(.white)
+                // ── Bottom buttons ────────────────────────────────────────
+                HStack(spacing: 0) {
+                    Spacer()
 
-                        Image(systemName: "phone.fill")
-                            .font(.system(size: 20))
-                            .foregroundColor(.white)
-                    }
-                    .frame(maxWidth: .infinity)
-                    .frame(height: 56)
-                    .background(
-                        RoundedRectangle(cornerRadius: 28)
-                            .fill(Color(red: 0.2, green: 0.7, blue: 0.3))
+                    // Decline
+                    CallActionButton(
+                        icon: "phone.down.fill",
+                        label: "Decline",
+                        color: Color(red: 0.92, green: 0.22, blue: 0.22),
+                        action: {
+                            timerActive = false
+                            timer?.invalidate()
+                            onReject()
+                        }
                     )
-                }
-                .buttonStyle(PlainButtonStyle())
-                .padding(.horizontal, 16)
-                .padding(.bottom, 16)
 
-                // Dynamic bottom controls (matching connected screen layout)
-                IncomingCallBottomControls(
-                    micEnabled: $micEnabled,
-                    cameraEnabled: $cameraEnabled,
-                    audioOnlyMode: configHolder.config.audioOnlyMode,
-                    visibleButtons: visibleButtons,
-                    needsOverflow: needsOverflow,
-                    directButtons: directButtons,
-                    overflowButtons: overflowButtons,
-                    unreadCount: chatManager.unreadCount,
-                    hideDisconnectButton: configHolder.config.hideDisconnectButton,
-                    onEndCall: {
-                        timerActive = false
-                        timer?.invalidate()
-                        onReject()
-                    }
-                )
+                    Spacer()
+
+                    // Accept
+                    CallActionButton(
+                        icon: configHolder.config.audioOnlyMode ? "phone.fill" : "video.fill",
+                        label: "Accept",
+                        color: Color(red: 0.18, green: 0.74, blue: 0.30),
+                        action: {
+                            timerActive = false
+                            timer?.invalidate()
+                            onAccept()
+                        }
+                    )
+
+                    Spacer()
+                }
+                .padding(.bottom, 64)
             }
         }
         .onAppear {
+            pulse = true
             startTimer()
         }
         .onDisappear {
-            // Clean up timer when view is removed
             timerActive = false
             timer?.invalidate()
         }
     }
 
     private func startTimer() {
-        // Calculate timeout using same logic as Android ConnectActivity
-        // timeout = Math.round(actualTimeout - ((float) (now - startTime) / 1000));
-        let now = Int(Date().timeIntervalSince1970 * 1000) // Current time in milliseconds
+        let now = Int(Date().timeIntervalSince1970 * 1000)
         let calculatedTimeout = Int(round(Float(timeout) - (Float(now - start) / 1000.0)))
 
-        // Validate timeout
         if calculatedTimeout < 1 {
-            // Auto-reject expired call
             onReject()
             return
         }
 
-        var finalTimeout = calculatedTimeout
-
-        // Check for overflow (same as Android)
-        if calculatedTimeout > timeout {
-            finalTimeout = timeout
-        }
-
-        // Set initial timeout and time remaining
+        let finalTimeout = min(calculatedTimeout, timeout)
         timeRemaining = finalTimeout
         initialTimeout = finalTimeout
 
-        timer = Timer.scheduledTimer(withTimeInterval: 1.0, repeats: true) { timer in
-            // Stop timer if it's been deactivated (call accepted/rejected)
+        timer = Timer.scheduledTimer(withTimeInterval: 1.0, repeats: true) { t in
             if !timerActive {
-                timer.invalidate()
+                t.invalidate()
                 return
             }
-
             if timeRemaining > 0 {
                 timeRemaining -= 1
             } else {
-                timer.invalidate()
-                // Auto-reject when timer reaches 0
+                t.invalidate()
                 onReject()
             }
         }
     }
 }
 
-// MARK: - Incoming Call Bottom Controls
+// MARK: - CallActionButton
 
-struct IncomingCallBottomControls: View {
-    @Binding var micEnabled: Bool
-    @Binding var cameraEnabled: Bool
-    let audioOnlyMode: Bool
-    let visibleButtons: [ControlButtonID]
-    let needsOverflow: Bool
-    let directButtons: [ControlButtonID]
-    let overflowButtons: [ControlButtonID]
-    let unreadCount: Int
-    let hideDisconnectButton: Bool
-    let onEndCall: () -> Void
+private struct CallActionButton: View {
+    let icon: String
+    let label: String
+    let color: Color
+    let action: () -> Void
 
     var body: some View {
-        HStack(spacing: 0) {
-            Spacer()
-
-            // 1. Overflow button (disabled during incoming call)
-            if needsOverflow {
-                ControlCircleButtonView(
-                    iconName: "ellipsis",
-                    backgroundColor: Color.black.opacity(0.15),
-                    iconColor: .white.opacity(0.2)
-                )
-                Spacer()
-            }
-
-            // 2. Direct buttons
-            ForEach(directButtons, id: \.rawValue) { button in
-                incomingCallButtonView(for: button)
-                Spacer()
-            }
-
-            // 3. End call button (enabled)
-            if !hideDisconnectButton {
-                ControlCircleButton(
-                    iconName: "phone.down.fill",
-                    backgroundColor: Color(hex: "E53935"),
-                    iconColor: .white,
-                    action: onEndCall
-                )
-                Spacer()
-            }
-        }
-        .padding(.horizontal, 16)
-        .padding(.bottom, 32)
-        .padding(.top, 12)
-        .background(
-            LinearGradient(
-                stops: [
-                    .init(color: Color.black.opacity(0), location: 0.0),
-                    .init(color: Color.black.opacity(0), location: 0.3),
-                    .init(color: Color.black.opacity(0.2), location: 0.5),
-                    .init(color: Color.black.opacity(0.4), location: 0.7),
-                    .init(color: Color.black.opacity(0.6), location: 0.85),
-                    .init(color: Color.black.opacity(0.6), location: 1.0),
-                ],
-                startPoint: .top,
-                endPoint: .bottom
-            )
-            .frame(height: 240)
-            .frame(maxWidth: .infinity),
-            alignment: .bottom
-        )
-    }
-
-    @ViewBuilder
-    private func incomingCallButtonView(for button: ControlButtonID) -> some View {
-        switch button {
-        case .mic:
-            // Mic toggle - ENABLED
-            ControlCircleButton(
-                iconName: micEnabled ? "mic.fill" : "mic.slash.fill",
-                backgroundColor: micEnabled ? Color.black.opacity(0.5) : .white,
-                iconColor: micEnabled ? .white : .black,
-                action: { micEnabled.toggle() }
-            )
-        case .video:
-            // Camera toggle - ENABLED
-            if !audioOnlyMode {
-                ControlCircleButton(
-                    iconName: cameraEnabled ? "video.fill" : "video.slash.fill",
-                    backgroundColor: cameraEnabled ? Color.black.opacity(0.5) : .white,
-                    iconColor: cameraEnabled ? .white : .black,
-                    action: { cameraEnabled.toggle() }
-                )
-            }
-        case .flip:
-            // Flip camera - DISABLED
-            if !audioOnlyMode {
-                ControlCircleButtonView(
-                    iconName: "arrow.triangle.2.circlepath.camera.fill",
-                    backgroundColor: Color.black.opacity(0.15),
-                    iconColor: .white.opacity(0.2)
-                )
-            }
-        case .invite:
-            // Invite - DISABLED
-            ControlCircleButtonView(
-                iconName: "person.badge.plus",
-                backgroundColor: Color.black.opacity(0.15),
-                iconColor: .white.opacity(0.2)
-            )
-        case .chat:
-            // Chat - DISABLED (with badge if unread messages exist)
-            ZStack(alignment: .topTrailing) {
-                ControlCircleButtonView(
-                    iconName: "bubble.left.fill",
-                    backgroundColor: Color.black.opacity(0.15),
-                    iconColor: .white.opacity(0.2)
-                )
-                if unreadCount > 0 {
-                    Text("\(unreadCount)")
-                        .font(.system(size: 10, weight: .bold))
+        Button(action: action) {
+            VStack(spacing: 14) {
+                ZStack {
+                    Circle()
+                        .fill(color)
+                        .frame(width: 76, height: 76)
+                    Image(systemName: icon)
+                        .font(.system(size: 30))
                         .foregroundColor(.white)
-                        .frame(minWidth: 16, minHeight: 16)
-                        .background(Color.red.opacity(0.5))
-                        .clipShape(Circle())
-                        .offset(x: 4, y: -4)
                 }
+                Text(label)
+                    .font(.system(size: 15, weight: .regular))
+                    .foregroundColor(.white)
             }
         }
+        .buttonStyle(PlainButtonStyle())
     }
 }
 

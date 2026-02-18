@@ -671,16 +671,22 @@ public class Popin : PopinPusherDelegate, CallAcceptanceListener {
         DispatchQueue.main.async { [weak self] in
             guard let self = self else { return }
 
+            // No active VC — call already cleaned up (duplicate/stale event)
+            guard let vc = self.currentCallViewController else {
+                PopinLogger.shared.log("onCallDisconnected: No active VC, ignoring stale event")
+                return
+            }
+
             // Ignore stale Pusher disconnect from a previous call if we're
             // currently waiting for a new outgoing call to be accepted
-            if let vc = self.currentCallViewController, vc.isOutgoingCall && !vc.callConnected {
+            if vc.isOutgoingCall && !vc.callConnected {
                 PopinLogger.shared.log("onCallDisconnected: Ignoring stale disconnect - outgoing call not yet connected (queueId=\(vc.callQueueId ?? -1))")
                 return
             }
 
-            self.currentCallViewController?.handleRemoteCancel()
-            Utilities.shared.clearConnected()
-            self.eventsListener?.onCallEnd()
+            // handleRemoteCancel → closeViewController → onCallEnd? → cleanupAfterCallEnd
+            // which handles clearConnected + eventsListener.onCallEnd — don't call them here
+            vc.handleRemoteCancel()
         }
         #endif
     }

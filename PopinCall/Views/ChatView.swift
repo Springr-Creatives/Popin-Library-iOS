@@ -223,15 +223,22 @@ struct MessageInputBar: View {
             Divider()
             
             HStack(spacing: 12) {
-                TextField("Write your message here", text: $messageText)
-                    .textFieldStyle(PlainTextFieldStyle())
-                    .padding(.horizontal, 16)
-                    .padding(.vertical, 10)
-                    .background(
-                        RoundedRectangle(cornerRadius: 20)
-                            .stroke(Color(hex: "E5E7EB"), lineWidth: 1)
-                    )
-                    .foregroundColor(.black)
+                ZStack(alignment: .leading) {
+                    if messageText.isEmpty {
+                        Text("Write your message here")
+                            .foregroundColor(Color(hex: "6B7280"))
+                            .padding(.horizontal, 16)
+                    }
+                    TextField("", text: $messageText)
+                        .textFieldStyle(PlainTextFieldStyle())
+                        .padding(.horizontal, 16)
+                        .foregroundColor(.black)
+                }
+                .padding(.vertical, 10)
+                .background(
+                    RoundedRectangle(cornerRadius: 20)
+                        .stroke(Color(hex: "E5E7EB"), lineWidth: 1)
+                )
 
                 Button(action: onSend) {
                     if isSending {
