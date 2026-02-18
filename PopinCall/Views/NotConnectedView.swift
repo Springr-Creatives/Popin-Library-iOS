@@ -130,8 +130,6 @@ struct NotConnectedView: View {
 
                 // ── Bottom buttons ────────────────────────────────────────
                 HStack(spacing: 0) {
-                    Spacer()
-
                     // Decline
                     CallActionButton(
                         icon: "phone.down.fill",
@@ -157,9 +155,8 @@ struct NotConnectedView: View {
                             onAccept()
                         }
                     )
-
-                    Spacer()
                 }
+                .padding(.horizontal, 34)
                 .padding(.bottom, 64)
             }
         }
