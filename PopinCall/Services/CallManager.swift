@@ -60,6 +60,7 @@ class CallManager: NSObject {
     private(set) var voipToken: String?
 
     weak var delegate: CallManagerDelegate?
+    var onCallAnswered: (() -> Void)?
 
     // MARK: - Initialization
 
@@ -202,7 +203,7 @@ extension CallManager: CXProviderDelegate {
         // Notify SDK to handle incoming call answer (present UI if needed, fetch call details)
         if PopinCallManager.shared.callData != nil {
             DispatchQueue.main.async {
-                Popin.shared?.onIncomingCallAnswered()
+                self.onCallAnswered?()
             }
         }
 
@@ -373,183 +374,4 @@ extension CallManager: CXCallObserverDelegate {
     }
 }
 
-// MARK: - Models
-
-public struct Product: Codable {
-    public let id: Int?
-    public let externalId: String?
-    public let name: String?
-    public let image: String?
-    
-    enum CodingKeys: String, CodingKey {
-        case id
-        case externalId = "external_id"
-        case name
-        case image
-    }
-}
-
-public struct PushCallData: Codable {
-    public let callId: Int
-    public let callComponentId: Int?
-    public let role: Int?
-    public let displayName: String
-    public let primaryProductInfo: String?
-    public let artifact: String?
-    public let productId: String?
-    public let productName: String?
-    public let productImage: String?
-    public let product: Product?
-    public let timeout: Int?
-    public let start: Int?
-    public let type: String?
-
-    enum CodingKeys: String, CodingKey {
-        case callId = "call_id"
-        case callComponentId = "component_id"
-        case role
-        case displayName = "name"
-        case primaryProductInfo = "primary_product_info"
-        case artifact
-        case productId = "product_id"
-        case productName = "product_name"
-        case productImage = "product_image"
-        case product
-        case timeout
-        case start
-        case type
-    }
-
-    public init(from decoder: Decoder) throws {
-        let container = try decoder.container(keyedBy: CodingKeys.self)
-        
-        // Handle callId as both Int and String
-        if let intValue = try? container.decode(Int.self, forKey: .callId) {
-            callId = intValue
-        } else if let strValue = try? container.decode(String.self, forKey: .callId), let intValue = Int(strValue) {
-            callId = intValue
-        } else {
-            // Fallback or throw if call_id is missing/invalid
-            callId = try container.decode(Int.self, forKey: .callId)
-        }
-
-        callComponentId = try container.decodeIfPresent(Int.self, forKey: .callComponentId)
-        role = try container.decodeIfPresent(Int.self, forKey: .role)
-        displayName = try container.decode(String.self, forKey: .displayName)
-        primaryProductInfo = try container.decodeIfPresent(String.self, forKey: .primaryProductInfo)
-        artifact = try container.decodeIfPresent(String.self, forKey: .artifact)
-        productId = try container.decodeIfPresent(String.self, forKey: .productId)
-        productName = try container.decodeIfPresent(String.self, forKey: .productName)
-        productImage = try container.decodeIfPresent(String.self, forKey: .productImage)
-        product = try container.decodeIfPresent(Product.self, forKey: .product)
-        type = try container.decodeIfPresent(String.self, forKey: .type)
-
-        // Handle timeout as both Int and String
-        if let intValue = try? container.decodeIfPresent(Int.self, forKey: .timeout) {
-            timeout = intValue
-        } else if let strValue = try? container.decodeIfPresent(String.self, forKey: .timeout) {
-            timeout = Int(strValue)
-        } else {
-            timeout = nil
-        }
-
-        // Server sends `start` as a string — handle both Int and String
-        if let intValue = try? container.decodeIfPresent(Int.self, forKey: .start) {
-            start = intValue
-        } else if let strValue = try? container.decodeIfPresent(String.self, forKey: .start) {
-            start = Int(strValue)
-        } else {
-            start = nil
-        }
-    }
-}
-
-// MARK: - PopinCallManager
-
-public class PopinCallManager {
-    public static let shared = PopinCallManager()
-    
-    public var callData: PushCallData?
-    public var callUUID: UUID?
-    private var timeoutTimer: Timer?
-    
-    private init() {}
-    
-    public func handleIncomingPush(payload: [AnyHashable: Any], completion: @escaping () -> Void) {
-        // PushKit REQUIRES reporting an incoming call for every VoIP push.
-        // We MUST call reportIncomingCall before completion(), otherwise iOS kills the app.
-
-        let uuid = UUID()
-        self.callUUID = uuid
-
-        // Attempt to decode the payload into PushCallData
-        do {
-            let data = try JSONSerialization.data(withJSONObject: payload, options: [])
-            let decoder = JSONDecoder()
-            self.callData = try decoder.decode(PushCallData.self, from: data)
-            PopinLogger.shared.log("PopinCallManager: Decoded push data: \(self.callData!)")
-        } catch {
-            PopinLogger.shared.log("PopinCallManager: Failed to decode push data: \(error)")
-            self.callData = nil
-        }
-
-        let handle = self.callData?.displayName ?? "Incoming Call"
-        let user = Utilities.shared.getUser()
-        let isValidCall = self.callData != nil && user != nil
-        
-        if !isValidCall {
-            PopinLogger.shared.log("PopinCallManager: Invalid call. Data present: \(self.callData != nil), User present: \(user != nil)")
-        }
-
-        // Always report to CallKit (mandatory for PushKit)
-        CallManager.shared.reportIncomingCall(uuid: uuid, handle: handle) { [weak self] error in
-            if let error = error {
-                PopinLogger.shared.log("PopinCallManager: reportIncomingCall error: \(error.localizedDescription)")
-            }
-            
-            if error == nil && isValidCall {
-                // Present the incoming call UI (NotConnectedView)
-                DispatchQueue.main.async {
-                    Popin.shared?.presentIncomingCallUI()
-                    
-                    // Start timeout timer if specified
-                    if let timeout = self?.callData?.timeout, timeout > 0 {
-                        self?.timeoutTimer?.invalidate()
-                        self?.timeoutTimer = Timer.scheduledTimer(withTimeInterval: TimeInterval(timeout), repeats: false) { _ in
-                            if CallManager.shared.currentCallUUID == uuid {
-                                PopinLogger.shared.log("PopinCallManager: Call timed out after \(timeout) seconds")
-                                CallManager.shared.endCall()
-                            }
-                        }
-                    }
-                }
-            } else if error == nil {
-                // Invalid call data or user not logged in — end the call immediately
-                CallManager.shared.endCall()
-            }
-            completion()
-        }
-    }
-    
-    public func clearCallState() {
-        self.callData = nil
-        self.callUUID = nil
-        self.timeoutTimer?.invalidate()
-        self.timeoutTimer = nil
-    }
-    
-    public func callAnswered() {
-        self.timeoutTimer?.invalidate()
-        self.timeoutTimer = nil
-    }
-    
-    public func stopStatusChecking() {
-    }
-    
-    public func enterPiPMode() {
-    }
-    
-    public func exitPiPMode() {
-    }
-}
 #endif

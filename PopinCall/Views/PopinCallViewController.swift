@@ -59,6 +59,9 @@ public class PopinCallViewController: UIViewController {
     var videoCall : VideoCall? = nil
     
     var onCallEnd: (() -> Void)?
+    var onNetworkFailure: (() -> Void)?
+    var onCallAbandoned: (() -> Void)?
+    var onCallCancelled: ((Int?) -> Void)?
     var popinConfig: PopinConfig?
 
     var isAudioEnabled = true, isVideoEnabled = true, isScreenSharing = false
@@ -160,8 +163,8 @@ public class PopinCallViewController: UIViewController {
         }
 
         // Set up network failure callback (no qualifying participants for 30 sec)
-        viewModel.onNetworkFailure = {
-            Popin.shared?.onCallFail()
+        viewModel.onNetworkFailure = { [weak self] in
+            self?.onNetworkFailure?()
         }
 
         // Set up room disconnected callback (room ended externally)
@@ -179,10 +182,8 @@ public class PopinCallViewController: UIViewController {
             guard let self = self else { return }
             self.isAppInitiatedDisconnect = true
 
-            // Notify events listener that call was abandoned
-            Popin.shared?.getConfig().eventsListener?.onCallAbandoned()
-
-            Popin.shared?.cancelCall()
+            self.onCallAbandoned?()
+            self.onCallCancelled?(self.callQueueId)
 
             if let queueId = self.callQueueId {
                 self.videoCallPresenter.closeScreen(callQueueId: queueId, onSuccess: {

@@ -65,6 +65,13 @@
 		CFBBD5A42923F08100D241A9 /* PopinCall.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = CFBBD5662923EA3100D241A9 /* PopinCall.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		CFE045722F3B1C6500E362B8 /* NetworkToastView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CFE045712F3B1C6500E362B8 /* NetworkToastView.swift */; };
 		E11EE3812D8195F1434759F7 /* PopinConfig.swift in Sources */ = {isa = PBXBuildFile; fileRef = 738BD7405113A3EA9EC44AD0 /* PopinConfig.swift */; };
+		CF2001022F27407B00AE48E7 /* PushCallData.swift in Sources */ = {isa = PBXBuildFile; fileRef = CF2001012F27407B00AE48E7 /* PushCallData.swift */; };
+		CF2002022F27407B00AE48E7 /* PopinCallManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = CF2002012F27407B00AE48E7 /* PopinCallManager.swift */; };
+		CF2003022F27407B00AE48E7 /* CallOrchestrator.swift in Sources */ = {isa = PBXBuildFile; fileRef = CF2003012F27407B00AE48E7 /* CallOrchestrator.swift */; };
+		CF2004022F27407B00AE48E7 /* CallUICoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = CF2004012F27407B00AE48E7 /* CallUICoordinator.swift */; };
+		CF2005022F27407B00AE48E7 /* PermissionService.swift in Sources */ = {isa = PBXBuildFile; fileRef = CF2005012F27407B00AE48E7 /* PermissionService.swift */; };
+		CF2006022F27407B00AE48E7 /* LocalCameraPreview.swift in Sources */ = {isa = PBXBuildFile; fileRef = CF2006012F27407B00AE48E7 /* LocalCameraPreview.swift */; };
+		CF2007022F27407B00AE48E7 /* WaitingBottomControls.swift in Sources */ = {isa = PBXBuildFile; fileRef = CF2007012F27407B00AE48E7 /* WaitingBottomControls.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -155,6 +162,13 @@
 		CFBBD5942923EA8900D241A9 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		CFE045712F3B1C6500E362B8 /* NetworkToastView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkToastView.swift; sourceTree = "<group>"; };
 		E3F74A3372ED619A04D4C869 /* Pods_PopinCall_PopinCallTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_PopinCall_PopinCallTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		CF2001012F27407B00AE48E7 /* PushCallData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PushCallData.swift; sourceTree = "<group>"; };
+		CF2002012F27407B00AE48E7 /* PopinCallManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PopinCallManager.swift; sourceTree = "<group>"; };
+		CF2003012F27407B00AE48E7 /* CallOrchestrator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CallOrchestrator.swift; sourceTree = "<group>"; };
+		CF2004012F27407B00AE48E7 /* CallUICoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CallUICoordinator.swift; sourceTree = "<group>"; };
+		CF2005012F27407B00AE48E7 /* PermissionService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PermissionService.swift; sourceTree = "<group>"; };
+		CF2006012F27407B00AE48E7 /* LocalCameraPreview.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocalCameraPreview.swift; sourceTree = "<group>"; };
+		CF2007012F27407B00AE48E7 /* WaitingBottomControls.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WaitingBottomControls.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -218,6 +232,8 @@
 				CF1742692F27407B00AE48E7 /* ParticipantTile.swift */,
 				CF1742612F27407B00AE48E7 /* AudienceRow.swift */,
 				CF17426F2F27407B00AE48E7 /* PopinCallViewController.swift */,
+				CF2006012F27407B00AE48E7 /* LocalCameraPreview.swift */,
+				CF2007012F27407B00AE48E7 /* WaitingBottomControls.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -244,6 +260,10 @@
 				CF17CHAT32F27407B00AE48E7 /* ChatManager.swift */,
 				CF1742702F27407B00AE48E7 /* PopinConference.swift */,
 				CF1742742F27407B00AE48E7 /* PopinPusher.swift */,
+				CF2002012F27407B00AE48E7 /* PopinCallManager.swift */,
+				CF2003012F27407B00AE48E7 /* CallOrchestrator.swift */,
+				CF2004012F27407B00AE48E7 /* CallUICoordinator.swift */,
+				CF2005012F27407B00AE48E7 /* PermissionService.swift */,
 			);
 			path = Services;
 			sourceTree = "<group>";
@@ -284,6 +304,7 @@
 			children = (
 				CF17CHAT12F27407B00AE48E7 /* ChatMessage.swift */,
 				CF1742792F27407B00AE48E7 /* VideoCall.swift */,
+				CF2001012F27407B00AE48E7 /* PushCallData.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -554,6 +575,13 @@
 				3170C0C9DB3C1E5806DC5B13 /* PopinProduct.swift in Sources */,
 				3B0A147CEC443BD9BE47A57A /* PopinInitListener.swift in Sources */,
 				44BAE20E3443AFBB9D98E770 /* PopinConfigEnvironment.swift in Sources */,
+				CF2001022F27407B00AE48E7 /* PushCallData.swift in Sources */,
+				CF2002022F27407B00AE48E7 /* PopinCallManager.swift in Sources */,
+				CF2003022F27407B00AE48E7 /* CallOrchestrator.swift in Sources */,
+				CF2004022F27407B00AE48E7 /* CallUICoordinator.swift in Sources */,
+				CF2005022F27407B00AE48E7 /* PermissionService.swift in Sources */,
+				CF2006022F27407B00AE48E7 /* LocalCameraPreview.swift in Sources */,
+				CF2007022F27407B00AE48E7 /* WaitingBottomControls.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
