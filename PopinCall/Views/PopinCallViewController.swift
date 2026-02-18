@@ -59,7 +59,7 @@ public class PopinCallViewController: UIViewController {
     var videoCall : VideoCall? = nil
     
     var onCallEnd: (() -> Void)?
-    var onNetworkFailure: (() -> Void)?
+    var onNetworkFailure: ((String) -> Void)?
     var onCallAbandoned: (() -> Void)?
     var onCallCancelled: ((Int?) -> Void)?
     var popinConfig: PopinConfig?
@@ -163,9 +163,9 @@ public class PopinCallViewController: UIViewController {
         }
 
         // Set up network failure callback (no qualifying participants for 30 sec)
-        viewModel.onNetworkFailure = { [weak self] in
-            PopinLogger.shared.log("PopinCallVC: onNetworkFailure received")
-            self?.onNetworkFailure?()
+        viewModel.onNetworkFailure = { [weak self] participant in
+            PopinLogger.shared.log("PopinCallVC: onNetworkFailure received (participant=\(participant))")
+            self?.onNetworkFailure?(participant)
         }
 
         // Set up room disconnected callback (room ended externally)

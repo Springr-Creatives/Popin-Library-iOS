@@ -196,9 +196,9 @@ public class Popin: PopinPusherDelegate {
             self?.eventsListener?.onCallEnd()
             PopinLogger.shared.log("Popin: call ended, state reset")
         }
-        uiCoordinator.onNetworkFailure = { [weak self] in
-            PopinLogger.shared.log("Popin: onNetworkFailure — notifying eventsListener")
-            self?.eventsListener?.onCallNetworkFailure()
+        uiCoordinator.onNetworkFailure = { [weak self] participant in
+            PopinLogger.shared.log("Popin: onNetworkFailure — notifying eventsListener (participant=\(participant))")
+            self?.eventsListener?.onCallNetworkFailure(participant: participant)
         }
         uiCoordinator.onCallAbandoned = { [weak self] in
             self?.eventsListener?.onCallAbandoned()
@@ -430,6 +430,6 @@ public class Popin: PopinPusherDelegate {
     }
 
     func onCallFail() {
-        self.eventsListener?.onCallNetworkFailure()
+        self.eventsListener?.onCallNetworkFailure(participant: "agent")
     }
 }

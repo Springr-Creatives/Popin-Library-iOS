@@ -174,8 +174,8 @@ extension ViewController: PopinEventsListener {
         print("Call missed")
     }
 
-    func onCallNetworkFailure() {
-        print("Network failure")
+    func onCallNetworkFailure(participant: String) {
+        print("Network failure — participant: \(participant)")
     }
 
     func onCallConnected() {
@@ -358,7 +358,7 @@ PopinProduct(
 | `onCallAbandoned()` | Call was abandoned by user during connecting screen |
 | `onQueuePositionChanged(position:)` | Your position in the queue has changed |
 | `onCallMissed()` | No agent answered in time |
-| `onCallNetworkFailure()` | A network error occurred |
+| `onCallNetworkFailure(participant:)` | A network error occurred. `participant` is `"user"` if the local network failed, or `"agent"` if the remote side dropped |
 | `onCallConnected()` | The video call is now active |
 | `onCallFailed()` | The call failed to connect |
 | `onCallEnd()` | The call has ended |

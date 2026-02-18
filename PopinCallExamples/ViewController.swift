@@ -154,7 +154,7 @@ extension ViewController: PopinEventsListener {
     func onCallMissed() {
     }
 
-    func onCallNetworkFailure() {
+    func onCallNetworkFailure(participant: String) {
     }
 
     func onCallConnected() {

@@ -14,7 +14,7 @@ public protocol PopinEventsListener: AnyObject {
     func onCallAbandoned()
     func onQueuePositionChanged(position: Int)
     func onCallMissed()
-    func onCallNetworkFailure()
+    func onCallNetworkFailure(participant: String)
     func onCallConnected()
     func onCallFailed()
     func onCallEnd()

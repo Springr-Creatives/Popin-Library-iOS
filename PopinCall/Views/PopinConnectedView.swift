@@ -412,7 +412,7 @@ struct PopinConnectedView: View {
                 // If disconnected with an error, it's a network failure (not a clean hang-up)
                 if let error = _room.disconnectError {
                     PopinLogger.shared.log("PopinConnectedView: room disconnected with error: \(error) — firing onNetworkFailure")
-                    viewModel.onNetworkFailure?()
+                    viewModel.onNetworkFailure?("user")
                 } else {
                     PopinLogger.shared.log("PopinConnectedView: room disconnected cleanly (no error) — firing onRoomDisconnected")
                 }
@@ -551,7 +551,7 @@ struct PopinConnectedView: View {
                 // End call if no qualifying participants for 30 seconds
                 if viewModel.noQualifyingParticipantsTimer >= 30000 {
                     PopinLogger.shared.log("PopinConnectedView: 30s without qualifying participants — firing onNetworkFailure")
-                    viewModel.onNetworkFailure?()
+                    viewModel.onNetworkFailure?("agent")
                     viewModel.onEndCall?()
                     viewModel.isUserEndingCall = true
                     Task {

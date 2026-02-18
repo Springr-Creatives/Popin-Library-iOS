@@ -22,7 +22,7 @@ class CallUICoordinator {
     /// Called when a call ends and state should be cleaned up.
     var onCallEnd: (() -> Void)?
     /// Called when the room reports a network failure.
-    var onNetworkFailure: (() -> Void)?
+    var onNetworkFailure: ((String) -> Void)?
     /// Called when the user abandons a waiting outgoing call.
     var onCallAbandoned: (() -> Void)?
     /// Called when the user cancels a waiting outgoing call. Passes the callQueueId.
@@ -131,9 +131,9 @@ class CallUICoordinator {
             PopinLogger.shared.log("CallUICoordinator: onCallEnd fired (isOutgoing=\(isOutgoing))")
             self?.cleanupAfterCallEnd()
         }
-        callVC.onNetworkFailure = { [weak self] in
-            PopinLogger.shared.log("CallUICoordinator: onNetworkFailure fired")
-            self?.onNetworkFailure?()
+        callVC.onNetworkFailure = { [weak self] participant in
+            PopinLogger.shared.log("CallUICoordinator: onNetworkFailure fired (participant=\(participant))")
+            self?.onNetworkFailure?(participant)
         }
         callVC.onCallAbandoned = { [weak self] in
             self?.onCallAbandoned?()
