@@ -45,6 +45,7 @@ final class VideoCallViewModel: ObservableObject {
 
     var onEndCall: (() -> Void)?
     var onRoomDisconnected: (() -> Void)?
+    var onNetworkFailure: (() -> Void)?
 
     /// Called when user cancels during the "Connecting..." phase
     var onCancelCall: (() -> Void)?

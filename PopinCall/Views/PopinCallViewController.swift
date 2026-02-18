@@ -159,6 +159,11 @@ public class PopinCallViewController: UIViewController {
             })
         }
 
+        // Set up network failure callback (no qualifying participants for 30 sec)
+        viewModel.onNetworkFailure = {
+            Popin.shared?.onCallFail()
+        }
+
         // Set up room disconnected callback (room ended externally)
         viewModel.onRoomDisconnected = { [weak self] in
             guard let self = self else { return }

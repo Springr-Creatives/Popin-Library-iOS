@@ -543,8 +543,9 @@ struct PopinConnectedView: View {
 
                 // End call if no qualifying participants for 30 seconds
                 if viewModel.noQualifyingParticipantsTimer >= 30000 {
-                    viewModel.isUserEndingCall = true
+                    viewModel.onNetworkFailure?()
                     viewModel.onEndCall?()
+                    viewModel.isUserEndingCall = true
                     Task {
                         await _room.disconnect()
                     }
