@@ -164,12 +164,14 @@ public class PopinCallViewController: UIViewController {
 
         // Set up network failure callback (no qualifying participants for 30 sec)
         viewModel.onNetworkFailure = { [weak self] in
+            PopinLogger.shared.log("PopinCallVC: onNetworkFailure received")
             self?.onNetworkFailure?()
         }
 
         // Set up room disconnected callback (room ended externally)
         viewModel.onRoomDisconnected = { [weak self] in
             guard let self = self else { return }
+            PopinLogger.shared.log("PopinCallVC: onRoomDisconnected received — closing VC")
             self.isAppInitiatedDisconnect = true
             DispatchQueue.main.async {
                 self.closeViewController(shouldNotEndCX: false)

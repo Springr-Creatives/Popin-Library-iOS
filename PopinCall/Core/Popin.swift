@@ -197,6 +197,7 @@ public class Popin: PopinPusherDelegate {
             PopinLogger.shared.log("Popin: call ended, state reset")
         }
         uiCoordinator.onNetworkFailure = { [weak self] in
+            PopinLogger.shared.log("Popin: onNetworkFailure — notifying eventsListener")
             self?.eventsListener?.onCallNetworkFailure()
         }
         uiCoordinator.onCallAbandoned = { [weak self] in

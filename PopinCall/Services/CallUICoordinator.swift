@@ -132,6 +132,7 @@ class CallUICoordinator {
             self?.cleanupAfterCallEnd()
         }
         callVC.onNetworkFailure = { [weak self] in
+            PopinLogger.shared.log("CallUICoordinator: onNetworkFailure fired")
             self?.onNetworkFailure?()
         }
         callVC.onCallAbandoned = { [weak self] in

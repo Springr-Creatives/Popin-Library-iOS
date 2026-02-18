@@ -94,6 +94,7 @@ struct PopinConference: View {
              // Disconnected after being accepted - show empty view while controller dismisses
              Color.black
                  .onAppear {
+                     PopinLogger.shared.log("PopinConference: room .disconnected after hasConnected — firing onRoomDisconnected (disconnectError=\(String(describing: _room.disconnectError)))")
                      CallManager.shared.endCall()
                      viewModel.onRoomDisconnected?()
                  }
