@@ -137,7 +137,7 @@ struct BottomControls: View {
             set: { if !$0 { shareItems = nil } }
         )) {
             if let items = shareItems {
-                ShareSheet(activityItems: items)
+                ShareSheet(activityItems: items, onCompletion: { shareItems = nil })
             }
         }
         .fullScreenCover(isPresented: $showChat) {
@@ -414,9 +414,14 @@ struct OverflowMenuSheet: View {
 
 struct ShareSheet: UIViewControllerRepresentable {
     let activityItems: [Any]
+    var onCompletion: (() -> Void)?
 
     func makeUIViewController(context: Context) -> UIActivityViewController {
-        UIActivityViewController(activityItems: activityItems, applicationActivities: nil)
+        let vc = UIActivityViewController(activityItems: activityItems, applicationActivities: nil)
+        vc.completionWithItemsHandler = { _, _, _, _ in
+            onCompletion?()
+        }
+        return vc
     }
 
     func updateUIViewController(_ uiViewController: UIActivityViewController, context: Context) {}
