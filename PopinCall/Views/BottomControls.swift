@@ -205,7 +205,7 @@ struct BottomControls: View {
         case .chat:
             ZStack(alignment: .topTrailing) {
                 ControlCircleButton(
-                    iconName: "bubble.left.fill",
+                    iconName: "text.bubble.fill",
                     backgroundColor: Color.black.opacity(0.5),
                     iconColor: .white,
                     action: { showChat = true }
@@ -353,7 +353,7 @@ struct OverflowMenuSheet: View {
                         .foregroundColor(.white)
                     Spacer()
                     ZStack(alignment: .topTrailing) {
-                        Image(systemName: "bubble.left.fill")
+                        Image(systemName: "text.bubble.fill")
                             .foregroundColor(.white)
                             .font(.system(size: 20))
                         if unreadCount > 0 {

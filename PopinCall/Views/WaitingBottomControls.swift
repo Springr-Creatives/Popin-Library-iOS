@@ -98,7 +98,7 @@ struct WaitingBottomControls: View {
         case .chat:
             ZStack(alignment: .topTrailing) {
                 ControlCircleButtonView(
-                    iconName: "bubble.left.fill",
+                    iconName: "text.bubble.fill",
                     backgroundColor: Color.black.opacity(0.15),
                     iconColor: .white.opacity(0.2)
                 )

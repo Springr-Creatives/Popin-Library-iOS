@@ -35,7 +35,7 @@ struct ChatDetailsToast: View {
                 HStack(spacing: 8) {
                     // Message bubble icon with badge
                     ZStack(alignment: .topTrailing) {
-                        Image(systemName: "bubble.left.fill")
+                        Image(systemName: "text.bubble.fill")
                             .font(.system(size: 20))
                             .foregroundColor(.white)
 
