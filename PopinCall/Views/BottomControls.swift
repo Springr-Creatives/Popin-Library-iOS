@@ -212,9 +212,9 @@ struct BottomControls: View {
                 )
                 if chatManager.unreadCount > 0 {
                     Circle()
-                        .fill(Color.orange)
+                        .fill(Color.red)
                         .frame(width: 8, height: 8)
-                        .offset(x: -7, y: 7)
+                        .offset(x: -9, y: 8)
                 }
             }
         }
@@ -355,7 +355,7 @@ struct OverflowMenuSheet: View {
                             .font(.system(size: 20))
                         if unreadCount > 0 {
                             Circle()
-                                .fill(Color.orange)
+                                .fill(Color.red)
                                 .frame(width: 8, height: 8)
                                 .offset(x: 5, y: -5)
                         }
@@ -420,6 +420,99 @@ struct ShareSheet: UIViewControllerRepresentable {
 
     func updateUIViewController(_ uiViewController: UIActivityViewController, context: Context) {}
 }
+
+// MARK: - Previews
+
+#if DEBUG
+private struct BottomControlsPreviewWrapper: View {
+    let configHolder: PopinConfigHolder
+    let unreadCount: Int
+
+    @StateObject private var viewModel = VideoCallViewModel()
+    @State private var showChat = false
+
+    var body: some View {
+        BottomControls(onEndCall: {}, showChat: $showChat)
+            .environmentObject(Room())
+            .environmentObject(configHolder)
+            .environmentObject(viewModel)
+            .onAppear {
+                viewModel.call = try? JSONDecoder().decode(
+                    TalkModel.self,
+                    from: #"{"id":123,"status":1}"#.data(using: .utf8)!
+                )
+                ChatManager.shared.unreadCount = unreadCount
+            }
+    }
+}
+
+struct BottomControls_Previews: PreviewProvider {
+    static var previews: some View {
+        Group {
+            ZStack {
+                Color.gray.ignoresSafeArea()
+                VStack {
+                    Spacer()
+                    BottomControlsPreviewWrapper(
+                        configHolder: PopinConfigHolder(config: PopinConfig.Builder().build()),
+                        unreadCount: 0
+                    )
+                }
+            }
+            .previewDisplayName("All buttons")
+
+            ZStack {
+                Color.gray.ignoresSafeArea()
+                VStack {
+                    Spacer()
+                    BottomControlsPreviewWrapper(
+                        configHolder: PopinConfigHolder(config: PopinConfig.Builder().build()),
+                        unreadCount: 3
+                    )
+                }
+            }
+            .previewDisplayName("Unread dot")
+
+            ZStack {
+                Color.gray.ignoresSafeArea()
+                VStack {
+                    Spacer()
+                    BottomControlsPreviewWrapper(
+                        configHolder: PopinConfigHolder(config: PopinConfig.Builder().audioOnlyMode(true).build()),
+                        unreadCount: 0
+                    )
+                }
+            }
+            .previewDisplayName("Audio only")
+
+            ZStack {
+                Color.gray.ignoresSafeArea()
+                VStack {
+                    Spacer()
+                    BottomControlsPreviewWrapper(
+                        configHolder: PopinConfigHolder(config: PopinConfig.Builder().hideMuteAudioButton(false).hideMuteVideoButton(false).hideFlipCameraButton(false).build()),
+                        unreadCount: 1
+                    )
+                }
+            }
+            .previewDisplayName("Overflow (5 buttons)")
+
+            ZStack {
+                Color.gray.ignoresSafeArea()
+                VStack {
+                    Spacer()
+                    BottomControlsPreviewWrapper(
+                        configHolder: PopinConfigHolder(config: PopinConfig.Builder().hideFlipCameraButton(true).build()),
+                        unreadCount: 3
+                    )
+                }
+            }
+            .previewDisplayName("No flip camera")
+        }
+        .previewLayout(.sizeThatFits)
+    }
+}
+#endif
 
 struct BroadcastPickerRowWrapper: UIViewRepresentable {
     var extensionBundleIdentifier: String {
