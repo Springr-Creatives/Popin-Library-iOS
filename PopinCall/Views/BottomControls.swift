@@ -211,12 +211,9 @@ struct BottomControls: View {
                     action: { showChat = true }
                 )
                 if chatManager.unreadCount > 0 {
-                    Text("\(chatManager.unreadCount)")
-                        .font(.system(size: 10, weight: .bold))
-                        .foregroundColor(.white)
-                        .frame(minWidth: 16, minHeight: 16)
-                        .background(Color.red)
-                        .clipShape(Circle())
+                    Circle()
+                        .fill(Color.orange)
+                        .frame(width: 8, height: 8)
                         .offset(x: 4, y: -4)
                 }
             }
@@ -357,12 +354,9 @@ struct OverflowMenuSheet: View {
                             .foregroundColor(.white)
                             .font(.system(size: 20))
                         if unreadCount > 0 {
-                            Text("\(unreadCount)")
-                                .font(.system(size: 10, weight: .bold))
-                                .foregroundColor(.white)
-                                .frame(minWidth: 16, minHeight: 16)
-                                .background(Color.red)
-                                .clipShape(Circle())
+                            Circle()
+                                .fill(Color.orange)
+                                .frame(width: 8, height: 8)
                                 .offset(x: 8, y: -8)
                         }
                     }
