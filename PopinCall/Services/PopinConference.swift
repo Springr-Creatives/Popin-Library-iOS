@@ -30,6 +30,7 @@ struct PopinConference: View {
 
     @State private var primaryParticipantId: String?
     @State private var hasConnected = false
+    @StateObject private var waitingPipHandler = PiPHandler()
 
     var callId: Int?
     var userId: Int?
@@ -37,6 +38,26 @@ struct PopinConference: View {
     init(callId: Int? = nil, userId: Int? = nil) {
         self.callId = callId
         self.userId = userId
+    }
+
+    // Computed product properties
+    private var productId: String? {
+        configHolder.config.product?.id ?? PopinCallManager.shared.callData?.productId
+    }
+    private var productName: String? {
+        configHolder.config.product?.name ?? PopinCallManager.shared.callData?.productName
+    }
+    private var productImageUrl: String? {
+        configHolder.config.product?.image ?? PopinCallManager.shared.callData?.productImage
+    }
+    private var productUrl: String? {
+        configHolder.config.product?.url
+    }
+    private var productDescription: String? {
+        configHolder.config.product?.description
+    }
+    private var productExtra: String? {
+        configHolder.config.product?.extra
     }
     
     func buildNotConnectedView() -> some View {
@@ -127,18 +148,6 @@ struct PopinConference: View {
                     .ignoresSafeArea()
             }
 
-            // Gradient overlay at top for better text visibility
-            VStack {
-                LinearGradient(
-                    gradient: Gradient(colors: [Color.black.opacity(0.6), Color.clear]),
-                    startPoint: .top,
-                    endPoint: .bottom
-                )
-                .frame(height: 150)
-                Spacer()
-            }
-            .ignoresSafeArea()
-
             // Gradient overlay at bottom for controls visibility
             VStack {
                 Spacer()
@@ -160,7 +169,22 @@ struct PopinConference: View {
 
             // Content overlay
             VStack {
-                // "Connecting..." label at top center
+                // Top controls — PiP button + product details (identical style to connected view)
+                TopControls(
+                    onPipClick: {
+                        waitingPipHandler.startPictureInPicture()
+                    },
+                    productId: productId,
+                    productName: productName,
+                    productUrl: productUrl,
+                    productImageUrl: productImageUrl,
+                    productDescription: productDescription,
+                    productExtra: productExtra
+                )
+
+                Spacer()
+
+                // "Connecting..." label at vertical center
                 HStack(spacing: 8) {
                     ProgressView()
                         .progressViewStyle(CircularProgressViewStyle(tint: .white))
@@ -168,7 +192,6 @@ struct PopinConference: View {
                         .foregroundColor(.white)
                         .font(.system(size: 20, weight: .semibold))
                 }
-                .padding(.top, 60)
 
                 Spacer()
 
