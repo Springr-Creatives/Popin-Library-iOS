@@ -90,11 +90,11 @@ struct TopControls: View {
     var body: some View {
         // Controls content
         HStack(alignment: .center, spacing: 4) {
-            // PiP/Back Button (Top Left)
+            // Close Button (Top Left)
             if !configHolder.config.hideBackButton {
                 Button(action: onPipClick) {
-                    Image(systemName: "pip.enter")
-                        .font(.system(size: 20))
+                    Image(systemName: "xmark")
+                        .font(.system(size: 16, weight: .medium))
                         .foregroundColor(.white)
                         .frame(width: 40, height: 40)
                         .background(Color(hex: "433F40"))
@@ -104,6 +104,7 @@ struct TopControls: View {
             }
 
             // Product Details
+            Spacer().frame(width: 8)
             ProductDetailsView(
                 productId: productId,
                 productName: productName,

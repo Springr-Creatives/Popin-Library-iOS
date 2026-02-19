@@ -30,7 +30,6 @@ struct PopinCallStateView: View {
 
     @State private var primaryParticipantId: String?
     @State private var hasConnected = false
-    @StateObject private var waitingPipHandler = PiPHandler()
 
     var callId: Int?
     var userId: Int?
@@ -172,7 +171,7 @@ struct PopinCallStateView: View {
                 // Top controls — PiP button + product details (identical style to connected view)
                 TopControls(
                     onPipClick: {
-                        waitingPipHandler.startPictureInPicture()
+                        viewModel.onCancelCall?()
                     },
                     productId: productId,
                     productName: productName,
