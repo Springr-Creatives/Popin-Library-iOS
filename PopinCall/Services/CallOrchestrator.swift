@@ -28,8 +28,10 @@ class CallOrchestrator: CallAcceptanceListener {
 
     // MARK: - UI callbacks (set by Popin facade, forwarded to CallUICoordinator)
 
-    /// Called with callQueueId to present the outgoing call VC.
-    var onPresentOutgoingVC: ((Int) -> Void)?
+    /// Called to present the outgoing call VC immediately (before the API returns).
+    var onPresentOutgoingVC: (() -> Void)?
+    /// Called with the callQueueId once the start-call API returns successfully.
+    var onUpdateCallQueueId: ((Int) -> Void)?
     /// Called with TalkModel when an existing VC should load the call.
     var onLoadCallInExistingVC: ((TalkModel) -> Void)?
     /// Called with TalkModel when no VC exists and a new one must be presented.
@@ -54,17 +56,30 @@ class CallOrchestrator: CallAcceptanceListener {
     func startCall(sellerToken: Int, meta: [String: String]) {
         callStarted = true
         PopinLogger.shared.log("CallOrchestrator.startCall()")
+
+        // Show connecting screen immediately, in parallel with the network request
+        DispatchQueue.main.async {
+            self.onPresentOutgoingVC?()
+        }
+
         popinPresenter.startConnection(seller_id: sellerToken, campaign: meta, onSuccess: { [weak self] callQueueId in
-            PopinLogger.shared.log("CallOrchestrator.startCall: API success, queueId=\(callQueueId)")
-            self?.onCallStart?()
-            DispatchQueue.main.async {
-                self?.onPresentOutgoingVC?(callQueueId)
+            guard let self, self.callStarted else {
+                PopinLogger.shared.log("CallOrchestrator.startCall: Cancelled before API returned")
+                return
             }
-            self?.startWaiting(callQueueId: callQueueId)
+            PopinLogger.shared.log("CallOrchestrator.startCall: API success, queueId=\(callQueueId)")
+            self.onCallStart?()
+            DispatchQueue.main.async {
+                self.onUpdateCallQueueId?(callQueueId)
+            }
+            self.startWaiting(callQueueId: callQueueId)
         }, onFailure: { [weak self] in
             PopinLogger.shared.log("CallOrchestrator.startCall: API failed")
             self?.callStarted = false
             self?.onCallFailed?()
+            DispatchQueue.main.async {
+                self?.onCloseCurrentVC?("")
+            }
         })
     }
 

@@ -370,6 +370,12 @@ public class PopinCallViewController: UIViewController {
 
 extension PopinCallViewController: VideoCallView {
     func closeCall(message: String) {
+        guard !message.isEmpty else {
+            closeViewController(shouldNotEndCX: false)
+            dismiss(animated: true)
+            return
+        }
+
         let alert = UIAlertController(title: "Error", message: message, preferredStyle: .alert)
 
         let okAction = UIAlertAction(title: "OK", style: .default) { _ in
@@ -379,7 +385,6 @@ extension PopinCallViewController: VideoCallView {
 
         alert.addAction(okAction)
 
-        // Present the alert
         self.present(alert, animated: true, completion: nil)
     }
 

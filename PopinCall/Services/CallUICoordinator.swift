@@ -30,14 +30,17 @@ class CallUICoordinator {
 
     // MARK: - Present Outgoing Call VC
 
-    func presentOutgoingCallVC(callQueueId: Int, config: PopinConfig) {
-        PopinLogger.shared.log("CallUICoordinator.presentOutgoingCallVC: queueId=\(callQueueId)")
+    func presentOutgoingCallVC(config: PopinConfig) {
+        PopinLogger.shared.log("CallUICoordinator.presentOutgoingCallVC")
         let callVC = buildCallVC(config: config, isOutgoing: true)
-        callVC.callQueueId = callQueueId
         callVC.isOutgoingCall = true
         currentCallViewController = callVC
         pendingCallViewController = callVC
         presentCallVCFromRoot(callVC)
+    }
+
+    func updateCallQueueId(_ id: Int) {
+        currentCallViewController?.callQueueId = id
     }
 
     // MARK: - Present Incoming Call UI

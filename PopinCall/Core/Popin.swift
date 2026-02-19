@@ -166,9 +166,12 @@ public class Popin: PopinPusherDelegate {
         }
 
         // Orchestrator → UI coordinator
-        orchestrator.onPresentOutgoingVC = { [weak self] queueId in
+        orchestrator.onPresentOutgoingVC = { [weak self] in
             guard let self = self else { return }
-            self.uiCoordinator.presentOutgoingCallVC(callQueueId: queueId, config: self.config)
+            self.uiCoordinator.presentOutgoingCallVC(config: self.config)
+        }
+        orchestrator.onUpdateCallQueueId = { [weak self] queueId in
+            self?.uiCoordinator.updateCallQueueId(queueId)
         }
         orchestrator.onLoadCallInExistingVC = { [weak self] talkModel in
             self?.uiCoordinator.loadCallInCurrentVC(talkModel)
