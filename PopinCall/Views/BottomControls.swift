@@ -214,7 +214,7 @@ struct BottomControls: View {
                     Circle()
                         .fill(Color.orange)
                         .frame(width: 8, height: 8)
-                        .offset(x: 4, y: -4)
+                        .offset(x: -7, y: 7)
                 }
             }
         }
@@ -357,7 +357,7 @@ struct OverflowMenuSheet: View {
                             Circle()
                                 .fill(Color.orange)
                                 .frame(width: 8, height: 8)
-                                .offset(x: 8, y: -8)
+                                .offset(x: 5, y: -5)
                         }
                     }
                 }
