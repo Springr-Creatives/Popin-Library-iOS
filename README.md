@@ -231,9 +231,9 @@ let config = PopinConfig.Builder()
     .build()
 ```
 
-### Step 2: Register for VoIP Pushes Early
+### Step 2: Initialize Popin in AppDelegate
 
-Call `Popin.registerForVoIPPushes()` in your `AppDelegate` to ensure PushKit is ready on cold launch, even before `Popin.initialize()` is called:
+For incoming calls to work on cold launch (when a VoIP push wakes your app before any UI is shown), `Popin.initialize()` must be called in `AppDelegate`, not in a `ViewController`. If initialization happens too late, an incoming push can arrive before Popin is ready and the call will be dropped.
 
 ```swift
 import UIKit
@@ -244,10 +244,35 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
     func application(_ application: UIApplication,
                      didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
-        // Register PushKit early so VoIP tokens/pushes are handled on cold launch
-        Popin.registerForVoIPPushes()
+        let config = PopinConfig.Builder()
+            .userName("Demo User")
+            .contactInfo("demo@example.com")
+            .enableIncomingCalls(true)
+            .eventsListener(self)
+            // ... other configurations
+            .build()
+
+        Popin.initialize(token: YOUR_SELLER_TOKEN, config: config)
         return true
     }
+}
+```
+
+### Step 3: Register for VoIP Pushes Early
+
+Also call `Popin.registerForVoIPPushes()` in `AppDelegate` to ensure PushKit is ready before `Popin.initialize()` completes:
+
+```swift
+func application(_ application: UIApplication,
+                 didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
+    // Register PushKit early so VoIP tokens/pushes are handled on cold launch
+    Popin.registerForVoIPPushes()
+
+    let config = PopinConfig.Builder()
+        // ... configurations
+        .build()
+    Popin.initialize(token: YOUR_SELLER_TOKEN, config: config)
+    return true
 }
 ```
 
@@ -285,7 +310,20 @@ let config = Popin.shared?.getConfig()
 
 // Register PushKit early (call in AppDelegate before initialize)
 Popin.registerForVoIPPushes()
+
+// Logout the current user and deinitialize the SDK
+Popin.deinitialize()
 ```
+
+### deinitialize
+
+Logs out the current user and tears down the SDK instance. Calls `POST /v1/user/logout` and clears all locally stored data (user session, push token, seller ID). After this call, `Popin.shared` is `nil` and you must call `Popin.initialize()` again to use the SDK.
+
+```swift
+Popin.deinitialize()
+```
+
+Call this on user logout or account switch.
 
 ### setGroup
 

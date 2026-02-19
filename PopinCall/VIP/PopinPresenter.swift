@@ -94,6 +94,17 @@ class PopinPresenter {
         }
     }
 
+    func logout() {
+        Task {
+            try? await popinInteractor.logout()
+            PopinLogger.shared.log("PopinPresenter: logout API complete, clearing local state")
+            Utilities.shared.saveUser(user: nil)
+            Utilities.shared.savePushToken(token: "")
+            Utilities.shared.clearConnected()
+            UserDefaults.standard.removeObject(forKey: "popinSeller")
+        }
+    }
+
     func getCallDetails(callId: Int, onSuccess success: @escaping (TalkModel) -> Void, onFailure failure: @escaping () -> Void) {
         Task {
             do {

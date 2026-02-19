@@ -225,6 +225,19 @@ public class Popin: PopinPusherDelegate {
 
     // MARK: - Public API
 
+    /// Logs out the current user: calls POST /v1/user/logout, clears all stored data, and destroys the SDK instance.
+    public static func deinitialize() {
+        guard let instance = shared else {
+            PopinLogger.shared.log("Popin.deinitialize() called but no instance exists")
+            return
+        }
+
+        PopinLogger.shared.log("Popin.deinitialize() start")
+        instance.popinPresenter.logout()
+        shared = nil
+        PopinLogger.shared.log("Popin.deinitialize() complete, SDK instance destroyed")
+    }
+
     public func getConfig() -> PopinConfig {
         return config
     }
@@ -255,10 +268,11 @@ public class Popin: PopinPusherDelegate {
             audioOnly: config.audioOnlyMode,
             onGranted: { [weak self] in
                 guard let self = self else { return }
+                self.eventsListener?.onPermissionGiven()
                 self.orchestrator.startCall(sellerToken: self.sellerToken, meta: self.getEnhancedMeta())
             },
             onDenied: { [weak self] in
-                self?.eventsListener?.onCallFailed()
+                self?.eventsListener?.onPermissionDenied()
             }
         )
         #endif
@@ -292,10 +306,11 @@ public class Popin: PopinPusherDelegate {
                     audioOnly: self.config.audioOnlyMode,
                     onGranted: { [weak self] in
                         guard let self = self else { return }
+                        self.eventsListener?.onPermissionGiven()
                         self.orchestrator.startCall(sellerToken: self.sellerToken, meta: self.getEnhancedMeta())
                     },
                     onDenied: { [weak self] in
-                        self?.eventsListener?.onCallFailed()
+                        self?.eventsListener?.onPermissionDenied()
                     }
                 )
             }, onFailure: { [weak self] reason in
@@ -308,10 +323,11 @@ public class Popin: PopinPusherDelegate {
                 audioOnly: config.audioOnlyMode,
                 onGranted: { [weak self] in
                     guard let self = self else { return }
+                    self.eventsListener?.onPermissionGiven()
                     self.orchestrator.startCall(sellerToken: self.sellerToken, meta: self.getEnhancedMeta())
                 },
                 onDenied: { [weak self] in
-                    self?.eventsListener?.onCallFailed()
+                    self?.eventsListener?.onPermissionDenied()
                 }
             )
         }
@@ -384,9 +400,11 @@ public class Popin: PopinPusherDelegate {
         permissionService.requestForIncomingCall(
             audioOnly: config.audioOnlyMode,
             onGranted: { [weak self] in
+                self?.eventsListener?.onPermissionGiven()
                 self?.orchestrator.connectToCall(callId: callData.callId)
             },
             onDenied: { [weak self] message in
+                self?.eventsListener?.onPermissionDenied()
                 DispatchQueue.main.async {
                     CallManager.shared.endCall()
                     self?.uiCoordinator.closeCurrentVC(message: message)

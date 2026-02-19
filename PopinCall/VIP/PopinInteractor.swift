@@ -97,6 +97,14 @@ class PopinInteractor {
         }
     }
 
+    func logout() async throws {
+        let urlString = serverURL + "/user/logout"
+        let response: StatusModel = try await Utilities.shared.request(urlString: urlString, method: "POST")
+        if response.status != 1 {
+            throw InteractorError.apiError(response.message)
+        }
+    }
+
     func getCallDetails(callId: Int) async throws -> TalkModel {
         let urlString = serverURL + "/user/call/\(callId)"
         
