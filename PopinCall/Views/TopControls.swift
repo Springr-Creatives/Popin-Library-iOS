@@ -78,6 +78,8 @@ struct TopControls: View {
     @EnvironmentObject private var configHolder: PopinConfigHolder
 
     let onPipClick: () -> Void
+    var leadingButtonIcon: String = "pip.enter"
+    var productDetailsClickable: Bool = true
 
     // Product data
     let productId: String?
@@ -93,7 +95,7 @@ struct TopControls: View {
             // Close Button (Top Left)
             if !configHolder.config.hideBackButton {
                 Button(action: onPipClick) {
-                    Image(systemName: "xmark")
+                    Image(systemName: leadingButtonIcon)
                         .font(.system(size: 16, weight: .medium))
                         .foregroundColor(.white)
                         .frame(width: 40, height: 40)
@@ -112,9 +114,10 @@ struct TopControls: View {
                 productImageUrl: productImageUrl,
                 productDescription: productDescription,
                 productExtra: productExtra,
-                onBackClick: onPipClick,
+                onBackClick: productDetailsClickable ? onPipClick : nil,
                 secondaryProductText: configHolder.config.secondaryProductText
             )
+            .allowsHitTesting(productDetailsClickable)
 
             Spacer()
         }

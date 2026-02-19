@@ -173,6 +173,8 @@ struct PopinCallStateView: View {
                     onPipClick: {
                         viewModel.onCancelCall?()
                     },
+                    leadingButtonIcon: "xmark",
+                    productDetailsClickable: false,
                     productId: productId,
                     productName: productName,
                     productUrl: productUrl,
