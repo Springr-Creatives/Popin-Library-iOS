@@ -499,7 +499,10 @@ struct PopinConnectedView: View {
         }
         // Track when customer network issue resolves -> show "You're back online" for 5 sec
         .onChange(of: viewModel.hasCustomerNetworkIssue) { newValue in
-            if previousHasCustomerNetworkIssue && !newValue {
+            if !previousHasCustomerNetworkIssue && newValue {
+                // Customer just lost network — notify delegate
+                viewModel.onNetworkFailure?("customer")
+            } else if previousHasCustomerNetworkIssue && !newValue {
                 viewModel.showCustomerBackOnlineMessage = true
                 DispatchQueue.main.asyncAfter(deadline: .now() + 5) {
                     viewModel.showCustomerBackOnlineMessage = false

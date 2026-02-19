@@ -38,7 +38,7 @@
 		CF1742972F27407B00AE48E7 /* Utilities.swift in Sources */ = {isa = PBXBuildFile; fileRef = CF1742782F27407B00AE48E7 /* Utilities.swift */; };
 		CF1742982F27407B00AE48E7 /* PopinPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = CF1742732F27407B00AE48E7 /* PopinPresenter.swift */; };
 		CF1742992F27407B00AE48E7 /* PopinConference.swift in Sources */ = {isa = PBXBuildFile; fileRef = CF1742702F27407B00AE48E7 /* PopinConference.swift */; };
-		CF17429A2F27407B00AE48E7 /* PopinCallDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = CF17426C2F27407B00AE48E7 /* PopinCallDelegate.swift */; };
+		CF17429A2F27407B00AE48E7 /* PopinEventsListener.swift in Sources */ = {isa = PBXBuildFile; fileRef = CF17426C2F27407B00AE48E7 /* PopinEventsListener.swift */; };
 		CF17429F2F27844400AE48E7 /* ObjectSavable.swift in Sources */ = {isa = PBXBuildFile; fileRef = CF17429E2F27844400AE48E7 /* ObjectSavable.swift */; };
 		CF174AA02F27407B00AE48E7 /* CallAcceptanceWaitHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = CF174AA12F27407B00AE48E7 /* CallAcceptanceWaitHandler.swift */; };
 		CF17CHAT22F27407B00AE48E7 /* ChatMessage.swift in Sources */ = {isa = PBXBuildFile; fileRef = CF17CHAT12F27407B00AE48E7 /* ChatMessage.swift */; };
@@ -46,6 +46,13 @@
 		CF17CHAT62F27407B00AE48E7 /* ChatView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CF17CHAT52F27407B00AE48E7 /* ChatView.swift */; };
 		CF17CHAT82F27407B00AE48E7 /* ChatDetailsToast.swift in Sources */ = {isa = PBXBuildFile; fileRef = CF17CHAT72F27407B00AE48E7 /* ChatDetailsToast.swift */; };
 		CF17LOG12F27407B00AE48E7 /* PopinLogger.swift in Sources */ = {isa = PBXBuildFile; fileRef = CF17LOG02F27407B00AE48E7 /* PopinLogger.swift */; };
+		CF2001022F27407B00AE48E7 /* PushCallData.swift in Sources */ = {isa = PBXBuildFile; fileRef = CF2001012F27407B00AE48E7 /* PushCallData.swift */; };
+		CF2002022F27407B00AE48E7 /* PopinCallManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = CF2002012F27407B00AE48E7 /* PopinCallManager.swift */; };
+		CF2003022F27407B00AE48E7 /* CallOrchestrator.swift in Sources */ = {isa = PBXBuildFile; fileRef = CF2003012F27407B00AE48E7 /* CallOrchestrator.swift */; };
+		CF2004022F27407B00AE48E7 /* CallUICoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = CF2004012F27407B00AE48E7 /* CallUICoordinator.swift */; };
+		CF2005022F27407B00AE48E7 /* PermissionService.swift in Sources */ = {isa = PBXBuildFile; fileRef = CF2005012F27407B00AE48E7 /* PermissionService.swift */; };
+		CF2006022F27407B00AE48E7 /* LocalCameraPreview.swift in Sources */ = {isa = PBXBuildFile; fileRef = CF2006012F27407B00AE48E7 /* LocalCameraPreview.swift */; };
+		CF2007022F27407B00AE48E7 /* WaitingBottomControls.swift in Sources */ = {isa = PBXBuildFile; fileRef = CF2007012F27407B00AE48E7 /* WaitingBottomControls.swift */; };
 		CF967A842F44320300F5A268 /* MirroredParticipantView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CF967A832F44320300F5A268 /* MirroredParticipantView.swift */; };
 		CFA4CD962F28D0A7009EB444 /* LiveKit in Frameworks */ = {isa = PBXBuildFile; productRef = CFA4CD952F28D0A7009EB444 /* LiveKit */; };
 		CFA4CD972F28D0B8009EB444 /* LiveKit in Frameworks */ = {isa = PBXBuildFile; productRef = CFA4CD9C2F28D0C0009EB444 /* LiveKit */; };
@@ -65,13 +72,6 @@
 		CFBBD5A42923F08100D241A9 /* PopinCall.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = CFBBD5662923EA3100D241A9 /* PopinCall.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		CFE045722F3B1C6500E362B8 /* NetworkToastView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CFE045712F3B1C6500E362B8 /* NetworkToastView.swift */; };
 		E11EE3812D8195F1434759F7 /* PopinConfig.swift in Sources */ = {isa = PBXBuildFile; fileRef = 738BD7405113A3EA9EC44AD0 /* PopinConfig.swift */; };
-		CF2001022F27407B00AE48E7 /* PushCallData.swift in Sources */ = {isa = PBXBuildFile; fileRef = CF2001012F27407B00AE48E7 /* PushCallData.swift */; };
-		CF2002022F27407B00AE48E7 /* PopinCallManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = CF2002012F27407B00AE48E7 /* PopinCallManager.swift */; };
-		CF2003022F27407B00AE48E7 /* CallOrchestrator.swift in Sources */ = {isa = PBXBuildFile; fileRef = CF2003012F27407B00AE48E7 /* CallOrchestrator.swift */; };
-		CF2004022F27407B00AE48E7 /* CallUICoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = CF2004012F27407B00AE48E7 /* CallUICoordinator.swift */; };
-		CF2005022F27407B00AE48E7 /* PermissionService.swift in Sources */ = {isa = PBXBuildFile; fileRef = CF2005012F27407B00AE48E7 /* PermissionService.swift */; };
-		CF2006022F27407B00AE48E7 /* LocalCameraPreview.swift in Sources */ = {isa = PBXBuildFile; fileRef = CF2006012F27407B00AE48E7 /* LocalCameraPreview.swift */; };
-		CF2007022F27407B00AE48E7 /* WaitingBottomControls.swift in Sources */ = {isa = PBXBuildFile; fileRef = CF2007012F27407B00AE48E7 /* WaitingBottomControls.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -122,7 +122,7 @@
 		CF1742692F27407B00AE48E7 /* ParticipantTile.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ParticipantTile.swift; sourceTree = "<group>"; };
 		CF17426A2F27407B00AE48E7 /* PiPSupport.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PiPSupport.swift; sourceTree = "<group>"; };
 		CF17426B2F27407B00AE48E7 /* Popin.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Popin.swift; sourceTree = "<group>"; };
-		CF17426C2F27407B00AE48E7 /* PopinCallDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PopinCallDelegate.swift; sourceTree = "<group>"; };
+		CF17426C2F27407B00AE48E7 /* PopinEventsListener.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PopinEventsListener.swift; sourceTree = "<group>"; };
 		CF17426D2F27407B00AE48E7 /* PopinCallInteractor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PopinCallInteractor.swift; sourceTree = "<group>"; };
 		CF17426E2F27407B00AE48E7 /* PopinCallPresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PopinCallPresenter.swift; sourceTree = "<group>"; };
 		CF17426F2F27407B00AE48E7 /* PopinCallViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PopinCallViewController.swift; sourceTree = "<group>"; };
@@ -146,6 +146,13 @@
 		CF17CHAT72F27407B00AE48E7 /* ChatDetailsToast.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatDetailsToast.swift; sourceTree = "<group>"; };
 		CF17LOG02F27407B00AE48E7 /* PopinLogger.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PopinLogger.swift; sourceTree = "<group>"; };
 		CF1D09E39EFC62DD51F4244B /* PopinProduct.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = PopinProduct.swift; sourceTree = "<group>"; };
+		CF2001012F27407B00AE48E7 /* PushCallData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PushCallData.swift; sourceTree = "<group>"; };
+		CF2002012F27407B00AE48E7 /* PopinCallManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PopinCallManager.swift; sourceTree = "<group>"; };
+		CF2003012F27407B00AE48E7 /* CallOrchestrator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CallOrchestrator.swift; sourceTree = "<group>"; };
+		CF2004012F27407B00AE48E7 /* CallUICoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CallUICoordinator.swift; sourceTree = "<group>"; };
+		CF2005012F27407B00AE48E7 /* PermissionService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PermissionService.swift; sourceTree = "<group>"; };
+		CF2006012F27407B00AE48E7 /* LocalCameraPreview.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocalCameraPreview.swift; sourceTree = "<group>"; };
+		CF2007012F27407B00AE48E7 /* WaitingBottomControls.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WaitingBottomControls.swift; sourceTree = "<group>"; };
 		CF967A832F44320300F5A268 /* MirroredParticipantView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MirroredParticipantView.swift; sourceTree = "<group>"; };
 		CFA4CDDE2F2A4C2A009EB444 /* BottomControls.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BottomControls.swift; sourceTree = "<group>"; };
 		CFB63D8C292908EF005F265D /* PopinPusherDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PopinPusherDelegate.swift; sourceTree = "<group>"; };
@@ -162,13 +169,6 @@
 		CFBBD5942923EA8900D241A9 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		CFE045712F3B1C6500E362B8 /* NetworkToastView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkToastView.swift; sourceTree = "<group>"; };
 		E3F74A3372ED619A04D4C869 /* Pods_PopinCall_PopinCallTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_PopinCall_PopinCallTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
-		CF2001012F27407B00AE48E7 /* PushCallData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PushCallData.swift; sourceTree = "<group>"; };
-		CF2002012F27407B00AE48E7 /* PopinCallManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PopinCallManager.swift; sourceTree = "<group>"; };
-		CF2003012F27407B00AE48E7 /* CallOrchestrator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CallOrchestrator.swift; sourceTree = "<group>"; };
-		CF2004012F27407B00AE48E7 /* CallUICoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CallUICoordinator.swift; sourceTree = "<group>"; };
-		CF2005012F27407B00AE48E7 /* PermissionService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PermissionService.swift; sourceTree = "<group>"; };
-		CF2006012F27407B00AE48E7 /* LocalCameraPreview.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocalCameraPreview.swift; sourceTree = "<group>"; };
-		CF2007012F27407B00AE48E7 /* WaitingBottomControls.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WaitingBottomControls.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -271,7 +271,7 @@
 		CF17A0052F2A5A0000000005 /* Protocols */ = {
 			isa = PBXGroup;
 			children = (
-				CF17426C2F27407B00AE48E7 /* PopinCallDelegate.swift */,
+				CF17426C2F27407B00AE48E7 /* PopinEventsListener.swift */,
 				C1C6537A1A2AEDB3B404AE28 /* PopinInitListener.swift */,
 				CFB63D8C292908EF005F265D /* PopinPusherDelegate.swift */,
 			);
@@ -569,7 +569,7 @@
 				CF1742992F27407B00AE48E7 /* PopinConference.swift in Sources */,
 				CFA4CDDF2F2A4C2A009EB444 /* BottomControls.swift in Sources */,
 				CFE045722F3B1C6500E362B8 /* NetworkToastView.swift in Sources */,
-				CF17429A2F27407B00AE48E7 /* PopinCallDelegate.swift in Sources */,
+				CF17429A2F27407B00AE48E7 /* PopinEventsListener.swift in Sources */,
 				CF17429F2F27844400AE48E7 /* ObjectSavable.swift in Sources */,
 				E11EE3812D8195F1434759F7 /* PopinConfig.swift in Sources */,
 				3170C0C9DB3C1E5806DC5B13 /* PopinProduct.swift in Sources */,
