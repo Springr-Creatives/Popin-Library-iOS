@@ -22,7 +22,7 @@ import AVFoundation
 #if canImport(UIKit)
 import UIKit
 
-struct PopinConference: View {
+struct PopinCallStateView: View {
     @EnvironmentObject private var _room: Room
     @Environment(\.liveKitUIOptions) private var _ui: UIOptions
     @EnvironmentObject private var viewModel: VideoCallViewModel
@@ -115,7 +115,7 @@ struct PopinConference: View {
              // Disconnected after being accepted - show empty view while controller dismisses
              Color.black
                  .onAppear {
-                     PopinLogger.shared.log("PopinConference: room .disconnected after hasConnected — firing onRoomDisconnected (disconnectError=\(String(describing: _room.disconnectError)))")
+                     PopinLogger.shared.log("PopinCallStateView: room .disconnected after hasConnected — firing onRoomDisconnected (disconnectError=\(String(describing: _room.disconnectError)))")
                      CallManager.shared.endCall()
                      viewModel.onRoomDisconnected?()
                  }

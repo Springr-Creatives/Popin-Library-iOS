@@ -37,7 +37,7 @@
 		CF1742962F27407B00AE48E7 /* PopinCallPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = CF17426E2F27407B00AE48E7 /* PopinCallPresenter.swift */; };
 		CF1742972F27407B00AE48E7 /* Utilities.swift in Sources */ = {isa = PBXBuildFile; fileRef = CF1742782F27407B00AE48E7 /* Utilities.swift */; };
 		CF1742982F27407B00AE48E7 /* PopinPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = CF1742732F27407B00AE48E7 /* PopinPresenter.swift */; };
-		CF1742992F27407B00AE48E7 /* PopinConference.swift in Sources */ = {isa = PBXBuildFile; fileRef = CF1742702F27407B00AE48E7 /* PopinConference.swift */; };
+		CF1742992F27407B00AE48E7 /* PopinCallStateView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CF1742702F27407B00AE48E7 /* PopinCallStateView.swift */; };
 		CF17429A2F27407B00AE48E7 /* PopinEventsListener.swift in Sources */ = {isa = PBXBuildFile; fileRef = CF17426C2F27407B00AE48E7 /* PopinEventsListener.swift */; };
 		CF17429F2F27844400AE48E7 /* ObjectSavable.swift in Sources */ = {isa = PBXBuildFile; fileRef = CF17429E2F27844400AE48E7 /* ObjectSavable.swift */; };
 		CF174AA02F27407B00AE48E7 /* CallAcceptanceWaitHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = CF174AA12F27407B00AE48E7 /* CallAcceptanceWaitHandler.swift */; };
@@ -126,7 +126,7 @@
 		CF17426D2F27407B00AE48E7 /* PopinCallInteractor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PopinCallInteractor.swift; sourceTree = "<group>"; };
 		CF17426E2F27407B00AE48E7 /* PopinCallPresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PopinCallPresenter.swift; sourceTree = "<group>"; };
 		CF17426F2F27407B00AE48E7 /* PopinCallViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PopinCallViewController.swift; sourceTree = "<group>"; };
-		CF1742702F27407B00AE48E7 /* PopinConference.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PopinConference.swift; sourceTree = "<group>"; };
+		CF1742702F27407B00AE48E7 /* PopinCallStateView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PopinCallStateView.swift; sourceTree = "<group>"; };
 		CF1742712F27407B00AE48E7 /* PopinConnectedView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PopinConnectedView.swift; sourceTree = "<group>"; };
 		CF1742722F27407B00AE48E7 /* PopinInteractor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PopinInteractor.swift; sourceTree = "<group>"; };
 		CF1742732F27407B00AE48E7 /* PopinPresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PopinPresenter.swift; sourceTree = "<group>"; };
@@ -227,6 +227,7 @@
 				CF1742712F27407B00AE48E7 /* PopinConnectedView.swift */,
 				CF17427C2F27407B00AE48E7 /* VideoCallSwiftUIView.swift */,
 				CF967A832F44320300F5A268 /* MirroredParticipantView.swift */,
+				CF1742702F27407B00AE48E7 /* PopinCallStateView.swift */,
 				CF1742672F27407B00AE48E7 /* ParticipantCell.swift */,
 				CF1742682F27407B00AE48E7 /* ParticipantLayout.swift */,
 				CF1742692F27407B00AE48E7 /* ParticipantTile.swift */,
@@ -258,7 +259,6 @@
 				CF1742632F27407B00AE48E7 /* CallManager.swift */,
 				CF174AA12F27407B00AE48E7 /* CallAcceptanceWaitHandler.swift */,
 				CF17CHAT32F27407B00AE48E7 /* ChatManager.swift */,
-				CF1742702F27407B00AE48E7 /* PopinConference.swift */,
 				CF1742742F27407B00AE48E7 /* PopinPusher.swift */,
 				CF2002012F27407B00AE48E7 /* PopinCallManager.swift */,
 				CF2003012F27407B00AE48E7 /* CallOrchestrator.swift */,
@@ -566,7 +566,7 @@
 				CF1742962F27407B00AE48E7 /* PopinCallPresenter.swift in Sources */,
 				CF1742972F27407B00AE48E7 /* Utilities.swift in Sources */,
 				CF1742982F27407B00AE48E7 /* PopinPresenter.swift in Sources */,
-				CF1742992F27407B00AE48E7 /* PopinConference.swift in Sources */,
+				CF1742992F27407B00AE48E7 /* PopinCallStateView.swift in Sources */,
 				CFA4CDDF2F2A4C2A009EB444 /* BottomControls.swift in Sources */,
 				CFE045722F3B1C6500E362B8 /* NetworkToastView.swift in Sources */,
 				CF17429A2F27407B00AE48E7 /* PopinEventsListener.swift in Sources */,

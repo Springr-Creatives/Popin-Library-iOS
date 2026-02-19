@@ -48,7 +48,7 @@ struct VideoCallSwiftUIView: View {
     }
     
     var body: some View {
-        PopinConference(callId: videoCallId, userId: videoUserId)
+        PopinCallStateView(callId: videoCallId, userId: videoUserId)
             .environmentObject(viewModel)
             .onReceive(viewModel.$call.compactMap { $0 }) { call in
                 // Update call data for the UI
