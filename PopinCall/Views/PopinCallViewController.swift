@@ -208,6 +208,11 @@ public class PopinCallViewController: UIViewController {
 
     
     private func setupSwiftUIView() {
+        if popinConfig == nil {
+            PopinLogger.shared.log("⚠️ PopinCallVC.setupSwiftUIView: popinConfig is NIL — falling back to default config. hideFlipCameraButton will be false!")
+        } else {
+            PopinLogger.shared.log("PopinCallVC.setupSwiftUIView: popinConfig.hideFlipCameraButton=\(popinConfig!.hideFlipCameraButton), isOutgoingCall=\(isOutgoingCall)")
+        }
         let configHolder = PopinConfigHolder(config: popinConfig ?? PopinConfig.Builder().build())
 
         let swiftUIView = VideoCallSwiftUIView(

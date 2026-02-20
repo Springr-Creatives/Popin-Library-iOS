@@ -153,6 +153,7 @@ public class Popin: PopinPusherDelegate {
         // Break circular dep: PopinCallManager → Popin.shared
         PopinCallManager.shared.onPresentIncomingCallUI = { [weak self] in
             guard let self = self else { return }
+            PopinLogger.shared.log("Popin.onPresentIncomingCallUI: hideFlipCameraButton=\(self.config.hideFlipCameraButton)")
             self.uiCoordinator.presentIncomingCallUI(config: self.config)
         }
 
@@ -383,12 +384,13 @@ public class Popin: PopinPusherDelegate {
             return
         }
 
-        PopinLogger.shared.log("onIncomingCallAnswered: callId=\(callData.callId)")
+        PopinLogger.shared.log("onIncomingCallAnswered: callId=\(callData.callId), hideFlipCameraButton=\(config.hideFlipCameraButton), hasActiveVC=\(uiCoordinator.hasActiveVC())")
         self.eventsListener = config.eventsListener
 
         PopinCallManager.shared.callAnswered()
 
         if !uiCoordinator.hasActiveVC() {
+            PopinLogger.shared.log("onIncomingCallAnswered: No active VC — presenting incoming call UI")
             uiCoordinator.presentIncomingCallUI(config: config)
         }
 

@@ -126,6 +126,7 @@ class CallUICoordinator {
     // MARK: - Private
 
     private func buildCallVC(config: PopinConfig, isOutgoing: Bool) -> PopinCallViewController {
+        PopinLogger.shared.log("CallUICoordinator.buildCallVC: isOutgoing=\(isOutgoing), hideFlipCameraButton=\(config.hideFlipCameraButton)")
         let callVC = PopinCallViewController()
         callVC.modalPresentationStyle = .overFullScreen
         callVC.popinConfig = config
@@ -151,7 +152,8 @@ class CallUICoordinator {
         guard let rootVC = UIApplication.shared.connectedScenes
             .compactMap({ ($0 as? UIWindowScene)?.keyWindow?.rootViewController })
             .first else {
-            PopinLogger.shared.log("CallUICoordinator.presentCallVCFromRoot: No root VC found")
+            PopinLogger.shared.log("CallUICoordinator.presentCallVCFromRoot: No root VC found — clearing currentCallViewController to allow retry")
+            currentCallViewController = nil
             pendingCallViewController = nil
             return
         }

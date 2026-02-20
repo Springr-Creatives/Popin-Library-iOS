@@ -35,8 +35,8 @@ class ViewController: UIViewController, UITableViewDataSource {
         // Initialize Popin with config (matches Android Popin.init)
         let config = PopinConfig.Builder()
             // User information
-            .userName("Demo iUser")
-            .contactInfo("demo@example.com") //email or phone
+            .userName("demo vishal")
+            .contactInfo("demo@ashwin.com") //email or phone
             .callerId("user-12345")
 
             // Environment
@@ -53,6 +53,7 @@ class ViewController: UIViewController, UITableViewDataSource {
             // Listeners
             .initListener(self)
             .eventsListener(self)
+            .enableIncomingCalls(true)
 
             // UI visibility options (all visible by default)
             .hideDisconnectButton(false)      // Show end call button
