@@ -94,9 +94,9 @@ class PopinPresenter {
         }
     }
 
-    func logout() {
+    func logout(url: String) {
         Task {
-            try? await popinInteractor.logout()
+            try? await popinInteractor.logout(url: url)
             PopinLogger.shared.log("PopinPresenter: logout API complete, clearing local state")
             Utilities.shared.saveUser(user: nil)
             Utilities.shared.savePushToken(token: "")

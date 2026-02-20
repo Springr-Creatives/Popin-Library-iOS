@@ -236,7 +236,8 @@ public class Popin: PopinPusherDelegate {
         }
 
         PopinLogger.shared.log("Popin.deinitialize() start")
-        instance.popinPresenter.logout()
+        let logoutURL = serverURL + "/user/logout"
+        instance.popinPresenter.logout(url: logoutURL)
         shared = nil
         PopinLogger.shared.log("Popin.deinitialize() complete, SDK instance destroyed")
     }

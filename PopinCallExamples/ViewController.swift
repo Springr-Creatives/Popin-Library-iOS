@@ -79,6 +79,16 @@ class ViewController: UIViewController, UITableViewDataSource {
         callButton.addTarget(self, action: #selector(makeCall), for: .touchUpInside)
         view.addSubview(callButton)
 
+        let deinitButton = UIButton(type: .system)
+        deinitButton.setTitle("Deinit", for: .normal)
+        deinitButton.titleLabel?.font = UIFont(name: "HelveticaNeue", size: 25)
+        deinitButton.setTitleColor(.black, for: .normal)
+        deinitButton.backgroundColor = UIColor(red: 1.0, green: 0.4, blue: 0.4, alpha: 1.0)
+        deinitButton.layer.cornerRadius = 10
+        deinitButton.translatesAutoresizingMaskIntoConstraints = false
+        deinitButton.addTarget(self, action: #selector(deinitPopin), for: .touchUpInside)
+        view.addSubview(deinitButton)
+
         let tableView = UITableView(frame: .zero, style: .plain)
         tableView.translatesAutoresizingMaskIntoConstraints = false
         tableView.dataSource = self
@@ -91,7 +101,12 @@ class ViewController: UIViewController, UITableViewDataSource {
             callButton.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -20),
             callButton.heightAnchor.constraint(equalToConstant: 55),
 
-            tableView.topAnchor.constraint(equalTo: callButton.bottomAnchor, constant: 16),
+            deinitButton.topAnchor.constraint(equalTo: callButton.bottomAnchor, constant: 12),
+            deinitButton.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 20),
+            deinitButton.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -20),
+            deinitButton.heightAnchor.constraint(equalToConstant: 55),
+
+            tableView.topAnchor.constraint(equalTo: deinitButton.bottomAnchor, constant: 16),
             tableView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
             tableView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
             tableView.bottomAnchor.constraint(equalTo: view.bottomAnchor),
@@ -100,6 +115,10 @@ class ViewController: UIViewController, UITableViewDataSource {
 
     @objc func makeCall(_ sender: Any) {
         Popin.shared?.startCall()
+    }
+
+    @objc func deinitPopin(_ sender: Any) {
+        Popin.deinitialize()
     }
 
     // MARK: - UITableViewDataSource

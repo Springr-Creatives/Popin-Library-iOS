@@ -97,9 +97,8 @@ class PopinInteractor {
         }
     }
 
-    func logout() async throws {
-        let urlString = serverURL + "/user/logout"
-        let response: StatusModel = try await Utilities.shared.request(urlString: urlString, method: "POST")
+    func logout(url: String) async throws {
+        let response: StatusModel = try await Utilities.shared.request(urlString: url, method: "POST")
         if response.status != 1 {
             throw InteractorError.apiError(response.message)
         }
