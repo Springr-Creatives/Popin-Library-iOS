@@ -78,7 +78,7 @@ struct TopControls: View {
     @EnvironmentObject private var configHolder: PopinConfigHolder
 
     let onPipClick: () -> Void
-    var leadingButtonIcon: String = "pip.enter"
+    var leadingButtonIcon: String = "chevron.down"
     var productDetailsClickable: Bool = true
 
     // Product data

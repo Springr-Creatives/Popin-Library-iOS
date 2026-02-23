@@ -174,7 +174,7 @@ struct PopinCallStateView: View {
                         viewModel.onCancelCall?()
                     },
                     leadingButtonIcon: "xmark",
-                    productDetailsClickable: false,
+                    productDetailsClickable: true,
                     productId: productId,
                     productName: productName,
                     productUrl: productUrl,
@@ -186,12 +186,17 @@ struct PopinCallStateView: View {
                 Spacer()
 
                 // "Connecting..." label at vertical center
-                HStack(spacing: 8) {
-                    ProgressView()
-                        .progressViewStyle(CircularProgressViewStyle(tint: .white))
-                    Text("Connecting...")
-                        .foregroundColor(.white)
-                        .font(.system(size: 20, weight: .semibold))
+                VStack(spacing: 8) {
+                    HStack(spacing: 8) {
+                        ProgressView()
+                            .progressViewStyle(CircularProgressViewStyle(tint: .white))
+                        Text("Connecting...")
+                            .foregroundColor(.white)
+                            .font(.system(size: 20, weight: .semibold))
+                    }
+                    Text("Usually takes seconds to connect")
+                        .foregroundColor(.white.opacity(0.6))
+                        .font(.system(size: 14))
                 }
 
                 Spacer()
