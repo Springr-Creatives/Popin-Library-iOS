@@ -12,7 +12,8 @@
       "WebFetch(domain:github.com)",
       "Bash(swift package:*)",
       "Bash(xargs:*)",
-      "Bash(xcodebuild:*)"
+      "Bash(xcodebuild:*)",
+      "WebFetch(domain:www.figma.com)"
     ]
   }
 }

@@ -12,22 +12,13 @@ import LiveKitComponents
 #if canImport(UIKit)
 struct AudienceRow: View {
     let participants: [Participant]
-    let agent: Agent?
-    let agentParticipant: Participant?
     @Binding var primaryParticipantId: String?
-    let expertDesignation: String
     let localParticipantSid: String?
     let isFrontCamera: Bool
 
     var body: some View {
-        let _ = PopinLogger.shared.log("AudienceRow: agent=\(agent?.name ?? "nil"), agentParticipant=\(agentParticipant?.identity?.stringValue ?? "nil"), participants=\(participants.map { $0.identity?.stringValue ?? "?" })")
-        ScrollView(.horizontal, showsIndicators: false) {
-            HStack(spacing: 8) {
-                // Agent Tile
-                if let agent = agent {
-                    AgentTile(agent: agent, participant: agentParticipant, primaryParticipantId: $primaryParticipantId, expertDesignation: expertDesignation)
-                }
-
+        ScrollView(.vertical, showsIndicators: false) {
+            VStack(spacing: 8) {
                 ForEach(participants) { participant in
                     AudienceRowTile(
                         participant: participant,
@@ -37,118 +28,10 @@ struct AudienceRow: View {
                     )
                 }
             }
-            .padding(.leading, 10)
-            .padding(.trailing, 16)
+            .padding(.top, 4)
+            .padding(.trailing, 10)
         }
-    }
-}
-
-private struct AgentTile: View {
-    let agent: Agent
-    let participant: Participant?
-    @Binding var primaryParticipantId: String?
-    let expertDesignation: String
-
-    var body: some View {
-        ZStack(alignment: .bottom) {
-            // Always show static agent image as background
-            if let imageUrl = agent.image, let url = URL(string: imageUrl) {
-                AsyncImage(url: url) { phase in
-                    if let image = phase.image {
-                        image
-                            .resizable()
-                            .aspectRatio(contentMode: .fill)
-                    } else {
-                        Color.gray.opacity(0.3)
-                    }
-                }
-                .frame(width: 90, height: 120)
-                .clipped()
-            } else {
-                // Fallback if no image URL
-                Color.gray.opacity(0.3)
-                    .frame(width: 90, height: 120)
-                    .overlay(
-                        Image(systemName: "person.fill")
-                            .font(.system(size: 24))
-                            .foregroundColor(.white.opacity(0.6))
-                    )
-            }
-
-            // Bottom Gradient Overlay
-            LinearGradient(
-                gradient: Gradient(colors: [Color.black.opacity(0), Color(hex: "080060").opacity(0.5)]),
-                startPoint: .top,
-                endPoint: .bottom
-            )
-            .frame(height: 45)
-            .allowsHitTesting(false)
-
-            // Name and Role (Expert)
-            VStack(alignment: .leading, spacing: 0) {
-                Text(expertDesignation)
-                    .font(.system(size: 10))
-                    .fontWeight(.bold)
-                    .foregroundColor(.white)
-
-                Text(agent.name ?? "Agent")
-                    .font(.system(size: 12))
-                    .fontWeight(.medium)
-                    .foregroundColor(.white)
-                    .lineLimit(1)
-                    .truncationMode(.tail)
-            }
-            .padding(.leading, 8)
-            .padding(.bottom, 8)
-            .frame(maxWidth: .infinity, alignment: .leading)
-            .allowsHitTesting(false)
-
-            // Indicators (Mute & Signal) at Top Right
-            if let participant = participant {
-                AgentIndicators(participant: participant)
-                    .allowsHitTesting(false)
-            }
-        }
-        .frame(width: 90, height: 120)
-        .cornerRadius(12)
-        .contentShape(Rectangle())
-        .overlay(
-            RoundedRectangle(cornerRadius: 12)
-                .stroke(Color(hex: "FFFFFF"), lineWidth: 0.5)
-        )
-    }
-}
-
-private struct AgentIndicators: View {
-    @ObservedObject var participant: Participant
-    
-    var body: some View {
-        VStack(spacing: 4) {
-            // Mute indicator
-            if !participant.isMicrophoneEnabled() {
-                ZStack {
-                    Circle()
-                        .fill(Color.black.opacity(0.7))
-                        .frame(width: 20, height: 20)
-
-                    Image(systemName: "mic.slash.fill")
-                        .font(.system(size: 10))
-                        .foregroundColor(.white)
-                }
-            }
-
-            // Signal strength
-            ZStack {
-                Circle()
-                    .fill(Color.black.opacity(0.7))
-                    .frame(width: 20, height: 20)
-                
-                SignalStrengthView(quality: participant.connectionQuality)
-                    .scaleEffect(0.6)
-            }
-        }
-        .padding(6)
-        .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .topTrailing)
+        .frame(maxHeight: .infinity, alignment: .top)
     }
 }
 

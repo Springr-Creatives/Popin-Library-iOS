@@ -286,6 +286,19 @@ struct PopinConnectedView: View {
             }
             .frame(maxWidth: .infinity, alignment: .top)
 
+            // Audience tiles — top right, below top controls
+            if sortedParticipants.count > 1 {
+                let audienceParticipants = Array(sortedParticipants.dropFirst())
+                AudienceRow(
+                    participants: audienceParticipants,
+                    primaryParticipantId: $primaryParticipantId,
+                    localParticipantSid: _room.localParticipant.sid?.stringValue,
+                    isFrontCamera: isFrontCamera
+                )
+                .frame(maxWidth: .infinity, alignment: .trailing)
+                .padding(.top, 8)
+            }
+
             Spacer()
 
             // Chat toast - appears when new message arrives
@@ -302,52 +315,6 @@ struct PopinConnectedView: View {
                 .padding(.bottom, 8)
                 .transition(.move(edge: .bottom).combined(with: .opacity))
                 .animation(.easeInOut(duration: 0.3), value: toastMessage)
-            }
-
-            // Remote participants Row
-            let currentAgent = viewModel.call?.agent
-            
-            // Find participant for agent (to show mute/signal status)
-            let agentParticipant: Participant? = {
-                guard let agentId = currentAgent?.id else { return nil }
-                let idString = String(agentId)
-                
-                // Try exact match first
-                if let exact = _room.allParticipants.values.first(where: {
-                    let identity = $0.identity?.stringValue ?? ""
-                    return identity == idString || identity == "s\(idString)"
-                }) {
-                    return exact
-                }
-                
-                // Try prefix match (s{id}*)
-                if let prefixMatch = _room.allParticipants.values.first(where: {
-                    let identity = $0.identity?.stringValue ?? ""
-                    return identity.hasPrefix("s\(idString)")
-                }) {
-                    return prefixMatch
-                }
-                
-                return nil
-            }()
-
-            if sortedParticipants.count > 1 || currentAgent != nil {
-                // Get audience participants (everyone except the first/primary)
-                let audienceParticipants = Array(sortedParticipants.dropFirst())
-
-
-                // Always show static AgentTile (if agent exists)
-                // Don't filter out agent from audience - they can appear as both static tile AND live video tile
-                AudienceRow(
-                    participants: audienceParticipants,
-                    agent: currentAgent,  // Always show static AgentTile if agent exists
-                    agentParticipant: agentParticipant,
-                    primaryParticipantId: $primaryParticipantId,
-                    expertDesignation: configHolder.config.expertDesignation,
-                    localParticipantSid: _room.localParticipant.sid?.stringValue,
-                    isFrontCamera: isFrontCamera
-                )
-                .padding(.bottom, 8)
             }
 
             // Bottom Controls
