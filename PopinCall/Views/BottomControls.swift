@@ -114,24 +114,6 @@ struct BottomControls: View {
         .padding(.horizontal, 16)
         .padding(.bottom, 32)
         .padding(.top, 12)
-        .background(
-            LinearGradient(
-                stops: [
-                    .init(color: Color.black.opacity(0), location: 0.0),
-                    .init(color: Color.black.opacity(0), location: 0.3),
-                    .init(color: Color.black.opacity(0.2), location: 0.5),
-                    .init(color: Color.black.opacity(0.4), location: 0.7),
-                    .init(color: Color.black.opacity(0.6), location: 0.85),
-                    .init(color: Color.black.opacity(0.6), location: 1.0),
-                ],
-                startPoint: .top,
-                endPoint: .bottom
-            )
-            .frame(height: 240)
-            .frame(maxWidth: .infinity)
-            .allowsHitTesting(false),
-            alignment: .bottom
-        )
         .sheet(isPresented: Binding(
             get: { shareItems != nil },
             set: { if !$0 { shareItems = nil } }

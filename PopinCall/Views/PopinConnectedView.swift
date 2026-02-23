@@ -317,42 +317,56 @@ struct PopinConnectedView: View {
                 .animation(.easeInOut(duration: 0.3), value: toastMessage)
             }
 
-            // Agent info bar — just above bottom controls
-            if let agent = viewModel.call?.agent {
-                let agentParticipant: Participant? = {
-                    guard let agentId = agent.id else { return nil }
-                    let idString = String(agentId)
-                    // Exact match
-                    if let exact = _room.allParticipants.values.first(where: {
-                        let identity = $0.identity?.stringValue ?? ""
-                        return identity == idString || identity == "s\(idString)"
-                    }) { return exact }
-                    // Prefix match (s{id}*)
-                    return _room.allParticipants.values.first(where: {
-                        ($0.identity?.stringValue ?? "").hasPrefix("s\(idString)")
-                    })
-                }()
+            // Agent info bar + Bottom controls with shared gradient
+            VStack(spacing: 0) {
+                if let agent = viewModel.call?.agent {
+                    let agentParticipant: Participant? = {
+                        guard let agentId = agent.id else { return nil }
+                        let idString = String(agentId)
+                        // Exact match
+                        if let exact = _room.allParticipants.values.first(where: {
+                            let identity = $0.identity?.stringValue ?? ""
+                            return identity == idString || identity == "s\(idString)"
+                        }) { return exact }
+                        // Prefix match (s{id}*)
+                        return _room.allParticipants.values.first(where: {
+                            ($0.identity?.stringValue ?? "").hasPrefix("s\(idString)")
+                        })
+                    }()
 
-                AgentInfoBar(
-                    agent: agent,
-                    expertDesignation: configHolder.config.expertDesignation,
-                    participant: agentParticipant
-                )
-            }
-
-            // Bottom Controls
-            BottomControls(onEndCall: {
-                // Mark that user is ending the call
-                viewModel.isUserEndingCall = true
-
-                // Call the end API
-                viewModel.onEndCall?()
-
-                // Disconnect from the room
-                Task {
-                    await _room.disconnect()
+                    AgentInfoBar(
+                        agent: agent,
+                        expertDesignation: configHolder.config.expertDesignation,
+                        participant: agentParticipant
+                    )
                 }
-            }, showChat: $showChat)
+
+                BottomControls(onEndCall: {
+                    viewModel.isUserEndingCall = true
+                    viewModel.onEndCall?()
+                    Task {
+                        await _room.disconnect()
+                    }
+                }, showChat: $showChat)
+            }
+            .background(
+                LinearGradient(
+                    stops: [
+                        .init(color: Color.black.opacity(0), location: 0.0),
+                        .init(color: Color.black.opacity(0), location: 0.3),
+                        .init(color: Color.black.opacity(0.2), location: 0.5),
+                        .init(color: Color.black.opacity(0.4), location: 0.7),
+                        .init(color: Color.black.opacity(0.6), location: 0.85),
+                        .init(color: Color.black.opacity(0.6), location: 1.0),
+                    ],
+                    startPoint: .top,
+                    endPoint: .bottom
+                )
+                .frame(height: 280)
+                .frame(maxWidth: .infinity)
+                .allowsHitTesting(false),
+                alignment: .bottom
+            )
         }
     }
 
