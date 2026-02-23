@@ -317,6 +317,29 @@ struct PopinConnectedView: View {
                 .animation(.easeInOut(duration: 0.3), value: toastMessage)
             }
 
+            // Agent info bar — just above bottom controls
+            if let agent = viewModel.call?.agent {
+                let agentParticipant: Participant? = {
+                    guard let agentId = agent.id else { return nil }
+                    let idString = String(agentId)
+                    // Exact match
+                    if let exact = _room.allParticipants.values.first(where: {
+                        let identity = $0.identity?.stringValue ?? ""
+                        return identity == idString || identity == "s\(idString)"
+                    }) { return exact }
+                    // Prefix match (s{id}*)
+                    return _room.allParticipants.values.first(where: {
+                        ($0.identity?.stringValue ?? "").hasPrefix("s\(idString)")
+                    })
+                }()
+
+                AgentInfoBar(
+                    agent: agent,
+                    expertDesignation: configHolder.config.expertDesignation,
+                    participant: agentParticipant
+                )
+            }
+
             // Bottom Controls
             BottomControls(onEndCall: {
                 // Mark that user is ending the call

@@ -70,6 +70,7 @@
 		CFBBD5932923EA8900D241A9 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = CFBBD5912923EA8900D241A9 /* LaunchScreen.storyboard */; };
 		CFBBD5A32923F08000D241A9 /* PopinCall.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CFBBD5662923EA3100D241A9 /* PopinCall.framework */; };
 		CFBBD5A42923F08100D241A9 /* PopinCall.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = CFBBD5662923EA3100D241A9 /* PopinCall.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		CFD6B5792F4C6AD1001E59B8 /* AgentInfoBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = CFD6B5782F4C6AD1001E59B8 /* AgentInfoBar.swift */; };
 		CFE045722F3B1C6500E362B8 /* NetworkToastView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CFE045712F3B1C6500E362B8 /* NetworkToastView.swift */; };
 		E11EE3812D8195F1434759F7 /* PopinConfig.swift in Sources */ = {isa = PBXBuildFile; fileRef = 738BD7405113A3EA9EC44AD0 /* PopinConfig.swift */; };
 /* End PBXBuildFile section */
@@ -167,6 +168,7 @@
 		CFBBD58F2923EA8900D241A9 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		CFBBD5922923EA8900D241A9 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		CFBBD5942923EA8900D241A9 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		CFD6B5782F4C6AD1001E59B8 /* AgentInfoBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AgentInfoBar.swift; sourceTree = "<group>"; };
 		CFE045712F3B1C6500E362B8 /* NetworkToastView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkToastView.swift; sourceTree = "<group>"; };
 		E3F74A3372ED619A04D4C869 /* Pods_PopinCall_PopinCallTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_PopinCall_PopinCallTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
@@ -218,6 +220,7 @@
 		CF17A0022F2A5A0000000002 /* Views */ = {
 			isa = PBXGroup;
 			children = (
+				CFD6B5782F4C6AD1001E59B8 /* AgentInfoBar.swift */,
 				CFA4CDDE2F2A4C2A009EB444 /* BottomControls.swift */,
 				CF17CHAT72F27407B00AE48E7 /* ChatDetailsToast.swift */,
 				CF17CHAT52F27407B00AE48E7 /* ChatView.swift */,
@@ -568,6 +571,7 @@
 				CF1742982F27407B00AE48E7 /* PopinPresenter.swift in Sources */,
 				CF1742992F27407B00AE48E7 /* PopinCallStateView.swift in Sources */,
 				CFA4CDDF2F2A4C2A009EB444 /* BottomControls.swift in Sources */,
+				CFD6B5792F4C6AD1001E59B8 /* AgentInfoBar.swift in Sources */,
 				CFE045722F3B1C6500E362B8 /* NetworkToastView.swift in Sources */,
 				CF17429A2F27407B00AE48E7 /* PopinEventsListener.swift in Sources */,
 				CF17429F2F27844400AE48E7 /* ObjectSavable.swift in Sources */,

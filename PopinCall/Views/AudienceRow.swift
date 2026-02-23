@@ -134,7 +134,7 @@ private struct AudienceRowTile: View {
     }
 }
 
-private struct SignalStrengthView: View {
+struct SignalStrengthView: View {
     let quality: ConnectionQuality
 
     private var barCount: Int {
