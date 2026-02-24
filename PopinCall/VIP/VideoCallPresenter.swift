@@ -34,6 +34,16 @@ class VideoCallPresenter {
         }
     }
 
+    func ringCall(callId: Int) {
+        Task {
+            do {
+                try await videoCallInteractor.ringCall(callId: callId)
+            } catch {
+                PopinLogger.shared.log("VideoCallPresenter: ringCall failed: \(error.localizedDescription)")
+            }
+        }
+    }
+
     func rejectCall(callId: Int) {
         Task {
             do {

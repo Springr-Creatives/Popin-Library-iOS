@@ -42,6 +42,12 @@ public class PopinCallManager {
             self.callData = nil
         }
 
+        // Fire ring API in parallel with CallKit reporting
+        if let callData = self.callData {
+            let presenter = VideoCallPresenter(videoCallInteractor: VideoCallInteractor())
+            presenter.ringCall(callId: callData.callId)
+        }
+
         let handle = self.callData?.displayName ?? "Incoming Call"
         let user = Utilities.shared.getUser()
         let isValidCall = self.callData != nil && user != nil
