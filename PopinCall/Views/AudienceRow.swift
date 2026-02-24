@@ -31,7 +31,8 @@ struct AudienceRow: View {
             .padding(.top, 4)
             .padding(.trailing, 10)
         }
-        .frame(maxHeight: .infinity, alignment: .top)
+        // Fixed height: 2.5 tiles (80pt each) + spacing
+        .frame(height: 216, alignment: .top)
     }
 }
 
@@ -66,14 +67,14 @@ private struct AudienceRowTile: View {
             } 
         }) {
             ZStack(alignment: .bottom) {
-                // Video view with mirroring support
+                // Video view with mirroring support — fill square and crop
                 MirroredParticipantView(participant: participant, shouldMirror: shouldMirror)
-                    .frame(width: 90, height: 120)
+                    .frame(width: 80, height: 80)
+                    .clipped()
 
                 if !participant.isCameraEnabled() {
                     Rectangle()
                         .fill(Color.black.opacity(0.8))
-                        .frame(width: 90, height: 120)
 
                     Image(systemName: "video.slash.fill")
                         .font(.system(size: 24))
@@ -87,17 +88,17 @@ private struct AudienceRowTile: View {
                     startPoint: .top,
                     endPoint: .bottom
                 )
-                .frame(height: 45)
+                .frame(height: 35)
 
                 // Participant name
                 Text(participant.name ?? "Unknown")
-                    .font(.system(size: 12))
+                    .font(.system(size: 10))
                     .fontWeight(.medium)
                     .foregroundColor(.white)
                     .lineLimit(1)
                     .truncationMode(.tail)
-                    .padding(.leading, 8)
-                    .padding(.bottom, 8)
+                    .padding(.leading, 6)
+                    .padding(.bottom, 6)
                     .frame(maxWidth: .infinity, alignment: .leading)
 
                 // Top Right Indicators
@@ -123,7 +124,7 @@ private struct AudienceRowTile: View {
                 .padding(6)
                 .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .topTrailing)
             }
-            .frame(width: 90, height: 120)
+            .frame(width: 80, height: 80)
             .cornerRadius(12)
             .overlay(
                 RoundedRectangle(cornerRadius: 12)
