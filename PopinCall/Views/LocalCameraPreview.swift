@@ -5,76 +5,274 @@
 
 import SwiftUI
 import AVFoundation
+import AVKit
 
 #if canImport(UIKit)
 import UIKit
 
-// MARK: - Local Camera Preview
+// MARK: - PiP-capable Local Camera Preview
 
-struct LocalCameraPreview: UIViewRepresentable {
-    func makeUIView(context: Context) -> LocalCameraPreviewUIView {
-        let view = LocalCameraPreviewUIView()
-        view.startCapture()
-        return view
+/// A local camera preview that supports Picture-in-Picture.
+/// Uses AVCaptureVideoPreviewLayer for the in-app view and feeds frames
+/// to a PiPVideoCallViewController for the PiP floating window.
+struct PiPLocalCameraPreview: UIViewControllerRepresentable {
+    let pipHandler: PiPHandler
+    let isCameraEnabled: Bool
+
+    func makeUIViewController(context: Context) -> UIViewController {
+        // Force view loading so PiP content source has valid views
+        let _ = context.coordinator.previewController.view
+        let _ = context.coordinator.videoCallController.view
+        context.coordinator.startCapture()
+        return context.coordinator.previewController
     }
 
-    func updateUIView(_ uiView: LocalCameraPreviewUIView, context: Context) {}
+    func updateUIViewController(_: UIViewController, context: Context) {
+        if pipHandler.controller == nil {
+            pipHandler.controller = context.coordinator.pipController
+        }
+        context.coordinator.updateMuted(!isCameraEnabled)
+    }
 
-    static func dismantleUIView(_ uiView: LocalCameraPreviewUIView, coordinator: ()) {
-        uiView.stopCapture()
+    static func dismantleUIViewController(_ uiViewController: UIViewController, coordinator: Coordinator) {
+        coordinator.cleanup()
+    }
+
+    func makeCoordinator() -> Coordinator {
+        let captureSession = AVCaptureSession()
+        captureSession.sessionPreset = .high
+
+        // Allow capture to continue running in background (required for PiP)
+        if #available(iOS 16.0, *) {
+            if captureSession.isMultitaskingCameraAccessSupported {
+                captureSession.isMultitaskingCameraAccessEnabled = true
+            }
+        }
+
+        if let camera = AVCaptureDevice.default(.builtInWideAngleCamera, for: .video, position: .front),
+           let input = try? AVCaptureDeviceInput(device: camera),
+           captureSession.canAddInput(input) {
+            captureSession.addInput(input)
+        }
+
+        let previewController = CameraPreviewViewController(captureSession: captureSession)
+        let videoCallController = PiPVideoCallViewController()
+
+        // Video data output to feed frames into the PiP window
+        let videoOutput = AVCaptureVideoDataOutput()
+        videoOutput.videoSettings = [kCVPixelBufferPixelFormatTypeKey as String: kCVPixelFormatType_32BGRA]
+
+        let coordinator = Coordinator(
+            captureSession: captureSession,
+            previewController: previewController,
+            videoCallController: videoCallController
+        )
+
+        videoOutput.setSampleBufferDelegate(coordinator, queue: DispatchQueue(label: "com.popin.pip.camera"))
+        if captureSession.canAddOutput(videoOutput) {
+            captureSession.addOutput(videoOutput)
+            // Rotate the video data output to portrait so PiP shows upright
+            if let connection = videoOutput.connection(with: .video) {
+                if #available(iOS 17.0, *) {
+                    connection.videoRotationAngle = 90
+                } else {
+                    connection.videoOrientation = .portrait
+                }
+                // Mirror front camera so PiP matches the in-app preview
+                connection.isVideoMirrored = true
+            }
+        }
+
+        // Set up PiP controller
+        let contentSource = AVPictureInPictureController.ContentSource(
+            activeVideoCallSourceView: previewController.view,
+            contentViewController: videoCallController
+        )
+        let controller = AVPictureInPictureController(contentSource: contentSource)
+        controller.canStartPictureInPictureAutomaticallyFromInline = true
+        controller.setValue(2, forKey: "controlsStyle")
+        controller.delegate = coordinator
+        coordinator.pipController = controller
+        pipHandler.controller = controller
+
+        return coordinator
+    }
+
+    final class Coordinator: NSObject, AVCaptureVideoDataOutputSampleBufferDelegate, AVPictureInPictureControllerDelegate {
+        let captureSession: AVCaptureSession
+        let previewController: CameraPreviewViewController
+        let videoCallController: PiPVideoCallViewController
+        var pipController: AVPictureInPictureController?
+        private var isRestoringFromPiP = false
+
+        init(captureSession: AVCaptureSession,
+             previewController: CameraPreviewViewController,
+             videoCallController: PiPVideoCallViewController) {
+            self.captureSession = captureSession
+            self.previewController = previewController
+            self.videoCallController = videoCallController
+            super.init()
+        }
+
+        func startCapture() {
+            DispatchQueue.global(qos: .userInitiated).async { [weak self] in
+                self?.captureSession.startRunning()
+            }
+        }
+
+        func updateMuted(_ muted: Bool) {
+            previewController.setMuted(muted)
+            videoCallController.setMuted(muted)
+        }
+
+        func cleanup() {
+            if pipController?.isPictureInPictureActive == true {
+                pipController?.stopPictureInPicture()
+            }
+            captureSession.stopRunning()
+        }
+
+        // MARK: - AVCaptureVideoDataOutputSampleBufferDelegate
+
+        func captureOutput(_ output: AVCaptureOutput, didOutput sampleBuffer: CMSampleBuffer, from connection: AVCaptureConnection) {
+            videoCallController.enqueueSampleBuffer(sampleBuffer)
+        }
+
+        // MARK: - AVPictureInPictureControllerDelegate
+
+        func pictureInPictureControllerWillStartPictureInPicture(_ pictureInPictureController: AVPictureInPictureController) {}
+
+        func pictureInPictureControllerDidStartPictureInPicture(_ pictureInPictureController: AVPictureInPictureController) {
+            previewController.view.isHidden = true
+            NotificationCenter.default.post(name: .pipDidStart, object: nil)
+            PopinCallManager.shared.enterPiPMode()
+        }
+
+        func pictureInPictureControllerWillStopPictureInPicture(_ pictureInPictureController: AVPictureInPictureController) {}
+
+        func pictureInPictureControllerDidStopPictureInPicture(_ pictureInPictureController: AVPictureInPictureController) {
+            previewController.view.isHidden = false
+            if isRestoringFromPiP {
+                isRestoringFromPiP = false
+                NotificationCenter.default.post(name: .pipDidStop, object: nil)
+                PopinCallManager.shared.exitPiPMode()
+            } else {
+                NotificationCenter.default.post(name: .pipDidClose, object: nil)
+                PopinCallManager.shared.exitPiPMode()
+            }
+        }
+
+        func pictureInPictureController(_ pictureInPictureController: AVPictureInPictureController,
+                                       restoreUserInterfaceForPictureInPictureStopWithCompletionHandler completionHandler: @escaping (Bool) -> Void) {
+            isRestoringFromPiP = true
+            completionHandler(true)
+        }
+
+        func pictureInPictureController(_ pictureInPictureController: AVPictureInPictureController,
+                                       failedToStartPictureInPictureWithError error: Error) {}
     }
 }
 
-class LocalCameraPreviewUIView: UIView {
-    private var captureSession: AVCaptureSession?
+// MARK: - Camera Preview View Controller
+
+/// UIViewController that uses AVCaptureVideoPreviewLayer for the in-app camera preview.
+/// Also supports a muted overlay (black + icon) when camera is off.
+final class CameraPreviewViewController: UIViewController {
+    let captureSession: AVCaptureSession
     private var previewLayer: AVCaptureVideoPreviewLayer?
 
-    override init(frame: CGRect) {
-        super.init(frame: frame)
-        backgroundColor = .black
+    private lazy var mutedOverlay: UIView = {
+        let overlay = UIView()
+        overlay.backgroundColor = .black
+        overlay.isHidden = true
+        let config = UIImage.SymbolConfiguration(pointSize: 64, weight: .regular)
+        let imageView = UIImageView(image: UIImage(systemName: "video.slash.fill", withConfiguration: config))
+        imageView.tintColor = UIColor.white.withAlphaComponent(0.6)
+        imageView.translatesAutoresizingMaskIntoConstraints = false
+        overlay.addSubview(imageView)
+        NSLayoutConstraint.activate([
+            imageView.centerXAnchor.constraint(equalTo: overlay.centerXAnchor),
+            imageView.centerYAnchor.constraint(equalTo: overlay.centerYAnchor),
+        ])
+        return overlay
+    }()
+
+    init(captureSession: AVCaptureSession) {
+        self.captureSession = captureSession
+        super.init(nibName: nil, bundle: nil)
     }
 
     required init?(coder: NSCoder) {
-        super.init(coder: coder)
-        backgroundColor = .black
+        fatalError("init(coder:) has not been implemented")
     }
 
-    override func layoutSubviews() {
-        super.layoutSubviews()
-        previewLayer?.frame = bounds
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        view.backgroundColor = .black
+
+        let previewLayer = AVCaptureVideoPreviewLayer(session: captureSession)
+        previewLayer.videoGravity = .resizeAspectFill
+        previewLayer.frame = view.bounds
+        view.layer.addSublayer(previewLayer)
+        self.previewLayer = previewLayer
+
+        mutedOverlay.frame = view.bounds
+        mutedOverlay.autoresizingMask = [.flexibleWidth, .flexibleHeight]
+        view.addSubview(mutedOverlay)
     }
 
-    func startCapture() {
+    override func viewDidLayoutSubviews() {
+        super.viewDidLayoutSubviews()
+        previewLayer?.frame = view.bounds
+    }
+
+    func setMuted(_ muted: Bool) {
+        mutedOverlay.isHidden = !muted
+    }
+}
+
+// MARK: - Simple fallback preview (no PiP)
+
+/// Basic camera preview for devices that don't support PiP.
+struct CameraPreviewFallback: UIViewRepresentable {
+    func makeUIView(context: Context) -> UIView {
+        let view = UIView()
+        view.backgroundColor = .black
+
         let session = AVCaptureSession()
         session.sessionPreset = .high
 
-        guard let camera = AVCaptureDevice.default(.builtInWideAngleCamera, for: .video, position: .front),
-              let input = try? AVCaptureDeviceInput(device: camera) else {
-            return
-        }
-
-        if session.canAddInput(input) {
+        if let camera = AVCaptureDevice.default(.builtInWideAngleCamera, for: .video, position: .front),
+           let input = try? AVCaptureDeviceInput(device: camera),
+           session.canAddInput(input) {
             session.addInput(input)
         }
 
         let previewLayer = AVCaptureVideoPreviewLayer(session: session)
         previewLayer.videoGravity = .resizeAspectFill
-        previewLayer.frame = bounds
-        layer.addSublayer(previewLayer)
+        previewLayer.frame = view.bounds
+        view.layer.addSublayer(previewLayer)
 
-        self.captureSession = session
-        self.previewLayer = previewLayer
+        context.coordinator.session = session
+        context.coordinator.previewLayer = previewLayer
 
-        DispatchQueue.global(qos: .userInitiated).async {
-            session.startRunning()
-        }
+        DispatchQueue.global(qos: .userInitiated).async { session.startRunning() }
+        return view
     }
 
-    func stopCapture() {
-        captureSession?.stopRunning()
-        previewLayer?.removeFromSuperlayer()
-        captureSession = nil
-        previewLayer = nil
+    func updateUIView(_ uiView: UIView, context: Context) {
+        context.coordinator.previewLayer?.frame = uiView.bounds
+    }
+
+    static func dismantleUIView(_ uiView: UIView, coordinator: Coordinator) {
+        coordinator.session?.stopRunning()
+    }
+
+    func makeCoordinator() -> Coordinator { Coordinator() }
+
+    final class Coordinator {
+        var session: AVCaptureSession?
+        var previewLayer: AVCaptureVideoPreviewLayer?
     }
 }
 

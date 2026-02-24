@@ -18,6 +18,7 @@ import LiveKit
 import LiveKitComponents
 import SwiftUI
 import AVFoundation
+import AVKit
 
 #if canImport(UIKit)
 import UIKit
@@ -30,6 +31,8 @@ struct PopinCallStateView: View {
 
     @State private var primaryParticipantId: String?
     @State private var hasConnected = false
+    @StateObject private var waitingPipHandler = PiPHandler()
+    @State private var waitingPipSupported = AVPictureInPictureController.isPictureInPictureSupported()
 
     var callId: Int?
     var userId: Int?
@@ -138,9 +141,16 @@ struct PopinCallStateView: View {
     @ViewBuilder
     func buildWaitingForAcceptanceView() -> some View {
         ZStack {
-            // Full screen self video preview or black screen when camera is off
-            if !configHolder.config.audioOnlyMode && viewModel.preCallCameraEnabled {
-                LocalCameraPreview()
+            // Full screen self video preview with PiP support
+            if !configHolder.config.audioOnlyMode && waitingPipSupported {
+                PiPLocalCameraPreview(
+                    pipHandler: waitingPipHandler,
+                    isCameraEnabled: viewModel.preCallCameraEnabled
+                )
+                .ignoresSafeArea()
+            } else if !configHolder.config.audioOnlyMode && viewModel.preCallCameraEnabled {
+                // PiP not supported, fall back to basic preview (no PiP)
+                CameraPreviewFallback()
                     .ignoresSafeArea()
             } else {
                 Color.black

@@ -142,6 +142,24 @@ final class PiPVideoCallViewController: AVPictureInPictureVideoCallViewControlle
         }
     }
 
+    /// Enqueue a raw CMSampleBuffer (used by local camera preview PiP)
+    func enqueueSampleBuffer(_ sampleBuffer: CMSampleBuffer) {
+        guard !isMuted else { return }
+        Task { @MainActor in
+            let layer = renderingView.sampleBufferDisplayLayer
+            if layer.status == .failed { layer.flush() }
+            if #available(iOS 17.0, *) {
+                layer.sampleBufferRenderer.enqueue(sampleBuffer)
+            } else {
+                layer.enqueue(sampleBuffer)
+            }
+            if let formatDesc = CMSampleBufferGetFormatDescription(sampleBuffer) {
+                let dims = CMVideoFormatDescriptionGetDimensions(formatDesc)
+                preferredContentSize = CGSize(width: Int(dims.width), height: Int(dims.height))
+            }
+        }
+    }
+
     func render(frame: LiveKit.VideoFrame) {
         guard !isMuted, let sampleBuffer = frame.toCMSampleBuffer() else {
             return
