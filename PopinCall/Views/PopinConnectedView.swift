@@ -623,8 +623,10 @@ struct PrimaryParticipantView: View {
                     .scaleEffect(x: shouldMirror ? -1 : 1, y: 1)  // Mirror horizontally if front camera
             }
 
-            // Show no video icon when camera is disabled (matching working_example)
+            // Black overlay with muted icon when camera is disabled
             if !participant.isCameraEnabled() && participant.firstScreenShareVideoTrack == nil {
+                Color.black
+                    .ignoresSafeArea()
                 Image(systemName: "video.slash.fill")
                     .font(.system(size: 64))
                     .foregroundColor(.white.opacity(0.6))
