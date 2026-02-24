@@ -584,11 +584,18 @@ struct PrimaryParticipantView: View {
     let isFrontCamera: Bool
 
     // Prefer screen share track over camera (matching Android PrimarySpeakerView)
+    // Uses TrackReference for camera so the track resolves even when muted,
+    // keeping the PiP controller alive in the view hierarchy
     private var preferredVideoTrack: VideoTrack? {
         if let screenTrack = participant.firstScreenShareVideoTrack {
             return screenTrack
         }
-        return participant.firstCameraVideoTrack
+        let cameraRef = TrackReference(participant: participant, source: .camera)
+        if let publication = cameraRef.resolve(),
+           let videoTrack = publication.track as? VideoTrack {
+            return videoTrack
+        }
+        return nil
     }
 
     // Check if this is the local participant and should be mirrored
@@ -616,8 +623,8 @@ struct PrimaryParticipantView: View {
                     .scaleEffect(x: shouldMirror ? -1 : 1, y: 1)  // Mirror horizontally if front camera
             }
 
-            // Show no video icon when no video is available
-            if preferredVideoTrack == nil {
+            // Show no video icon when camera is disabled (matching working_example)
+            if !participant.isCameraEnabled() && participant.firstScreenShareVideoTrack == nil {
                 Image(systemName: "video.slash.fill")
                     .font(.system(size: 64))
                     .foregroundColor(.white.opacity(0.6))
