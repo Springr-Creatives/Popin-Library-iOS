@@ -70,15 +70,15 @@ private struct AgentBarIndicators: View {
     @ObservedObject var participant: Participant
 
     var body: some View {
-        HStack(spacing: 6) {
+        HStack(spacing: 7) {
             // Mute indicator
             if !participant.isMicrophoneEnabled() {
                 ZStack {
                     Circle()
                         .fill(Color.black.opacity(0.5))
-                        .frame(width: 24, height: 24)
+                        .frame(width: 29, height: 29)
                     Image(systemName: "mic.slash.fill")
-                        .font(.system(size: 10))
+                        .font(.system(size: 13))
                         .foregroundColor(.white)
                 }
             }
@@ -87,9 +87,9 @@ private struct AgentBarIndicators: View {
             ZStack {
                 Circle()
                     .fill(Color.black.opacity(0.5))
-                    .frame(width: 24, height: 24)
+                    .frame(width: 29, height: 29)
                 SignalStrengthView(quality: participant.connectionQuality)
-                    .scaleEffect(0.55)
+                    .scaleEffect(0.63)
             }
         }
     }
