@@ -260,33 +260,33 @@ struct PopinConnectedView: View {
     @ViewBuilder
     private var overlayControls: some View {
         VStack(spacing: 0) {
-            VStack(spacing: 0) {
-                // Top controls with PiP button and product details
-                TopControls(
-                    onPipClick: {
-                        // Enable PiP when PiP button is clicked
-                        pipHandler.startPictureInPicture()
-                    },
-                    productId: productId,
-                    productName: productName,
-                    productUrl: productUrl,
-                    productImageUrl: productImageUrl,
-                    productDescription: productDescription,
-                    productExtra: productExtra
-                )
-
-                // Network / status badge (one at a time, by priority)
+            // Top controls with PiP button and product details
+            TopControls(
+                onPipClick: {
+                    pipHandler.startPictureInPicture()
+                },
+                productId: productId,
+                productName: productName,
+                productUrl: productUrl,
+                productImageUrl: productImageUrl,
+                productDescription: productDescription,
+                productExtra: productExtra
+            )
+            .overlay(
+                // Network badge floats below TopControls without affecting layout
                 networkBadge
-                    .padding(.top, 8)
                     .animation(.easeInOut(duration: 0.3), value: viewModel.hasCustomerNetworkIssue)
                     .animation(.easeInOut(duration: 0.3), value: viewModel.hasSellerNetworkIssue)
                     .animation(.easeInOut(duration: 0.3), value: viewModel.showCustomerBackOnlineMessage)
                     .animation(.easeInOut(duration: 0.3), value: viewModel.showSellerRejoinedMessage)
                     .animation(.easeInOut(duration: 0.3), value: viewModel.noQualifyingParticipantsTimer)
-            }
-            .frame(maxWidth: .infinity, alignment: .top)
+                    // Position top of badge at bottom of TopControls + 8pt gap
+                    .alignmentGuide(.bottom) { d in d[.top] - 8 },
+                alignment: .bottom
+            )
+            .zIndex(1)
 
-            // Audience tiles — top right, below top controls
+            // Audience tiles — pinned to bottom of product details
             if sortedParticipants.count > 1 {
                 let audienceParticipants = Array(sortedParticipants.dropFirst())
                 AudienceRow(
