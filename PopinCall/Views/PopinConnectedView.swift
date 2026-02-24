@@ -611,7 +611,7 @@ struct PrimaryParticipantView: View {
     var body: some View {
         ZStack {
             if pipSupported, let track = preferredVideoTrack {
-                PiPView(track: track, pipHandler: pipHandler, shouldMirror: shouldMirror)
+                PiPView(track: track, pipHandler: pipHandler, shouldMirror: shouldMirror, isCameraEnabled: participant.isCameraEnabled())
                     .frame(maxWidth: .infinity, maxHeight: .infinity)
                     .background(Color.black)
                     .ignoresSafeArea()

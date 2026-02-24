@@ -24,22 +24,50 @@ final class PiPPreviewViewController: UIViewController, VideoRenderer {
     private lazy var renderingView = PiPSampleRenderingView()
     private var frameCount = 0
     var shouldMirror = false
+    private var isMuted = false
+
+    private lazy var mutedOverlay: UIView = {
+        let overlay = UIView()
+        overlay.backgroundColor = .black
+        overlay.isHidden = true
+        let config = UIImage.SymbolConfiguration(pointSize: 64, weight: .regular)
+        let imageView = UIImageView(image: UIImage(systemName: "video.slash.fill", withConfiguration: config))
+        imageView.tintColor = UIColor.white.withAlphaComponent(0.6)
+        imageView.translatesAutoresizingMaskIntoConstraints = false
+        overlay.addSubview(imageView)
+        NSLayoutConstraint.activate([
+            imageView.centerXAnchor.constraint(equalTo: overlay.centerXAnchor),
+            imageView.centerYAnchor.constraint(equalTo: overlay.centerYAnchor),
+        ])
+        return overlay
+    }()
 
     override func loadView() {
         renderingView.sampleBufferDisplayLayer.videoGravity = .resizeAspectFill
         view = renderingView
-        view.backgroundColor = .clear
+        view.backgroundColor = .black
     }
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        mutedOverlay.frame = view.bounds
+        mutedOverlay.autoresizingMask = [.flexibleWidth, .flexibleHeight]
+        view.addSubview(mutedOverlay)
     }
 
     var isAdaptiveStreamEnabled: Bool { true }
     var adaptiveStreamSize: CGSize { view.bounds.size }
 
+    func setMuted(_ muted: Bool) {
+        isMuted = muted
+        mutedOverlay.isHidden = !muted
+        if muted {
+            renderingView.sampleBufferDisplayLayer.flushAndRemoveImage()
+        }
+    }
+
     func render(frame: LiveKit.VideoFrame) {
-        guard let sampleBuffer = frame.toCMSampleBuffer() else {
+        guard !isMuted, let sampleBuffer = frame.toCMSampleBuffer() else {
             return
         }
 
@@ -72,22 +100,50 @@ final class PiPVideoCallViewController: AVPictureInPictureVideoCallViewControlle
     private lazy var renderingView = PiPSampleRenderingView()
     private var frameCount = 0
     var shouldMirror = false
+    private var isMuted = false
+
+    private lazy var mutedOverlay: UIView = {
+        let overlay = UIView()
+        overlay.backgroundColor = .black
+        overlay.isHidden = true
+        let config = UIImage.SymbolConfiguration(pointSize: 32, weight: .regular)
+        let imageView = UIImageView(image: UIImage(systemName: "video.slash.fill", withConfiguration: config))
+        imageView.tintColor = UIColor.white.withAlphaComponent(0.6)
+        imageView.translatesAutoresizingMaskIntoConstraints = false
+        overlay.addSubview(imageView)
+        NSLayoutConstraint.activate([
+            imageView.centerXAnchor.constraint(equalTo: overlay.centerXAnchor),
+            imageView.centerYAnchor.constraint(equalTo: overlay.centerYAnchor),
+        ])
+        return overlay
+    }()
 
     override func loadView() {
         renderingView.sampleBufferDisplayLayer.videoGravity = .resizeAspectFill
         view = renderingView
-        view.backgroundColor = .clear
+        view.backgroundColor = .black
     }
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        mutedOverlay.frame = view.bounds
+        mutedOverlay.autoresizingMask = [.flexibleWidth, .flexibleHeight]
+        view.addSubview(mutedOverlay)
     }
 
     var isAdaptiveStreamEnabled: Bool { true }
     var adaptiveStreamSize: CGSize { view.bounds.size }
 
+    func setMuted(_ muted: Bool) {
+        isMuted = muted
+        mutedOverlay.isHidden = !muted
+        if muted {
+            renderingView.sampleBufferDisplayLayer.flushAndRemoveImage()
+        }
+    }
+
     func render(frame: LiveKit.VideoFrame) {
-        guard let sampleBuffer = frame.toCMSampleBuffer() else {
+        guard !isMuted, let sampleBuffer = frame.toCMSampleBuffer() else {
             return
         }
 
@@ -172,6 +228,7 @@ struct PiPView: UIViewControllerRepresentable {
     let track: VideoTrack
     let pipHandler: PiPHandler
     let shouldMirror: Bool
+    let isCameraEnabled: Bool
 
     func makeUIViewController(context: Context) -> UIViewController {
         // Make sure view controllers are loaded before adding renderers
@@ -193,6 +250,7 @@ struct PiPView: UIViewControllerRepresentable {
 
         context.coordinator.updateTrack(track)
         context.coordinator.updateMirroring(shouldMirror)
+        context.coordinator.updateMuted(!isCameraEnabled)
     }
 
     static func dismantleUIViewController(_ uiViewController: UIViewController, coordinator: Coordinator) {
@@ -266,6 +324,11 @@ struct PiPView: UIViewControllerRepresentable {
             shouldMirror = mirror
             previewController.shouldMirror = mirror
             videoCallController.shouldMirror = mirror
+        }
+
+        func updateMuted(_ muted: Bool) {
+            previewController.setMuted(muted)
+            videoCallController.setMuted(muted)
         }
 
         func cleanup() {
