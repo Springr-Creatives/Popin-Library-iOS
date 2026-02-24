@@ -102,26 +102,26 @@ private struct AudienceRowTile: View {
                     .frame(maxWidth: .infinity, alignment: .leading)
 
                 // Top Right Indicators
-                VStack(spacing: 4) {
+                VStack(spacing: 3) {
                     if !participant.isMicrophoneEnabled() {
                         ZStack {
                             Circle()
                                 .fill(Color.black.opacity(0.7))
-                                .frame(width: 20, height: 20)
+                                .frame(width: 16, height: 16)
                             Image(systemName: "mic.slash.fill")
-                                .font(.system(size: 10))
+                                .font(.system(size: 8))
                                 .foregroundColor(.white)
                         }
                     }
                     ZStack {
                         Circle()
                             .fill(Color.black.opacity(0.7))
-                            .frame(width: 20, height: 20)
+                            .frame(width: 16, height: 16)
                         SignalStrengthView(quality: participant.connectionQuality)
-                            .scaleEffect(0.7)
+                            .scaleEffect(0.5)
                     }
                 }
-                .padding(6)
+                .padding(4)
                 .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .topTrailing)
             }
             .frame(width: 80, height: 80)
