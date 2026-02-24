@@ -91,7 +91,7 @@ struct WaitingBottomControls: View {
             }
         case .invite:
             ControlCircleButtonView(
-                iconName: "person.badge.plus",
+                iconName: "person.fill.badge.plus",
                 backgroundColor: Color.black.opacity(0.15),
                 iconColor: .white.opacity(0.2)
             )

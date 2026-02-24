@@ -179,7 +179,7 @@ struct BottomControls: View {
             )
         case .invite:
             ControlCircleButton(
-                iconName: "person.badge.plus",
+                iconName: "person.fill.badge.plus",
                 backgroundColor: Color.black.opacity(0.5),
                 iconColor: .white,
                 action: { generateInviteLink() }
@@ -318,7 +318,7 @@ struct OverflowMenuSheet: View {
         case .invite:
             overflowButton(
                 title: "Invite a friend",
-                icon: "person.badge.plus",
+                icon: "person.fill.badge.plus",
                 action: { showOverflowMenu = false; onInviteTapped() }
             )
         case .chat:
