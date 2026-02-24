@@ -260,7 +260,7 @@ struct PopinConnectedView: View {
     @ViewBuilder
     private var overlayControls: some View {
         VStack(spacing: 0) {
-            // Top controls with PiP button and product details
+            // Top controls + audience row side by side
             TopControls(
                 onPipClick: {
                     pipHandler.startPictureInPicture()
@@ -280,24 +280,28 @@ struct PopinConnectedView: View {
                     .animation(.easeInOut(duration: 0.3), value: viewModel.showCustomerBackOnlineMessage)
                     .animation(.easeInOut(duration: 0.3), value: viewModel.showSellerRejoinedMessage)
                     .animation(.easeInOut(duration: 0.3), value: viewModel.noQualifyingParticipantsTimer)
-                    // Position top of badge at bottom of TopControls + 8pt gap
                     .alignmentGuide(.bottom) { d in d[.top] - 8 },
                 alignment: .bottom
             )
+            .overlay(
+                // Audience tiles — top aligned with product details, trailing
+                Group {
+                    if sortedParticipants.count > 1 {
+                        let audienceParticipants = Array(sortedParticipants.dropFirst())
+                        AudienceRow(
+                            participants: audienceParticipants,
+                            primaryParticipantId: $primaryParticipantId,
+                            localParticipantSid: _room.localParticipant.sid?.stringValue,
+                            isFrontCamera: isFrontCamera
+                        )
+                        .fixedSize(horizontal: true, vertical: false)
+                        .padding(.top, 10)
+                        .padding(.trailing, 8)
+                    }
+                },
+                alignment: .topTrailing
+            )
             .zIndex(1)
-
-            // Audience tiles — pinned to bottom of product details
-            if sortedParticipants.count > 1 {
-                let audienceParticipants = Array(sortedParticipants.dropFirst())
-                AudienceRow(
-                    participants: audienceParticipants,
-                    primaryParticipantId: $primaryParticipantId,
-                    localParticipantSid: _room.localParticipant.sid?.stringValue,
-                    isFrontCamera: isFrontCamera
-                )
-                .frame(maxWidth: .infinity, alignment: .trailing)
-                .padding(.top, 8)
-            }
 
             Spacer()
 

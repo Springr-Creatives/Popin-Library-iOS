@@ -118,8 +118,9 @@ struct TopControls: View {
                 secondaryProductText: configHolder.config.secondaryProductText
             )
             .allowsHitTesting(productDetailsClickable)
+            .truncationMode(.tail)
 
-            Spacer()
+            Spacer(minLength: 96)
         }
         .padding(.top, 16)
         .padding(.horizontal, 16)
