@@ -582,8 +582,8 @@ struct PopinConnectedView: View {
                 if viewModel.noQualifyingParticipantsTimer >= 30000 {
                     PopinLogger.shared.log("PopinConnectedView: 30s without qualifying participants — firing onNetworkFailure")
                     viewModel.onNetworkFailure?("agent")
-                    viewModel.onEndCall?()
                     viewModel.isUserEndingCall = true
+                    viewModel.onRoomDisconnected?()
                     Task {
                         await _room.disconnect()
                     }

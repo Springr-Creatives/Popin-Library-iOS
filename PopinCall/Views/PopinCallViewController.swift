@@ -174,6 +174,7 @@ public class PopinCallViewController: UIViewController {
             guard let self = self else { return }
             PopinLogger.shared.log("PopinCallVC: onRoomDisconnected received — closing VC")
             self.isAppInitiatedDisconnect = true
+            self.shouldSkipEndApi = true
             DispatchQueue.main.async {
                 self.closeViewController(shouldNotEndCX: false)
                 self.dismiss(animated: true)
