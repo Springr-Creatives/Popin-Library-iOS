@@ -158,7 +158,11 @@ final class PiPVideoCallViewController: AVPictureInPictureVideoCallViewControlle
             }
             if let formatDesc = CMSampleBufferGetFormatDescription(sampleBuffer) {
                 let dims = CMVideoFormatDescriptionGetDimensions(formatDesc)
-                preferredContentSize = CGSize(width: Int(dims.width), height: Int(dims.height))
+                let w = Int(dims.width)
+                let h = Int(dims.height)
+                // Raw buffer dimensions don't reflect the 90° rotation applied
+                // on the capture connection — always use portrait (narrow × tall).
+                preferredContentSize = CGSize(width: min(w, h), height: max(w, h))
             }
         }
     }
