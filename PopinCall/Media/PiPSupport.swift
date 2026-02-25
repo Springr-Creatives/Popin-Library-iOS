@@ -163,6 +163,12 @@ final class PiPVideoCallViewController: AVPictureInPictureVideoCallViewControlle
                 // Raw buffer dimensions don't reflect the 90° rotation applied
                 // on the capture connection — always use portrait (narrow × tall).
                 preferredContentSize = CGSize(width: min(w, h), height: max(w, h))
+                // On newer devices the capture connection rotation is metadata-only;
+                // the pixel data arrives landscape. Rotate the display layer so the
+                // video appears upright in the PiP window.
+                if w > h {
+                    layer.setAffineTransform(CGAffineTransform(rotationAngle: .pi / 2))
+                }
             }
         }
     }
