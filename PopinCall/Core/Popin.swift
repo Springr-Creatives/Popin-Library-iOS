@@ -137,6 +137,11 @@ public class Popin: PopinPusherDelegate {
             })
         } else {
             PopinLogger.shared.log("setup() user already registered")
+            let token = Utilities.shared.getPushToken()
+            if !token.isEmpty {
+                PopinLogger.shared.log("setup() sending saved push token to server for existing user")
+                Utilities.shared.sendPushToken(token: token)
+            }
             config.initListener?.onInitComplete(userId: Utilities.shared.getUser()?.user_id ?? 0)
         }
     }
