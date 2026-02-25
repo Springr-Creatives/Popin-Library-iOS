@@ -16,6 +16,9 @@ extension Notification.Name {
     static let pipDidStart = Notification.Name("pipDidStart")
     static let pipDidStop = Notification.Name("pipDidStop")
     static let pipDidClose = Notification.Name("pipDidClose")
+    /// Posted by loadCall() BEFORE state changes, so waiting-PiP coordinators
+    /// can set isRestoringFromPiP = true before the camera conflict kills PiP.
+    static let callWillConnect = Notification.Name("callWillConnect")
 }
 
 // MARK: - PiP View Controllers
@@ -232,13 +235,27 @@ extension LiveKit.VideoFrame {
 
 class PiPHandler: ObservableObject {
     weak var controller: AVPictureInPictureController?
-    
+
+    /// Temporarily retains the PiP controller + coordinator so that a pending
+    /// stopPictureInPicture() request can complete after the SwiftUI
+    /// representable is dismantled (which would otherwise deallocate both).
+    private var retainedObjects: [AnyObject] = []
+
     func startPictureInPicture() {
         controller?.startPictureInPicture()
     }
-    
+
     func stopPictureInPicture() {
         controller?.stopPictureInPicture()
+    }
+
+    /// Retains the given objects for `duration` seconds so the PiP system has
+    /// time to process a stop request before they are deallocated.
+    func retainForStop(_ objects: [AnyObject], duration: TimeInterval = 3) {
+        retainedObjects = objects
+        DispatchQueue.main.asyncAfter(deadline: .now() + duration) { [weak self] in
+            self?.retainedObjects = []
+        }
     }
 }
 
@@ -363,6 +380,7 @@ struct PiPView: UIViewControllerRepresentable {
         }
 
         func pictureInPictureControllerDidStartPictureInPicture(_ pictureInPictureController: AVPictureInPictureController) {
+            PopinLogger.shared.log("ConnectedPiP: didStartPiP")
             // Hide the main view's video to avoid showing two videos
             previewController.view.isHidden = true
             // Notify to hide the call view controller
@@ -374,6 +392,7 @@ struct PiPView: UIViewControllerRepresentable {
         }
 
         func pictureInPictureControllerDidStopPictureInPicture(_ pictureInPictureController: AVPictureInPictureController) {
+            PopinLogger.shared.log("ConnectedPiP: didStopPiP — isRestoring=\(isRestoringFromPiP)")
             // Show the main view's video again when PiP stops
             previewController.view.isHidden = false
 
@@ -398,6 +417,7 @@ struct PiPView: UIViewControllerRepresentable {
 
         func pictureInPictureController(_ pictureInPictureController: AVPictureInPictureController,
                                        failedToStartPictureInPictureWithError error: Error) {
+            PopinLogger.shared.log("ConnectedPiP: failedToStartPiP — \(error.localizedDescription)")
         }
     }
 }

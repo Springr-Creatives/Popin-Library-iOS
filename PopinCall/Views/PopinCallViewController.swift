@@ -145,6 +145,7 @@ public class PopinCallViewController: UIViewController {
         // Set up end call callback
         viewModel.onEndCall = { [weak self] in
             guard let self = self else { return }
+            PopinLogger.shared.log("PopinCallVC: onEndCall FIRED — callConnected=\(self.callConnected), suppressPipClose=\(self.viewModel.suppressPipClose)")
             self.isAppInitiatedDisconnect = true
             self.shouldSkipEndApi = true
             self.videoCallPresenter.endCall(callId: self.callId, onSuccess: {
@@ -394,11 +395,34 @@ extension PopinCallViewController: VideoCallView {
     }
 
     func loadCall(call: TalkModel) {
+        PopinLogger.shared.log("PopinCallVC: loadCall — viewIsHidden=\(self.view.isHidden), posting .callWillConnect")
+        // Tell the waiting-PiP coordinator to mark itself as "restoring" BEFORE
+        // state changes trigger LiveKit's new CameraCapturer, which would
+        // conflict with the waiting PiP capture session and forcefully stop PiP.
+        NotificationCenter.default.post(name: .callWillConnect, object: nil)
+
+        // Suppress .pipDidClose during the transition. The camera conflict
+        // between the waiting PiP capture session and LiveKit's CameraCapturer
+        // can crash the PiP system, causing a spurious .pipDidClose that would
+        // otherwise disconnect the call.
+        viewModel.suppressPipClose = true
+        DispatchQueue.main.asyncAfter(deadline: .now() + 5) { [weak self] in
+            self?.viewModel.suppressPipClose = false
+        }
+
         _sdkCallId = call.id
         callConnected = true
         viewModel.isWaitingForAcceptance = false
         viewModel.callAccepted = true
         viewModel.call = call
+
+        // Safety net: if PiP had hidden the VC view, restore it now.
+        // The PiP delegate callback may never fire if the coordinator is
+        // deallocated before the async stop completes.
+        if self.view.isHidden {
+            PopinLogger.shared.log("PopinCallVC: loadCall — restoring hidden VC view")
+            handlePiPDidStop()
+        }
     }
 
     /// Update queue position for outgoing calls

@@ -93,6 +93,7 @@ struct PiPLocalCameraPreview: UIViewControllerRepresentable {
         controller.setValue(2, forKey: "controlsStyle")
         controller.delegate = coordinator
         coordinator.pipController = controller
+        coordinator.pipHandler = pipHandler
         pipHandler.controller = controller
 
         return coordinator
@@ -103,6 +104,8 @@ struct PiPLocalCameraPreview: UIViewControllerRepresentable {
         let previewController: CameraPreviewViewController
         let videoCallController: PiPVideoCallViewController
         var pipController: AVPictureInPictureController?
+        /// Reference to the owning PiPHandler so we can retain ourselves during stop.
+        weak var pipHandler: PiPHandler?
         private var isRestoringFromPiP = false
 
         init(captureSession: AVCaptureSession,
@@ -112,6 +115,32 @@ struct PiPLocalCameraPreview: UIViewControllerRepresentable {
             self.previewController = previewController
             self.videoCallController = videoCallController
             super.init()
+            // Listen for call connection so we can mark PiP as "restoring" before
+            // LiveKit's new CameraCapturer conflicts with our capture session and
+            // the PiP system forcefully stops PiP.
+            NotificationCenter.default.addObserver(
+                self,
+                selector: #selector(handleCallWillConnect),
+                name: .callWillConnect,
+                object: nil
+            )
+        }
+
+        @objc private func handleCallWillConnect() {
+            let isActive = pipController?.isPictureInPictureActive == true
+            PopinLogger.shared.log("WaitingPiP: handleCallWillConnect — isPiPActive=\(isActive)")
+            guard isActive, let controller = pipController else { return }
+            isRestoringFromPiP = true
+            // Disable auto-start BEFORE stopping — otherwise the system
+            // immediately re-starts PiP because the source view is off-screen.
+            controller.canStartPictureInPictureAutomaticallyFromInline = false
+            // Stop the capture session first so PiP has no frame feed.
+            captureSession.stopRunning()
+            controller.stopPictureInPicture()
+            // Retain self + controller so the stop request survives
+            // the SwiftUI representable teardown.
+            pipHandler?.retainForStop([self, controller])
+            PopinLogger.shared.log("WaitingPiP: disabled autoStart, stopped capture, called stopPiP, retained")
         }
 
         func startCapture() {
@@ -126,8 +155,22 @@ struct PiPLocalCameraPreview: UIViewControllerRepresentable {
         }
 
         func cleanup() {
-            if pipController?.isPictureInPictureActive == true {
-                pipController?.stopPictureInPicture()
+            NotificationCenter.default.removeObserver(self, name: .callWillConnect, object: nil)
+            let isActive = pipController?.isPictureInPictureActive == true
+            PopinLogger.shared.log("WaitingPiP: cleanup — isPiPActive=\(isActive), isRestoring=\(isRestoringFromPiP)")
+            if isActive, let controller = pipController {
+                // Treat dismantling as a restore (not a close) so that
+                // the VC view is re-shown and PopinConnectedView doesn't
+                // receive .pipDidClose which would disconnect the call.
+                isRestoringFromPiP = true
+                controller.canStartPictureInPictureAutomaticallyFromInline = false
+                controller.stopPictureInPicture()
+                // Retain self + controller via the PiPHandler so the stop
+                // request can complete after SwiftUI releases the coordinator.
+                pipHandler?.retainForStop([self, controller])
+                // Post restore notification directly as a safety net.
+                NotificationCenter.default.post(name: .pipDidStop, object: nil)
+                PopinCallManager.shared.exitPiPMode()
             }
             captureSession.stopRunning()
         }
@@ -143,6 +186,7 @@ struct PiPLocalCameraPreview: UIViewControllerRepresentable {
         func pictureInPictureControllerWillStartPictureInPicture(_ pictureInPictureController: AVPictureInPictureController) {}
 
         func pictureInPictureControllerDidStartPictureInPicture(_ pictureInPictureController: AVPictureInPictureController) {
+            PopinLogger.shared.log("WaitingPiP: didStartPiP")
             previewController.view.isHidden = true
             NotificationCenter.default.post(name: .pipDidStart, object: nil)
             PopinCallManager.shared.enterPiPMode()
@@ -151,6 +195,7 @@ struct PiPLocalCameraPreview: UIViewControllerRepresentable {
         func pictureInPictureControllerWillStopPictureInPicture(_ pictureInPictureController: AVPictureInPictureController) {}
 
         func pictureInPictureControllerDidStopPictureInPicture(_ pictureInPictureController: AVPictureInPictureController) {
+            PopinLogger.shared.log("WaitingPiP: didStopPiP — isRestoring=\(isRestoringFromPiP)")
             previewController.view.isHidden = false
             if isRestoringFromPiP {
                 isRestoringFromPiP = false

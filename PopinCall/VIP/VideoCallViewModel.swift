@@ -49,6 +49,10 @@ final class VideoCallViewModel: ObservableObject {
 
     /// Called when user cancels during the "Connecting..." phase
     var onCancelCall: (() -> Void)?
+
+    /// Temporarily suppresses .pipDidClose from ending the call during the
+    /// waiting-to-connected PiP transition (camera conflict can crash PiP).
+    var suppressPipClose = false
 }
 
 

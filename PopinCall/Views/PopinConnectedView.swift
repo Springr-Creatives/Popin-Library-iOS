@@ -346,6 +346,7 @@ struct PopinConnectedView: View {
                 }
 
                 BottomControls(onEndCall: {
+                    PopinLogger.shared.log("PopinConnectedView: END CALL BUTTON tapped")
                     viewModel.isUserEndingCall = true
                     viewModel.onEndCall?()
                     Task {
@@ -393,6 +394,9 @@ struct PopinConnectedView: View {
             overlayControls
         }
         .ignoresSafeArea(.all, edges: .bottom)
+        .onAppear {
+            PopinLogger.shared.log("PopinConnectedView: onAppear")
+        }
         .task {
             await enableHardware()
             // Initial sync
@@ -484,7 +488,14 @@ struct PopinConnectedView: View {
             }
         }
         .onReceive(NotificationCenter.default.publisher(for: .pipDidClose)) { _ in
+            // Ignore spurious .pipDidClose during the waiting→connected PiP transition.
+            // The camera conflict can crash the PiP system, generating a false close event.
+            guard !viewModel.suppressPipClose else {
+                PopinLogger.shared.log("PopinConnectedView: ignoring .pipDidClose — suppressed during PiP transition")
+                return
+            }
             // PiP closed (user tapped X button) — disconnect the call
+            PopinLogger.shared.log("PopinConnectedView: .pipDidClose — ending call")
             viewModel.isUserEndingCall = true
             viewModel.onEndCall?()
             Task {
