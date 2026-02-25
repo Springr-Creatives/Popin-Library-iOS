@@ -181,9 +181,8 @@ struct PopinCallStateView: View {
                 // Top controls — PiP button + product details (identical style to connected view)
                 TopControls(
                     onPipClick: {
-                        viewModel.onCancelCall?()
+                        waitingPipHandler.startPictureInPicture()
                     },
-                    leadingButtonIcon: "xmark",
                     productDetailsClickable: true,
                     productId: productId,
                     productName: productName,
@@ -215,6 +214,16 @@ struct PopinCallStateView: View {
                 WaitingBottomControls(viewModel: viewModel, audioOnlyMode: configHolder.config.audioOnlyMode, onCancelCall: {
                     viewModel.onCancelCall?()
                 })
+            }
+            // Cancel call when user dismisses PiP via X button (matches connected view behavior)
+            .onReceive(NotificationCenter.default.publisher(for: .pipDidClose)) { _ in
+                guard viewModel.isWaitingForAcceptance else { return }
+                guard !viewModel.suppressPipClose else {
+                    PopinLogger.shared.log("WaitingView: ignoring .pipDidClose — suppressed during PiP transition")
+                    return
+                }
+                PopinLogger.shared.log("WaitingView: .pipDidClose — cancelling call")
+                viewModel.onCancelCall?()
             }
         }
     }
