@@ -543,6 +543,14 @@ struct PopinConnectedView: View {
         .onReceive(Timer.publish(every: 1, on: .main, in: .common).autoconnect()) { _ in
             guard _room.connectionState == .connected else { return }
 
+            // Re-sync participant order if SIDs have changed (handles reconnects
+            // where count stays the same but the participant gets a new SID)
+            let currentSids = Set(_room.allParticipants.values.compactMap { $0.sid?.stringValue })
+            let orderedSids = Set(participantOrder)
+            if currentSids != orderedSids {
+                syncParticipantOrder()
+            }
+
             // Check connection quality for seller/agent participants
             for (_, participant) in _room.remoteParticipants {
                 let identity = participant.identity?.stringValue ?? ""
