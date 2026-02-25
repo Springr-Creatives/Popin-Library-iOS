@@ -69,7 +69,16 @@ class PopinPusher : PusherDelegate{
             PopinLogger.shared.log("PopinPusher: user.call_cancel received")
             self.delegate?.onCallDisconnected();
         });
-        
+        pusherChannel.bind(eventName: "user.incoming_call_cancelled", eventCallback: { (event: PusherEvent) -> Void in
+            PopinLogger.shared.log("PopinPusher: user.incoming_call_cancelled received")
+            if let dataString = event.data,
+               let data = dataString.data(using: .utf8),
+               let json = try? JSONSerialization.jsonObject(with: data, options: []) as? [String: Any],
+               let callId = json["id"] as? Int {
+                self.delegate?.onIncomingCallCancelled(callId: callId)
+            }
+        });
+
     }
     
     func changedConnectionState(from old: ConnectionState, to new: ConnectionState) {

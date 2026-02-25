@@ -13,4 +13,5 @@ protocol PopinPusherDelegate {
     func onCallConnected();
     func onCallDisconnected();
     func onCallFail();
+    func onIncomingCallCancelled(callId: Int);
 }

@@ -456,4 +456,23 @@ public class Popin: PopinPusherDelegate {
     func onCallFail() {
         self.eventsListener?.onCallNetworkFailure(participant: "agent")
     }
+
+    func onIncomingCallCancelled(callId: Int) {
+        PopinLogger.shared.log("onIncomingCallCancelled() - callId=\(callId)")
+        #if canImport(UIKit)
+        DispatchQueue.main.async { [weak self] in
+            guard let currentCallId = PopinCallManager.shared.callData?.callId,
+                  currentCallId == callId else {
+                PopinLogger.shared.log("onIncomingCallCancelled: callId \(callId) does not match current ringing call, ignoring")
+                return
+            }
+
+            PopinLogger.shared.log("onIncomingCallCancelled: Matches current ringing call, ending call")
+            CallManager.shared.endCall()
+            if self?.uiCoordinator.hasActiveVC() == true {
+                self?.uiCoordinator.handleRemoteCancel()
+            }
+        }
+        #endif
+    }
 }
