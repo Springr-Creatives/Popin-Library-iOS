@@ -99,7 +99,6 @@ class PopinPresenter {
             try? await popinInteractor.logout(url: url)
             PopinLogger.shared.log("PopinPresenter: logout API complete, clearing local state")
             Utilities.shared.saveUser(user: nil)
-            Utilities.shared.savePushToken(token: "")
             Utilities.shared.clearConnected()
             UserDefaults.standard.removeObject(forKey: "popinSeller")
         }
