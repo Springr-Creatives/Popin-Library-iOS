@@ -26,11 +26,11 @@ struct AgentInfoBar: View {
                     }
                 }
                 .frame(width: 44, height: 44)
-                .clipShape(Circle())
+                .clipShape(RoundedRectangle(cornerRadius: 10, style: .continuous))
             } else {
                 agentPlaceholder
                     .frame(width: 44, height: 44)
-                    .clipShape(Circle())
+                    .clipShape(RoundedRectangle(cornerRadius: 10, style: .continuous))
             }
 
             // Designation + name
