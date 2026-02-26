@@ -58,6 +58,7 @@ class CallManager: NSObject {
     private(set) var callState: CallState = .idle
     private(set) var currentCallUUID: UUID?
     private(set) var voipToken: String?
+    private(set) var callWasAnswered: Bool = false
 
     weak var delegate: CallManagerDelegate?
     var onCallAnswered: (() -> Void)?
@@ -119,6 +120,7 @@ class CallManager: NSObject {
         PopinLogger.shared.log("CallManager: reportIncomingCall: uuid=\(uuid), handle=\(handle)")
         currentCallUUID = uuid
         callState = .ringing(uuid)
+        callWasAnswered = false
 
         let update = CXCallUpdate()
         update.remoteHandle = CXHandle(type: .generic, value: handle)
@@ -170,6 +172,7 @@ class CallManager: NSObject {
     func clearCurrentCall() {
         currentCallUUID = nil
         callState = .idle
+        callWasAnswered = false
     }
 
     // MARK: - Private Methods
@@ -197,6 +200,7 @@ extension CallManager: CXProviderDelegate {
     func provider(_ provider: CXProvider, perform action: CXAnswerCallAction) {
         PopinLogger.shared.log("CallManager: CXAnswerCallAction for \(action.callUUID)")
         callState = .connecting(action.callUUID)
+        callWasAnswered = true
 
         delegate?.callManager(self, didAnswerCall: action.callUUID)
 
@@ -221,8 +225,9 @@ extension CallManager: CXProviderDelegate {
 
         delegate?.callManager(self, didEndCall: action.callUUID)
 
-        // If no delegate (VC not yet presented), reject via API and clean up
-        if delegate == nil, let callData = PopinCallManager.shared.callData {
+        // If no delegate (VC not yet presented) and call was never answered, reject via API and clean up.
+        // Skip reject if call was already answered — the end API was already called through the normal flow.
+        if delegate == nil, let callData = PopinCallManager.shared.callData, !callWasAnswered {
             PopinLogger.shared.log("CallManager: CXEndCallAction: No delegate, rejecting call via API")
             let presenter = VideoCallPresenter(videoCallInteractor: VideoCallInteractor())
             presenter.rejectCall(callId: callData.callId)
