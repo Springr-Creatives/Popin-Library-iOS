@@ -101,6 +101,7 @@ class PopinPresenter {
             Utilities.shared.saveUser(user: nil)
             Utilities.shared.clearConnected()
             UserDefaults.standard.removeObject(forKey: "popinSeller")
+            PopinConfig.clearStorage()
         }
     }
 

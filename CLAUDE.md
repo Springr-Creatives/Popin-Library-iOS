@@ -74,6 +74,8 @@ func getCallDetails(callId: Int, onSuccess: @escaping (TalkModel) -> Void, onFai
 
 8. **UIKit guard:** Any UIKit-dependent code must be wrapped in `#if canImport(UIKit)`.
 
+9. **New `PopinConfig` property?** Also add it to `saveToStorage()`, `loadFromStorage()`, and the `clearStorage()` keys array in `PopinConfig.swift` — the SDK persists config to `UserDefaults` so it can auto-restore on cold-launch VoIP pushes.
+
 ---
 
 ## File Naming Convention

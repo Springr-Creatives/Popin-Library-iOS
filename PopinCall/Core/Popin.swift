@@ -117,6 +117,8 @@ public class Popin: PopinPusherDelegate {
             Utilities.shared.saveUser(user: nil)
         }
 
+        config.saveToStorage()
+
         let savedPushToken = Utilities.shared.getPushToken()
         PopinLogger.shared.log("setup() savedPushToken=\(savedPushToken.isEmpty ? "empty" : savedPushToken)")
         PopinLogger.shared.log("setup() isUserRegistered=\(popinPresenter.isUserRegistered())")
@@ -226,6 +228,15 @@ public class Popin: PopinPusherDelegate {
     /// Safe to call multiple times — subsequent calls are no-ops.
     public static func registerForVoIPPushes() {
         PopinLogger.shared.log("registerForVoIPPushes called, initializing CallManager for PushKit")
+
+        if shared == nil {
+            let savedToken = Utilities.shared.getSeller()
+            if savedToken > 0, let savedConfig = PopinConfig.loadFromStorage() {
+                PopinLogger.shared.log("registerForVoIPPushes: auto-restoring SDK from saved config (token=\(savedToken))")
+                initialize(token: savedToken, config: savedConfig)
+            }
+        }
+
         #if canImport(UIKit)
         CallManager.shared.registerForVoIPPushes()
         PopinLogger.shared.log("CallManager initialized, PushKit registry active")

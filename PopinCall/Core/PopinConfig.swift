@@ -210,4 +210,66 @@ public class PopinConfig {
             return PopinConfig(builder: self)
         }
     }
+
+    // MARK: - Persistence (UserDefaults)
+
+    private static let prefix = "popinConfig_"
+
+    func saveToStorage() {
+        let defaults = UserDefaults.standard
+        defaults.set(true,                    forKey: Self.prefix + "saved")
+        defaults.set(sandboxMode,             forKey: Self.prefix + "sandboxMode")
+        defaults.set(audioOnlyMode,           forKey: Self.prefix + "audioOnlyMode")
+        defaults.set(hideDisconnectButton,    forKey: Self.prefix + "hideDisconnectButton")
+        defaults.set(hideFlipCameraButton,    forKey: Self.prefix + "hideFlipCameraButton")
+        defaults.set(hideMuteVideoButton,     forKey: Self.prefix + "hideMuteVideoButton")
+        defaults.set(hideMuteAudioButton,     forKey: Self.prefix + "hideMuteAudioButton")
+        defaults.set(hideBackButton,          forKey: Self.prefix + "hideBackButton")
+        defaults.set(hideChatButton,          forKey: Self.prefix + "hideChatButton")
+        defaults.set(enableDebugMode,         forKey: Self.prefix + "enableDebugMode")
+        defaults.set(persistenceMode,         forKey: Self.prefix + "persistenceMode")
+        defaults.set(secondaryProductText,    forKey: Self.prefix + "secondaryProductText")
+        defaults.set(expertDesignation,       forKey: Self.prefix + "expertDesignation")
+        defaults.set(userName,                forKey: Self.prefix + "userName")
+        defaults.set(contactInfo,             forKey: Self.prefix + "contactInfo")
+    }
+
+    static func loadFromStorage() -> PopinConfig? {
+        let defaults = UserDefaults.standard
+        guard defaults.bool(forKey: prefix + "saved") else { return nil }
+
+        return Builder()
+            .sandboxMode(defaults.bool(forKey: prefix + "sandboxMode"))
+            .audioOnlyMode(defaults.bool(forKey: prefix + "audioOnlyMode"))
+            .hideDisconnectButton(defaults.bool(forKey: prefix + "hideDisconnectButton"))
+            .hideFlipCameraButton(defaults.bool(forKey: prefix + "hideFlipCameraButton"))
+            .hideMuteVideoButton(defaults.bool(forKey: prefix + "hideMuteVideoButton"))
+            .hideMuteAudioButton(defaults.bool(forKey: prefix + "hideMuteAudioButton"))
+            .hideBackButton(defaults.bool(forKey: prefix + "hideBackButton"))
+            .hideChatButton(defaults.bool(forKey: prefix + "hideChatButton"))
+            .enableDebugMode(defaults.bool(forKey: prefix + "enableDebugMode"))
+            .persistenceMode(defaults.bool(forKey: prefix + "persistenceMode"))
+            .secondaryProductText(defaults.string(forKey: prefix + "secondaryProductText") ?? "Product details")
+            .expertDesignation(defaults.string(forKey: prefix + "expertDesignation") ?? "Product expert")
+            .userName(defaults.string(forKey: prefix + "userName") ?? "")
+            .contactInfo(defaults.string(forKey: prefix + "contactInfo") ?? "")
+            .enableIncomingCalls(true)
+            .build()
+    }
+
+    static func clearStorage() {
+        let defaults = UserDefaults.standard
+        let keys = [
+            "saved", "sandboxMode", "audioOnlyMode",
+            "hideDisconnectButton", "hideFlipCameraButton",
+            "hideMuteVideoButton", "hideMuteAudioButton",
+            "hideBackButton", "hideChatButton",
+            "enableDebugMode", "persistenceMode",
+            "secondaryProductText", "expertDesignation",
+            "userName", "contactInfo"
+        ]
+        for key in keys {
+            defaults.removeObject(forKey: prefix + key)
+        }
+    }
 }
