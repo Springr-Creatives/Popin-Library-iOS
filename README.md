@@ -17,14 +17,14 @@ Add PopinCall as a dependency in your `Package.swift`:
 
 ```swift
 dependencies: [
-    .package(url: "https://github.com/AshwinDotMe/Popin-Library-iOS.git", from: "1.0.0")
+    .package(url: "https://github.com/Springr-Creatives/Popin-Library-iOS.git", from: "1.0.0")
 ]
 ```
 
 Or in Xcode:
 
 1. Select **File > Add Package Dependencies...**
-2. Enter the package URL: `https://github.com/AshwinDotMe/Popin-Library-iOS.git`
+2. Enter the package URL: `https://github.com/Springr-Creatives/Popin-Library-iOS.git`
 3. Select the version you want to use.
 
 ## Permissions
@@ -216,6 +216,30 @@ config?.meta = [
 Popin.shared?.startCall()
 ```
 
+### Updating User Name & Contact Info
+
+You can update the user's name and contact info at any time after initialization. This calls the server to persist the change and updates the local config:
+
+```swift
+Popin.shared?.updateUserInfo(
+    name: "New Name",
+    contactInfo: "new@email.com",  // email or phone number
+    onSuccess: {
+        print("User info updated")
+    },
+    onFailure: { error in
+        print("Failed to update: \(error)")
+    }
+)
+```
+
+| Parameter | Type | Description |
+|-----------|------|-------------|
+| `name` | `String` | Updated display name |
+| `contactInfo` | `String` | Updated email or phone number |
+| `onSuccess` | `() -> Void` | Called when the update succeeds |
+| `onFailure` | `(String) -> Void` | Called with an error message on failure |
+
 ## Receiving Incoming Calls via PushKit
 
 The SDK handles PushKit internally — it manages its own `PKPushRegistry`, receives VoIP tokens, sends them to the server, and processes incoming push payloads. You do **not** need to implement `PKPushRegistryDelegate` yourself.
@@ -304,6 +328,9 @@ Popin.shared?.setGroup(identifier: "group-id", onSuccess: {
 }, onFailure: { error in
     print("Failed to set group: \(error)")
 })
+
+// Update user name and contact info
+Popin.shared?.updateUserInfo(name: "New Name", contactInfo: "new@email.com", onSuccess: {}, onFailure: { _ in })
 
 // Access current config
 let config = Popin.shared?.getConfig()

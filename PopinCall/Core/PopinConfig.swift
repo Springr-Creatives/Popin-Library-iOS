@@ -11,8 +11,8 @@ public class PopinConfig {
 
     // MARK: - Immutable properties (set via Builder)
 
-    public let userName: String
-    public let contactInfo: String
+    public internal(set) var userName: String
+    public internal(set) var contactInfo: String
     public let sandboxMode: Bool
     public weak var initListener: PopinInitListener?
     public weak var eventsListener: PopinEventsListener?

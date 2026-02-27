@@ -97,6 +97,33 @@ class PopinInteractor {
         }
     }
 
+    func updateUser(name: String, contactInfo: String) async throws {
+        let isEmail = contactInfo.contains("@")
+
+        if isEmail {
+            if !contactInfo.contains(".") || contactInfo.count < 5 {
+                throw InteractorError.validationFailed
+            }
+        } else {
+            if contactInfo.count < 8 {
+                throw InteractorError.validationFailed
+            }
+        }
+
+        var parameters: [String: Any] = ["name": name]
+        if isEmail {
+            parameters["email"] = contactInfo
+        } else {
+            parameters["mobile"] = contactInfo
+        }
+
+        let urlString = serverURL + "/user"
+        let response: StatusModel = try await Utilities.shared.request(urlString: urlString, method: "POST", parameters: parameters)
+        if response.status != 1 {
+            throw InteractorError.apiError(response.message)
+        }
+    }
+
     func logout(url: String) async throws {
         let response: StatusModel = try await Utilities.shared.request(urlString: url, method: "POST")
         if response.status != 1 {

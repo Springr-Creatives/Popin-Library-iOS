@@ -94,6 +94,27 @@ class PopinPresenter {
         }
     }
 
+    func updateUser(name: String, contactInfo: String, onSuccess: @escaping () -> Void, onFailure: @escaping (String) -> Void) {
+        Task {
+            do {
+                try await popinInteractor.updateUser(name: name, contactInfo: contactInfo)
+                await MainActor.run {
+                    onSuccess()
+                }
+            } catch {
+                let errorMessage: String
+                if case let PopinInteractor.InteractorError.apiError(message) = error, let message = message {
+                    errorMessage = message
+                } else {
+                    errorMessage = error.localizedDescription
+                }
+                await MainActor.run {
+                    onFailure(errorMessage)
+                }
+            }
+        }
+    }
+
     func logout(url: String) {
         Task {
             try? await popinInteractor.logout(url: url)

@@ -271,6 +271,18 @@ public class Popin: PopinPusherDelegate {
         popinPresenter.setGroup(identifier: identifier, onSuccess: onSuccess, onFailure: onFailure)
     }
 
+    public func updateUserInfo(name: String, contactInfo: String, onSuccess: @escaping () -> Void, onFailure: @escaping (String) -> Void) {
+        guard popinPresenter.isUserRegistered() else {
+            onFailure("Not initialised yet")
+            return
+        }
+        popinPresenter.updateUser(name: name, contactInfo: contactInfo, onSuccess: { [weak self] in
+            self?.config.userName = name
+            self?.config.contactInfo = contactInfo
+            onSuccess()
+        }, onFailure: onFailure)
+    }
+
     public func startCall() {
         guard Self.isSupported else {
             config.eventsListener?.onCallFailed()
