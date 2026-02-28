@@ -74,7 +74,9 @@ func getCallDetails(callId: Int, onSuccess: @escaping (TalkModel) -> Void, onFai
 
 8. **UIKit guard:** Any UIKit-dependent code must be wrapped in `#if canImport(UIKit)`.
 
-9. **New `PopinConfig` property?** Also add it to `saveToStorage()`, `loadFromStorage()`, and the `clearStorage()` keys array in `PopinConfig.swift` — the SDK persists config to `UserDefaults` so it can auto-restore on cold-launch VoIP pushes.
+9. **New `PopinConfig` property?** Add it to the `Builder` class and the `init(builder:)` initializer in `PopinConfig.swift`. Config is not persisted to `UserDefaults` — the host app must call `Popin.initialize()` on every launch.
+
+10. **Single initialization:** `Popin.initialize()` must only be called once. Calling it a second time triggers a `fatalError`. The host app must call `Popin.deinitialize()` first to tear down the existing instance before reinitializing. There is no auto-restore from stored config — the host app is responsible for calling `initialize()` on every launch (including cold-launch from VoIP pushes).
 
 ---
 
