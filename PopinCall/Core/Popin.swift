@@ -68,16 +68,8 @@ public class Popin: PopinPusherDelegate {
             return instance
         }
 
-        if let existing = shared {
-            PopinLogger.shared.log("Popin.initialize() existing instance found, persistenceMode=\(existing.config.persistenceMode)")
-            existing.config = config
-            if !existing.config.persistenceMode {
-                let newInstance = Popin(token: token, config: config)
-                shared = newInstance
-                newInstance.setup()
-            } else {
-                config.initListener?.onInitComplete(userId: Utilities.shared.getUser()?.user_id ?? 0)
-            }
+        if shared != nil {
+            fatalError("Popin.initialize() must only be called once. Call Popin.deinitialize() first if you need to reinitialize.")
         } else {
             PopinLogger.shared.log("Popin.initialize() creating new instance")
             let newInstance = Popin(token: token, config: config)
