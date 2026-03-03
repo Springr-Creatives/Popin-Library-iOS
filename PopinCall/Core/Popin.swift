@@ -26,6 +26,24 @@ public class Popin: PopinPusherDelegate {
     /// SDK version
     public static let sdkVersion = "1.0.40"
 
+    /// Device name (e.g. "iPhone", "iPad")
+    static var deviceName: String {
+        #if canImport(UIKit)
+        return UIDevice.current.model
+        #else
+        return "unknown"
+        #endif
+    }
+
+    /// Device OS version (e.g. "17.2")
+    static var deviceVersion: String {
+        #if canImport(UIKit)
+        return UIDevice.current.systemVersion
+        #else
+        return "unknown"
+        #endif
+    }
+
     /// Minimum iOS version required for SDK functionality
     public static let minimumIOSVersion = 17
 
@@ -115,7 +133,7 @@ public class Popin: PopinPusherDelegate {
 
         if !popinPresenter.isUserRegistered() {
             PopinLogger.shared.log("setup() registering user...")
-            popinPresenter.registerUser(seller_id: sellerToken, name: config.userName, contactInfo: config.contactInfo, campaign: getEnhancedMeta(), onSucess: { [self] userId in
+            popinPresenter.registerUser(seller_id: sellerToken, name: config.userName, contactInfo: config.contactInfo, campaign: getEnhancedMeta(), identifier: config.identifier ?? "", device: Self.deviceName, deviceVersion: Self.deviceVersion, sdkVersion: Self.sdkVersion, onSucess: { [self] userId in
                 PopinLogger.shared.log("setup() registerUser SUCCESS, userId=\(userId)")
                 let token = Utilities.shared.getPushToken()
                 if !token.isEmpty {
@@ -265,6 +283,17 @@ public class Popin: PopinPusherDelegate {
         }, onFailure: onFailure)
     }
 
+    public func setIdentifier(_ identifier: String, onSuccess: @escaping () -> Void, onFailure: @escaping (String) -> Void) {
+        guard popinPresenter.isUserRegistered() else {
+            onFailure("Not initialised yet")
+            return
+        }
+        popinPresenter.updateIdentifier(identifier: identifier, onSuccess: { [weak self] in
+            self?.config.identifier = identifier
+            onSuccess()
+        }, onFailure: onFailure)
+    }
+
     public func startCall() {
         guard Self.isSupported else {
             config.eventsListener?.onCallFailed()
@@ -314,7 +343,7 @@ public class Popin: PopinPusherDelegate {
         Utilities.shared.saveSeller(seller_id: token)
 
         if !popinPresenter.isUserRegistered() {
-            popinPresenter.registerUser(seller_id: token, name: config.userName, contactInfo: config.contactInfo, campaign: getEnhancedMeta(), onSucess: { [weak self] _ in
+            popinPresenter.registerUser(seller_id: token, name: config.userName, contactInfo: config.contactInfo, campaign: getEnhancedMeta(), identifier: config.identifier ?? "", device: Self.deviceName, deviceVersion: Self.deviceVersion, sdkVersion: Self.sdkVersion, onSucess: { [weak self] _ in
                 guard let self = self else { return }
                 self.connectPusher(seller_id: token)
                 self.permissionService.requestForOutgoingCall(

@@ -19,7 +19,7 @@ class PopinPresenter {
         return Utilities.shared.getUserToken().count > 0;
     }
     
-    func registerUser(seller_id: Int, name: String, contactInfo: String, campaign: [String: String], onSucess sucess: @escaping (Int) -> Void, onFailure failure: @escaping (String) -> Void) {
+    func registerUser(seller_id: Int, name: String, contactInfo: String, campaign: [String: String], identifier: String, device: String, deviceVersion: String, sdkVersion: String, onSucess sucess: @escaping (Int) -> Void, onFailure failure: @escaping (String) -> Void) {
 
         var campaignString = ""
         if !campaign.isEmpty {
@@ -31,7 +31,7 @@ class PopinPresenter {
 
         Task {
             do {
-                let userId = try await popinInteractor.registerUser(seller_id: seller_id, name: name, contactInfo: contactInfo, campaign: campaignString)
+                let userId = try await popinInteractor.registerUser(seller_id: seller_id, name: name, contactInfo: contactInfo, campaign: campaignString, identifier: identifier, device: device, deviceVersion: deviceVersion, sdkVersion: sdkVersion)
                 await MainActor.run {
                     sucess(userId)
                 }
@@ -89,6 +89,27 @@ class PopinPresenter {
                 }
                 await MainActor.run {
                     failure(errorMessage)
+                }
+            }
+        }
+    }
+
+    func updateIdentifier(identifier: String, onSuccess: @escaping () -> Void, onFailure: @escaping (String) -> Void) {
+        Task {
+            do {
+                try await popinInteractor.updateIdentifier(identifier: identifier)
+                await MainActor.run {
+                    onSuccess()
+                }
+            } catch {
+                let errorMessage: String
+                if case let PopinInteractor.InteractorError.apiError(message) = error, let message = message {
+                    errorMessage = message
+                } else {
+                    errorMessage = error.localizedDescription
+                }
+                await MainActor.run {
+                    onFailure(errorMessage)
                 }
             }
         }

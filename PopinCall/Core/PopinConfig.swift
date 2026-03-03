@@ -33,6 +33,7 @@ public class PopinConfig {
 
     public var product: PopinProduct?
     public var callerId: String?
+    public var identifier: String?
     public var meta: [String: String]
 
     // MARK: - Init (via Builder)
@@ -57,6 +58,7 @@ public class PopinConfig {
         self.expertDesignation = builder.expertDesignation
         self.product = builder.product
         self.callerId = builder.callerId
+        self.identifier = builder.identifier
         self.meta = builder.meta
     }
 
@@ -82,6 +84,7 @@ public class PopinConfig {
         var expertDesignation: String = "Product expert"
         var product: PopinProduct?
         var callerId: String?
+        var identifier: String?
         var meta: [String: String] = [:]
 
         public init() {}
@@ -197,6 +200,12 @@ public class PopinConfig {
         @discardableResult
         public func callerId(_ callerId: String) -> Builder {
             self.callerId = callerId
+            return self
+        }
+
+        @discardableResult
+        public func identifier(_ identifier: String) -> Builder {
+            self.identifier = identifier
             return self
         }
 

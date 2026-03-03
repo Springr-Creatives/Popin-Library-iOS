@@ -91,6 +91,7 @@ let config = PopinConfig.Builder()
     .userName("Demo User")
     .contactInfo("demo@example.com")  // email or phone
     .callerId("user-12345")
+    .identifier("unique-user-id")  // optional, can also be set later
 
     // Environment
     .sandboxMode(true)
@@ -216,6 +217,24 @@ config?.meta = [
 Popin.shared?.startCall()
 ```
 
+### Setting User Identifier
+
+You can set or update the user's identifier at any time after initialization. This is useful when the identifier isn't available at init time (e.g., waiting for your own auth flow to complete):
+
+```swift
+Popin.shared?.setIdentifier("unique-user-id", onSuccess: {
+    print("Identifier set")
+}, onFailure: { error in
+    print("Failed to set identifier: \(error)")
+})
+```
+
+| Parameter | Type | Description |
+|-----------|------|-------------|
+| `identifier` | `String` | A unique identifier for the user |
+| `onSuccess` | `() -> Void` | Called when the identifier is set successfully |
+| `onFailure` | `(String) -> Void` | Called with an error message on failure |
+
 ### Updating User Name & Contact Info
 
 You can update the user's name and contact info at any time after initialization. This calls the server to persist the change and updates the local config:
@@ -329,6 +348,9 @@ Popin.shared?.setGroup(identifier: "group-id", onSuccess: {
     print("Failed to set group: \(error)")
 })
 
+// Set or update user identifier
+Popin.shared?.setIdentifier("unique-user-id", onSuccess: {}, onFailure: { _ in })
+
 // Update user name and contact info
 Popin.shared?.updateUserInfo(name: "New Name", contactInfo: "new@email.com", onSuccess: {}, onFailure: { _ in })
 
@@ -370,6 +392,24 @@ Popin.shared?.setGroup(identifier: "group-abc-123", onSuccess: {
 | `onSuccess` | `() -> Void` | Called when the group is set successfully |
 | `onFailure` | `(String) -> Void` | Called with an error message on failure |
 
+### setIdentifier
+
+Sets or updates the user's identifier. This must be called **after** initialization is complete. If you already have the identifier at init time, you can pass it via `.identifier()` on the config builder instead.
+
+```swift
+Popin.shared?.setIdentifier("unique-user-id", onSuccess: {
+    print("Identifier set")
+}, onFailure: { error in
+    print("Failed: \(error)")
+})
+```
+
+| Parameter | Type | Description |
+|-----------|------|-------------|
+| `identifier` | `String` | A unique identifier for the user |
+| `onSuccess` | `() -> Void` | Called when the identifier is set successfully |
+| `onFailure` | `(String) -> Void` | Called with an error message on failure |
+
 ### PopinConfig.Builder
 
 | Method | Default | Description |
@@ -377,6 +417,7 @@ Popin.shared?.setGroup(identifier: "group-abc-123", onSuccess: {
 | `.userName(String)` | `""` | User's display name |
 | `.contactInfo(String)` | `""` | User's contact info (email or phone) |
 | `.callerId(String)` | `nil` | Custom caller identifier |
+| `.identifier(String)` | `nil` | Unique user identifier. Can also be set after init via `setIdentifier()` |
 | `.sandboxMode(Bool)` | `false` | Use sandbox environment |
 | `.product(PopinProduct)` | `nil` | Product context for the call |
 | `.meta([String: String])` | `[:]` | Custom metadata key-value pairs |

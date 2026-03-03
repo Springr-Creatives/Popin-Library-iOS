@@ -26,9 +26,9 @@ class PopinInteractor {
         }
     }
 
-    func registerUser(seller_id: Int, name: String, contactInfo: String, campaign: String) async throws -> Int {
+    func registerUser(seller_id: Int, name: String, contactInfo: String, campaign: String, identifier: String, device: String, deviceVersion: String, sdkVersion: String) async throws -> Int {
         let isEmail = contactInfo.contains("@")
-        
+
         // Basic validation
         if isEmail {
             if !contactInfo.contains(".") || contactInfo.count < 5 {
@@ -43,10 +43,16 @@ class PopinInteractor {
         var parameters: [String: Any] = [
             "seller_id": seller_id,
             "is_mobile": 3, //3 for iosSDK
-            "device": "iosSdk",
+            "device": device,
+            "device_version": deviceVersion,
+            "sdk_version": sdkVersion,
             "name": name
         ]
-        
+
+        if !identifier.isEmpty {
+            parameters["identifier"] = identifier
+        }
+
         if isEmail {
             parameters["email"] = contactInfo
         } else {
@@ -59,8 +65,8 @@ class PopinInteractor {
         if !mobileToken.isEmpty {
             parameters["mobile_token"] = mobileToken
         }
-   
-        let urlString = serverURL + "/website/user/login"
+
+        let urlString = serverURL + "/sdk/user/login"
         
         let userModel: UserModel = try await Utilities.shared.request(urlString: urlString, method: "POST", parameters: parameters)
         
@@ -91,6 +97,15 @@ class PopinInteractor {
     func setGroup(identifier: String) async throws {
         let parameters: [String: Any] = ["groupId": identifier]
         let urlString = serverURL + "/user/group"
+        let response: StatusModel = try await Utilities.shared.request(urlString: urlString, method: "POST", parameters: parameters)
+        if response.status != 1 {
+            throw InteractorError.apiError(response.message)
+        }
+    }
+
+    func updateIdentifier(identifier: String) async throws {
+        let parameters: [String: Any] = ["identifier": identifier]
+        let urlString = serverURL + "/user"
         let response: StatusModel = try await Utilities.shared.request(urlString: urlString, method: "POST", parameters: parameters)
         if response.status != 1 {
             throw InteractorError.apiError(response.message)
