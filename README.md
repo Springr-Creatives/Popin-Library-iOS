@@ -427,7 +427,7 @@ Popin.shared?.setIdentifier("unique-user-id", onSuccess: {
 | `.eventsListener(PopinEventsListener)` | `nil` | Listener for call events |
 | `.hideDisconnectButton(Bool)` | `false` | Hide the end call button |
 | `.hideScreenShareButton(Bool)` | `false` | Hide the screen share option |
-| `.hideFlipCameraButton(Bool)` | `false` | Hide the flip camera button |
+| `.hideFlipCameraButton(Bool)` | `true` | Hide the flip camera button |
 | `.hideMuteVideoButton(Bool)` | `false` | Hide the video toggle button |
 | `.hideMuteAudioButton(Bool)` | `false` | Hide the mic toggle button |
 | `.hideBackButton(Bool)` | `false` | Hide the PiP/back button |

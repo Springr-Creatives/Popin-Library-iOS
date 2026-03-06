@@ -71,7 +71,7 @@ public class PopinConfig {
         var initListener: PopinInitListener?
         var eventsListener: PopinEventsListener?
         var hideDisconnectButton: Bool = false
-        var hideFlipCameraButton: Bool = false
+        var hideFlipCameraButton: Bool = true
         var hideMuteVideoButton: Bool = false
         var hideMuteAudioButton: Bool = false
         var hideBackButton: Bool = false
