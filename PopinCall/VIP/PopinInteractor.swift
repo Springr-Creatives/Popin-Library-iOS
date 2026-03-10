@@ -27,19 +27,6 @@ class PopinInteractor {
     }
 
     func registerUser(seller_id: Int, name: String, contactInfo: String, campaign: String, identifier: String, device: String, deviceVersion: String, sdkVersion: String) async throws -> Int {
-        let isEmail = contactInfo.contains("@")
-
-        // Basic validation
-        if isEmail {
-            if !contactInfo.contains(".") || contactInfo.count < 5 {
-                throw InteractorError.validationFailed
-            }
-        } else {
-            if contactInfo.count < 8 {
-                throw InteractorError.validationFailed
-            }
-        }
-
         var parameters: [String: Any] = [
             "seller_id": seller_id,
             "is_mobile": 3, //3 for iosSDK
@@ -53,10 +40,19 @@ class PopinInteractor {
             parameters["identifier"] = identifier
         }
 
-        if isEmail {
-            parameters["email"] = contactInfo
-        } else {
-            parameters["mobile"] = contactInfo
+        if !contactInfo.isEmpty {
+            let isEmail = contactInfo.contains("@")
+            if isEmail {
+                if !contactInfo.contains(".") || contactInfo.count < 5 {
+                    throw InteractorError.validationFailed
+                }
+                parameters["email"] = contactInfo
+            } else {
+                if contactInfo.count < 8 {
+                    throw InteractorError.validationFailed
+                }
+                parameters["mobile"] = contactInfo
+            }
         }
         if !campaign.isEmpty {
             parameters["campaign"] = campaign
@@ -113,23 +109,21 @@ class PopinInteractor {
     }
 
     func updateUser(name: String, contactInfo: String) async throws {
-        let isEmail = contactInfo.contains("@")
-
-        if isEmail {
-            if !contactInfo.contains(".") || contactInfo.count < 5 {
-                throw InteractorError.validationFailed
-            }
-        } else {
-            if contactInfo.count < 8 {
-                throw InteractorError.validationFailed
-            }
-        }
-
         var parameters: [String: Any] = ["name": name]
-        if isEmail {
-            parameters["email"] = contactInfo
-        } else {
-            parameters["mobile"] = contactInfo
+
+        if !contactInfo.isEmpty {
+            let isEmail = contactInfo.contains("@")
+            if isEmail {
+                if !contactInfo.contains(".") || contactInfo.count < 5 {
+                    throw InteractorError.validationFailed
+                }
+                parameters["email"] = contactInfo
+            } else {
+                if contactInfo.count < 8 {
+                    throw InteractorError.validationFailed
+                }
+                parameters["mobile"] = contactInfo
+            }
         }
 
         let urlString = serverURL + "/user"
