@@ -16,19 +16,9 @@ struct NotConnectedView: View {
     let artifact: String
     let callRole: Int
 
-    // Timer information
-    let timeout: Int
-    let start: Int
-
     // Actions
     let onAccept: () -> Void
     let onReject: () -> Void
-
-    // Timer state
-    @State private var timeRemaining: Int = 100
-    @State private var initialTimeout: Int = 100
-    @State private var timerActive = true
-    @State private var timer: Timer?
 
     // Pulse animation state
     @State private var pulse = false
@@ -43,8 +33,6 @@ struct NotConnectedView: View {
         callUUID: UUID = UUID(),
         artifact: String = "",
         callRole: Int = 0,
-        timeout: Int = 100,
-        start: Int = 0,
         onAccept: @escaping () -> Void = {},
         onReject: @escaping () -> Void = {}
     ) {
@@ -54,8 +42,6 @@ struct NotConnectedView: View {
         self.callUUID = callUUID
         self.artifact = artifact
         self.callRole = callRole
-        self.timeout = timeout
-        self.start = start
         self.onAccept = onAccept
         self.onReject = onReject
     }
@@ -136,8 +122,6 @@ struct NotConnectedView: View {
                         label: "Decline",
                         color: Color(red: 0.92, green: 0.22, blue: 0.22),
                         action: {
-                            timerActive = false
-                            timer?.invalidate()
                             onReject()
                         }
                     )
@@ -150,8 +134,6 @@ struct NotConnectedView: View {
                         label: "Accept",
                         color: Color(red: 0.18, green: 0.74, blue: 0.30),
                         action: {
-                            timerActive = false
-                            timer?.invalidate()
                             onAccept()
                         }
                     )
@@ -162,38 +144,6 @@ struct NotConnectedView: View {
         }
         .onAppear {
             pulse = true
-            startTimer()
-        }
-        .onDisappear {
-            timerActive = false
-            timer?.invalidate()
-        }
-    }
-
-    private func startTimer() {
-        let now = Int(Date().timeIntervalSince1970 * 1000)
-        let calculatedTimeout = Int(round(Float(timeout) - (Float(now - start) / 1000.0)))
-
-        if calculatedTimeout < 1 {
-            onReject()
-            return
-        }
-
-        let finalTimeout = min(calculatedTimeout, timeout)
-        timeRemaining = finalTimeout
-        initialTimeout = finalTimeout
-
-        timer = Timer.scheduledTimer(withTimeInterval: 1.0, repeats: true) { t in
-            if !timerActive {
-                t.invalidate()
-                return
-            }
-            if timeRemaining > 0 {
-                timeRemaining -= 1
-            } else {
-                t.invalidate()
-                onReject()
-            }
         }
     }
 }
@@ -237,8 +187,6 @@ struct NotConnectedView_Previews: PreviewProvider {
             callUUID: UUID(),
             artifact: "Premium Widget",
             callRole: 1,
-            timeout: 100,
-            start: Int(Date().timeIntervalSince1970 * 1000),
             onAccept: { },
             onReject: { }
         )

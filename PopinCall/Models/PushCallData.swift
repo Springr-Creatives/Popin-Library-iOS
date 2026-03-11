@@ -8,17 +8,11 @@ import Foundation
 // MARK: - Product
 
 public struct Product: Codable {
-    public let id: Int?
-    public let externalId: String?
+    public let id: String?
     public let name: String?
     public let image: String?
-
-    enum CodingKeys: String, CodingKey {
-        case id
-        case externalId = "external_id"
-        case name
-        case image
-    }
+    public let description: String?
+    public let url: String?
 }
 
 // MARK: - PushCallData

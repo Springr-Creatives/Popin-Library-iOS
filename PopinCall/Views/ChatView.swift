@@ -129,6 +129,27 @@ struct ChatTopBar: View {
 struct ChatBubble: View {
     let message: ChatMessage
 
+    private static func linkifiedText(_ text: String) -> AttributedString {
+        var attributedString = AttributedString(text)
+
+        guard let detector = try? NSDataDetector(types: NSTextCheckingResult.CheckingType.link.rawValue) else {
+            return attributedString
+        }
+
+        let matches = detector.matches(in: text, range: NSRange(location: 0, length: (text as NSString).length))
+
+        for match in matches {
+            guard let range = Range(match.range, in: text),
+                  let url = match.url,
+                  let attrRange = Range(range, in: attributedString) else { continue }
+
+            attributedString[attrRange].link = url
+            attributedString[attrRange].underlineStyle = .single
+        }
+
+        return attributedString
+    }
+
     var body: some View {
         HStack(alignment: .bottom, spacing: 8) {
             if message.isMe {
@@ -185,9 +206,10 @@ struct ChatBubble: View {
 
                     // Text if present
                     if let text = message.text, !text.isEmpty {
-                        Text(text)
+                        Text(Self.linkifiedText(text))
                             .font(.system(size: 15))
                             .foregroundColor(message.isMe ? .white : .black)
+                            .tint(message.isMe ? .white : Color(hex: "3B82F6"))
                             .padding(.horizontal, 14)
                             .padding(.vertical, 10)
                             .background(message.isMe ? Color(hex: "3B82F6") : Color(hex: "F3F4F6"))

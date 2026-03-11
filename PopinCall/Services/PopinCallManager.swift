@@ -66,7 +66,8 @@ public class PopinCallManager {
                     // Fire upward callback instead of referencing Popin.shared directly
                     self?.onPresentIncomingCallUI?()
 
-                    if let timeout = self?.callData?.timeout, timeout > 0 {
+                    let timeout = self?.callData?.timeout ?? 60
+                    if timeout > 0 {
                         self?.timeoutTimer?.invalidate()
                         self?.timeoutTimer = Timer.scheduledTimer(withTimeInterval: TimeInterval(timeout), repeats: false) { _ in
                             if CallManager.shared.currentCallUUID == uuid {

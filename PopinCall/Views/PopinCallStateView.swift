@@ -73,8 +73,6 @@ struct PopinCallStateView: View {
             callUUID: manager.callUUID ?? UUID(),
             artifact: manager.callData?.artifact ?? "",
             callRole: manager.callData?.role ?? 0,
-            timeout: manager.callData?.timeout ?? 100,
-            start: manager.callData?.start ?? 0,
             onAccept: {
                 // Answer call via CallKit
                 CallManager.shared.answerCall()
