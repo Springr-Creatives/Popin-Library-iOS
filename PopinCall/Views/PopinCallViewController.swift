@@ -499,7 +499,8 @@ extension PopinCallViewController: CallManagerDelegate {
             guard let self = self else { return }
             
             // Determine whether to call End or Reject API
-            if self.shouldSkipEndApi {
+            // Skip reject if call ended due to timeout — the caller already knows the call wasn't picked up.
+            if self.shouldSkipEndApi || CallManager.shared.callEndedByTimeout {
             } else if self.callConnected || self.viewModel.callAccepted {
                 self.videoCallPresenter.endCall(callId: self.callId, onSuccess: {
                 }, onFailure: { error in

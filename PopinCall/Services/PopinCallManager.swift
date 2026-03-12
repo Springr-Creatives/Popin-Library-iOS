@@ -72,6 +72,7 @@ public class PopinCallManager {
                         self?.timeoutTimer = Timer.scheduledTimer(withTimeInterval: TimeInterval(timeout), repeats: false) { _ in
                             if CallManager.shared.currentCallUUID == uuid {
                                 PopinLogger.shared.log("PopinCallManager: Call timed out after \(timeout) seconds")
+                                CallManager.shared.callEndedByTimeout = true
                                 CallManager.shared.endCall()
                             }
                         }

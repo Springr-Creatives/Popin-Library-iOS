@@ -59,6 +59,7 @@ class CallManager: NSObject {
     private(set) var currentCallUUID: UUID?
     private(set) var voipToken: String?
     private(set) var callWasAnswered: Bool = false
+    var callEndedByTimeout: Bool = false
 
     weak var delegate: CallManagerDelegate?
     var onCallAnswered: (() -> Void)?
@@ -121,6 +122,7 @@ class CallManager: NSObject {
         currentCallUUID = uuid
         callState = .ringing(uuid)
         callWasAnswered = false
+        callEndedByTimeout = false
 
         let update = CXCallUpdate()
         update.remoteHandle = CXHandle(type: .generic, value: handle)
@@ -173,6 +175,7 @@ class CallManager: NSObject {
         currentCallUUID = nil
         callState = .idle
         callWasAnswered = false
+        callEndedByTimeout = false
     }
 
     // MARK: - Private Methods
@@ -227,7 +230,8 @@ extension CallManager: CXProviderDelegate {
 
         // If no delegate (VC not yet presented) and call was never answered, reject via API and clean up.
         // Skip reject if call was already answered — the end API was already called through the normal flow.
-        if delegate == nil, let callData = PopinCallManager.shared.callData, !callWasAnswered {
+        // Skip reject if call ended due to timeout — the caller already knows the call wasn't picked up.
+        if delegate == nil, let callData = PopinCallManager.shared.callData, !callWasAnswered, !callEndedByTimeout {
             PopinLogger.shared.log("CallManager: CXEndCallAction: No delegate, rejecting call via API")
             let presenter = VideoCallPresenter(videoCallInteractor: VideoCallInteractor())
             presenter.rejectCall(callId: callData.callId)
