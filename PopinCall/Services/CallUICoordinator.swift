@@ -17,6 +17,11 @@ class CallUICoordinator {
     private(set) weak var currentCallViewController: PopinCallViewController?
     private var pendingCallViewController: PopinCallViewController?
 
+    /// Deferred presentation stored when the app is backgrounded (e.g. lock-screen answer).
+    /// Replayed once the app becomes active.
+    private var deferredPresentation: (callVC: PopinCallViewController, completion: (() -> Void)?)?
+    private var foregroundObserver: NSObjectProtocol?
+
     // MARK: - Upward callbacks (set by Popin facade)
 
     /// Called when a call ends and state should be cleaned up.
@@ -89,6 +94,7 @@ class CallUICoordinator {
         currentCallViewController?.handleCallMissed()
         currentCallViewController = nil
         pendingCallViewController = nil
+        cancelDeferredPresentation()
     }
 
     func handleRemoteCancel() {
@@ -102,6 +108,7 @@ class CallUICoordinator {
     func cancelPendingVC() {
         currentCallViewController = nil
         pendingCallViewController = nil
+        cancelDeferredPresentation()
     }
 
     func hasActiveVC() -> Bool {
@@ -118,6 +125,7 @@ class CallUICoordinator {
     func cleanupAfterCallEnd() {
         currentCallViewController = nil
         pendingCallViewController = nil
+        cancelDeferredPresentation()
         Utilities.shared.clearConnected()
         onCallEnd?()
         PopinLogger.shared.log("CallUICoordinator.cleanupAfterCallEnd: State reset complete")
@@ -149,17 +157,31 @@ class CallUICoordinator {
     }
 
     private func presentCallVCFromRoot(_ callVC: PopinCallViewController, completion: (() -> Void)? = nil) {
+        // When the app is backgrounded (e.g. user answered on the lock screen),
+        // UIKit silently drops present/dismiss completion blocks.
+        // Defer the presentation until the app is foregrounded.
+        if UIApplication.shared.applicationState != .active {
+            PopinLogger.shared.log("CallUICoordinator.presentCallVCFromRoot: App not active (state=\(UIApplication.shared.applicationState.rawValue)) — deferring presentation until foreground")
+            deferredPresentation = (callVC: callVC, completion: completion)
+            observeForeground()
+            return
+        }
+
+        performPresentation(callVC, completion: completion)
+    }
+
+    private func performPresentation(_ callVC: PopinCallViewController, completion: (() -> Void)? = nil) {
         guard let rootVC = UIApplication.shared.connectedScenes
             .compactMap({ ($0 as? UIWindowScene)?.keyWindow?.rootViewController })
             .first else {
-            PopinLogger.shared.log("CallUICoordinator.presentCallVCFromRoot: No root VC found — clearing currentCallViewController to allow retry")
+            PopinLogger.shared.log("CallUICoordinator.performPresentation: No root VC found — clearing state to allow retry")
             currentCallViewController = nil
             pendingCallViewController = nil
             return
         }
 
         if rootVC.presentedViewController != nil {
-            PopinLogger.shared.log("CallUICoordinator.presentCallVCFromRoot: Dismissing existing VC first")
+            PopinLogger.shared.log("CallUICoordinator.performPresentation: Dismissing existing VC first")
             rootVC.dismiss(animated: false) { [weak self] in
                 rootVC.present(callVC, animated: true) {
                     self?.pendingCallViewController = nil
@@ -167,11 +189,45 @@ class CallUICoordinator {
                 }
             }
         } else {
-            PopinLogger.shared.log("CallUICoordinator.presentCallVCFromRoot: Presenting directly")
+            PopinLogger.shared.log("CallUICoordinator.performPresentation: Presenting directly")
             rootVC.present(callVC, animated: true) { [weak self] in
                 self?.pendingCallViewController = nil
                 completion?()
             }
+        }
+    }
+
+    private func observeForeground() {
+        // Avoid duplicate observers
+        guard foregroundObserver == nil else { return }
+        foregroundObserver = NotificationCenter.default.addObserver(
+            forName: UIApplication.didBecomeActiveNotification,
+            object: nil,
+            queue: .main
+        ) { [weak self] _ in
+            self?.replayDeferredPresentation()
+        }
+    }
+
+    private func replayDeferredPresentation() {
+        // Remove observer first to avoid re-entry
+        if let observer = foregroundObserver {
+            NotificationCenter.default.removeObserver(observer)
+            foregroundObserver = nil
+        }
+
+        guard let deferred = deferredPresentation else { return }
+        deferredPresentation = nil
+
+        PopinLogger.shared.log("CallUICoordinator.replayDeferredPresentation: App became active — presenting deferred call VC")
+        performPresentation(deferred.callVC, completion: deferred.completion)
+    }
+
+    private func cancelDeferredPresentation() {
+        deferredPresentation = nil
+        if let observer = foregroundObserver {
+            NotificationCenter.default.removeObserver(observer)
+            foregroundObserver = nil
         }
     }
 
