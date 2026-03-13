@@ -507,6 +507,9 @@ public class Popin: PopinPusherDelegate {
             }
 
             PopinLogger.shared.log("onIncomingCallCancelled: Matches current ringing call, ending call")
+            // Mark as timeout so neither the VC delegate nor the no-delegate fallback sends /reject.
+            // The server already knows the call was cancelled — no need to reject.
+            CallManager.shared.callEndedByTimeout = true
             CallManager.shared.endCall()
             if self?.uiCoordinator.hasActiveVC() == true {
                 self?.uiCoordinator.handleRemoteCancel()
