@@ -66,7 +66,18 @@ public class PopinCallManager {
                     // Fire upward callback instead of referencing Popin.shared directly
                     self?.onPresentIncomingCallUI?()
 
-                    let timeout = self?.callData?.timeout ?? 60
+                    var timeout = self?.callData?.timeout ?? 60
+                    // Adjust for time already elapsed since the server started the call.
+                    // The server counts timeout from `start`; if push delivery was delayed,
+                    // using the raw timeout would let the local timer fire after the server
+                    // has already cancelled the call.
+                    if let startMs = self?.callData?.start, startMs > 0 {
+                        let elapsedSeconds = Int(Date().timeIntervalSince1970) - Int(startMs / 1000)
+                        if elapsedSeconds > 0 {
+                            timeout = max(timeout - elapsedSeconds, 1)
+                            PopinLogger.shared.log("PopinCallManager: Adjusted timeout to \(timeout)s (elapsed \(elapsedSeconds)s since server start)")
+                        }
+                    }
                     if timeout > 0 {
                         self?.timeoutTimer?.invalidate()
                         self?.timeoutTimer = Timer.scheduledTimer(withTimeInterval: TimeInterval(timeout), repeats: false) { _ in
