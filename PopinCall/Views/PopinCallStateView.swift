@@ -42,21 +42,22 @@ struct PopinCallStateView: View {
         self.userId = userId
     }
 
-    // Computed product properties
+    // Computed product properties — prefer config (outgoing) then push data (incoming)
+    private var pushProduct: Product? { PopinCallManager.shared.callData?.product }
     private var productId: String? {
-        configHolder.config.product?.id ?? PopinCallManager.shared.callData?.productId
+        configHolder.config.product?.id ?? PopinCallManager.shared.callData?.productId ?? pushProduct?.id
     }
     private var productName: String? {
-        configHolder.config.product?.name ?? PopinCallManager.shared.callData?.productName
+        configHolder.config.product?.name ?? PopinCallManager.shared.callData?.productName ?? pushProduct?.name
     }
     private var productImageUrl: String? {
-        configHolder.config.product?.image ?? PopinCallManager.shared.callData?.productImage
+        configHolder.config.product?.image ?? PopinCallManager.shared.callData?.productImage ?? pushProduct?.image
     }
     private var productUrl: String? {
-        configHolder.config.product?.url
+        configHolder.config.product?.url ?? pushProduct?.url
     }
     private var productDescription: String? {
-        configHolder.config.product?.description
+        configHolder.config.product?.description ?? pushProduct?.description
     }
     private var productExtra: String? {
         configHolder.config.product?.extra
