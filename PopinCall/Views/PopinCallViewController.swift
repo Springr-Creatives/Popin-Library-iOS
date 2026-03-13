@@ -491,16 +491,22 @@ extension PopinCallViewController: CallManagerDelegate {
     }
 
     func callManager(_ manager: CallManager, didEndCall callUUID: UUID) {
-        
+
         // Ensure status checking is stopped in case it was still running
         PopinCallManager.shared.stopStatusChecking()
-        
+
+        // Capture flag NOW — clearCurrentCall() in CXEndCallAction resets it
+        // before the async block below runs (same main-queue run loop).
+        let endedByTimeout = CallManager.shared.callEndedByTimeout
+        PopinLogger.shared.log("PopinCallVC: didEndCall: shouldSkipEndApi=\(shouldSkipEndApi), callEndedByTimeout=\(endedByTimeout), callConnected=\(callConnected), callAccepted=\(viewModel.callAccepted)")
+
         DispatchQueue.main.async { [weak self] in
             guard let self = self else { return }
-            
+
             // Determine whether to call End or Reject API
             // Skip reject if call ended due to timeout — the caller already knows the call wasn't picked up.
-            if self.shouldSkipEndApi || CallManager.shared.callEndedByTimeout {
+            if self.shouldSkipEndApi || endedByTimeout {
+                PopinLogger.shared.log("PopinCallVC: didEndCall: Skipping API call (shouldSkipEndApi=\(self.shouldSkipEndApi), endedByTimeout=\(endedByTimeout))")
             } else if self.callConnected || self.viewModel.callAccepted {
                 self.videoCallPresenter.endCall(callId: self.callId, onSuccess: {
                 }, onFailure: { error in
@@ -508,7 +514,7 @@ extension PopinCallViewController: CallManagerDelegate {
             } else {
                 self.videoCallPresenter.rejectCall(callId: self.callId)
             }
-            
+
             self.closeViewController(shouldNotEndCX: true)
             self.dismiss(animated: true)
         }
