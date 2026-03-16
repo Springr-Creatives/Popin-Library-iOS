@@ -165,6 +165,7 @@ public class Popin: PopinPusherDelegate {
         action(listener)
     }
 
+
     // MARK: - Callback Wiring (breaks circular dependencies)
 
     #if canImport(UIKit)
@@ -182,12 +183,25 @@ public class Popin: PopinPusherDelegate {
         }
 
         // Orchestrator → events listener
-        orchestrator.onCallStart = { [weak self] in self?.notifyListener("onCallStart") { $0.onCallStart() } }
-        orchestrator.onCallConnected = { [weak self] in self?.notifyListener("onCallConnected") { $0.onCallConnected() } }
-        orchestrator.onCallFailed = { [weak self] in self?.notifyListener("onCallFailed") { $0.onCallFailed() } }
-        orchestrator.onCallWasMissed = { [weak self] in self?.notifyListener("onCallMissed") { $0.onCallMissed() } }
+        orchestrator.onCallStart = { [weak self] in
+            guard let self = self else { PopinLogger.shared.log("Popin: onCallStart — Popin instance deallocated"); return }
+            self.notifyListener("onCallStart") { $0.onCallStart() }
+        }
+        orchestrator.onCallConnected = { [weak self] in
+            guard let self = self else { PopinLogger.shared.log("Popin: onCallConnected — Popin instance deallocated"); return }
+            self.notifyListener("onCallConnected") { $0.onCallConnected() }
+        }
+        orchestrator.onCallFailed = { [weak self] in
+            guard let self = self else { PopinLogger.shared.log("Popin: onCallFailed — Popin instance deallocated"); return }
+            self.notifyListener("onCallFailed") { $0.onCallFailed() }
+        }
+        orchestrator.onCallWasMissed = { [weak self] in
+            guard let self = self else { PopinLogger.shared.log("Popin: onCallMissed — Popin instance deallocated"); return }
+            self.notifyListener("onCallMissed") { $0.onCallMissed() }
+        }
         orchestrator.onQueuePositionDidChange = { [weak self] pos in
-            self?.notifyListener("onQueuePositionChanged") { $0.onQueuePositionChanged(position: pos) }
+            guard let self = self else { PopinLogger.shared.log("Popin: onQueuePositionChanged — Popin instance deallocated"); return }
+            self.notifyListener("onQueuePositionChanged") { $0.onQueuePositionChanged(position: pos) }
         }
 
         // Orchestrator → UI coordinator
@@ -220,15 +234,18 @@ public class Popin: PopinPusherDelegate {
 
         // UI coordinator → events listener
         uiCoordinator.onCallEnd = { [weak self] in
-            self?.orchestrator.cleanUp()
-            self?.notifyListener("onCallEnd") { $0.onCallEnd() }
+            guard let self = self else { PopinLogger.shared.log("Popin: onCallEnd — Popin instance deallocated"); return }
+            self.orchestrator.cleanUp()
+            self.notifyListener("onCallEnd") { $0.onCallEnd() }
             PopinLogger.shared.log("Popin: call ended, state reset")
         }
         uiCoordinator.onNetworkFailure = { [weak self] participant in
-            self?.notifyListener("onCallNetworkFailure") { $0.onCallNetworkFailure(participant: participant) }
+            guard let self = self else { PopinLogger.shared.log("Popin: onCallNetworkFailure — Popin instance deallocated"); return }
+            self.notifyListener("onCallNetworkFailure") { $0.onCallNetworkFailure(participant: participant) }
         }
         uiCoordinator.onCallAbandoned = { [weak self] in
-            self?.notifyListener("onCallAbandoned") { $0.onCallAbandoned() }
+            guard let self = self else { PopinLogger.shared.log("Popin: onCallAbandoned — Popin instance deallocated"); return }
+            self.notifyListener("onCallAbandoned") { $0.onCallAbandoned() }
         }
         uiCoordinator.onCallCancelled = { [weak self] _ in
             self?.orchestrator.cancelCall()

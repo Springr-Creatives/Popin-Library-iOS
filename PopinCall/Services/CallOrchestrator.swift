@@ -137,7 +137,7 @@ class CallOrchestrator: CallAcceptanceListener {
     }
 
     func onCallMissed() {
-        PopinLogger.shared.log("CallOrchestrator.onCallMissed()")
+        PopinLogger.shared.log("CallOrchestrator.onCallMissed() — onCallWasMissed=\(onCallWasMissed != nil ? "set" : "nil"), onCallMissedInVC=\(onCallMissedInVC != nil ? "set" : "nil")")
         waitHandler = nil
         onCallWasMissed?()
         DispatchQueue.main.async { [weak self] in
