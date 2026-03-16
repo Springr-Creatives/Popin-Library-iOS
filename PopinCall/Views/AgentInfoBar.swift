@@ -83,14 +83,14 @@ private struct AgentBarIndicators: View {
                 }
             }
 
-            // Signal strength
-            ZStack {
-                Circle()
-                    .fill(Color.black.opacity(0.5))
-                    .frame(width: 29, height: 29)
-                SignalStrengthView(quality: participant.connectionQuality)
-                    .scaleEffect(0.63)
-            }
+            // Signal strength (hidden)
+            // ZStack {
+            //     Circle()
+            //         .fill(Color.black.opacity(0.5))
+            //         .frame(width: 29, height: 29)
+            //     SignalStrengthView(quality: participant.connectionQuality)
+            //         .scaleEffect(0.63)
+            // }
         }
     }
 }

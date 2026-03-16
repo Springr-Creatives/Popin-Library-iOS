@@ -113,13 +113,13 @@ private struct AudienceRowTile: View {
                                 .foregroundColor(.white)
                         }
                     }
-                    ZStack {
-                        Circle()
-                            .fill(Color.black.opacity(0.7))
-                            .frame(width: 16, height: 16)
-                        SignalStrengthView(quality: participant.connectionQuality)
-                            .scaleEffect(0.5)
-                    }
+                    // ZStack {
+                    //     Circle()
+                    //         .fill(Color.black.opacity(0.7))
+                    //         .frame(width: 16, height: 16)
+                    //     SignalStrengthView(quality: participant.connectionQuality)
+                    //         .scaleEffect(0.5)
+                    // }
                 }
                 .padding(4)
                 .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .topTrailing)
