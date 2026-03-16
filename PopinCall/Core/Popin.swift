@@ -156,6 +156,15 @@ public class Popin: PopinPusherDelegate {
         }
     }
 
+    private func notifyListener(_ event: String, _ action: (PopinEventsListener) -> Void) {
+        guard let listener = eventsListener else {
+            PopinLogger.shared.log("Popin: \(event) — eventsListener is nil, cannot deliver event")
+            return
+        }
+        PopinLogger.shared.log("Popin: \(event) — delivering to eventsListener")
+        action(listener)
+    }
+
     // MARK: - Callback Wiring (breaks circular dependencies)
 
     #if canImport(UIKit)
@@ -173,12 +182,12 @@ public class Popin: PopinPusherDelegate {
         }
 
         // Orchestrator → events listener
-        orchestrator.onCallStart = { [weak self] in self?.eventsListener?.onCallStart() }
-        orchestrator.onCallConnected = { [weak self] in self?.eventsListener?.onCallConnected() }
-        orchestrator.onCallFailed = { [weak self] in self?.eventsListener?.onCallFailed() }
-        orchestrator.onCallWasMissed = { [weak self] in self?.eventsListener?.onCallMissed() }
+        orchestrator.onCallStart = { [weak self] in self?.notifyListener("onCallStart") { $0.onCallStart() } }
+        orchestrator.onCallConnected = { [weak self] in self?.notifyListener("onCallConnected") { $0.onCallConnected() } }
+        orchestrator.onCallFailed = { [weak self] in self?.notifyListener("onCallFailed") { $0.onCallFailed() } }
+        orchestrator.onCallWasMissed = { [weak self] in self?.notifyListener("onCallMissed") { $0.onCallMissed() } }
         orchestrator.onQueuePositionDidChange = { [weak self] pos in
-            self?.eventsListener?.onQueuePositionChanged(position: pos)
+            self?.notifyListener("onQueuePositionChanged") { $0.onQueuePositionChanged(position: pos) }
         }
 
         // Orchestrator → UI coordinator
@@ -212,15 +221,14 @@ public class Popin: PopinPusherDelegate {
         // UI coordinator → events listener
         uiCoordinator.onCallEnd = { [weak self] in
             self?.orchestrator.cleanUp()
-            self?.eventsListener?.onCallEnd()
+            self?.notifyListener("onCallEnd") { $0.onCallEnd() }
             PopinLogger.shared.log("Popin: call ended, state reset")
         }
         uiCoordinator.onNetworkFailure = { [weak self] participant in
-            PopinLogger.shared.log("Popin: onNetworkFailure — notifying eventsListener (participant=\(participant))")
-            self?.eventsListener?.onCallNetworkFailure(participant: participant)
+            self?.notifyListener("onCallNetworkFailure") { $0.onCallNetworkFailure(participant: participant) }
         }
         uiCoordinator.onCallAbandoned = { [weak self] in
-            self?.eventsListener?.onCallAbandoned()
+            self?.notifyListener("onCallAbandoned") { $0.onCallAbandoned() }
         }
         uiCoordinator.onCallCancelled = { [weak self] _ in
             self?.orchestrator.cancelCall()
