@@ -102,10 +102,11 @@ class CallOrchestrator: CallAcceptanceListener {
         PopinLogger.shared.log("CallOrchestrator.connectToCall: callId=\(callId)")
         popinPresenter.getCallDetails(callId: callId, onSuccess: { [weak self] talkModel in
             guard let self = self else { return }
-            PopinLogger.shared.log("CallOrchestrator.connectToCall: Got details")
+            PopinLogger.shared.log("CallOrchestrator.connectToCall: Got details — talkModel.id=\(talkModel.id ?? -1), websocket=\(talkModel.websocket ?? "nil"), hasAccessToken=\(talkModel.access_token != nil)")
             self.onCallConnected?()
             DispatchQueue.main.async {
                 let hasExistingVC = self.currentCallVCExists?() ?? false
+                PopinLogger.shared.log("CallOrchestrator.connectToCall: hasExistingVC=\(hasExistingVC), onLoadCallInExistingVC=\(self.onLoadCallInExistingVC != nil), onPresentNewCallVC=\(self.onPresentNewCallVC != nil)")
                 if hasExistingVC {
                     self.onLoadCallInExistingVC?(talkModel)
                 } else {

@@ -54,6 +54,7 @@ struct VideoCallSwiftUIView: View {
                 // Update call data for the UI
                 videoCallId = call.id
                 videoUserId = call.user_id
+                PopinLogger.shared.log("VideoCallSwiftUIView: call received — id=\(call.id ?? -1), userId=\(call.user_id ?? -1), websocket=\(call.websocket ?? "nil"), accessToken=\(call.access_token ?? "nil")")
 
                 // Configure ChatManager for this call
                 if let callId = call.id {
@@ -62,39 +63,41 @@ struct VideoCallSwiftUIView: View {
 
                 Task {
                     guard let websocket = call.websocket,
-                          let token = call.access_token else { return }
+                          let token = call.access_token else {
+                        PopinLogger.shared.log("VideoCallSwiftUIView: MISSING websocket or access_token — cannot connect to room. websocket=\(call.websocket ?? "nil"), token=\(call.access_token ?? "nil")")
+                        return
+                    }
+                    PopinLogger.shared.log("VideoCallSwiftUIView: connecting to LiveKit room — url=\(websocket), tokenPrefix=\(String(token.prefix(20)))...")
+                    PopinLogger.shared.log("VideoCallSwiftUIView: current room state before connect = \(_room.connectionState)")
                     do {
                         try await _room.connect(url: websocket, token: token)
+                        PopinLogger.shared.log("VideoCallSwiftUIView: room.connect() SUCCESS — connectionState=\(_room.connectionState), localParticipantSid=\(_room.localParticipant.sid?.stringValue ?? "nil")")
                         try await _room.localParticipant.setMicrophone(enabled: viewModel.preCallMicEnabled)
+                        PopinLogger.shared.log("VideoCallSwiftUIView: microphone enabled=\(viewModel.preCallMicEnabled)")
                         let cameraEnabled = configHolder.config.audioOnlyMode ? false : viewModel.preCallCameraEnabled
                         try await _room.localParticipant.setCamera(enabled: cameraEnabled)
+                        PopinLogger.shared.log("VideoCallSwiftUIView: camera enabled=\(cameraEnabled), audioOnlyMode=\(configHolder.config.audioOnlyMode)")
 
-//                        // Enable multitasking camera access for PiP immediately after enabling camera
-//                        // This must be set before the AVCaptureSession starts
-//                        if let videoTrack = _room.localParticipant.firstCameraVideoTrack as? LocalVideoTrack,
-//                           let cameraCapturer = videoTrack.capturer as? CameraCapturer {
-//                            cameraCapturer.isMultitaskingAccessEnabled = true
-//                        }
-                        
                         if let localVideoTrack = _room.localParticipant.trackPublications.first(where: {
                             $0.value.kind == Track.Kind.video
                         })?.value.track as? LocalVideoTrack  {
-                            
+
                             if let cameraCapturer = localVideoTrack.capturer as? CameraCapturer {
                                 if #available(iOS 16.0, *) {
                                     if cameraCapturer.captureSession.isMultitaskingCameraAccessSupported {
                                         cameraCapturer.captureSession.beginConfiguration()
                                         cameraCapturer.captureSession.isMultitaskingCameraAccessEnabled = true
                                         cameraCapturer.captureSession.commitConfiguration()
+                                        PopinLogger.shared.log("VideoCallSwiftUIView: multitasking camera access enabled")
                                     }
                                 }
                             }
                         }
 
-
-                        
+                        PopinLogger.shared.log("VideoCallSwiftUIView: room setup complete — remoteParticipants=\(_room.remoteParticipants.count)")
 
                     } catch {
+                        PopinLogger.shared.log("VideoCallSwiftUIView: room.connect() FAILED — error=\(error)")
                     }
                 }
             }

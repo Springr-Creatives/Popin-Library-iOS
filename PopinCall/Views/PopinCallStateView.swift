@@ -88,6 +88,7 @@ struct PopinCallStateView: View {
 
     var body: some View {
         // Show different views based on connection state
+        let _ = PopinLogger.shared.log("PopinCallStateView: render — isWaiting=\(viewModel.isWaitingForAcceptance), callAccepted=\(viewModel.callAccepted), roomState=\(_room.connectionState), hasConnected=\(hasConnected), call=\(viewModel.call?.id ?? -1)")
         if viewModel.isWaitingForAcceptance {
             // Outgoing call waiting for acceptance - show "Connecting..." with self video
             buildWaitingForAcceptanceView()
@@ -122,6 +123,7 @@ struct PopinCallStateView: View {
                  }
         } else {
             // Call accepted but connecting/reconnecting/other - show loading
+            let _ = PopinLogger.shared.log("PopinCallStateView: showing 'Connecting...' spinner — callAccepted=\(viewModel.callAccepted), roomState=\(_room.connectionState), hasCall=\(viewModel.call != nil)")
             ZStack {
                 Color.black.ignoresSafeArea()
                 VStack(spacing: 20) {

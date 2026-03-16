@@ -55,7 +55,7 @@ public class Popin: PopinPusherDelegate {
         return false
     }
 
-    private weak var eventsListener: PopinEventsListener?
+    private var eventsListener: PopinEventsListener? { config.eventsListener }
     private var config: PopinConfig
 
     private let popinPresenter = PopinPresenter(popinInteractor: PopinInteractor())
@@ -325,8 +325,7 @@ public class Popin: PopinPusherDelegate {
             return
         }
 
-        PopinLogger.shared.log("startCall() called, pusherConnected=\(pusherConnected)")
-        self.eventsListener = config.eventsListener
+        PopinLogger.shared.log("startCall() called, pusherConnected=\(pusherConnected), eventsListener=\(eventsListener != nil ? "set" : "nil")")
 
         if !pusherConnected {
             connectPusher(seller_id: sellerToken)
@@ -363,7 +362,7 @@ public class Popin: PopinPusherDelegate {
             return
         }
 
-        self.eventsListener = popinDelegate
+        self.config.eventsListener = popinDelegate
         self.sellerToken = token
         Utilities.shared.saveSeller(seller_id: token)
 
@@ -449,7 +448,6 @@ public class Popin: PopinPusherDelegate {
         }
 
         PopinLogger.shared.log("onIncomingCallAnswered: callId=\(callData.callId), hideFlipCameraButton=\(config.hideFlipCameraButton), hasActiveVC=\(uiCoordinator.hasActiveVC())")
-        self.eventsListener = config.eventsListener
 
         PopinCallManager.shared.callAnswered()
 

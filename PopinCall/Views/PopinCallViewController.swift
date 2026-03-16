@@ -415,6 +415,7 @@ extension PopinCallViewController: VideoCallView {
         callConnected = true
         viewModel.isWaitingForAcceptance = false
         viewModel.callAccepted = true
+        PopinLogger.shared.log("PopinCallVC: loadCall — setting viewModel.call, id=\(call.id ?? -1), websocket=\(call.websocket ?? "nil"), hasAccessToken=\(call.access_token != nil)")
         viewModel.call = call
 
         // Safety net: if PiP had hidden the VC view, restore it now.
