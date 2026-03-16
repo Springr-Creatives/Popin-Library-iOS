@@ -67,6 +67,11 @@ struct VideoCallSwiftUIView: View {
                         PopinLogger.shared.log("VideoCallSwiftUIView: MISSING websocket or access_token — cannot connect to room. websocket=\(call.websocket ?? "nil"), token=\(call.access_token ?? "nil")")
                         return
                     }
+                    // Guard against duplicate connect calls (onReceive can re-fire during @State-triggered re-renders)
+                    guard _room.connectionState == .disconnected else {
+                        PopinLogger.shared.log("VideoCallSwiftUIView: skipping connect — room already \(_room.connectionState)")
+                        return
+                    }
                     PopinLogger.shared.log("VideoCallSwiftUIView: connecting to LiveKit room — url=\(websocket), tokenPrefix=\(String(token.prefix(20)))...")
                     PopinLogger.shared.log("VideoCallSwiftUIView: current room state before connect = \(_room.connectionState)")
                     do {
