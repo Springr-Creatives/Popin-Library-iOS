@@ -17,7 +17,6 @@ public class PopinLogger {
 
     func log(_ message: String) {
         guard isEnabled else { return }
-        print("[Popin] \(message)")
         NSLog("[Popin] \(message)")
     }
 }
