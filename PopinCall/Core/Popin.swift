@@ -56,7 +56,7 @@ public class Popin: PopinPusherDelegate {
     }
 
     private var eventsListener: PopinEventsListener? { config.eventsListener }
-    private var config: PopinConfig
+    private(set) var config: PopinConfig
 
     private let popinPresenter = PopinPresenter(popinInteractor: PopinInteractor())
     private let popinPusher = PopinPusher()
