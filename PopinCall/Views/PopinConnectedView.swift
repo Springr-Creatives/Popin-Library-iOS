@@ -294,6 +294,7 @@ struct PopinConnectedView: View {
                             participants: audienceParticipants,
                             primaryParticipantId: $primaryParticipantId,
                             localParticipantSid: _room.localParticipant.sid?.stringValue,
+                            localDisplayName: Popin.shared.config.userName,
                             isFrontCamera: isFrontCamera
                         )
                         .fixedSize(horizontal: true, vertical: false)

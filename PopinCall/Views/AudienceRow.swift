@@ -14,6 +14,7 @@ struct AudienceRow: View {
     let participants: [Participant]
     @Binding var primaryParticipantId: String?
     let localParticipantSid: String?
+    let localDisplayName: String?
     let isFrontCamera: Bool
 
     var body: some View {
@@ -24,6 +25,7 @@ struct AudienceRow: View {
                         participant: participant,
                         primaryParticipantId: $primaryParticipantId,
                         localParticipantSid: localParticipantSid,
+                        localDisplayName: localDisplayName,
                         isFrontCamera: isFrontCamera
                     )
                 }
@@ -40,16 +42,20 @@ private struct AudienceRowTile: View {
     @ObservedObject var participant: Participant
     @Binding var primaryParticipantId: String?
     let localParticipantSid: String?
+    let localDisplayName: String?
     let isFrontCamera: Bool
 
-    // Check if this is the local participant and should be mirrored
-    private var shouldMirror: Bool {
+    private var isLocalParticipant: Bool {
         guard let localSid = localParticipantSid,
               let participantSid = participant.sid?.stringValue else {
             return false
         }
-        // Mirror if this is local participant AND front camera is active AND showing camera (not screen share)
-        return localSid == participantSid && isFrontCamera && participant.firstScreenShareVideoTrack == nil
+        return localSid == participantSid
+    }
+
+    // Mirror if this is local participant AND front camera is active AND showing camera (not screen share)
+    private var shouldMirror: Bool {
+        isLocalParticipant && isFrontCamera && participant.firstScreenShareVideoTrack == nil
     }
 
     var body: some View {
@@ -90,8 +96,8 @@ private struct AudienceRowTile: View {
                 )
                 .frame(height: 35)
 
-                // Participant name
-                Text(participant.name ?? "Unknown")
+                // Participant name — use Popin-configured name for self
+                Text(isLocalParticipant ? (localDisplayName ?? participant.name ?? "Unknown") : (participant.name ?? "Unknown"))
                     .font(.system(size: 10))
                     .fontWeight(.medium)
                     .foregroundColor(.white)

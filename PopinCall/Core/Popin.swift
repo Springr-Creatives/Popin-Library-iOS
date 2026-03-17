@@ -250,6 +250,17 @@ public class Popin: PopinPusherDelegate {
         uiCoordinator.onCallCancelled = { [weak self] _ in
             self?.orchestrator.cancelCall()
         }
+
+        // Handle pending incoming call that was answered before SDK initialized.
+        // On killed-state cold launch: VoIP push → CallKit → user answers → but
+        // onCallAnswered was nil (SDK not yet initialized). Now that callbacks are
+        // wired, check if CallKit already answered and process it.
+        if CallManager.shared.callWasAnswered,
+           PopinCallManager.shared.callData != nil,
+           !uiCoordinator.hasActiveVC() {
+            PopinLogger.shared.log("wireCallbacks: Pending answered call detected — processing now")
+            onIncomingCallAnswered()
+        }
     }
     #endif
 
