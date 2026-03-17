@@ -10,7 +10,7 @@ import Foundation
 public protocol PopinEventsListener: AnyObject {
     func onPermissionGiven()
     func onPermissionDenied()
-    func onCallStart()
+    func onCallStart(callID: Int)
     func onCallAbandoned()
     func onQueuePositionChanged(position: Int)
     func onCallMissed()

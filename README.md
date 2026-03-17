@@ -159,8 +159,8 @@ extension ViewController: PopinEventsListener {
         print("Permission denied")
     }
 
-    func onCallStart() {
-        print("Call started")
+    func onCallStart(callID: Int) {
+        print("Call started, callID: \(callID)")
     }
 
     func onCallAbandoned() {
@@ -354,6 +354,13 @@ Popin.shared?.setIdentifier("unique-user-id", onSuccess: {}, onFailure: { _ in }
 // Update user name and contact info
 Popin.shared?.updateUserInfo(name: "New Name", contactInfo: "new@email.com", onSuccess: {}, onFailure: { _ in })
 
+// Get call metadata (returns raw JSON string)
+Popin.shared?.getCallMeta(callId: 123, onSuccess: { json in
+    print("Call meta: \(json)")
+}, onFailure: { error in
+    print("Failed: \(error)")
+})
+
 // Access current config
 let config = Popin.shared?.getConfig()
 
@@ -363,6 +370,24 @@ Popin.registerForVoIPPushes()
 // Logout the current user and deinitialize the SDK
 Popin.deinitialize()
 ```
+
+### getCallMeta
+
+Fetches metadata for a call. Returns the raw JSON response as a string. Must be called after initialization.
+
+```swift
+Popin.shared?.getCallMeta(callId: 123, onSuccess: { json in
+    print("Call meta: \(json)")
+}, onFailure: { error in
+    print("Failed: \(error)")
+})
+```
+
+| Parameter | Type | Description |
+|-----------|------|-------------|
+| `callId` | `Int` | The call ID (from `onCallStart(callID:)`) |
+| `onSuccess` | `(String) -> Void` | Called with the raw JSON response string |
+| `onFailure` | `(String) -> Void` | Called with an error message on failure |
 
 ### deinitialize
 
@@ -460,7 +485,7 @@ PopinProduct(
 |--------|-------------|
 | `onPermissionGiven()` | Camera and microphone permissions were granted |
 | `onPermissionDenied()` | Camera or microphone permissions were denied |
-| `onCallStart()` | Call has been queued and is waiting for an agent |
+| `onCallStart(callID:)` | Call has been initiated. Returns the call ID. For outgoing calls, fired when the call API succeeds. For incoming calls, fired when the call is answered |
 | `onCallAbandoned()` | Call was abandoned by user during connecting screen |
 | `onQueuePositionChanged(position:)` | Your position in the queue has changed |
 | `onCallMissed()` | No agent answered in time |

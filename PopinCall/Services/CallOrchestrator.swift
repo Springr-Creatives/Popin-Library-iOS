@@ -16,7 +16,7 @@ class CallOrchestrator: CallAcceptanceListener {
     // MARK: - Event callbacks (set by Popin facade)
 
     /// Called when the outgoing call API succeeds and the call is initiated.
-    var onCallStart: (() -> Void)?
+    var onCallStart: ((Int) -> Void)?
     /// Called when the SDK successfully connects to the call room.
     var onCallConnected: (() -> Void)?
     /// Called when the call fails at any point.
@@ -62,13 +62,15 @@ class CallOrchestrator: CallAcceptanceListener {
             self.onPresentOutgoingVC?()
         }
 
-        popinPresenter.startConnection(seller_id: sellerToken, campaign: meta, onSuccess: { [weak self] callQueueId in
+        popinPresenter.startConnection(seller_id: sellerToken, campaign: meta, onSuccess: { [weak self] callQueueId, callId in
             guard let self, self.callStarted else {
                 PopinLogger.shared.log("CallOrchestrator.startCall: Cancelled before API returned")
                 return
             }
-            PopinLogger.shared.log("CallOrchestrator.startCall: API success, queueId=\(callQueueId)")
-            self.onCallStart?()
+            PopinLogger.shared.log("CallOrchestrator.startCall: API success, queueId=\(callQueueId), callId=\(callId)")
+            if callId != 0 {
+                self.onCallStart?(callId)
+            }
             DispatchQueue.main.async {
                 self.onUpdateCallQueueId?(callQueueId)
             }

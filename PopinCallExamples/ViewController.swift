@@ -162,7 +162,7 @@ extension ViewController: PopinEventsListener {
     func onPermissionDenied() {
     }
 
-    func onCallStart() {
+    func onCallStart(callID: Int) {
     }
 
     func onCallAbandoned() {

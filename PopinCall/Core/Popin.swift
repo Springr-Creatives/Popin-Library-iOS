@@ -183,9 +183,9 @@ public class Popin: PopinPusherDelegate {
         }
 
         // Orchestrator → events listener
-        orchestrator.onCallStart = { [weak self] in
+        orchestrator.onCallStart = { [weak self] callId in
             guard let self = self else { PopinLogger.shared.log("Popin: onCallStart — Popin instance deallocated"); return }
-            self.notifyListener("onCallStart") { $0.onCallStart() }
+            self.notifyListener("onCallStart") { $0.onCallStart(callID: callId) }
         }
         orchestrator.onCallConnected = { [weak self] in
             guard let self = self else { PopinLogger.shared.log("Popin: onCallConnected — Popin instance deallocated"); return }
@@ -330,6 +330,14 @@ public class Popin: PopinPusherDelegate {
         }, onFailure: onFailure)
     }
 
+    public func getCallMeta(callId: Int, onSuccess: @escaping (String) -> Void, onFailure: @escaping (String) -> Void) {
+        guard popinPresenter.isUserRegistered() else {
+            onFailure("Not initialised yet")
+            return
+        }
+        popinPresenter.getCallMeta(callId: callId, onSuccess: onSuccess, onFailure: onFailure)
+    }
+
     public func startCall() {
         guard Self.isSupported else {
             config.eventsListener?.onCallFailed()
@@ -462,6 +470,11 @@ public class Popin: PopinPusherDelegate {
 
         PopinCallManager.shared.callAnswered()
 
+        let callId = callData.callId
+        if callId != 0 {
+            notifyListener("onCallStart") { $0.onCallStart(callID: callId) }
+        }
+
         if !uiCoordinator.hasActiveVC() {
             PopinLogger.shared.log("onIncomingCallAnswered: No active VC — presenting incoming call UI")
             uiCoordinator.presentIncomingCallUI(config: config)
@@ -470,7 +483,7 @@ public class Popin: PopinPusherDelegate {
         uiCoordinator.handleCallKitAnswer()
 
         let presenter = VideoCallPresenter(videoCallInteractor: VideoCallInteractor())
-        presenter.acceptCall(callId: callData.callId)
+        presenter.acceptCall(callId: callId)
 
         if !pusherConnected {
             connectPusher(seller_id: sellerToken)
@@ -496,7 +509,8 @@ public class Popin: PopinPusherDelegate {
     // MARK: - PopinPusherDelegate
 
     func onAgentConnected() {
-        self.eventsListener?.onCallStart()
+        // onCallStart is fired by the orchestrator (outgoing) or onIncomingCallAnswered (incoming)
+        // with a valid callID — not here, where no callID is available.
     }
 
     func onAllExpertsBusy() {

@@ -50,7 +50,7 @@ class PopinPresenter {
         }
     }
     
-    func startConnection(seller_id: Int, campaign: [String: String], onSuccess success: @escaping (Int) -> Void, onFailure failure: @escaping () -> Void) {
+    func startConnection(seller_id: Int, campaign: [String: String], onSuccess success: @escaping (_ callQueueId: Int, _ callId: Int) -> Void, onFailure failure: @escaping () -> Void) {
         var campaignString = ""
         if !campaign.isEmpty {
             if let jsonData = try? JSONSerialization.data(withJSONObject: campaign, options: []),
@@ -61,9 +61,9 @@ class PopinPresenter {
 
         Task {
             do {
-                let callQueueId = try await popinInteractor.startConnection(seller_id: seller_id, campaign: campaignString)
+                let result = try await popinInteractor.startConnection(seller_id: seller_id, campaign: campaignString)
                 await MainActor.run {
-                    success(callQueueId)
+                    success(result.callQueueId, result.callId)
                 }
             } catch {
                 await MainActor.run {
@@ -143,6 +143,21 @@ class PopinPresenter {
             Utilities.shared.saveUser(user: nil)
             Utilities.shared.clearConnected()
             UserDefaults.standard.removeObject(forKey: "popinSeller")
+        }
+    }
+
+    func getCallMeta(callId: Int, onSuccess success: @escaping (String) -> Void, onFailure failure: @escaping (String) -> Void) {
+        Task {
+            do {
+                let response = try await popinInteractor.getCallMeta(callId: callId)
+                await MainActor.run {
+                    success(response)
+                }
+            } catch {
+                await MainActor.run {
+                    failure(error.localizedDescription)
+                }
+            }
         }
     }
 

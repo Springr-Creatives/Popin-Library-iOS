@@ -74,17 +74,17 @@ class PopinInteractor {
         }
     }
     
-    func startConnection(seller_id: Int, campaign: String) async throws -> Int {
+    func startConnection(seller_id: Int, campaign: String) async throws -> (callQueueId: Int, callId: Int) {
         var parameters: [String: Any] = ["seller_id":seller_id];
         if !campaign.isEmpty {
             parameters["campaign"] = campaign
         }
         let urlString = serverURL + "/user/call/start";
-        
+
         let statusModel: StatusModel = try await Utilities.shared.request(urlString: urlString, method: "POST", parameters: parameters)
-        
+
         if statusModel.status == 1, let callQueueId = statusModel.call_queue_id {
-            return callQueueId
+            return (callQueueId, statusModel.call_id ?? 0)
         } else {
              throw InteractorError.apiError(statusModel.message)
         }
@@ -138,6 +138,13 @@ class PopinInteractor {
         if response.status != 1 {
             throw InteractorError.apiError(response.message)
         }
+    }
+
+    func getCallMeta(callId: Int) async throws -> String {
+        let parameters: [String: Any] = ["call_id": callId]
+        let urlString = serverURL + "/user/call/meta"
+        let response: String = try await Utilities.shared.request(urlString: urlString, method: "POST", parameters: parameters)
+        return response
     }
 
     func getCallDetails(callId: Int) async throws -> TalkModel {
