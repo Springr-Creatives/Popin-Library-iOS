@@ -142,23 +142,27 @@ public class PopinCallViewController: UIViewController {
         // Set self as CallManager delegate for CallKit callbacks
         CallManager.shared.delegate = self
 
-        // Set up end call callback
+        // Set up end call callback — captures presenter strongly so the /end
+        // API fires even if the VC is deallocated before the closure runs.
+        let presenter = self.videoCallPresenter
         viewModel.onEndCall = { [weak self] in
-            guard let self = self else { return }
-            PopinLogger.shared.log("PopinCallVC: onEndCall FIRED — callConnected=\(self.callConnected), suppressPipClose=\(self.viewModel.suppressPipClose)")
-            self.isAppInitiatedDisconnect = true
-            self.shouldSkipEndApi = true
-            self.videoCallPresenter.endCall(callId: self.callId, onSuccess: {
+            let callId = self?.callId ?? 0
+            PopinLogger.shared.log("PopinCallVC: onEndCall FIRED — callId=\(callId), callConnected=\(self?.callConnected ?? false)")
+            self?.isAppInitiatedDisconnect = true
+            self?.shouldSkipEndApi = true
+            presenter.endCall(callId: callId, onSuccess: {
                 DispatchQueue.main.async {
+                    PopinLogger.shared.log("PopinCallVC: onEndCall /end API succeeded — cleaning up")
                     CallManager.shared.endCall()
-                    self.closeViewController(shouldNotEndCX: true)
-                    self.dismiss(animated: true)
+                    self?.closeViewController(shouldNotEndCX: true)
+                    self?.dismiss(animated: true)
                 }
             }, onFailure: { error in
                 DispatchQueue.main.async {
+                    PopinLogger.shared.log("PopinCallVC: onEndCall /end API failed (\(error)) — cleaning up anyway")
                     CallManager.shared.endCall()
-                    self.closeViewController(shouldNotEndCX: true)
-                    self.dismiss(animated: true)
+                    self?.closeViewController(shouldNotEndCX: true)
+                    self?.dismiss(animated: true)
                 }
             })
         }
@@ -504,14 +508,13 @@ extension PopinCallViewController: CallManagerDelegate {
         DispatchQueue.main.async { [weak self] in
             guard let self = self else { return }
 
-            // Determine whether to call End or Reject API
-            // Skip reject if call ended due to timeout — the caller already knows the call wasn't picked up.
+            // /end API is only called from the end-call button / PiP close path (viewModel.onEndCall).
+            // Reject API is still called here for calls that were never accepted.
             if self.shouldSkipEndApi || endedByTimeout {
                 PopinLogger.shared.log("PopinCallVC: didEndCall: Skipping API call (shouldSkipEndApi=\(self.shouldSkipEndApi), endedByTimeout=\(endedByTimeout))")
             } else if self.callConnected || self.viewModel.callAccepted {
-                self.videoCallPresenter.endCall(callId: self.callId, onSuccess: {
-                }, onFailure: { error in
-                })
+                // Call was connected — /end API is handled by onEndCall, skip here
+                PopinLogger.shared.log("PopinCallVC: didEndCall: Call was connected, /end API not called from this path")
             } else {
                 self.videoCallPresenter.rejectCall(callId: self.callId)
             }

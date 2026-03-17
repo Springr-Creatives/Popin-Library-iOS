@@ -352,9 +352,6 @@ struct PopinConnectedView: View {
                     PopinLogger.shared.log("PopinConnectedView: END CALL BUTTON tapped")
                     viewModel.isUserEndingCall = true
                     viewModel.onEndCall?()
-                    Task {
-                        await _room.disconnect()
-                    }
                 }, showChat: $showChat)
             }
             .background(
@@ -501,9 +498,6 @@ struct PopinConnectedView: View {
             PopinLogger.shared.log("PopinConnectedView: .pipDidClose — ending call")
             viewModel.isUserEndingCall = true
             viewModel.onEndCall?()
-            Task {
-                await _room.disconnect()
-            }
         }
         .onChange(of: chatManager.latestIncomingMessage) { newMessage in
             // Show toast when new incoming message arrives
