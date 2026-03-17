@@ -176,4 +176,19 @@ class PopinPresenter {
         }
     }
 
+    func getWidgetCall(url: String, onSuccess success: @escaping (TalkModel) -> Void, onFailure failure: @escaping () -> Void) {
+        Task {
+            do {
+                let talkModel = try await popinInteractor.getWidgetCall(url: url)
+                await MainActor.run {
+                    success(talkModel)
+                }
+            } catch {
+                await MainActor.run {
+                    failure()
+                }
+            }
+        }
+    }
+
 }

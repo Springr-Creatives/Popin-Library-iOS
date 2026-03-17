@@ -124,6 +124,37 @@ class CallOrchestrator: CallAcceptanceListener {
         })
     }
 
+    // MARK: - Widget Call (direct connect via URL)
+
+    func startWidgetCall(url: String) {
+        callStarted = true
+        PopinLogger.shared.log("CallOrchestrator.startWidgetCall(url: \(url))")
+
+        popinPresenter.getWidgetCall(url: url, onSuccess: { [weak self] talkModel in
+            guard let self, self.callStarted else {
+                PopinLogger.shared.log("CallOrchestrator.startWidgetCall: Cancelled before API returned")
+                return
+            }
+            PopinLogger.shared.log("CallOrchestrator.startWidgetCall: Got details — talkModel.id=\(talkModel.id ?? -1)")
+            if let callId = talkModel.id, callId != 0 {
+                self.onCallStart?(callId)
+            }
+            self.onCallConnected?()
+            DispatchQueue.main.async {
+                let hasExistingVC = self.currentCallVCExists?() ?? false
+                if hasExistingVC {
+                    self.onLoadCallInExistingVC?(talkModel)
+                } else {
+                    self.onPresentNewCallVC?(talkModel)
+                }
+            }
+        }, onFailure: { [weak self] in
+            PopinLogger.shared.log("CallOrchestrator.startWidgetCall: API failed")
+            self?.callStarted = false
+            self?.onCallFailed?()
+        })
+    }
+
     // MARK: - CallAcceptanceListener
 
     func onQueuePositionChange(position: Int) {

@@ -338,13 +338,13 @@ public class Popin: PopinPusherDelegate {
         popinPresenter.getCallMeta(callId: callId, onSuccess: onSuccess, onFailure: onFailure)
     }
 
-    public func startCall() {
+    public func startCall(url: String? = nil) {
         guard Self.isSupported else {
             config.eventsListener?.onCallFailed()
             return
         }
 
-        PopinLogger.shared.log("startCall() called, pusherConnected=\(pusherConnected), eventsListener=\(eventsListener != nil ? "set" : "nil")")
+        PopinLogger.shared.log("startCall() called, url=\(url ?? "nil"), pusherConnected=\(pusherConnected), eventsListener=\(eventsListener != nil ? "set" : "nil")")
 
         if !pusherConnected {
             connectPusher(seller_id: sellerToken)
@@ -356,7 +356,11 @@ public class Popin: PopinPusherDelegate {
             onGranted: { [weak self] in
                 guard let self = self else { return }
                 self.eventsListener?.onPermissionGiven()
-                self.orchestrator.startCall(sellerToken: self.sellerToken, meta: self.getEnhancedMeta())
+                if let url = url {
+                    self.orchestrator.startWidgetCall(url: url)
+                } else {
+                    self.orchestrator.startCall(sellerToken: self.sellerToken, meta: self.getEnhancedMeta())
+                }
             },
             onDenied: { [weak self] in
                 self?.eventsListener?.onPermissionDenied()

@@ -149,9 +149,22 @@ class PopinInteractor {
 
     func getCallDetails(callId: Int) async throws -> TalkModel {
         let urlString = serverURL + "/user/call/\(callId)"
-        
+
         let talkModel: TalkModel = try await Utilities.shared.request(urlString: urlString, method: "GET")
-        
+
+        if talkModel.status == 1 {
+            return talkModel
+        } else {
+            throw InteractorError.apiError(nil)
+        }
+    }
+
+    func getWidgetCall(url: String) async throws -> TalkModel {
+        let urlString = serverURL + "/user/seller-widget/call"
+        let parameters: [String: Any] = ["url": url]
+
+        let talkModel: TalkModel = try await Utilities.shared.request(urlString: urlString, method: "POST", parameters: parameters)
+
         if talkModel.status == 1 {
             return talkModel
         } else {
