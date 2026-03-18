@@ -486,6 +486,12 @@ public class Popin: PopinPusherDelegate {
 
         uiCoordinator.handleCallKitAnswer()
 
+        // Post a local notification so the user can navigate back to the video UI.
+        // When the call is answered via "Hold & Accept" (while on a GSM call), iOS
+        // keeps the CallKit audio screen visible — the notification gives the user
+        // a way to tap through to the app's video window.
+        uiCoordinator.postVideoCallNotification(callerName: callData.displayName)
+
         let presenter = VideoCallPresenter(videoCallInteractor: VideoCallInteractor())
         presenter.acceptCall(callId: callId)
 

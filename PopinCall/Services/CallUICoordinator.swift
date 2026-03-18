@@ -4,6 +4,7 @@
 //
 
 import Foundation
+import UserNotifications
 
 #if canImport(UIKit)
 import UIKit
@@ -11,6 +12,10 @@ import UIKit
 /// Owns all call VC presentation and lifecycle.
 /// Communicates upward via callbacks — never references Popin.shared.
 class CallUICoordinator {
+
+    // MARK: - Constants
+
+    private static let videoCallNotificationId = "popin_video_call_notification"
 
     // MARK: - State
 
@@ -120,12 +125,58 @@ class CallUICoordinator {
         return vc.isOutgoingCall && !vc.callConnected
     }
 
+    // MARK: - Video Call Notification
+
+    /// Posts a local notification prompting the user to tap to open the video call.
+    /// Used when the call is answered via CallKit but the video UI can't be shown
+    /// immediately (e.g. "Hold & Accept" while on a GSM call keeps CallKit's audio UI visible).
+    func postVideoCallNotification(callerName: String) {
+        let center = UNUserNotificationCenter.current()
+
+        // Request authorization (best-effort — if already granted this is a no-op).
+        center.requestAuthorization(options: [.alert, .sound]) { granted, _ in
+            guard granted else {
+                PopinLogger.shared.log("CallUICoordinator: Notification permission not granted — skipping video call notification")
+                return
+            }
+
+            let content = UNMutableNotificationContent()
+            content.title = callerName
+            content.body = "Tap to open video call"
+            content.sound = nil
+
+            // Fire immediately
+            let request = UNNotificationRequest(
+                identifier: Self.videoCallNotificationId,
+                content: content,
+                trigger: nil
+            )
+
+            center.add(request) { error in
+                if let error = error {
+                    PopinLogger.shared.log("CallUICoordinator: Failed to post video call notification: \(error.localizedDescription)")
+                } else {
+                    PopinLogger.shared.log("CallUICoordinator: Video call notification posted")
+                }
+            }
+        }
+    }
+
+    /// Removes the video-call notification (e.g. when the video UI is presented or the call ends).
+    func removeVideoCallNotification() {
+        let center = UNUserNotificationCenter.current()
+        center.removeDeliveredNotifications(withIdentifiers: [Self.videoCallNotificationId])
+        center.removePendingNotificationRequests(withIdentifiers: [Self.videoCallNotificationId])
+        PopinLogger.shared.log("CallUICoordinator: Video call notification removed")
+    }
+
     // MARK: - Cleanup
 
     func cleanupAfterCallEnd() {
         currentCallViewController = nil
         pendingCallViewController = nil
         cancelDeferredPresentation()
+        removeVideoCallNotification()
         Utilities.shared.clearConnected()
         onCallEnd?()
         PopinLogger.shared.log("CallUICoordinator.cleanupAfterCallEnd: State reset complete")
@@ -179,6 +230,9 @@ class CallUICoordinator {
             pendingCallViewController = nil
             return
         }
+
+        // Video UI is about to appear — dismiss the "tap to open" notification
+        removeVideoCallNotification()
 
         if rootVC.presentedViewController != nil {
             PopinLogger.shared.log("CallUICoordinator.performPresentation: Dismissing existing VC first")
