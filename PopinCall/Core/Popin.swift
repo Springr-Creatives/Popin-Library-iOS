@@ -180,6 +180,12 @@ public class Popin: PopinPusherDelegate {
             guard let self = self else { return }
             PopinLogger.shared.log("Popin.onPresentIncomingCallUI: hideFlipCameraButton=\(self.config.hideFlipCameraButton)")
             self.uiCoordinator.presentIncomingCallUI(config: self.config)
+
+            // Connect Pusher early so it's ready by the time the user answers.
+            // This also lets us receive cancel events while still ringing.
+            if !self.pusherConnected {
+                self.connectPusher(seller_id: self.sellerToken)
+            }
         }
 
         // Orchestrator → events listener
@@ -259,6 +265,10 @@ public class Popin: PopinPusherDelegate {
            PopinCallManager.shared.callData != nil,
            !uiCoordinator.hasActiveVC() {
             PopinLogger.shared.log("wireCallbacks: Pending answered call detected — processing now")
+            // On cold launch the ringing callback may not have fired, so ensure Pusher connects.
+            if !pusherConnected {
+                connectPusher(seller_id: sellerToken)
+            }
             onIncomingCallAnswered()
         }
     }
@@ -494,10 +504,6 @@ public class Popin: PopinPusherDelegate {
 
         let presenter = VideoCallPresenter(videoCallInteractor: VideoCallInteractor())
         presenter.acceptCall(callId: callId)
-
-        if !pusherConnected {
-            connectPusher(seller_id: sellerToken)
-        }
 
         permissionService.requestForIncomingCall(
             audioOnly: config.audioOnlyMode,
