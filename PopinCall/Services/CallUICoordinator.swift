@@ -133,22 +133,29 @@ class CallUICoordinator {
     func postVideoCallNotification(callerName: String) {
         let center = UNUserNotificationCenter.current()
 
-        let content = UNMutableNotificationContent()
-        content.title = callerName
-        content.body = "Tap to open video call"
-        content.sound = nil
+        center.getNotificationSettings { settings in
+            guard settings.authorizationStatus == .authorized else {
+                PopinLogger.shared.log("CallUICoordinator: Notification permission not granted, skipping video call notification")
+                return
+            }
 
-        let request = UNNotificationRequest(
-            identifier: Self.videoCallNotificationId,
-            content: content,
-            trigger: nil
-        )
+            let content = UNMutableNotificationContent()
+            content.title = callerName
+            content.body = "Tap to open video call"
+            content.sound = nil
 
-        center.add(request) { error in
-            if let error = error {
-                PopinLogger.shared.log("CallUICoordinator: Failed to post video call notification: \(error.localizedDescription)")
-            } else {
-                PopinLogger.shared.log("CallUICoordinator: Video call notification posted")
+            let request = UNNotificationRequest(
+                identifier: Self.videoCallNotificationId,
+                content: content,
+                trigger: nil
+            )
+
+            center.add(request) { error in
+                if let error = error {
+                    PopinLogger.shared.log("CallUICoordinator: Failed to post video call notification: \(error.localizedDescription)")
+                } else {
+                    PopinLogger.shared.log("CallUICoordinator: Video call notification posted")
+                }
             }
         }
     }

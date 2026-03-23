@@ -5,8 +5,6 @@
 
 import Foundation
 import AVFoundation
-import UserNotifications
-
 #if canImport(UIKit)
 import UIKit
 
@@ -36,8 +34,7 @@ class PermissionService {
             return
         }
 
-        AVCaptureDevice.requestAccess(for: .audio) { [weak self] micGranted in
-            guard let self = self else { return }
+        AVCaptureDevice.requestAccess(for: .audio) { micGranted in
             if !micGranted {
                 PopinLogger.shared.log("PermissionService: Microphone denied")
                 DispatchQueue.main.async { onDenied() }
@@ -45,12 +42,10 @@ class PermissionService {
             }
             if audioOnly {
                 PopinLogger.shared.log("PermissionService: mic=granted, audioOnlyMode=true")
-                self.requestNotificationPermission()
                 DispatchQueue.main.async { onGranted() }
             } else {
-                AVCaptureDevice.requestAccess(for: .video) { [weak self] cameraGranted in
+                AVCaptureDevice.requestAccess(for: .video) { cameraGranted in
                     PopinLogger.shared.log("PermissionService: mic=granted, camera=\(cameraGranted)")
-                    if cameraGranted { self?.requestNotificationPermission() }
                     DispatchQueue.main.async {
                         cameraGranted ? onGranted() : onDenied()
                     }
@@ -87,19 +82,6 @@ class PermissionService {
                         }
                     }
                 }
-            }
-        }
-    }
-
-    /// Request notification permission (fire-and-forget, only for outgoing calls).
-    /// Skips the request if already determined (granted or denied) to avoid
-    /// showing the system prompt more than once.
-    private func requestNotificationPermission() {
-        let center = UNUserNotificationCenter.current()
-        center.getNotificationSettings { settings in
-            guard settings.authorizationStatus == .notDetermined else { return }
-            center.requestAuthorization(options: [.alert, .sound]) { granted, _ in
-                PopinLogger.shared.log("PermissionService: Notification permission \(granted ? "granted" : "denied")")
             }
         }
     }
