@@ -242,6 +242,19 @@ public class PopinCallViewController: UIViewController {
                 highpassFilter: true,
                 typingNoiseDetection: true
             ),
+            defaultVideoPublishOptions: VideoPublishOptions(
+                encoding: VideoEncoding(maxBitrate: 1_700_000, maxFps: 30),
+                simulcast: true,
+                simulcastLayers: [
+                    VideoParameters(dimensions: .h180_169, encoding: VideoEncoding(maxBitrate: 160_000, maxFps: 15)),
+                    VideoParameters(dimensions: .h360_169, encoding: VideoEncoding(maxBitrate: 450_000, maxFps: 20))
+                ],
+                screenShareSimulcastLayers: [
+                    VideoParameters(dimensions: .h360_169, encoding: VideoEncoding(maxBitrate: 200_000, maxFps: 3))
+                ]
+            ),
+            adaptiveStream: true,
+            dynacast: true,
             suspendLocalVideoTracksInBackground: false  // Required for PiP to work
         )) {
             swiftUIView
