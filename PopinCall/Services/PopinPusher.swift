@@ -33,7 +33,7 @@ class PopinPusher : PusherDelegate{
             activityTimeout: 10
             
         )
-        pusher = Pusher(key: "b6cb0f549999df3d07a9", options: options)
+        pusher = Pusher(key: "8a0f629156d27cb26728", options: options)
         pusher.delegate = self;
     }
     
