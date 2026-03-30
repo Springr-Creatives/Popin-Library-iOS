@@ -27,6 +27,11 @@ class CallUICoordinator {
     private var deferredPresentation: (callVC: PopinCallViewController, completion: (() -> Void)?)?
     private var foregroundObserver: NSObjectProtocol?
 
+    /// Dedicated window used when `usesSeparateCallWindow` is enabled (e.g. React Native apps).
+    /// Sits above the main window so `RCTRootView` cannot cover the call UI.
+    private var callWindow: UIWindow?
+    private var usesSeparateCallWindow: Bool = false
+
     // MARK: - Upward callbacks (set by Popin facade)
 
     /// Called when a call ends and state should be cleaned up.
@@ -42,6 +47,7 @@ class CallUICoordinator {
 
     func presentOutgoingCallVC(config: PopinConfig) {
         PopinLogger.shared.log("CallUICoordinator.presentOutgoingCallVC")
+        usesSeparateCallWindow = config.usesSeparateCallWindow
         let callVC = buildCallVC(config: config, isOutgoing: true)
         callVC.isOutgoingCall = true
         currentCallViewController = callVC
@@ -61,6 +67,7 @@ class CallUICoordinator {
         guard currentCallViewController == nil else { return }
 
         PopinLogger.shared.log("CallUICoordinator.presentIncomingCallUI")
+        usesSeparateCallWindow = config.usesSeparateCallWindow
         let callVC = buildCallVC(config: config, isOutgoing: false)
         callVC.pushCallData = pushData
         callVC.callUUID = callUUID
@@ -73,6 +80,7 @@ class CallUICoordinator {
 
     func presentCallVC(talkModel: TalkModel, config: PopinConfig) {
         PopinLogger.shared.log("CallUICoordinator.presentCallVC: callId=\(talkModel.id ?? -1)")
+        usesSeparateCallWindow = config.usesSeparateCallWindow
         let callVC = buildCallVC(config: config, isOutgoing: false)
         currentCallViewController = callVC
         pendingCallViewController = callVC
@@ -175,6 +183,7 @@ class CallUICoordinator {
         pendingCallViewController = nil
         cancelDeferredPresentation()
         removeVideoCallNotification()
+        teardownCallWindow()
         Utilities.shared.clearConnected()
         onCallEnd?()
         PopinLogger.shared.log("CallUICoordinator.cleanupAfterCallEnd: State reset complete")
@@ -220,6 +229,43 @@ class CallUICoordinator {
     }
 
     private func performPresentation(_ callVC: PopinCallViewController, completion: (() -> Void)? = nil) {
+        // Video UI is about to appear — dismiss the "tap to open" notification
+        removeVideoCallNotification()
+
+        if usesSeparateCallWindow {
+            performPresentationInDedicatedWindow(callVC, completion: completion)
+        } else {
+            performPresentationFromRootVC(callVC, completion: completion)
+        }
+    }
+
+    /// Presents `callVC` in a dedicated `UIWindow` above the main window.
+    /// Used when the host app is React Native to prevent `RCTRootView` from covering the call UI.
+    private func performPresentationInDedicatedWindow(_ callVC: PopinCallViewController, completion: (() -> Void)? = nil) {
+        guard let windowScene = UIApplication.shared.connectedScenes
+            .compactMap({ $0 as? UIWindowScene })
+            .first else {
+            PopinLogger.shared.log("CallUICoordinator.performPresentationInDedicatedWindow: No window scene — falling back to root VC presentation")
+            performPresentationFromRootVC(callVC, completion: completion)
+            return
+        }
+
+        let window = UIWindow(windowScene: windowScene)
+        window.windowLevel = .alert + 1
+        let containerVC = UIViewController()
+        containerVC.view.backgroundColor = .clear
+        window.rootViewController = containerVC
+        window.isHidden = false
+        callWindow = window
+
+        PopinLogger.shared.log("CallUICoordinator.performPresentationInDedicatedWindow: Presenting in dedicated window (level=\(window.windowLevel.rawValue))")
+        containerVC.present(callVC, animated: true) { [weak self] in
+            self?.pendingCallViewController = nil
+            completion?()
+        }
+    }
+
+    private func performPresentationFromRootVC(_ callVC: PopinCallViewController, completion: (() -> Void)? = nil) {
         guard let rootVC = UIApplication.shared.connectedScenes
             .compactMap({ ($0 as? UIWindowScene)?.keyWindow?.rootViewController })
             .first else {
@@ -228,9 +274,6 @@ class CallUICoordinator {
             pendingCallViewController = nil
             return
         }
-
-        // Video UI is about to appear — dismiss the "tap to open" notification
-        removeVideoCallNotification()
 
         if rootVC.presentedViewController != nil {
             PopinLogger.shared.log("CallUICoordinator.performPresentation: Dismissing existing VC first")
@@ -247,6 +290,14 @@ class CallUICoordinator {
                 completion?()
             }
         }
+    }
+
+    private func teardownCallWindow() {
+        guard callWindow != nil else { return }
+        callWindow?.isHidden = true
+        callWindow = nil
+        usesSeparateCallWindow = false
+        PopinLogger.shared.log("CallUICoordinator.teardownCallWindow: Dedicated call window removed")
     }
 
     private func observeForeground() {

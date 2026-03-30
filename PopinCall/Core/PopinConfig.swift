@@ -28,6 +28,7 @@ public class PopinConfig {
     public let enableDebugMode: Bool
     public let secondaryProductText: String
     public let expertDesignation: String
+    public let usesSeparateCallWindow: Bool
 
     // MARK: - Mutable runtime state
 
@@ -56,6 +57,7 @@ public class PopinConfig {
         self.enableDebugMode = builder.enableDebugMode
         self.secondaryProductText = builder.secondaryProductText
         self.expertDesignation = builder.expertDesignation
+        self.usesSeparateCallWindow = builder.usesSeparateCallWindow
         self.product = builder.product
         self.callerId = builder.callerId
         self.identifier = builder.identifier
@@ -82,6 +84,7 @@ public class PopinConfig {
         var enableDebugMode: Bool = false
         var secondaryProductText: String = "Product details"
         var expertDesignation: String = "Product expert"
+        var usesSeparateCallWindow: Bool = false
         var product: PopinProduct?
         var callerId: String?
         var identifier: String?
@@ -188,6 +191,15 @@ public class PopinConfig {
         @discardableResult
         public func expertDesignation(_ designation: String) -> Builder {
             self.expertDesignation = designation
+            return self
+        }
+
+        /// Set to `true` when the host app uses React Native.
+        /// The SDK will present its call UI in a dedicated `UIWindow` at a higher
+        /// window level so that `RCTRootView` cannot cover it.
+        @discardableResult
+        public func usesSeparateCallWindow(_ use: Bool) -> Builder {
+            self.usesSeparateCallWindow = use
             return self
         }
 
