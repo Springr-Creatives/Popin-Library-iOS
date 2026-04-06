@@ -25,7 +25,7 @@ public class PopinCallManager {
 
     private init() {}
 
-    public func handleIncomingPush(payload: [AnyHashable: Any], completion: @escaping () -> Void) {
+    internal func handleIncomingPush(payload: [AnyHashable: Any], completion: @escaping () -> Void) {
         // PushKit REQUIRES reporting an incoming call for every VoIP push.
         // We MUST call reportIncomingCall before completion(), otherwise iOS kills the app.
 
