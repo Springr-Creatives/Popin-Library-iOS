@@ -217,16 +217,36 @@ struct BottomControls: View {
             // If no audio track exists yet (e.g. user muted pre-call so it was never
             // published), enable publishes a fresh track. Otherwise flip current state.
             let micTrack = room.localParticipant.firstAudioTrack as? LocalAudioTrack
+            let trackPresent = micTrack != nil
+            let trackIsMuted = micTrack?.isMuted
+            let canonicalIsEnabled = room.localParticipant.isMicrophoneEnabled()
             let enable = micTrack?.isMuted ?? true
-            try? await room.localParticipant.setMicrophone(enabled: enable)
+            PopinLogger.shared.log("BottomControls: toggleMic — trackPresent=\(trackPresent) trackIsMuted=\(String(describing: trackIsMuted)) canonicalIsMicEnabled=\(canonicalIsEnabled) -> requesting setMicrophone(enabled: \(enable))")
+            do {
+                try await room.localParticipant.setMicrophone(enabled: enable)
+                let postTrack = room.localParticipant.firstAudioTrack as? LocalAudioTrack
+                PopinLogger.shared.log("BottomControls: toggleMic ✅ OK — postTrackPresent=\(postTrack != nil) postIsMuted=\(String(describing: postTrack?.isMuted)) postCanonical=\(room.localParticipant.isMicrophoneEnabled())")
+            } catch {
+                PopinLogger.shared.log("BottomControls: toggleMic ❌ FAILED — error=\(error) localizedDescription=\(error.localizedDescription)")
+            }
         }
     }
 
     private func toggleVideo() {
         Task {
             let videoTrack = room.localParticipant.firstCameraVideoTrack as? LocalVideoTrack
+            let trackPresent = videoTrack != nil
+            let trackIsMuted = videoTrack?.isMuted
+            let canonicalIsEnabled = room.localParticipant.isCameraEnabled()
             let enable = videoTrack?.isMuted ?? true
-            try? await room.localParticipant.setCamera(enabled: enable)
+            PopinLogger.shared.log("BottomControls: toggleVideo — trackPresent=\(trackPresent) trackIsMuted=\(String(describing: trackIsMuted)) canonicalIsCameraEnabled=\(canonicalIsEnabled) -> requesting setCamera(enabled: \(enable))")
+            do {
+                try await room.localParticipant.setCamera(enabled: enable)
+                let postTrack = room.localParticipant.firstCameraVideoTrack as? LocalVideoTrack
+                PopinLogger.shared.log("BottomControls: toggleVideo ✅ OK — postTrackPresent=\(postTrack != nil) postIsMuted=\(String(describing: postTrack?.isMuted)) postCanonical=\(room.localParticipant.isCameraEnabled())")
+            } catch {
+                PopinLogger.shared.log("BottomControls: toggleVideo ❌ FAILED — error=\(error) localizedDescription=\(error.localizedDescription)")
+            }
         }
     }
 
