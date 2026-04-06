@@ -3,13 +3,13 @@ import LiveKit
 import UIKit
 
 class ParticipantCell: UICollectionViewCell {
-    public static let reuseIdentifier: String = "ParticipantCell"
-    
-    public static var instanceCounter: Int = 0
-    
-    public let cellId: Int
-    
-    public let videoView: VideoView = {
+    static let reuseIdentifier: String = "ParticipantCell"
+
+    static var instanceCounter: Int = 0
+
+    let cellId: Int
+
+    let videoView: VideoView = {
         let r = VideoView()
         r.layoutMode = .fill
         r.backgroundColor = UIColor.clear.withAlphaComponent(0)
@@ -20,7 +20,7 @@ class ParticipantCell: UICollectionViewCell {
     }()
     
     // Container view with a rounded corner for when there's no video
-    public let noVideoContainer: UIView = {
+    let noVideoContainer: UIView = {
         let container = UIView()
         container.backgroundColor = UIColor.black.withAlphaComponent(0.5) // Semi-transparent black
         container.layer.cornerRadius = 10
@@ -29,7 +29,7 @@ class ParticipantCell: UICollectionViewCell {
         return container
     }()
     
-    public let noVideoImage: UIImageView = {
+    let noVideoImage: UIImageView = {
         let n = UIImageView()
         n.image = UIImage(systemName: "video.slash.fill") // Set the image
         n.contentMode = .scaleAspectFit // Better scaling
@@ -38,7 +38,7 @@ class ParticipantCell: UICollectionViewCell {
     }()
     
     // Weak reference to the Participant
-    public weak var participant: Participant? {
+    weak var participant: Participant? {
         didSet {
             guard oldValue != participant else { return }
             

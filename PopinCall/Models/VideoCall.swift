@@ -7,26 +7,6 @@
 
 import Foundation
 
-/*
- @SerializedName("id")
-    public int id;
-    @SerializedName("access_token")
-    public String access_token;
-    @SerializedName("user_id")
-    public int user_id;
-    @SerializedName("user_name")
-    public String user_name;
-    @SerializedName("room")
-    public String room;
-    @SerializedName("artifact")
-    public String artifact;
-    @SerializedName("agents")
-    public List<CallAgentModel> agents;
-    @SerializedName("status")
-    public int status;
-    @SerializedName("created_at")
-    public long created_at;
- */
 struct VideoCall : Codable {
     let status: Int
     let id: Int?

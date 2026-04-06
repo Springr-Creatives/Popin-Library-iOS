@@ -7,31 +7,31 @@
 
 import Foundation
 
-public struct Agent: Codable {
-    public let id: Int?
-    public let name: String?
-    public let image: String?
+struct Agent: Codable {
+    let id: Int?
+    let name: String?
+    let image: String?
 }
 
-public struct TalkModel : Codable {
-    public let id: Int?
-    public let user_id: Int?
-    public let room: String?
-    public let websocket: String? // LiveKit websocket URL
-    public let status: Int
-    
-    public let agent: Agent?
-    public let seller_id: Int?
-    public let agent_id: Int?
-    public let user_name: String?
-    public let user_mobile: String?
-    public let agents: [Agent]?
-    public let created_at: Double?
-    
+struct TalkModel : Codable {
+    let id: Int?
+    let user_id: Int?
+    let room: String?
+    let websocket: String? // LiveKit websocket URL
+    let status: Int
+
+    let agent: Agent?
+    let seller_id: Int?
+    let agent_id: Int?
+    let user_name: String?
+    let user_mobile: String?
+    let agents: [Agent]?
+    let created_at: Double?
+
     private let token: String?
     private let server_access_token: String?
-    
-    public var access_token: String? {
+
+    var access_token: String? {
         return server_access_token ?? token
     }
     
@@ -42,7 +42,7 @@ public struct TalkModel : Codable {
         case agent_name, agent_image
     }
     
-    public init(from decoder: Decoder) throws {
+    init(from decoder: Decoder) throws {
         let container = try decoder.container(keyedBy: CodingKeys.self)
         
         id = try container.decodeIfPresent(Int.self, forKey: .id)
@@ -78,7 +78,7 @@ public struct TalkModel : Codable {
         }
     }
     
-    public func encode(to encoder: Encoder) throws {
+    func encode(to encoder: Encoder) throws {
         var container = encoder.container(keyedBy: CodingKeys.self)
         try container.encodeIfPresent(id, forKey: .id)
         try container.encodeIfPresent(user_id, forKey: .user_id)

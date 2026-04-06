@@ -7,7 +7,7 @@
 
 import Foundation
 
-public class PopinLogger {
+class PopinLogger {
 
     static let shared = PopinLogger()
 

@@ -12,8 +12,8 @@ import SwiftUI
 
 #if canImport(UIKit)
 class MyCustomRendererView: NativeView {
-    public let sampleBufferDisplayLayer: AVSampleBufferDisplayLayer
-    public lazy var pipController: AVPictureInPictureController = {
+    let sampleBufferDisplayLayer: AVSampleBufferDisplayLayer
+    lazy var pipController: AVPictureInPictureController = {
         let contentSource = AVPictureInPictureController.ContentSource(sampleBufferDisplayLayer: sampleBufferDisplayLayer,
                                                                        playbackDelegate: self)
         return AVPictureInPictureController(contentSource: contentSource)

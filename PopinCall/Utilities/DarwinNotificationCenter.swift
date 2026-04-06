@@ -12,14 +12,14 @@ private let center = CFNotificationCenterGetDarwinNotifyCenter()
 /// Wrapper around the application’s Darwin notification center from CFNotificationCenter.h
 ///
 /// - Note: On macOS, consider using DistributedNotificationCenter instead
-public final class DarwinNotificationCenter {
+final class DarwinNotificationCenter {
     private init() {}
 
     /// The application’s Darwin notification center.
-    public static var shared = DarwinNotificationCenter()
+    static var shared = DarwinNotificationCenter()
 
     /// Posts a Darwin notification with the specified name.
-    public func post(name: String) {
+    func post(name: String) {
         CFNotificationCenterPostNotification(center, CFNotificationName(rawValue: name as CFString), nil, nil, true)
     }
 
@@ -34,7 +34,7 @@ public final class DarwinNotificationCenter {
     /// ```
     ///
     /// To stop observing the notifiation, deallocate the `DarwinNotificationObservation`, or call its `cancel()` method.
-    public func addObserver(name: String, callback: @escaping () -> Void) -> DarwinNotificationObservation {
+    func addObserver(name: String, callback: @escaping () -> Void) -> DarwinNotificationObservation {
         let observation = DarwinNotificationObservation(callback: callback)
 
         let pointer = UnsafeRawPointer(Unmanaged.passUnretained(observation.closure).toOpaque())
@@ -64,7 +64,7 @@ private func notificationCallback(center: CFNotificationCenter?, observation: Un
 /// ```
 ///
 /// To stop observing the notifiation, deallocate the this object, or call the `cancel()` method.
-public final class DarwinNotificationObservation: Cancellable {
+final class DarwinNotificationObservation: Cancellable {
     // Wrapper class around the callback closure.
     // This object can stay alive in the cancel block, after this Observation has been deallocated.
     fileprivate class Closure {
@@ -84,7 +84,7 @@ public final class DarwinNotificationObservation: Cancellable {
     }
 
     /// Cancels the Darwin notification observation.
-    public func cancel() {
+    func cancel() {
 
         // Notifications are always delivered on the main thread.
         // So we also remove the observer on the main thread,
@@ -124,7 +124,7 @@ extension DarwinNotificationCenter {
     /// - Parameters:
     ///   - name: The name of the notification to publish.
     /// - Returns: A publisher that emits events when broadcasting notifications.
-    public func publisher(for name: String) -> DarwinNotificationCenter.Publisher {
+    func publisher(for name: String) -> DarwinNotificationCenter.Publisher {
         Publisher(center: self, name: name)
     }
 }
@@ -132,17 +132,17 @@ extension DarwinNotificationCenter {
 extension DarwinNotificationCenter {
 
     /// A publisher that emits when broadcasting notifications.
-    public struct Publisher: Combine.Publisher {
-        public typealias Output = Void
-        public typealias Failure = Never
-        public let center: DarwinNotificationCenter
-        public let name: String
-        public init(center: DarwinNotificationCenter, name: String) {
+    struct Publisher: Combine.Publisher {
+        typealias Output = Void
+        typealias Failure = Never
+        let center: DarwinNotificationCenter
+        let name: String
+        init(center: DarwinNotificationCenter, name: String) {
             self.center = center
             self.name = name
         }
 
-        public func receive<S>(subscriber: S) where S : Subscriber, S.Failure == Never, S.Input == Output {
+        func receive<S>(subscriber: S) where S : Subscriber, S.Failure == Never, S.Input == Output {
             let observation = center.addObserver(name: name) {
                 _ = subscriber.receive()
             }
@@ -153,7 +153,7 @@ extension DarwinNotificationCenter {
 }
 
 extension DarwinNotificationObservation: Subscription {
-    public func request(_ demand: Subscribers.Demand) {
+    func request(_ demand: Subscribers.Demand) {
     }
 }
 

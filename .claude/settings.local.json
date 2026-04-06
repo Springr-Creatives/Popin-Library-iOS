@@ -14,7 +14,9 @@
       "Bash(xargs:*)",
       "Bash(xcodebuild:*)",
       "WebFetch(domain:www.figma.com)",
-      "Bash(curl:*)"
+      "Bash(curl:*)",
+      "Bash(awk 'NR>=6 && NR<=12' /Users/ashwin/Developer/Popin-Library-iOS/PopinCall/Views/ParticipantCell.swift)",
+      "Bash(awk 'NR>=20 && NR<=25' /Users/ashwin/Developer/Popin-Library-iOS/PopinCall/Views/ParticipantCell.swift)"
     ]
   }
 }

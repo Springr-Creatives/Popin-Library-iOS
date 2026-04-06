@@ -24,7 +24,7 @@ protocol VideoCallView: NSObjectProtocol {
     func closeCall(message: String)
 }
 
-public class PopinCallViewController: UIViewController {
+class PopinCallViewController: UIViewController {
 
     // PushKit call data
     var pushCallData: PushCallData?
@@ -83,7 +83,7 @@ public class PopinCallViewController: UIViewController {
     
     
     
-    public init() {
+    init() {
         super.init(nibName: nil, bundle: nil)
     }
     
@@ -125,7 +125,7 @@ public class PopinCallViewController: UIViewController {
         }
     }
     
-    public override func viewDidLoad() {
+    override func viewDidLoad() {
         super.viewDidLoad()
 
         self.view.backgroundColor = .black
@@ -281,18 +281,18 @@ public class PopinCallViewController: UIViewController {
     
 
     
-    public override func viewDidAppear(_ animated: Bool) {
+    override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
     }
     
     
-    public override func viewWillAppear(_ animated: Bool) {
+    override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         // Disable idle timer to prevent screen from locking
         UIApplication.shared.isIdleTimerDisabled = true
     }
     
-    public override func viewWillDisappear(_ animated: Bool) {
+    override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
         // Re-enable idle timer to allow screen to lock again
         UIApplication.shared.isIdleTimerDisabled = false

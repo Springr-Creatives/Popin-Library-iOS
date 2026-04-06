@@ -7,30 +7,30 @@ import Foundation
 
 // MARK: - Product
 
-public struct Product: Codable {
-    public let id: String?
-    public let name: String?
-    public let image: String?
-    public let description: String?
-    public let url: String?
+struct Product: Codable {
+    let id: String?
+    let name: String?
+    let image: String?
+    let description: String?
+    let url: String?
 }
 
 // MARK: - PushCallData
 
-public struct PushCallData: Codable {
-    public let callId: Int
-    public let callComponentId: Int?
-    public let role: Int?
-    public let displayName: String
-    public let primaryProductInfo: String?
-    public let artifact: String?
-    public let productId: String?
-    public let productName: String?
-    public let productImage: String?
-    public let product: Product?
-    public let timeout: Int?
-    public let start: Int?
-    public let type: String?
+struct PushCallData: Codable {
+    let callId: Int
+    let callComponentId: Int?
+    let role: Int?
+    let displayName: String
+    let primaryProductInfo: String?
+    let artifact: String?
+    let productId: String?
+    let productName: String?
+    let productImage: String?
+    let product: Product?
+    let timeout: Int?
+    let start: Int?
+    let type: String?
 
     enum CodingKeys: String, CodingKey {
         case callId = "call_id"
@@ -48,7 +48,7 @@ public struct PushCallData: Codable {
         case type
     }
 
-    public init(from decoder: Decoder) throws {
+    init(from decoder: Decoder) throws {
         let container = try decoder.container(keyedBy: CodingKeys.self)
 
         if let intValue = try? container.decode(Int.self, forKey: .callId) {
