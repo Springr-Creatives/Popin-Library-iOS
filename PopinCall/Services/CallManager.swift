@@ -216,6 +216,19 @@ extension CallManager: CXProviderDelegate {
 
         action.fulfill(withDateConnected: Date())
         callState = .connected(action.callUUID)
+
+        // Defensive fallback: arm the LiveKit audio engine explicitly in case
+        // provider(_:didActivate:) never fires (e.g. if the AVAudioSession was
+        // configured with options incompatible with VoiceProcessingIO, CallKit
+        // silently skips activation). Without this, setMicrophone fails with
+        // Core Audio error -3010. setEngineAvailability is idempotent, so this
+        // is safe even when didActivate does fire normally.
+        do {
+            try AudioManager.shared.setEngineAvailability(.default)
+            PopinLogger.shared.log("CallManager: CXAnswerCallAction: LiveKit audio engine armed defensively")
+        } catch {
+            PopinLogger.shared.log("CallManager: CXAnswerCallAction: failed to arm LiveKit audio engine: \(error)")
+        }
     }
 
     func provider(_ provider: CXProvider, perform action: CXEndCallAction) {
