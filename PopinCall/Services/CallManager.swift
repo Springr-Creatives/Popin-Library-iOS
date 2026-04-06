@@ -69,7 +69,7 @@ class CallManager: NSObject {
     private(set) var voipRegistered = false
 
     private override init() {
-        PopinLogger.shared.log("CallManager.init() 1.123 START")
+        PopinLogger.shared.log("CallManager.init() 1.124 START")
 
         // Setup CallKit provider
         let configuration = CXProviderConfiguration(localizedName: "Popin Seller")
