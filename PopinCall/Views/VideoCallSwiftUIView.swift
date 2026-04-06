@@ -87,10 +87,18 @@ struct VideoCallSwiftUIView: View {
                         return
                     }
 
-                    // Step 2: Enable microphone (non-fatal — call continues if this fails)
+                    // Step 2: Publish mic, then apply pre-call mute state (non-fatal).
+                    // We ALWAYS publish the mic track first — on iOS, LiveKit's audio
+                    // engine only fully activates (including remote playback) once a
+                    // local audio track is published. If the user pre-muted, we then
+                    // mute the already-published track in place, which keeps the audio
+                    // engine running so the remote party can still be heard.
                     do {
-                        try await _room.localParticipant.setMicrophone(enabled: viewModel.preCallMicEnabled)
-                        PopinLogger.shared.log("VideoCallSwiftUIView: microphone enabled=\(viewModel.preCallMicEnabled)")
+                        try await _room.localParticipant.setMicrophone(enabled: true)
+                        if !viewModel.preCallMicEnabled {
+                            try await _room.localParticipant.setMicrophone(enabled: false)
+                        }
+                        PopinLogger.shared.log("VideoCallSwiftUIView: microphone published, enabled=\(viewModel.preCallMicEnabled)")
                     } catch {
                         PopinLogger.shared.log("VideoCallSwiftUIView: setMicrophone FAILED — error=\(error)")
                     }
