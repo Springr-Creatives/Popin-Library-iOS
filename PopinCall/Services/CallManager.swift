@@ -90,6 +90,21 @@ class CallManager: NSObject {
         callObserver.setDelegate(self, queue: nil)
         PopinLogger.shared.log("CallManager: CallKit delegates set")
 
+        // LiveKit + CallKit integration: disable LiveKit's automatic
+        // AVAudioSession configuration. CallKit must fully own the audio
+        // session; any concurrent setCategory/setActive from LiveKit during
+        // room.connect() or setMicrophone() will race CallKit and produce
+        // Core Audio error -3010. We also pin the engine to .none so LiveKit
+        // will not start its internal AVAudioEngine outside the
+        // didActivate ~ didDeactivate window.
+        AudioManager.shared.audioSession.isAutomaticConfigurationEnabled = false
+        do {
+            try AudioManager.shared.setEngineAvailability(.none)
+            PopinLogger.shared.log("CallManager: LiveKit auto audio config disabled, engine parked at .none")
+        } catch {
+            PopinLogger.shared.log("CallManager: Failed to park LiveKit audio engine: \(error)")
+        }
+
         PopinLogger.shared.log("CallManager.init() END")
     }
 
@@ -216,19 +231,6 @@ extension CallManager: CXProviderDelegate {
 
         action.fulfill(withDateConnected: Date())
         callState = .connected(action.callUUID)
-
-        // Defensive fallback: arm the LiveKit audio engine explicitly in case
-        // provider(_:didActivate:) never fires (e.g. if the AVAudioSession was
-        // configured with options incompatible with VoiceProcessingIO, CallKit
-        // silently skips activation). Without this, setMicrophone fails with
-        // Core Audio error -3010. setEngineAvailability is idempotent, so this
-        // is safe even when didActivate does fire normally.
-        do {
-            try AudioManager.shared.setEngineAvailability(.default)
-            PopinLogger.shared.log("CallManager: CXAnswerCallAction: LiveKit audio engine armed defensively")
-        } catch {
-            PopinLogger.shared.log("CallManager: CXAnswerCallAction: failed to arm LiveKit audio engine: \(error)")
-        }
     }
 
     func provider(_ provider: CXProvider, perform action: CXEndCallAction) {
@@ -268,17 +270,26 @@ extension CallManager: CXProviderDelegate {
 
     func provider(_ provider: CXProvider, didActivate audioSession: AVAudioSession) {
         PopinLogger.shared.log("CallManager: didActivateAudioSession")
-        // Configure audio session for LiveKit video calls
+        // CallKit has now activated the session for us. Configure category
+        // and arm LiveKit's audio engine. Do NOT call setActive(true) —
+        // CallKit already did, and Apple advises against a second activation.
+        //
+        // We intentionally omit .defaultToSpeaker from the options: that flag
+        // conflicts with CallKit-managed routing on some iOS versions. We use
+        // overrideOutputAudioPort(.speaker) instead, which is the supported
+        // way to force speaker output after the session is active.
         do {
-            // WebRTC generally prefers 48kHz and NO mixWithOthers for VoiceProcessingIO
             try audioSession.setPreferredSampleRate(48000.0)
-            try audioSession.setCategory(.playAndRecord, mode: .videoChat, options: [.allowBluetooth, .allowBluetoothA2DP, .defaultToSpeaker, .allowAirPlay])
-            // CallKit activates the session for us, but we set the category.
-            
-            // Enable speaker by default for video calls
+            try audioSession.setCategory(
+                .playAndRecord,
+                mode: .videoChat,
+                options: [.allowBluetooth, .allowBluetoothA2DP, .allowAirPlay]
+            )
             try audioSession.overrideOutputAudioPort(.speaker)
 
-            // Activate LiveKit audio engine
+            // Allow LiveKit's internal AVAudioEngine to start now that
+            // CallKit's session is active. setEngineAvailability is
+            // idempotent and reversible in didDeactivate.
             try AudioManager.shared.setEngineAvailability(.default)
 
             delegate?.callManager(self, didActivateAudioSession: audioSession)
@@ -357,14 +368,19 @@ extension CallManager: PKPushRegistryDelegate {
             return
         }
 
-        // Configure audio session early (workaround for mic initialization issue)
+        // Documented LiveKit / CallKit background-wake workaround:
+        // when the app is launched into the background by a VoIP push,
+        // setting AVAudioSession.category to .playAndRecord BEFORE calling
+        // reportNewIncomingCall avoids a mic initialization race on some
+        // iOS versions. Set ONLY the category — do NOT set mode, options,
+        // or overrideOutputAudioPort here. Anything more can cause CallKit
+        // to skip provider(_:didActivate:) entirely. Full configuration is
+        // done inside didActivate once CallKit owns the session.
         do {
-            let session = AVAudioSession.sharedInstance()
-            try session.setCategory(.playAndRecord, mode: .videoChat, options: [.allowBluetooth, .allowBluetoothA2DP, .defaultToSpeaker, .allowAirPlay])
-            try session.overrideOutputAudioPort(.speaker)
-            PopinLogger.shared.log("CallManager: PKPushRegistry: Early audio configuration OK — category=\(session.category.rawValue) mode=\(session.mode.rawValue) options=\(session.categoryOptions.rawValue) outputs=\(session.currentRoute.outputs.map { $0.portType.rawValue })")
+            try AVAudioSession.sharedInstance().setCategory(.playAndRecord)
+            PopinLogger.shared.log("CallManager: PKPushRegistry: early category=.playAndRecord set")
         } catch {
-            PopinLogger.shared.log("CallManager: PKPushRegistry: Early audio configuration failed: \(error)")
+            PopinLogger.shared.log("CallManager: PKPushRegistry: early setCategory failed: \(error)")
         }
 
         // PushKit REQUIRES reporting an incoming call for every VoIP push.
