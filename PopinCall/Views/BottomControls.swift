@@ -214,19 +214,19 @@ struct BottomControls: View {
 
     private func toggleMic() {
         Task {
+            // If no audio track exists yet (e.g. user muted pre-call so it was never
+            // published), enable publishes a fresh track. Otherwise flip current state.
             let micTrack = room.localParticipant.firstAudioTrack as? LocalAudioTrack
-            if let track = micTrack {
-                try? await room.localParticipant.setMicrophone(enabled: track.isMuted)
-            }
+            let enable = micTrack?.isMuted ?? true
+            try? await room.localParticipant.setMicrophone(enabled: enable)
         }
     }
 
     private func toggleVideo() {
         Task {
             let videoTrack = room.localParticipant.firstCameraVideoTrack as? LocalVideoTrack
-            if let track = videoTrack {
-                try? await room.localParticipant.setCamera(enabled: track.isMuted)
-            }
+            let enable = videoTrack?.isMuted ?? true
+            try? await room.localParticipant.setCamera(enabled: enable)
         }
     }
 

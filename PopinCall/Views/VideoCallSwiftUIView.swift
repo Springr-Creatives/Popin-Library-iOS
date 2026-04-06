@@ -138,7 +138,11 @@ struct VideoCallSwiftUIView: View {
                     }
                 }
             }
-            .onReceive(viewModel.$isOnHold) { isOnHold in
+            // dropFirst() skips the initial @Published value delivered on subscribe.
+            // Without this, the handler fires at view-appear with shouldEnable=true and
+            // races with the pre-call mute/camera setup in the $call handler above,
+            // silently overriding the user's pre-call mute choice.
+            .onReceive(viewModel.$isOnHold.dropFirst()) { isOnHold in
                 Task {
                     do {
                         // Toggle camera and microphone based on hold status
