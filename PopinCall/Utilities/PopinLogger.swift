@@ -19,7 +19,7 @@ class PopinLogger {
     func log(_ message: String) {
         let logger = Logger(subsystem: "to.popin.PopinCall", category: "lifecycle")
        // guard isEnabled else { return }
-        logger.log("[Popin] \(message)")
+        logger.info("[Popin] \(message, privacy: .public)")
         print("[Popin Internal] \(message)")
        // NSLog("[Popin] \(message)")
     }
