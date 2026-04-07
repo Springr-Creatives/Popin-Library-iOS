@@ -77,11 +77,13 @@ struct VideoCallSwiftUIView: View {
                         return
                     }
                     PopinLogger.shared.log("VideoCallSwiftUIView: connecting to LiveKit room — url=\(websocket), roomState=\(_room.connectionState)")
+                    CallManager.shared.logAudioSessionSnapshot(tag: "room.connect:pre")
 
                     // Step 1: Connect to room
                     do {
                         try await _room.connect(url: websocket, token: token)
                         PopinLogger.shared.log("VideoCallSwiftUIView: room.connect() SUCCESS — connectionState=\(_room.connectionState), localParticipantSid=\(_room.localParticipant.sid?.stringValue ?? "nil")")
+                        CallManager.shared.logAudioSessionSnapshot(tag: "room.connect:post")
                     } catch {
                         PopinLogger.shared.log("VideoCallSwiftUIView: room.connect() FAILED — error=\(error)")
                         return
@@ -100,16 +102,19 @@ struct VideoCallSwiftUIView: View {
                     let maxMicAttempts = 3
                     var micPublished = false
                     for attempt in 1...maxMicAttempts {
+                        CallManager.shared.logAudioSessionSnapshot(tag: "setMic:attempt\(attempt):pre")
                         do {
                             try await _room.localParticipant.setMicrophone(enabled: true)
                             if !viewModel.preCallMicEnabled {
                                 try await _room.localParticipant.setMicrophone(enabled: false)
                             }
                             PopinLogger.shared.log("VideoCallSwiftUIView: microphone published on attempt \(attempt), enabled=\(viewModel.preCallMicEnabled)")
+                            CallManager.shared.logAudioSessionSnapshot(tag: "setMic:attempt\(attempt):success")
                             micPublished = true
                             break
                         } catch {
-                            PopinLogger.shared.log("VideoCallSwiftUIView: setMicrophone attempt \(attempt)/\(maxMicAttempts) FAILED — error=\(error)")
+                            PopinLogger.shared.log("VideoCallSwiftUIView: setMicrophone attempt \(attempt)/\(maxMicAttempts) FAILED — error=\(error) nsError=\((error as NSError).domain)#\((error as NSError).code)")
+                            CallManager.shared.logAudioSessionSnapshot(tag: "setMic:attempt\(attempt):failure")
                             if attempt < maxMicAttempts {
                                 try? await Task.sleep(nanoseconds: 3_000_000_000)
                             }

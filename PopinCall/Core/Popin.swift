@@ -481,6 +481,7 @@ public class Popin: PopinPusherDelegate {
         }
 
         PopinLogger.shared.log("onIncomingCallAnswered: callId=\(callData.callId), hideFlipCameraButton=\(config.hideFlipCameraButton), hasActiveVC=\(uiCoordinator.hasActiveVC())")
+        CallManager.shared.logAudioSessionSnapshot(tag: "onIncomingCallAnswered")
 
         PopinCallManager.shared.callAnswered()
 

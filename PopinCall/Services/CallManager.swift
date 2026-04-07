@@ -428,21 +428,14 @@ extension CallManager: PKPushRegistryDelegate {
             return
         }
 
-        // Configure audio session early (workaround for mic initialization issue)
-        logAudioSessionSnapshot(tag: "push:pre")
-        do {
-            let session = AVAudioSession.sharedInstance()
-            PopinLogger.shared.log("CallManager: PKPushRegistry: setCategory(.playAndRecord, .videoChat, [mixWithOthers, allowBluetooth, allowBluetoothA2DP, defaultToSpeaker, allowAirPlay])")
-            try session.setCategory(.playAndRecord, mode: .videoChat, options: [.mixWithOthers, .allowBluetooth, .allowBluetoothA2DP, .defaultToSpeaker, .allowAirPlay])
-            PopinLogger.shared.log("CallManager: PKPushRegistry: overrideOutputAudioPort(.speaker)")
-            try session.overrideOutputAudioPort(.speaker)
-            PopinLogger.shared.log("CallManager: PKPushRegistry: setActive(true)")
-            try session.setActive(true)
-            PopinLogger.shared.log("CallManager: PKPushRegistry: Early audio configuration OK")
-        } catch {
-            PopinLogger.shared.log("CallManager: PKPushRegistry: Early audio configuration failed: \(error) nsError=\((error as NSError).domain)#\((error as NSError).code)")
-        }
-        logAudioSessionSnapshot(tag: "push:post")
+        // Do NOT touch AVAudioSession here. Apple's CallKit docs are explicit:
+        // "Don't activate your audio session. CallKit activates it at the
+        // appropriate time." Pre-activating the session in this delegate causes
+        // provider(_:didActivate:) to be silently skipped, which in turn means
+        // the LiveKit audio engine is never armed — resulting in setMicrophone
+        // failing with Core Audio error -3010. The session will be configured
+        // in provider(_:didActivate:) after CXAnswerCallAction.fulfill().
+        logAudioSessionSnapshot(tag: "push:entry")
 
         // PushKit REQUIRES reporting an incoming call for every VoIP push.
         // Always forward to handleIncomingPush which guarantees a reportIncomingCall.
