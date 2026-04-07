@@ -111,6 +111,34 @@ class CallManager: NSObject {
 
     // MARK: - Public Methods
 
+    /// Configure the shared AVAudioSession and arm LiveKit's audio engine for an
+    /// outgoing call that does NOT go through CallKit.
+    ///
+    /// For incoming calls, CallKit invokes `provider(_:didActivate:)` which handles
+    /// this same setup. Outgoing calls started via `Popin.startCall()` never reach
+    /// CallKit, so without this method the LiveKit audio engine's render side stays
+    /// in whatever state the previous call left it in — symptom: local mic publishes
+    /// fine but the user cannot hear the remote party.
+    ///
+    /// Safe to call multiple times; both `setCategory` and `setEngineAvailability`
+    /// are idempotent.
+    func configureAudioSessionForOutgoingCall() {
+        PopinLogger.shared.log("CallManager: configureAudioSessionForOutgoingCall")
+        do {
+            let session = AVAudioSession.sharedInstance()
+            try session.setPreferredSampleRate(48000.0)
+            try session.setCategory(.playAndRecord, mode: .videoChat, options: [.allowBluetooth, .allowBluetoothA2DP, .defaultToSpeaker, .allowAirPlay])
+            try session.setActive(true, options: [])
+            try session.overrideOutputAudioPort(.speaker)
+
+            // Arm LiveKit's audio engine so remote audio is rendered to the output.
+            try AudioManager.shared.setEngineAvailability(.default)
+            PopinLogger.shared.log("CallManager: configureAudioSessionForOutgoingCall OK — category=\(session.category.rawValue) mode=\(session.mode.rawValue) outputs=\(session.currentRoute.outputs.map { $0.portType.rawValue })")
+        } catch {
+            PopinLogger.shared.log("CallManager: configureAudioSessionForOutgoingCall FAILED — error=\(error)")
+        }
+    }
+
     /// Report an incoming call to CallKit
     func reportIncomingCall(
         uuid: UUID,

@@ -57,6 +57,13 @@ class CallOrchestrator: CallAcceptanceListener {
         callStarted = true
         PopinLogger.shared.log("CallOrchestrator.startCall()")
 
+        // Outgoing calls don't go through CallKit, so provider(_:didActivate:) never
+        // fires. Configure AVAudioSession + arm LiveKit's audio engine explicitly so
+        // the remote party is audible once the room connects.
+        #if canImport(UIKit)
+        CallManager.shared.configureAudioSessionForOutgoingCall()
+        #endif
+
         // Show connecting screen immediately, in parallel with the network request
         DispatchQueue.main.async {
             self.onPresentOutgoingVC?()
