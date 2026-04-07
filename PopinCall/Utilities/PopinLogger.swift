@@ -6,6 +6,7 @@
 //
 
 import Foundation
+import os
 
 class PopinLogger {
 
@@ -16,8 +17,10 @@ class PopinLogger {
     private init() {}
 
     func log(_ message: String) {
+        let logger = Logger(subsystem: "to.popin.PopinCall", category: "lifecycle")
        // guard isEnabled else { return }
+        logger.log("[Popin] \(message)")
         print("[Popin Internal] \(message)")
-        NSLog("[Popin] \(message)")
+       // NSLog("[Popin] \(message)")
     }
 }
