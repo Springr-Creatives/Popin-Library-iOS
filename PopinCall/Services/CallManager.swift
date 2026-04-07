@@ -49,7 +49,17 @@ class CallManager: NSObject {
     // CallKit
     private let callController = CXCallController()
     private let provider: CXProvider
+    private let providerConfiguration: CXProviderConfiguration
     private let callObserver = CXCallObserver()
+
+    /// Tracks whether `provider(_:didActivate:)` has fired for the current call.
+    /// Used to detect the iOS CallKit bug (FB19429215) where, on cold-launch
+    /// from a VoIP push (or after long backgrounding), `callservicesd` loses
+    /// the SessionID binding to the app and silently skips invoking
+    /// `didActivate` after `CXAnswerCallAction.fulfill()`. When that happens,
+    /// LiveKit's audio engine is never armed and the call has no audio.
+    /// Reset on every new call and on `didDeactivate`/`providerDidReset`.
+    private(set) var didActivateFired: Bool = false
 
     // PushKit
     private let pushRegistry = PKPushRegistry(queue: .main)
@@ -71,7 +81,9 @@ class CallManager: NSObject {
     private override init() {
         PopinLogger.shared.log("CallManager.init() 1.123 START")
 
-        // Setup CallKit provider
+        // Setup CallKit provider. The configuration is hoisted into a stored
+        // property so it can be re-assigned to `provider.configuration` before
+        // every `reportNewIncomingCall` — see Apple DTS guidance on FB19429215.
         let configuration = CXProviderConfiguration(localizedName: "Popin Seller")
         configuration.supportsVideo = true
         configuration.maximumCallsPerCallGroup = 1
@@ -80,6 +92,7 @@ class CallManager: NSObject {
         configuration.iconTemplateImageData = UIImage(named: "AppIcon")?.pngData()
         configuration.includesCallsInRecents = false
 
+        self.providerConfiguration = configuration
         provider = CXProvider(configuration: configuration)
         PopinLogger.shared.log("CallManager: CXProvider created")
 
@@ -193,6 +206,7 @@ class CallManager: NSObject {
         callState = .ringing(uuid)
         callWasAnswered = false
         callEndedByTimeout = false
+        didActivateFired = false
 
         let update = CXCallUpdate()
         update.remoteHandle = CXHandle(type: .generic, value: handle)
@@ -201,6 +215,16 @@ class CallManager: NSObject {
         update.supportsDTMF = false
         update.supportsGrouping = false
         update.supportsUngrouping = false
+
+        // Apple DTS workaround for FB19429215 (CallKit `provider(_:didActivate:)`
+        // not firing on incoming calls after long backgrounding / cold launch).
+        // Re-assigning `provider.configuration` immediately before every
+        // `reportNewIncomingCall` re-binds `callservicesd`'s SessionID to this
+        // app's audio session. The configuration value does not change — it is
+        // the act of assignment that matters. Per Apple DTS this is "fully
+        // supported by the API" and "unlikely to introduce new problems".
+        provider.configuration = providerConfiguration
+        PopinLogger.shared.log("CallManager: reportIncomingCall: re-applied CXProviderConfiguration (FB19429215 workaround)")
 
         provider.reportNewIncomingCall(with: uuid, update: update) { [weak self] error in
             if let error = error {
@@ -246,6 +270,31 @@ class CallManager: NSObject {
         callState = .idle
         callWasAnswered = false
         callEndedByTimeout = false
+        didActivateFired = false
+    }
+
+    /// Apple DTS-recommended self-heal for FB19429215.
+    ///
+    /// If `provider(_:didActivate:)` did not fire by the time we are about to
+    /// connect to the LiveKit room, we know `callservicesd` failed to bind a
+    /// SessionID for this call. Per Apple DTS:
+    ///
+    /// > "If you detect that you're in the failure case, ALSO set the
+    /// >  configuration again. I'm not confident that this will fix a failing
+    /// >  call, but it should make it less likely that the next call will fail."
+    ///
+    /// This will NOT recover audio for the current call (the audio session was
+    /// never activated, and Apple explicitly forbids calling `setActive(true)`
+    /// to "fake" the activation). What it does is repair the daemon's internal
+    /// state so that subsequent calls in the same app session work — directly
+    /// addressing the "first call works, every call after fails until restart"
+    /// symptom that this bug produces.
+    ///
+    /// Safe to call at any time; a no-op if `didActivate` already fired.
+    func repairProviderConfigurationIfNeeded() {
+        guard !didActivateFired else { return }
+        PopinLogger.shared.log("CallManager: repairProviderConfigurationIfNeeded — didActivate never fired, re-applying CXProviderConfiguration to self-heal callservicesd state for next call (FB19429215)")
+        provider.configuration = providerConfiguration
     }
 
     // MARK: - Private Methods
@@ -334,6 +383,7 @@ extension CallManager: CXProviderDelegate {
 
     func provider(_ provider: CXProvider, didActivate audioSession: AVAudioSession) {
         PopinLogger.shared.log("CallManager: didActivateAudioSession — callState=\(callState) currentCallUUID=\(currentCallUUID?.uuidString ?? "nil")")
+        didActivateFired = true
         logAudioSessionSnapshot(tag: "didActivate:pre")
         // Configure audio session for LiveKit video calls
         do {
@@ -365,6 +415,7 @@ extension CallManager: CXProviderDelegate {
 
     func provider(_ provider: CXProvider, didDeactivate audioSession: AVAudioSession) {
         PopinLogger.shared.log("CallManager: didDeactivateAudioSession — callState=\(callState)")
+        didActivateFired = false
         logAudioSessionSnapshot(tag: "didDeactivate:pre")
         // Deactivate LiveKit audio session
         do {

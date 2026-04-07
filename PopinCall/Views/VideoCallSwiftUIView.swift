@@ -77,6 +77,14 @@ struct VideoCallSwiftUIView: View {
                         return
                     }
                     PopinLogger.shared.log("VideoCallSwiftUIView: connecting to LiveKit room — url=\(websocket), roomState=\(_room.connectionState)")
+                    // Apple DTS workaround for FB19429215: if CallKit failed to invoke
+                    // `provider(_:didActivate:)` for this call, re-apply the provider
+                    // configuration so callservicesd self-heals for the next call. This
+                    // does NOT recover the current call (per Apple DTS, attempting to
+                    // force-activate the audio session yourself is unsupported and
+                    // creates other failures), but it prevents the "broken until app
+                    // restart" cascade.
+                    CallManager.shared.repairProviderConfigurationIfNeeded()
                     CallManager.shared.logAudioSessionSnapshot(tag: "room.connect:pre")
 
                     // Step 1: Connect to room
