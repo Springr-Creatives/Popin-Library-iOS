@@ -388,8 +388,9 @@ extension CallManager: PKPushRegistryDelegate {
         // Configure audio session early (workaround for mic initialization issue)
         do {
             let session = AVAudioSession.sharedInstance()
-            try session.setCategory(.playAndRecord, mode: .videoChat, options: [.allowBluetooth, .allowBluetoothA2DP, .defaultToSpeaker, .allowAirPlay])
+            try session.setCategory(.playAndRecord, mode: .videoChat, options: [.mixWithOthers, .allowBluetooth, .allowBluetoothA2DP, .defaultToSpeaker, .allowAirPlay])
             try session.overrideOutputAudioPort(.speaker)
+            try session.setActive(true)
             PopinLogger.shared.log("CallManager: PKPushRegistry: Early audio configuration OK — category=\(session.category.rawValue) mode=\(session.mode.rawValue) options=\(session.categoryOptions.rawValue) outputs=\(session.currentRoute.outputs.map { $0.portType.rawValue })")
         } catch {
             PopinLogger.shared.log("CallManager: PKPushRegistry: Early audio configuration failed: \(error)")
