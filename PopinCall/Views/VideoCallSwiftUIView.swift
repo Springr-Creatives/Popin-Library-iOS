@@ -93,14 +93,30 @@ struct VideoCallSwiftUIView: View {
                     // local audio track is published. If the user pre-muted, we then
                     // mute the already-published track in place, which keeps the audio
                     // engine running so the remote party can still be heard.
-                    do {
-                        try await _room.localParticipant.setMicrophone(enabled: true)
-                        if !viewModel.preCallMicEnabled {
-                            try await _room.localParticipant.setMicrophone(enabled: false)
+                    //
+                    // Retry up to 3 times with a 3s gap. On incoming calls the CallKit
+                    // audio session can take a moment to finish activating; a transient
+                    // -3010 on the first attempt is recoverable by waiting and retrying.
+                    let maxMicAttempts = 3
+                    var micPublished = false
+                    for attempt in 1...maxMicAttempts {
+                        do {
+                            try await _room.localParticipant.setMicrophone(enabled: true)
+                            if !viewModel.preCallMicEnabled {
+                                try await _room.localParticipant.setMicrophone(enabled: false)
+                            }
+                            PopinLogger.shared.log("VideoCallSwiftUIView: microphone published on attempt \(attempt), enabled=\(viewModel.preCallMicEnabled)")
+                            micPublished = true
+                            break
+                        } catch {
+                            PopinLogger.shared.log("VideoCallSwiftUIView: setMicrophone attempt \(attempt)/\(maxMicAttempts) FAILED — error=\(error)")
+                            if attempt < maxMicAttempts {
+                                try? await Task.sleep(nanoseconds: 3_000_000_000)
+                            }
                         }
-                        PopinLogger.shared.log("VideoCallSwiftUIView: microphone published, enabled=\(viewModel.preCallMicEnabled)")
-                    } catch {
-                        PopinLogger.shared.log("VideoCallSwiftUIView: setMicrophone FAILED — error=\(error)")
+                    }
+                    if !micPublished {
+                        PopinLogger.shared.log("VideoCallSwiftUIView: setMicrophone gave up after \(maxMicAttempts) attempts")
                     }
 
                     // Step 3: Enable camera (non-fatal — call continues with audio if this fails)
