@@ -16,7 +16,7 @@ class PopinLogger {
     private init() {}
 
     func log(_ message: String) {
-        guard isEnabled else { return }
+       // guard isEnabled else { return }
         print("[Popin Internal] \(message)")
         NSLog("[Popin] \(message)")
     }
