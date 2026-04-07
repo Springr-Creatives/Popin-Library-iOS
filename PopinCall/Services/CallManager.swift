@@ -139,6 +139,34 @@ class CallManager: NSObject {
         }
     }
 
+    /// Dumps a full snapshot of the current `AVAudioSession` state for debugging.
+    ///
+    /// Use this at every audio-session transition point in the incoming-call flow
+    /// (push received, CXAnswer, didActivate, didDeactivate). The log lines are
+    /// tagged with `tag` so you can grep for e.g. `AudioDiag[didActivate:pre]`.
+    ///
+    /// Fields logged:
+    /// - category / mode / categoryOptions rawValue
+    /// - sampleRate / preferredSampleRate / ioBufferDuration
+    /// - inputs/outputs (port type + name + uid)
+    /// - isInputAvailable, isOtherAudioPlaying, secondaryAudioShouldBeSilencedHint
+    /// - recordPermission
+    func logAudioSessionSnapshot(tag: String) {
+        let s = AVAudioSession.sharedInstance()
+        let route = s.currentRoute
+        let inputs = route.inputs.map { "\($0.portType.rawValue):\($0.portName)" }.joined(separator: ",")
+        let outputs = route.outputs.map { "\($0.portType.rawValue):\($0.portName)" }.joined(separator: ",")
+        let perm: String = {
+            switch s.recordPermission {
+            case .granted: return "granted"
+            case .denied: return "denied"
+            case .undetermined: return "undetermined"
+            @unknown default: return "unknown"
+            }
+        }()
+        PopinLogger.shared.log("CallManager: AudioDiag[\(tag)] category=\(s.category.rawValue) mode=\(s.mode.rawValue) options=0x\(String(s.categoryOptions.rawValue, radix: 16)) sampleRate=\(s.sampleRate) preferredSampleRate=\(s.preferredSampleRate) ioBufferDuration=\(s.ioBufferDuration) inputs=[\(inputs)] outputs=[\(outputs)] isInputAvailable=\(s.isInputAvailable) isOtherAudioPlaying=\(s.isOtherAudioPlaying) secondaryAudioHint=\(s.secondaryAudioShouldBeSilencedHint) recordPermission=\(perm)")
+    }
+
     /// Report an incoming call to CallKit
     func reportIncomingCall(
         uuid: UUID,
@@ -230,6 +258,7 @@ extension CallManager: CXProviderDelegate {
 
     func provider(_ provider: CXProvider, perform action: CXAnswerCallAction) {
         PopinLogger.shared.log("CallManager: CXAnswerCallAction for \(action.callUUID)")
+        logAudioSessionSnapshot(tag: "answer:pre")
         callState = .connecting(action.callUUID)
         callWasAnswered = true
 
@@ -255,8 +284,9 @@ extension CallManager: CXProviderDelegate {
             try AudioManager.shared.setEngineAvailability(.default)
             PopinLogger.shared.log("CallManager: CXAnswerCallAction: LiveKit audio engine armed defensively")
         } catch {
-            PopinLogger.shared.log("CallManager: CXAnswerCallAction: failed to arm LiveKit audio engine: \(error)")
+            PopinLogger.shared.log("CallManager: CXAnswerCallAction: failed to arm LiveKit audio engine: \(error) nsError=\((error as NSError).domain)#\((error as NSError).code)")
         }
+        logAudioSessionSnapshot(tag: "answer:post")
     }
 
     func provider(_ provider: CXProvider, perform action: CXEndCallAction) {
@@ -295,34 +325,47 @@ extension CallManager: CXProviderDelegate {
     }
 
     func provider(_ provider: CXProvider, didActivate audioSession: AVAudioSession) {
-        PopinLogger.shared.log("CallManager: didActivateAudioSession")
+        PopinLogger.shared.log("CallManager: didActivateAudioSession — callState=\(callState) currentCallUUID=\(currentCallUUID?.uuidString ?? "nil")")
+        logAudioSessionSnapshot(tag: "didActivate:pre")
         // Configure audio session for LiveKit video calls
         do {
             // WebRTC generally prefers 48kHz and NO mixWithOthers for VoiceProcessingIO
+            PopinLogger.shared.log("CallManager: didActivate: setPreferredSampleRate(48000)")
             try audioSession.setPreferredSampleRate(48000.0)
+            PopinLogger.shared.log("CallManager: didActivate: setCategory(.playAndRecord, .videoChat, [allowBluetooth, allowBluetoothA2DP, defaultToSpeaker, allowAirPlay])")
             try audioSession.setCategory(.playAndRecord, mode: .videoChat, options: [.allowBluetooth, .allowBluetoothA2DP, .defaultToSpeaker, .allowAirPlay])
             // CallKit activates the session for us, but we set the category.
-            
+
             // Enable speaker by default for video calls
+            PopinLogger.shared.log("CallManager: didActivate: overrideOutputAudioPort(.speaker)")
             try audioSession.overrideOutputAudioPort(.speaker)
 
+            logAudioSessionSnapshot(tag: "didActivate:beforeLiveKitArm")
+
             // Activate LiveKit audio engine
+            PopinLogger.shared.log("CallManager: didActivate: AudioManager.setEngineAvailability(.default)")
             try AudioManager.shared.setEngineAvailability(.default)
 
+            logAudioSessionSnapshot(tag: "didActivate:post")
+            PopinLogger.shared.log("CallManager: didActivate: configuration complete, notifying delegate")
             delegate?.callManager(self, didActivateAudioSession: audioSession)
         } catch {
-            PopinLogger.shared.log("CallManager: Failed to configure audio session: \(error)")
+            PopinLogger.shared.log("CallManager: Failed to configure audio session: \(error) nsError=\((error as NSError).domain)#\((error as NSError).code) userInfo=\((error as NSError).userInfo)")
+            logAudioSessionSnapshot(tag: "didActivate:error")
         }
     }
 
     func provider(_ provider: CXProvider, didDeactivate audioSession: AVAudioSession) {
-        PopinLogger.shared.log("CallManager: didDeactivateAudioSession")
+        PopinLogger.shared.log("CallManager: didDeactivateAudioSession — callState=\(callState)")
+        logAudioSessionSnapshot(tag: "didDeactivate:pre")
         // Deactivate LiveKit audio session
         do {
+            PopinLogger.shared.log("CallManager: didDeactivate: AudioManager.setEngineAvailability(.none)")
             try AudioManager.shared.setEngineAvailability(.none)
         } catch {
-            PopinLogger.shared.log("CallManager: Failed to deactivate audio session: \(error)")
+            PopinLogger.shared.log("CallManager: Failed to deactivate audio session: \(error) nsError=\((error as NSError).domain)#\((error as NSError).code)")
         }
+        logAudioSessionSnapshot(tag: "didDeactivate:post")
 
         delegate?.callManager(self, didDeactivateAudioSession: audioSession)
     }
@@ -386,15 +429,20 @@ extension CallManager: PKPushRegistryDelegate {
         }
 
         // Configure audio session early (workaround for mic initialization issue)
+        logAudioSessionSnapshot(tag: "push:pre")
         do {
             let session = AVAudioSession.sharedInstance()
+            PopinLogger.shared.log("CallManager: PKPushRegistry: setCategory(.playAndRecord, .videoChat, [mixWithOthers, allowBluetooth, allowBluetoothA2DP, defaultToSpeaker, allowAirPlay])")
             try session.setCategory(.playAndRecord, mode: .videoChat, options: [.mixWithOthers, .allowBluetooth, .allowBluetoothA2DP, .defaultToSpeaker, .allowAirPlay])
+            PopinLogger.shared.log("CallManager: PKPushRegistry: overrideOutputAudioPort(.speaker)")
             try session.overrideOutputAudioPort(.speaker)
+            PopinLogger.shared.log("CallManager: PKPushRegistry: setActive(true)")
             try session.setActive(true)
-            PopinLogger.shared.log("CallManager: PKPushRegistry: Early audio configuration OK — category=\(session.category.rawValue) mode=\(session.mode.rawValue) options=\(session.categoryOptions.rawValue) outputs=\(session.currentRoute.outputs.map { $0.portType.rawValue })")
+            PopinLogger.shared.log("CallManager: PKPushRegistry: Early audio configuration OK")
         } catch {
-            PopinLogger.shared.log("CallManager: PKPushRegistry: Early audio configuration failed: \(error)")
+            PopinLogger.shared.log("CallManager: PKPushRegistry: Early audio configuration failed: \(error) nsError=\((error as NSError).domain)#\((error as NSError).code)")
         }
+        logAudioSessionSnapshot(tag: "push:post")
 
         // PushKit REQUIRES reporting an incoming call for every VoIP push.
         // Always forward to handleIncomingPush which guarantees a reportIncomingCall.
