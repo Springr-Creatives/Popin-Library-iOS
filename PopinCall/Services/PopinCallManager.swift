@@ -12,11 +12,11 @@ import PushKit
 
 /// Manages incoming push call state.
 /// Communicates upward via callbacks — never references Popin.shared.
-public class PopinCallManager {
-    public static let shared = PopinCallManager()
+class PopinCallManager {
+    static let shared = PopinCallManager()
 
-    public var callData: PushCallData?
-    public var callUUID: UUID?
+    var callData: PushCallData?
+    var callUUID: UUID?
     private var timeoutTimer: Timer?
 
     /// Called when an incoming call UI should be presented.
@@ -25,7 +25,7 @@ public class PopinCallManager {
 
     private init() {}
 
-    public func handleIncomingPush(payload: [AnyHashable: Any], completion: @escaping () -> Void) {
+    internal func handleIncomingPush(payload: [AnyHashable: Any], completion: @escaping () -> Void) {
         // PushKit REQUIRES reporting an incoming call for every VoIP push.
         // We MUST call reportIncomingCall before completion(), otherwise iOS kills the app.
 
@@ -96,20 +96,20 @@ public class PopinCallManager {
         }
     }
 
-    public func clearCallState() {
+    func clearCallState() {
         self.callData = nil
         self.callUUID = nil
         self.timeoutTimer?.invalidate()
         self.timeoutTimer = nil
     }
 
-    public func callAnswered() {
+    func callAnswered() {
         self.timeoutTimer?.invalidate()
         self.timeoutTimer = nil
     }
 
-    public func stopStatusChecking() {}
-    public func enterPiPMode() {}
-    public func exitPiPMode() {}
+    func stopStatusChecking() {}
+    func enterPiPMode() {}
+    func exitPiPMode() {}
 }
 #endif
