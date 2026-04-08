@@ -334,7 +334,21 @@ class PopinCallViewController: UIViewController {
         self.view.isHidden = true
         var v: UIView? = self.view
         while let current = v?.superview {
-            if current is UIWindow { break }
+            if let window = current as? UIWindow {
+                // When the call is hosted in its own dedicated UIWindow
+                // (usesSeparateCallWindow), disabling the presentation
+                // containers is not enough: the window itself has no
+                // sibling content, so its hitTest still falls back to
+                // returning self and consumes touches. Disable the
+                // window's interaction so touches fall through to the
+                // app's key window underneath. Do NOT do this in the
+                // non-separate-window case — that window IS the host
+                // app's key window and we'd freeze the entire app.
+                if popinConfig?.usesSeparateCallWindow == true {
+                    window.isUserInteractionEnabled = false
+                }
+                break
+            }
             current.isUserInteractionEnabled = false
             v = current
         }
@@ -344,7 +358,12 @@ class PopinCallViewController: UIViewController {
         // Re-enable touch interception on presentation container views
         var v: UIView? = self.view
         while let current = v?.superview {
-            if current is UIWindow { break }
+            if let window = current as? UIWindow {
+                if popinConfig?.usesSeparateCallWindow == true {
+                    window.isUserInteractionEnabled = true
+                }
+                break
+            }
             current.isUserInteractionEnabled = true
             v = current
         }
