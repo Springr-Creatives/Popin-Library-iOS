@@ -18,4 +18,10 @@ public protocol PopinEventsListener: AnyObject {
     func onCallConnected()
     func onCallFailed()
     func onCallEnd()
+    func onPipStateChanged(isPipModeActive: Bool)
+}
+
+public extension PopinEventsListener {
+    // Default no-op so existing conformers don't break when new events are added.
+    func onPipStateChanged(isPipModeActive: Bool) {}
 }

@@ -62,6 +62,7 @@ class PopinCallViewController: UIViewController {
     var onNetworkFailure: ((String) -> Void)?
     var onCallAbandoned: (() -> Void)?
     var onCallCancelled: ((Int?) -> Void)?
+    var onPipStateChanged: ((Bool) -> Void)?
     var popinConfig: PopinConfig?
 
     var isAudioEnabled = true, isVideoEnabled = true, isScreenSharing = false
@@ -352,6 +353,7 @@ class PopinCallViewController: UIViewController {
             current.isUserInteractionEnabled = false
             v = current
         }
+        onPipStateChanged?(true)
     }
 
     @objc private func handlePiPDidStop() {
@@ -368,6 +370,7 @@ class PopinCallViewController: UIViewController {
             v = current
         }
         self.view.isHidden = false
+        onPipStateChanged?(false)
     }
     
     func closeViewController(shouldNotEndCX: Bool) {

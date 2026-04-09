@@ -256,6 +256,10 @@ public class Popin: PopinPusherDelegate {
         uiCoordinator.onCallCancelled = { [weak self] _ in
             self?.orchestrator.cancelCall()
         }
+        uiCoordinator.onPipStateChanged = { [weak self] isActive in
+            guard let self = self else { PopinLogger.shared.log("Popin: onPipStateChanged — Popin instance deallocated"); return }
+            self.notifyListener("onPipStateChanged") { $0.onPipStateChanged(isPipModeActive: isActive) }
+        }
 
         // Handle pending incoming call that was answered before SDK initialized.
         // On killed-state cold launch: VoIP push → CallKit → user answers → but

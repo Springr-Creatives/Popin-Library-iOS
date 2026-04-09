@@ -493,6 +493,7 @@ PopinProduct(
 | `onCallConnected()` | The video call is now active |
 | `onCallFailed()` | The call failed to connect |
 | `onCallEnd()` | The call has ended |
+| `onPipStateChanged(isPipModeActive:)` | Picture-in-Picture mode was entered (`true`) or exited (`false`) |
 
 ## Example Project
 

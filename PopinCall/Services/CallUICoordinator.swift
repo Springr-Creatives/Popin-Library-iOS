@@ -42,6 +42,8 @@ class CallUICoordinator {
     var onCallAbandoned: (() -> Void)?
     /// Called when the user cancels a waiting outgoing call. Passes the callQueueId.
     var onCallCancelled: ((Int?) -> Void)?
+    /// Called when PiP mode becomes active or inactive for the current call VC.
+    var onPipStateChanged: ((Bool) -> Void)?
 
     // MARK: - Present Outgoing Call VC
 
@@ -210,6 +212,9 @@ class CallUICoordinator {
         }
         callVC.onCallCancelled = { [weak self] queueId in
             self?.onCallCancelled?(queueId)
+        }
+        callVC.onPipStateChanged = { [weak self] isActive in
+            self?.onPipStateChanged?(isActive)
         }
         return callVC
     }
