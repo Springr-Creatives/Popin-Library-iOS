@@ -9,6 +9,25 @@ import UserNotifications
 #if canImport(UIKit)
 import UIKit
 
+/// A UIWindow that can selectively pass touches through to windows below.
+/// When `passthroughEnabled` is true, only views that actually claim the hit
+/// receive touches — if nothing in this window wants the touch, it falls
+/// through to the window underneath. This lets the app remain interactive
+/// during PiP while still allowing modals (e.g. chat) presented in this
+/// window to receive touches normally.
+class PassthroughWindow: UIWindow {
+    var passthroughEnabled = false
+
+    override func hitTest(_ point: CGPoint, with event: UIEvent?) -> UIView? {
+        guard passthroughEnabled else { return super.hitTest(point, with: event) }
+        // Let the normal hit-test find the deepest view. If it resolves to
+        // the window itself (i.e. no subview claimed it), return nil so
+        // the touch falls through to the window below.
+        let hit = super.hitTest(point, with: event)
+        return hit === self ? nil : hit
+    }
+}
+
 /// Owns all call VC presentation and lifecycle.
 /// Communicates upward via callbacks — never references Popin.shared.
 class CallUICoordinator {
@@ -29,7 +48,7 @@ class CallUICoordinator {
 
     /// Dedicated window used when `usesSeparateCallWindow` is enabled (e.g. React Native apps).
     /// Sits above the main window so `RCTRootView` cannot cover the call UI.
-    private var callWindow: UIWindow?
+    private var callWindow: PassthroughWindow?
     private var usesSeparateCallWindow: Bool = false
 
     // MARK: - Upward callbacks (set by Popin facade)
@@ -255,7 +274,7 @@ class CallUICoordinator {
             return
         }
 
-        let window = UIWindow(windowScene: windowScene)
+        let window = PassthroughWindow(windowScene: windowScene)
         window.windowLevel = .alert + 1
         let containerVC = UIViewController()
         containerVC.view.backgroundColor = .clear

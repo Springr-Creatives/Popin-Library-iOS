@@ -337,16 +337,12 @@ class PopinCallViewController: UIViewController {
         while let current = v?.superview {
             if let window = current as? UIWindow {
                 // When the call is hosted in its own dedicated UIWindow
-                // (usesSeparateCallWindow), disabling the presentation
-                // containers is not enough: the window itself has no
-                // sibling content, so its hitTest still falls back to
-                // returning self and consumes touches. Disable the
-                // window's interaction so touches fall through to the
-                // app's key window underneath. Do NOT do this in the
-                // non-separate-window case — that window IS the host
-                // app's key window and we'd freeze the entire app.
-                if popinConfig?.usesSeparateCallWindow == true {
-                    window.isUserInteractionEnabled = false
+                // (usesSeparateCallWindow), enable passthrough mode so
+                // touches on empty areas fall through to the app's key
+                // window, while modals presented in this window (e.g.
+                // the chat screen) remain fully interactive.
+                if let ptWindow = window as? PassthroughWindow {
+                    ptWindow.passthroughEnabled = true
                 }
                 break
             }
@@ -361,8 +357,8 @@ class PopinCallViewController: UIViewController {
         var v: UIView? = self.view
         while let current = v?.superview {
             if let window = current as? UIWindow {
-                if popinConfig?.usesSeparateCallWindow == true {
-                    window.isUserInteractionEnabled = true
+                if let ptWindow = window as? PassthroughWindow {
+                    ptWindow.passthroughEnabled = false
                 }
                 break
             }
