@@ -336,13 +336,15 @@ class PopinCallViewController: UIViewController {
         var v: UIView? = self.view
         while let current = v?.superview {
             if let window = current as? UIWindow {
-                // When the call is hosted in its own dedicated UIWindow
-                // (usesSeparateCallWindow), enable passthrough mode so
-                // touches on empty areas fall through to the app's key
-                // window, while modals presented in this window (e.g.
-                // the chat screen) remain fully interactive.
                 if let ptWindow = window as? PassthroughWindow {
+                    // Enable passthrough so touches on empty areas fall
+                    // through to the host app's window, while modals
+                    // presented in this window (e.g. chat) stay interactive.
                     ptWindow.passthroughEnabled = true
+                    // The root VC's view (containerVC) is not in callVC's
+                    // superview chain, so the loop above doesn't disable it.
+                    // Disable it explicitly so it doesn't claim hits.
+                    ptWindow.rootViewController?.view.isUserInteractionEnabled = false
                 }
                 break
             }
@@ -359,6 +361,7 @@ class PopinCallViewController: UIViewController {
             if let window = current as? UIWindow {
                 if let ptWindow = window as? PassthroughWindow {
                     ptWindow.passthroughEnabled = false
+                    ptWindow.rootViewController?.view.isUserInteractionEnabled = true
                 }
                 break
             }
