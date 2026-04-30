@@ -510,3 +510,10 @@ This library is available under the MIT License. See [LICENSE.md](LICENSE.md) fo
 ---
 
 Made with care by [Springr Creatives](https://github.com/Springr-Creatives)
+
+
+## License
+
+This is a closed-source project. The source code and assets are the exclusive property of Nowflow Technologies Private Limited and may not be used, reproduced, or distributed without explicit permission.
+
+© 2026 Nowflow Technologies Private Limited. All Rights Reserved.
