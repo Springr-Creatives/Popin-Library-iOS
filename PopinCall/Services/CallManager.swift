@@ -90,6 +90,10 @@ class CallManager: NSObject {
         callObserver.setDelegate(self, queue: nil)
         PopinLogger.shared.log("CallManager: CallKit delegates set")
 
+        // Disable LiveKit's automatic audio-session configuration.
+        // With CallKit, we manage activation/deactivation ourselves.
+        AudioManager.shared.audioSession.isAutomaticConfigurationEnabled = false
+
         PopinLogger.shared.log("CallManager.init() END")
     }
 
@@ -222,6 +226,9 @@ extension CallManager: CXProviderDelegate {
         PopinLogger.shared.log("CallManager: CXEndCallAction for \(action.callUUID)")
         callState = .ended
 
+        // Stop guarding — the call is ending
+        AudioSessionGuard.shared.stopGuarding()
+
         // Explicitly disable audio session to ensure clean cleanup
         // This is important for "End & Accept" scenarios where didDeactivate might be skipped/delayed
         try? AudioManager.shared.setEngineAvailability(.none)
@@ -255,18 +262,25 @@ extension CallManager: CXProviderDelegate {
 
     func provider(_ provider: CXProvider, didActivate audioSession: AVAudioSession) {
         PopinLogger.shared.log("CallManager: didActivateAudioSession")
+
+        // Tell the guard that CallKit now owns the session (skip setActive calls)
+        AudioSessionGuard.shared.sessionDidActivate()
+
         // Configure audio session for LiveKit video calls
         do {
             // WebRTC generally prefers 48kHz and NO mixWithOthers for VoiceProcessingIO
             try audioSession.setPreferredSampleRate(48000.0)
             try audioSession.setCategory(.playAndRecord, mode: .videoChat, options: [.allowBluetooth, .allowBluetoothA2DP, .defaultToSpeaker, .allowAirPlay])
             // CallKit activates the session for us, but we set the category.
-            
+
             // Enable speaker by default for video calls
             try audioSession.overrideOutputAudioPort(.speaker)
 
             // Activate LiveKit audio engine
             try AudioManager.shared.setEngineAvailability(.default)
+
+            // Start guarding against hijacks now that the session is fully configured
+            AudioSessionGuard.shared.startGuarding()
 
             delegate?.callManager(self, didActivateAudioSession: audioSession)
         } catch {
@@ -276,6 +290,11 @@ extension CallManager: CXProviderDelegate {
 
     func provider(_ provider: CXProvider, didDeactivate audioSession: AVAudioSession) {
         PopinLogger.shared.log("CallManager: didDeactivateAudioSession")
+
+        // Stop guarding and mark CallKit as no longer managing
+        AudioSessionGuard.shared.stopGuarding()
+        AudioSessionGuard.shared.sessionDidDeactivate()
+
         // Deactivate LiveKit audio session
         do {
             try AudioManager.shared.setEngineAvailability(.none)

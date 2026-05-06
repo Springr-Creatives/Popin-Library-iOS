@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		CF2008022F27407B00AE48E7 /* AudioSessionGuard.swift in Sources */ = {isa = PBXBuildFile; fileRef = CF2008012F27407B00AE48E7 /* AudioSessionGuard.swift */; };
 		3170C0C9DB3C1E5806DC5B13 /* PopinProduct.swift in Sources */ = {isa = PBXBuildFile; fileRef = CF1D09E39EFC62DD51F4244B /* PopinProduct.swift */; };
 		3B0A147CEC443BD9BE47A57A /* PopinInitListener.swift in Sources */ = {isa = PBXBuildFile; fileRef = C1C6537A1A2AEDB3B404AE28 /* PopinInitListener.swift */; };
 		44BAE20E3443AFBB9D98E770 /* PopinConfigEnvironment.swift in Sources */ = {isa = PBXBuildFile; fileRef = 59E728E5D8CAB13CCE470BC6 /* PopinConfigEnvironment.swift */; };
@@ -152,6 +153,7 @@
 		CF2003012F27407B00AE48E7 /* CallOrchestrator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CallOrchestrator.swift; sourceTree = "<group>"; };
 		CF2004012F27407B00AE48E7 /* CallUICoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CallUICoordinator.swift; sourceTree = "<group>"; };
 		CF2005012F27407B00AE48E7 /* PermissionService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PermissionService.swift; sourceTree = "<group>"; };
+		CF2008012F27407B00AE48E7 /* AudioSessionGuard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AudioSessionGuard.swift; sourceTree = "<group>"; };
 		CF2006012F27407B00AE48E7 /* LocalCameraPreview.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocalCameraPreview.swift; sourceTree = "<group>"; };
 		CF2007012F27407B00AE48E7 /* WaitingBottomControls.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WaitingBottomControls.swift; sourceTree = "<group>"; };
 		CF967A832F44320300F5A268 /* MirroredParticipantView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MirroredParticipantView.swift; sourceTree = "<group>"; };
@@ -267,6 +269,7 @@
 				CF2003012F27407B00AE48E7 /* CallOrchestrator.swift */,
 				CF2004012F27407B00AE48E7 /* CallUICoordinator.swift */,
 				CF2005012F27407B00AE48E7 /* PermissionService.swift */,
+				CF2008012F27407B00AE48E7 /* AudioSessionGuard.swift */,
 			);
 			path = Services;
 			sourceTree = "<group>";
@@ -584,6 +587,7 @@
 				CF2003022F27407B00AE48E7 /* CallOrchestrator.swift in Sources */,
 				CF2004022F27407B00AE48E7 /* CallUICoordinator.swift in Sources */,
 				CF2005022F27407B00AE48E7 /* PermissionService.swift in Sources */,
+				CF2008022F27407B00AE48E7 /* AudioSessionGuard.swift in Sources */,
 				CF2006022F27407B00AE48E7 /* LocalCameraPreview.swift in Sources */,
 				CF2007022F27407B00AE48E7 /* WaitingBottomControls.swift in Sources */,
 			);
