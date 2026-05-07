@@ -196,6 +196,12 @@ class CallOrchestrator: CallAcceptanceListener {
         PopinLogger.shared.log("CallOrchestrator.onCallMissed() — onCallWasMissed=\(onCallWasMissed != nil ? "set" : "nil"), onCallMissedInVC=\(onCallMissedInVC != nil ? "set" : "nil")")
         waitHandler = nil
         onCallWasMissed?()
+
+        // End the CallKit call — the agent didn't accept / rejected
+        #if canImport(UIKit)
+        CallManager.shared.endCall()
+        #endif
+
         DispatchQueue.main.async { [weak self] in
             self?.onCallMissedInVC?()
         }

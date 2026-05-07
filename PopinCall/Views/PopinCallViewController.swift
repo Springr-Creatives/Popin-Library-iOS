@@ -416,7 +416,8 @@ class PopinCallViewController: UIViewController {
 extension PopinCallViewController: VideoCallView {
     func closeCall(message: String) {
         guard !message.isEmpty else {
-            closeViewController(shouldNotEndCX: false)
+            // CallKit is already ended by the orchestrator (cancelCall/onCallMissed/API failure)
+            closeViewController(shouldNotEndCX: true)
             dismiss(animated: true)
             return
         }
@@ -425,7 +426,8 @@ extension PopinCallViewController: VideoCallView {
 
         let okAction = UIAlertAction(title: "OK", style: .default) { _ in
             self.callConnected = false
-            self.closeViewController(shouldNotEndCX: false)
+            // CallKit is already ended by the orchestrator
+            self.closeViewController(shouldNotEndCX: true)
         }
 
         alert.addAction(okAction)
