@@ -82,6 +82,9 @@ struct VideoCallSwiftUIView: View {
                     do {
                         try await _room.connect(url: websocket, token: token)
                         PopinLogger.shared.log("VideoCallSwiftUIView: room.connect() SUCCESS — connectionState=\(_room.connectionState), localParticipantSid=\(_room.localParticipant.sid?.stringValue ?? "nil")")
+
+                        // Notify CallKit that the outgoing call is now connected
+                        CallManager.shared.reportOutgoingCallConnected()
                     } catch {
                         PopinLogger.shared.log("VideoCallSwiftUIView: room.connect() FAILED — error=\(error)")
                         return

@@ -90,9 +90,16 @@ class CallManager: NSObject {
         callObserver.setDelegate(self, queue: nil)
         PopinLogger.shared.log("CallManager: CallKit delegates set")
 
-        // Disable LiveKit's automatic audio-session configuration.
-        // With CallKit, we manage activation/deactivation ourselves.
+        // Disable LiveKit's automatic audio-session configuration globally.
+        // All calls (incoming + outgoing) go through CallKit, so audio is managed
+        // exclusively via didActivateAudioSession / didDeactivateAudioSession.
+        // Per LiveKit: https://github.com/livekit-examples/swift-example-collection/tree/main/callkit
         AudioManager.shared.audioSession.isAutomaticConfigurationEnabled = false
+        do {
+            try AudioManager.shared.setEngineAvailability(.none)
+        } catch {
+            PopinLogger.shared.log("CallManager: Failed to disable audio engine at init: \(error)")
+        }
 
         PopinLogger.shared.log("CallManager.init() END")
     }
@@ -146,6 +153,43 @@ class CallManager: NSObject {
             }
             completion?(error)
         }
+    }
+
+    /// Start an outgoing call via CallKit.
+    /// This triggers `CXStartCallAction` → `didActivateAudioSession` so the audio
+    /// engine is ready before `room.connect()` is called later.
+    func startOutgoingCall(handle: String = "Popin Call") {
+        let callUUID = UUID()
+        PopinLogger.shared.log("CallManager: startOutgoingCall: uuid=\(callUUID), handle=\(handle)")
+
+        currentCallUUID = callUUID
+        callState = .connecting(callUUID)
+        callWasAnswered = false
+        callEndedByTimeout = false
+
+        let handle = CXHandle(type: .generic, value: handle)
+        let startCallAction = CXStartCallAction(call: callUUID, handle: handle)
+        startCallAction.isVideo = true
+        let transaction = CXTransaction(action: startCallAction)
+
+        callController.request(transaction) { [weak self] error in
+            if let error = error {
+                PopinLogger.shared.log("CallManager: startOutgoingCall FAILED: \(error.localizedDescription)")
+                self?.callState = .idle
+                self?.currentCallUUID = nil
+            } else {
+                PopinLogger.shared.log("CallManager: startOutgoingCall transaction accepted")
+            }
+        }
+    }
+
+    /// Report that an outgoing call has connected (e.g. room joined).
+    /// Updates the CallKit UI with the connected timestamp.
+    func reportOutgoingCallConnected() {
+        guard let uuid = currentCallUUID else { return }
+        PopinLogger.shared.log("CallManager: reportOutgoingCallConnected uuid=\(uuid)")
+        provider.reportOutgoingCall(with: uuid, connectedAt: Date())
+        callState = .connected(uuid)
     }
 
     /// Answer the current call
@@ -204,6 +248,17 @@ extension CallManager: CXProviderDelegate {
         clearCurrentCall()
     }
 
+    func provider(_ provider: CXProvider, perform action: CXStartCallAction) {
+        PopinLogger.shared.log("CallManager: CXStartCallAction for \(action.callUUID)")
+        callState = .connecting(action.callUUID)
+
+        // Report the outgoing call as started so CallKit activates the audio session.
+        // The actual room connection happens later when the agent accepts and room details arrive.
+        provider.reportOutgoingCall(with: action.callUUID, startedConnectingAt: Date())
+
+        action.fulfill()
+    }
+
     func provider(_ provider: CXProvider, perform action: CXAnswerCallAction) {
         PopinLogger.shared.log("CallManager: CXAnswerCallAction for \(action.callUUID)")
         callState = .connecting(action.callUUID)
@@ -229,8 +284,8 @@ extension CallManager: CXProviderDelegate {
         // Stop guarding — the call is ending
         AudioSessionGuard.shared.stopGuarding()
 
-        // Explicitly disable audio session to ensure clean cleanup
-        // This is important for "End & Accept" scenarios where didDeactivate might be skipped/delayed
+        // Explicitly disable audio engine to ensure clean cleanup.
+        // This is important for "End & Accept" scenarios where didDeactivate might be skipped/delayed.
         try? AudioManager.shared.setEngineAvailability(.none)
 
         delegate?.callManager(self, didEndCall: action.callUUID)
@@ -263,20 +318,17 @@ extension CallManager: CXProviderDelegate {
     func provider(_ provider: CXProvider, didActivate audioSession: AVAudioSession) {
         PopinLogger.shared.log("CallManager: didActivateAudioSession")
 
-        // Tell the guard that CallKit now owns the session (skip setActive calls)
+        // Tell the guard that CallKit now owns the session
         AudioSessionGuard.shared.sessionDidActivate()
 
-        // Configure audio session for LiveKit video calls
+        // Configure audio session for LiveKit video calls.
+        // We do NOT call setActive(true) — CallKit already activated it.
         do {
-            // WebRTC generally prefers 48kHz and NO mixWithOthers for VoiceProcessingIO
             try audioSession.setPreferredSampleRate(48000.0)
             try audioSession.setCategory(.playAndRecord, mode: .videoChat, options: [.allowBluetooth, .allowBluetoothA2DP, .defaultToSpeaker, .allowAirPlay])
-            // CallKit activates the session for us, but we set the category.
-
-            // Enable speaker by default for video calls
             try audioSession.overrideOutputAudioPort(.speaker)
 
-            // Activate LiveKit audio engine
+            // Enable LiveKit audio engine
             try AudioManager.shared.setEngineAvailability(.default)
 
             // Start guarding against hijacks now that the session is fully configured
@@ -295,7 +347,7 @@ extension CallManager: CXProviderDelegate {
         AudioSessionGuard.shared.stopGuarding()
         AudioSessionGuard.shared.sessionDidDeactivate()
 
-        // Deactivate LiveKit audio session
+        // Deactivate LiveKit audio engine
         do {
             try AudioManager.shared.setEngineAvailability(.none)
         } catch {
@@ -331,15 +383,15 @@ extension CallManager: PKPushRegistryDelegate {
             PopinLogger.shared.log("CallManager: No user yet, token saved locally but not sent to server")
         }
     }
-    
+
     func savePushToken(token: String) {
           UserDefaults.standard.set(token, forKey: "push_token")
       }
-      
+
       func getPushToken() -> String {
           return UserDefaults.standard.string(forKey: "push_token") ?? ""
       }
-      
+
 
     func pushRegistry(
         _ registry: PKPushRegistry,
@@ -363,7 +415,8 @@ extension CallManager: PKPushRegistryDelegate {
             return
         }
 
-        // Configure audio session early (workaround for mic initialization issue)
+        // Configure audio session early (workaround for mic initialization issue).
+        // Must set .playAndRecord BEFORE reportNewIncomingCall when woken from background.
         do {
             let session = AVAudioSession.sharedInstance()
             try session.setCategory(.playAndRecord, mode: .videoChat, options: [.mixWithOthers, .allowBluetooth, .allowBluetoothA2DP, .defaultToSpeaker, .allowAirPlay])
@@ -384,15 +437,15 @@ extension CallManager: CXCallObserverDelegate {
     func callObserver(_ callObserver: CXCallObserver, callChanged call: CXCall) {
         PopinLogger.shared.log("CallManager: CXCallObserver: callChanged uuid=\(call.uuid), hasEnded=\(call.hasEnded), isOutgoing=\(call.isOutgoing)")
         guard let currentUUID = currentCallUUID else { return }
-        
+
         // Check if this is a different call (e.g. GSM call) and if it has ended
         if call.uuid != currentUUID && call.hasEnded {
             PopinLogger.shared.log("CallManager: CXCallObserver: External call ended, unholding current call \(currentUUID)")
-            
+
             // Construct request to unhold the current call
             let setHeldAction = CXSetHeldCallAction(call: currentUUID, onHold: false)
             let transaction = CXTransaction(action: setHeldAction)
-            
+
             callController.request(transaction) { error in
                 if let error = error {
                     PopinLogger.shared.log("CallManager: CXCallObserver: Failed to unhold call: \(error.localizedDescription)")

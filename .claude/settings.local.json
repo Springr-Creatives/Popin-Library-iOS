@@ -15,7 +15,8 @@
       "Bash(xcodebuild:*)",
       "WebFetch(domain:www.figma.com)",
       "Bash(curl:*)",
-      "Bash(git restore:*)"
+      "Bash(git restore:*)",
+      "Bash(gh api:*)"
     ]
   }
 }

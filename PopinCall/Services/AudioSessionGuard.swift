@@ -41,6 +41,33 @@ final class AudioSessionGuard {
 
     private init() {}
 
+    // MARK: - Debug
+
+    /// Dumps the full audio session state for debugging.
+    func dumpSessionState(label: String) {
+        let s = AVAudioSession.sharedInstance()
+        print("🔊 [\(label)] ─────────────────────────────────")
+        print("  category:          \(s.category.rawValue)")
+        print("  mode:              \(s.mode.rawValue)")
+        print("  categoryOptions:   \(s.categoryOptions.rawValue)")
+        print("  isOtherAudioPlaying: \(s.isOtherAudioPlaying)")
+        print("  sampleRate:        \(s.sampleRate)")
+        print("  preferredSampleRate: \(s.preferredSampleRate)")
+        print("  inputChannels:     \(s.inputNumberOfChannels)")
+        print("  outputChannels:    \(s.outputNumberOfChannels)")
+        print("  outputVolume:      \(s.outputVolume)")
+        print("  inputAvailable:    \(s.isInputAvailable)")
+
+        let inputs = s.currentRoute.inputs.map { "\($0.portType.rawValue)(\($0.portName))" }.joined(separator: ", ")
+        let outputs = s.currentRoute.outputs.map { "\($0.portType.rawValue)(\($0.portName))" }.joined(separator: ", ")
+        print("  route.inputs:      \(inputs.isEmpty ? "NONE" : inputs)")
+        print("  route.outputs:     \(outputs.isEmpty ? "NONE" : outputs)")
+
+        print("  isCallKitManaging: \(isCallKitManagingSession)")
+        print("  isGuarding:        \(isGuarding)")
+        print("─────────────────────────────────────────────────")
+    }
+
     // MARK: - Public API
 
     /// Begin observing audio-session notifications. Idempotent.
@@ -84,6 +111,7 @@ final class AudioSessionGuard {
     func sessionDidActivate() {
         isCallKitManagingSession = true
         PopinLogger.shared.log("AudioSessionGuard: CallKit activated session")
+        dumpSessionState(label: "sessionDidActivate")
     }
 
     /// Called from `CXProviderDelegate.provider(_:didDeactivate:)`.
@@ -105,18 +133,17 @@ final class AudioSessionGuard {
             try session.setPreferredSampleRate(48_000)
             try session.overrideOutputAudioPort(.speaker)
 
-            // Only activate if CallKit is NOT managing the session.
-            // When CallKit is active it already called setActive(true) for us.
-            if !isCallKitManagingSession {
-                try session.setActive(true, options: [])
-            }
+            // Do NOT call setActive(true) — CallKit already activated the session
+            // and Apple recommends against calling it again.
 
             // Re-enable LiveKit audio engine
             try AudioManager.shared.setEngineAvailability(.default)
 
             PopinLogger.shared.log("AudioSessionGuard: reassertAudioSession succeeded (callKitManaging=\(isCallKitManagingSession))")
+            dumpSessionState(label: "reassertAudioSession SUCCESS")
         } catch {
             PopinLogger.shared.log("AudioSessionGuard: reassertAudioSession FAILED: \(error)")
+            dumpSessionState(label: "reassertAudioSession FAILED")
         }
     }
 

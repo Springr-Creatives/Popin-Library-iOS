@@ -57,6 +57,12 @@ class CallOrchestrator: CallAcceptanceListener {
         callStarted = true
         PopinLogger.shared.log("CallOrchestrator.startCall()")
 
+        // Start CallKit outgoing call so didActivateAudioSession fires
+        // before room.connect() — audio engine will be ready.
+        #if canImport(UIKit)
+        CallManager.shared.startOutgoingCall()
+        #endif
+
         // Show connecting screen immediately, in parallel with the network request
         DispatchQueue.main.async {
             self.onPresentOutgoingVC?()
@@ -79,6 +85,9 @@ class CallOrchestrator: CallAcceptanceListener {
             PopinLogger.shared.log("CallOrchestrator.startCall: API failed")
             self?.callStarted = false
             self?.onCallFailed?()
+            #if canImport(UIKit)
+            CallManager.shared.endCall()
+            #endif
             DispatchQueue.main.async {
                 self?.onCloseCurrentVC?("")
             }
@@ -90,6 +99,11 @@ class CallOrchestrator: CallAcceptanceListener {
         waitHandler?.stopWaitingForAcceptance()
         waitHandler = nil
         callStarted = false
+
+        // End the CallKit call if one is active
+        #if canImport(UIKit)
+        CallManager.shared.endCall()
+        #endif
     }
 
     func cleanUp() {
@@ -130,6 +144,11 @@ class CallOrchestrator: CallAcceptanceListener {
         callStarted = true
         PopinLogger.shared.log("CallOrchestrator.startWidgetCall(url: \(url))")
 
+        // Start CallKit outgoing call so didActivateAudioSession fires
+        #if canImport(UIKit)
+        CallManager.shared.startOutgoingCall()
+        #endif
+
         popinPresenter.getWidgetCall(url: url, onSuccess: { [weak self] talkModel in
             guard let self, self.callStarted else {
                 PopinLogger.shared.log("CallOrchestrator.startWidgetCall: Cancelled before API returned")
@@ -152,6 +171,9 @@ class CallOrchestrator: CallAcceptanceListener {
             PopinLogger.shared.log("CallOrchestrator.startWidgetCall: API failed")
             self?.callStarted = false
             self?.onCallFailed?()
+            #if canImport(UIKit)
+            CallManager.shared.endCall()
+            #endif
         })
     }
 
