@@ -175,6 +175,15 @@ public class Popin: PopinPusherDelegate {
             self?.onIncomingCallAnswered()
         }
 
+        // If user rejects the call from CallKit before the in-app VC takes over
+        // (e.g. lock-screen reject while app is backgrounded), drop any deferred
+        // VC presentation so opening the app later doesn't surface NotConnectedView.
+        CallManager.shared.onCallEndedBeforeAnswer = { [weak self] in
+            print("[Popin][Popin] onCallEndedBeforeAnswer — cancelling pending/deferred call VC")
+            PopinLogger.shared.log("Popin.onCallEndedBeforeAnswer: cancelling pending call VC")
+            self?.uiCoordinator.cancelPendingVC()
+        }
+
         // Break circular dep: PopinCallManager → Popin.shared
         PopinCallManager.shared.onPresentIncomingCallUI = { [weak self] in
             guard let self = self else { return }

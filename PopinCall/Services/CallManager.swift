@@ -63,6 +63,10 @@ class CallManager: NSObject {
 
     weak var delegate: CallManagerDelegate?
     var onCallAnswered: (() -> Void)?
+    /// Fired when a call ends via CallKit before the in-app VC ever became delegate
+    /// (e.g. user rejects from the lock-screen CallKit UI while the app is backgrounded).
+    /// Lets the UI layer cancel any deferred/pending VC presentation.
+    var onCallEndedBeforeAnswer: (() -> Void)?
 
     // MARK: - Initialization
 
@@ -293,11 +297,17 @@ extension CallManager: CXProviderDelegate {
         // If no delegate (VC not yet presented) and call was never answered, reject via API and clean up.
         // Skip reject if call was already answered — the end API was already called through the normal flow.
         // Skip reject if call ended due to timeout — the caller already knows the call wasn't picked up.
-        if delegate == nil, let callData = PopinCallManager.shared.callData, !callWasAnswered, !callEndedByTimeout {
-            PopinLogger.shared.log("CallManager: CXEndCallAction: No delegate, rejecting call via API")
-            let presenter = VideoCallPresenter(videoCallInteractor: VideoCallInteractor())
-            presenter.rejectCall(callId: callData.callId)
+        if delegate == nil, !callWasAnswered {
+            print("[Popin][CallManager] CXEndCallAction with no delegate — call rejected/ended before VC took over (callData=\(PopinCallManager.shared.callData != nil ? "present" : "nil"), endedByTimeout=\(callEndedByTimeout))")
+            if let callData = PopinCallManager.shared.callData, !callEndedByTimeout {
+                PopinLogger.shared.log("CallManager: CXEndCallAction: No delegate, rejecting call via API")
+                let presenter = VideoCallPresenter(videoCallInteractor: VideoCallInteractor())
+                presenter.rejectCall(callId: callData.callId)
+            }
             PopinCallManager.shared.clearCallState()
+            // Notify UI layer to cancel any deferred/pending VC presentation so we don't
+            // present NotConnectedView when the user later foregrounds the app.
+            onCallEndedBeforeAnswer?()
         }
 
         action.fulfill()
