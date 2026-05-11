@@ -140,7 +140,6 @@ class CallUICoordinator {
     }
 
     func cancelPendingVC() {
-        print("[Popin][CallUICoordinator] cancelPendingVC — clearing current/pending VC and any deferred presentation (hadDeferred=\(deferredPresentation != nil))")
         currentCallViewController = nil
         pendingCallViewController = nil
         cancelDeferredPresentation()
@@ -244,7 +243,6 @@ class CallUICoordinator {
         // UIKit silently drops present/dismiss completion blocks.
         // Defer the presentation until the app is foregrounded.
         if UIApplication.shared.applicationState != .active {
-            print("[Popin][CallUICoordinator] presentCallVCFromRoot — app not active (state=\(UIApplication.shared.applicationState.rawValue)), deferring VC presentation until foreground")
             PopinLogger.shared.log("CallUICoordinator.presentCallVCFromRoot: App not active (state=\(UIApplication.shared.applicationState.rawValue)) — deferring presentation until foreground")
             deferredPresentation = (callVC: callVC, completion: completion)
             observeForeground()
@@ -345,13 +343,9 @@ class CallUICoordinator {
             foregroundObserver = nil
         }
 
-        guard let deferred = deferredPresentation else {
-            print("[Popin][CallUICoordinator] replayDeferredPresentation — nothing to replay")
-            return
-        }
+        guard let deferred = deferredPresentation else { return }
         deferredPresentation = nil
 
-        print("[Popin][CallUICoordinator] replayDeferredPresentation — app active, presenting deferred VC")
         PopinLogger.shared.log("CallUICoordinator.replayDeferredPresentation: App became active — presenting deferred call VC")
         performPresentation(deferred.callVC, completion: deferred.completion)
     }

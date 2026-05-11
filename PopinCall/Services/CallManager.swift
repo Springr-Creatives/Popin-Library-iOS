@@ -298,7 +298,6 @@ extension CallManager: CXProviderDelegate {
         // Skip reject if call was already answered — the end API was already called through the normal flow.
         // Skip reject if call ended due to timeout — the caller already knows the call wasn't picked up.
         if delegate == nil, !callWasAnswered {
-            print("[Popin][CallManager] CXEndCallAction with no delegate — call rejected/ended before VC took over (callData=\(PopinCallManager.shared.callData != nil ? "present" : "nil"), endedByTimeout=\(callEndedByTimeout))")
             if let callData = PopinCallManager.shared.callData, !callEndedByTimeout {
                 PopinLogger.shared.log("CallManager: CXEndCallAction: No delegate, rejecting call via API")
                 let presenter = VideoCallPresenter(videoCallInteractor: VideoCallInteractor())
