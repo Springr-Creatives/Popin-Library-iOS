@@ -549,8 +549,14 @@ extension PopinCallViewController: CallManagerDelegate {
             if self.shouldSkipEndApi || endedByTimeout {
                 PopinLogger.shared.log("PopinCallVC: didEndCall: Skipping API call (shouldSkipEndApi=\(self.shouldSkipEndApi), endedByTimeout=\(endedByTimeout))")
             } else if self.callConnected || self.viewModel.callAccepted {
-                // Call was connected — /end API is handled by onEndCall, skip here
-                PopinLogger.shared.log("PopinCallVC: didEndCall: Call was connected, /end API not called from this path")
+                // Call was connected but ended externally (e.g. GSM "End & Accept") —
+                // onEndCall only fires from the UI button, so we must call /end here.
+                PopinLogger.shared.log("PopinCallVC: didEndCall: Call was connected, ending via API (external end)")
+                self.videoCallPresenter.endCall(callId: self.callId, onSuccess: {
+                    PopinLogger.shared.log("PopinCallVC: didEndCall: /end API succeeded")
+                }, onFailure: { error in
+                    PopinLogger.shared.log("PopinCallVC: didEndCall: /end API failed (\(error))")
+                })
             } else {
                 self.videoCallPresenter.rejectCall(callId: self.callId)
             }
