@@ -13,6 +13,12 @@ struct Agent: Codable {
     let image: String?
 }
 
+struct IceServerInfo: Codable {
+    let urls: [String]?
+    let username: String?
+    let credential: String?
+}
+
 struct TalkModel : Codable {
     let id: Int?
     let user_id: Int?
@@ -27,6 +33,7 @@ struct TalkModel : Codable {
     let user_mobile: String?
     let agents: [Agent]?
     let created_at: Double?
+    let ice_servers: [IceServerInfo]?
 
     private let token: String?
     private let server_access_token: String?
@@ -38,6 +45,7 @@ struct TalkModel : Codable {
     enum CodingKeys: String, CodingKey {
         case id, user_id, token, room, websocket, status
         case agent, seller_id, agent_id, user_name, user_mobile, agents, created_at
+        case ice_servers
         case server_access_token = "access_token"
         case agent_name, agent_image
     }
@@ -57,6 +65,7 @@ struct TalkModel : Codable {
         user_mobile = try container.decodeIfPresent(String.self, forKey: .user_mobile)
         agents = try container.decodeIfPresent([Agent].self, forKey: .agents)
         created_at = try container.decodeIfPresent(Double.self, forKey: .created_at)
+        ice_servers = try container.decodeIfPresent([IceServerInfo].self, forKey: .ice_servers)
         
         token = try container.decodeIfPresent(String.self, forKey: .token)
         server_access_token = try container.decodeIfPresent(String.self, forKey: .server_access_token)
@@ -92,6 +101,7 @@ struct TalkModel : Codable {
         try container.encodeIfPresent(user_mobile, forKey: .user_mobile)
         try container.encodeIfPresent(agents, forKey: .agents)
         try container.encodeIfPresent(created_at, forKey: .created_at)
+        try container.encodeIfPresent(ice_servers, forKey: .ice_servers)
         try container.encodeIfPresent(token, forKey: .token)
         try container.encodeIfPresent(server_access_token, forKey: .server_access_token)
         

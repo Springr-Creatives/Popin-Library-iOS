@@ -78,9 +78,26 @@ struct VideoCallSwiftUIView: View {
                     }
                     PopinLogger.shared.log("VideoCallSwiftUIView: connecting to LiveKit room — url=\(websocket), roomState=\(_room.connectionState)")
 
+                    // Build ConnectOptions with server-provided ICE servers when present.
+                    // A non-empty iceServers list REPLACES (not appends to) the LiveKit-server list
+                    // — see client-sdk-swift Room+Engine.swift override path.
+                    let serverIceServers: [IceServer] = (call.ice_servers ?? []).compactMap { info in
+                        let urls = (info.urls ?? []).filter { !$0.isEmpty }
+                        guard !urls.isEmpty else { return nil }
+                        return IceServer(
+                            urls: urls,
+                            username: (info.username?.isEmpty == false) ? info.username : nil,
+                            credential: (info.credential?.isEmpty == false) ? info.credential : nil
+                        )
+                    }
+                    let connectOptions: ConnectOptions? = serverIceServers.isEmpty
+                        ? nil
+                        : ConnectOptions(iceServers: serverIceServers)
+                    PopinLogger.shared.log("VideoCallSwiftUIView: using \(serverIceServers.count) server-provided ICE servers (overrides LiveKit defaults)")
+
                     // Step 1: Connect to room
                     do {
-                        try await _room.connect(url: websocket, token: token)
+                        try await _room.connect(url: websocket, token: token, connectOptions: connectOptions)
                         PopinLogger.shared.log("VideoCallSwiftUIView: room.connect() SUCCESS — connectionState=\(_room.connectionState), localParticipantSid=\(_room.localParticipant.sid?.stringValue ?? "nil")")
 
                         // Notify CallKit that the outgoing call is now connected
