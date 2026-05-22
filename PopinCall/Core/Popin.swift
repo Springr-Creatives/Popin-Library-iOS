@@ -24,7 +24,7 @@ public class Popin: PopinPusherDelegate {
     public private(set) static var shared: Popin?
 
     /// SDK version
-    public static let sdkVersion = "1.0.40"
+    public static let sdkVersion = "1.0.151"
 
     /// Device name (e.g. "iPhone", "iPad")
     static var deviceName: String {
