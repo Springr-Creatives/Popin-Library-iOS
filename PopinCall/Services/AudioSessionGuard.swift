@@ -4,6 +4,17 @@
 //
 //  Created by Ashwin Nath.
 //
+//  Monitors the shared `AVAudioSession` during an active call and re-asserts
+//  the correct category/mode/options whenever another library hijacks it.
+//
+//  Ownership: Singleton, retained by `CallManager` (which owns the `CXProvider`).
+//  Call `startGuarding()` when a call begins and `stopGuarding()` when it ends.
+//
+//  CallKit contract: While `isCallKitManagingSession` is `true`, the guard
+//  will never call `setActive(true)` — only re-assert category/mode/options.
+//  The one exception is `handleMediaServicesReset`, where the session is
+//  invalidated by iOS and must be fully rebuilt regardless of CallKit state.
+//
 
 import Foundation
 
@@ -11,14 +22,6 @@ import Foundation
 import AVFoundation
 import LiveKit
 
-/// Monitors the shared `AVAudioSession` during an active call and re-asserts
-/// the correct category/mode/options whenever another library hijacks it.
-///
-/// **Ownership:** Created and retained by `CallManager` (which owns the `CXProvider`).
-/// Call `startGuarding()` when a call begins and `stopGuarding()` when it ends.
-///
-/// **CallKit contract:** While `isCallKitManagingSession` is `true`, the guard
-/// will never call `setActive(true)` — only re-assert category/mode/options.
 final class AudioSessionGuard {
 
     // MARK: - Singleton
@@ -27,15 +30,29 @@ final class AudioSessionGuard {
 
     // MARK: - State
 
-    /// Set to `true` in `provider(_:didActivateAudioSession:)`,
-    /// `false` in `provider(_:didDeactivateAudioSession:)`.
+    /// True while CallKit owns the audio session (between didActivate/didDeactivate).
+    /// When true, we re-assert category but never call setActive(true).
     private(set) var isCallKitManagingSession: Bool = false
 
-    /// Whether the guard is actively observing notifications.
+    /// True while the guard is actively observing notifications.
     private(set) var isGuarding: Bool = false
 
-    /// Periodic check that re-asserts the session if another app silently stole it.
+    /// Periodic check that catches hijacks when no notification fires (e.g. competing app exits).
     private var heartbeatTimer: Timer?
+    private let heartbeatInterval: TimeInterval = 3.0
+
+    // MARK: - Target Configuration
+
+    private let targetCategory: AVAudioSession.Category = .playAndRecord
+    private let targetMode: AVAudioSession.Mode = .videoChat
+    private let targetOptions: AVAudioSession.CategoryOptions = [
+        .mixWithOthers,
+        .allowBluetooth,
+        .allowBluetoothA2DP,
+        .defaultToSpeaker,
+        .allowAirPlay
+    ]
+    private let targetSampleRate: Double = 48000.0
 
     // MARK: - Init
 
@@ -46,7 +63,7 @@ final class AudioSessionGuard {
     /// Dumps the full audio session state for debugging.
     func dumpSessionState(label: String) {
         let s = AVAudioSession.sharedInstance()
-        print("🔊 [\(label)] ─────────────────────────────────")
+        print("[\(label)] ─────────────────────────────────")
         print("  category:          \(s.category.rawValue)")
         print("  mode:              \(s.mode.rawValue)")
         print("  categoryOptions:   \(s.categoryOptions.rawValue)")
@@ -72,7 +89,10 @@ final class AudioSessionGuard {
 
     /// Begin observing audio-session notifications. Idempotent.
     func startGuarding() {
-        guard !isGuarding else { return }
+        guard !isGuarding else {
+            PopinLogger.shared.log("AudioSessionGuard: startGuarding called but already guarding, skipping")
+            return
+        }
         isGuarding = true
 
         let nc = NotificationCenter.default
@@ -94,7 +114,9 @@ final class AudioSessionGuard {
                        object: nil)
 
         startHeartbeat()
-        PopinLogger.shared.log("AudioSessionGuard: started guarding")
+
+        PopinLogger.shared.log("AudioSessionGuard: started guarding (callKitManaging: \(isCallKitManagingSession))")
+        logCurrentSessionState(context: "startGuarding")
     }
 
     /// Stop observing. Call when the call ends.
@@ -102,49 +124,70 @@ final class AudioSessionGuard {
         guard isGuarding else { return }
         isGuarding = false
         isCallKitManagingSession = false
+
         stopHeartbeat()
         NotificationCenter.default.removeObserver(self)
+
         PopinLogger.shared.log("AudioSessionGuard: stopped guarding")
     }
+
+    // MARK: - CallKit Session Events
 
     /// Called from `CXProviderDelegate.provider(_:didActivate:)`.
     func sessionDidActivate() {
         isCallKitManagingSession = true
-        PopinLogger.shared.log("AudioSessionGuard: CallKit activated session")
+        PopinLogger.shared.log("AudioSessionGuard: CallKit did activate session (isGuarding: \(isGuarding))")
         dumpSessionState(label: "sessionDidActivate")
     }
 
     /// Called from `CXProviderDelegate.provider(_:didDeactivate:)`.
     func sessionDidDeactivate() {
         isCallKitManagingSession = false
-        PopinLogger.shared.log("AudioSessionGuard: CallKit deactivated session")
+        PopinLogger.shared.log("AudioSessionGuard: CallKit did deactivate session (isGuarding: \(isGuarding))")
     }
 
-    /// Re-assert the correct audio-session configuration for a video call.
-    /// Safe to call at any time — skips `setActive(true)` while CallKit owns the session.
+    // MARK: - Reassertion
+
+    /// Re-asserts the correct audio session configuration for video calls.
+    /// Does NOT call setActive(true) — CallKit owns session activation for all calls.
     func reassertAudioSession() {
         let session = AVAudioSession.sharedInstance()
+
+        PopinLogger.shared.log("AudioSessionGuard: reassertAudioSession BEGIN — callKitManaging: \(isCallKitManagingSession)")
+        logCurrentSessionState(context: "reassert-before")
+
         do {
-            try session.setCategory(
-                .playAndRecord,
-                mode: .videoChat,
-                options: [.allowBluetooth, .allowBluetoothA2DP, .defaultToSpeaker, .allowAirPlay]
-            )
-            try session.setPreferredSampleRate(48_000)
-            try session.overrideOutputAudioPort(.speaker)
-
-            // Do NOT call setActive(true) — CallKit already activated the session
-            // and Apple recommends against calling it again.
-
-            // Re-enable LiveKit audio engine
-            try AudioManager.shared.setEngineAvailability(.default)
-
-            PopinLogger.shared.log("AudioSessionGuard: reassertAudioSession succeeded (callKitManaging=\(isCallKitManagingSession))")
-            dumpSessionState(label: "reassertAudioSession SUCCESS")
+            try session.setCategory(targetCategory, mode: targetMode, options: targetOptions)
+            PopinLogger.shared.log("AudioSessionGuard: setCategory success")
         } catch {
-            PopinLogger.shared.log("AudioSessionGuard: reassertAudioSession FAILED: \(error)")
-            dumpSessionState(label: "reassertAudioSession FAILED")
+            PopinLogger.shared.log("AudioSessionGuard: setCategory FAILED: \(error)")
+            return
         }
+
+        do {
+            try session.setPreferredSampleRate(targetSampleRate)
+        } catch {
+            PopinLogger.shared.log("AudioSessionGuard: setPreferredSampleRate FAILED: \(error)")
+        }
+
+        do {
+            try session.overrideOutputAudioPort(.speaker)
+        } catch {
+            PopinLogger.shared.log("AudioSessionGuard: overrideOutputAudioPort FAILED: \(error)")
+        }
+
+        // Do NOT call setActive(true) — CallKit owns session activation for all calls.
+
+        do {
+            try AudioManager.shared.setEngineAvailability(.default)
+            PopinLogger.shared.log("AudioSessionGuard: setEngineAvailability(.default) success")
+        } catch {
+            PopinLogger.shared.log("AudioSessionGuard: setEngineAvailability(.default) FAILED: \(error)")
+            return
+        }
+
+        logCurrentSessionState(context: "reassert-after")
+        PopinLogger.shared.log("AudioSessionGuard: reassertAudioSession COMPLETE")
     }
 
     // MARK: - Notification Handlers
@@ -153,26 +196,33 @@ final class AudioSessionGuard {
         guard let userInfo = notification.userInfo,
               let typeValue = userInfo[AVAudioSessionInterruptionTypeKey] as? UInt,
               let type = AVAudioSession.InterruptionType(rawValue: typeValue) else {
+            PopinLogger.shared.log("AudioSessionGuard: interruption notification with missing/invalid type key")
             return
         }
 
         switch type {
         case .began:
-            PopinLogger.shared.log("AudioSessionGuard: interruption BEGAN")
+            let wasSuspended = userInfo[AVAudioSessionInterruptionWasSuspendedKey] as? Bool ?? false
+            PopinLogger.shared.log("AudioSessionGuard: interruption BEGAN (wasSuspended: \(wasSuspended), callKitManaging: \(isCallKitManagingSession))")
+            logCurrentSessionState(context: "interruption-began")
 
         case .ended:
             let optionsValue = userInfo[AVAudioSessionInterruptionOptionKey] as? UInt ?? 0
             let options = AVAudioSession.InterruptionOptions(rawValue: optionsValue)
+            let shouldResume = options.contains(.shouldResume)
 
-            if options.contains(.shouldResume) {
-                PopinLogger.shared.log("AudioSessionGuard: interruption ENDED with shouldResume — reasserting")
+            PopinLogger.shared.log("AudioSessionGuard: interruption ENDED (shouldResume: \(shouldResume), optionsRaw: \(optionsValue), callKitManaging: \(isCallKitManagingSession))")
+            logCurrentSessionState(context: "interruption-ended-before-reassert")
+
+            if shouldResume {
+                PopinLogger.shared.log("AudioSessionGuard: shouldResume=true, calling reassertAudioSession")
                 reassertAudioSession()
             } else {
-                PopinLogger.shared.log("AudioSessionGuard: interruption ENDED (no shouldResume flag)")
+                PopinLogger.shared.log("AudioSessionGuard: shouldResume=false, NOT reasserting — audio may remain broken. Check if another interruption or CallKit event restores it.")
             }
 
         @unknown default:
-            break
+            PopinLogger.shared.log("AudioSessionGuard: unknown interruption type: \(typeValue)")
         }
     }
 
@@ -180,41 +230,97 @@ final class AudioSessionGuard {
         guard let userInfo = notification.userInfo,
               let reasonValue = userInfo[AVAudioSessionRouteChangeReasonKey] as? UInt,
               let reason = AVAudioSession.RouteChangeReason(rawValue: reasonValue) else {
+            PopinLogger.shared.log("AudioSessionGuard: route change notification with missing/invalid reason key")
             return
         }
 
         let session = AVAudioSession.sharedInstance()
+        let reasonName = routeChangeReasonName(reason)
+
+        PopinLogger.shared.log("AudioSessionGuard: route change — reason: \(reasonName) (\(reasonValue)), category: \(session.category.rawValue), mode: \(session.mode.rawValue)")
+
+        if let previousRoute = userInfo[AVAudioSessionRouteChangePreviousRouteKey] as? AVAudioSessionRouteDescription {
+            let prevOutputs = previousRoute.outputs.map { "\($0.portName) (\($0.portType.rawValue))" }.joined(separator: ", ")
+            let prevInputs = previousRoute.inputs.map { "\($0.portName) (\($0.portType.rawValue))" }.joined(separator: ", ")
+            PopinLogger.shared.log("AudioSessionGuard: route change — previousRoute inputs: [\(prevInputs)], outputs: [\(prevOutputs)]")
+        }
+
+        logCurrentRoute(context: "route-change-current")
 
         switch reason {
         case .categoryChange:
-            // Another library called setCategory — check if we've been knocked off .playAndRecord.
-            if session.category != .playAndRecord {
-                PopinLogger.shared.log("AudioSessionGuard: category HIJACKED to \(session.category.rawValue) — reasserting")
+            if session.category != targetCategory {
+                PopinLogger.shared.log("AudioSessionGuard: HIJACK DETECTED via route change — current category: \(session.category.rawValue), expected: \(targetCategory.rawValue), mode: \(session.mode.rawValue), options: \(session.categoryOptions.rawValue)")
                 reassertAudioSession()
+            } else if session.mode != targetMode {
+                PopinLogger.shared.log("AudioSessionGuard: route change categoryChange — category matches but mode differs: current=\(session.mode.rawValue), expected=\(targetMode.rawValue). Reasserting.")
+                reassertAudioSession()
+            } else {
+                PopinLogger.shared.log("AudioSessionGuard: route change categoryChange — category and mode match, no action needed")
             }
 
         case .oldDeviceUnavailable:
-            // A device (e.g. Bluetooth) was removed, or a competing app released audio hardware.
-            PopinLogger.shared.log("AudioSessionGuard: route change oldDeviceUnavailable — reasserting")
-            reassertAudioSession()
+            // A competing app (e.g. Google Meet) released its audio route, or a Bluetooth device disconnected.
+            // iOS does NOT re-trigger didActivateAudioSession — we must reclaim manually.
+            PopinLogger.shared.log("AudioSessionGuard: oldDeviceUnavailable — competing app may have released session. Checking if reassertion needed.")
+            reassertIfNeeded()
 
         case .unknown:
-            // iOS sometimes fires .unknown when a competing app exits.
-            if isCallKitManagingSession {
-                PopinLogger.shared.log("AudioSessionGuard: route change unknown during active call — reasserting")
-                reassertAudioSession()
-            }
+            // iOS sometimes fires .unknown when a competing app exits or the session state changes silently.
+            PopinLogger.shared.log("AudioSessionGuard: route change with unknown reason during active call. Checking if reassertion needed.")
+            reassertIfNeeded()
 
         default:
+            // Other reasons (newDeviceAvailable, override, wakeFromSleep, etc.) — no action needed
             break
         }
     }
 
     @objc private func handleMediaServicesReset(_ notification: Notification) {
-        // Media services died and restarted — the audio session is completely invalidated.
-        // Rebuild from scratch.
-        PopinLogger.shared.log("AudioSessionGuard: media services RESET — full rebuild")
-        reassertAudioSession()
+        PopinLogger.shared.log("AudioSessionGuard: MEDIA SERVICES RESET — entire audio subsystem was restarted by iOS. Rebuilding session. (callKitManaging: \(isCallKitManagingSession))")
+
+        // After a media services reset, the audio session is invalid.
+        // We must fully reconfigure and reactivate regardless of CallKit state.
+        let session = AVAudioSession.sharedInstance()
+
+        do {
+            try session.setCategory(targetCategory, mode: targetMode, options: targetOptions)
+            PopinLogger.shared.log("AudioSessionGuard: media reset — setCategory success")
+        } catch {
+            PopinLogger.shared.log("AudioSessionGuard: media reset — setCategory FAILED: \(error)")
+            return
+        }
+
+        do {
+            try session.setPreferredSampleRate(targetSampleRate)
+        } catch {
+            PopinLogger.shared.log("AudioSessionGuard: media reset — setPreferredSampleRate FAILED: \(error)")
+        }
+
+        do {
+            try session.overrideOutputAudioPort(.speaker)
+        } catch {
+            PopinLogger.shared.log("AudioSessionGuard: media reset — overrideOutputAudioPort FAILED: \(error)")
+        }
+
+        do {
+            try session.setActive(true)
+            PopinLogger.shared.log("AudioSessionGuard: media reset — setActive(true) success")
+        } catch {
+            PopinLogger.shared.log("AudioSessionGuard: media reset — setActive(true) FAILED: \(error)")
+            return
+        }
+
+        do {
+            try AudioManager.shared.setEngineAvailability(.default)
+            PopinLogger.shared.log("AudioSessionGuard: media reset — setEngineAvailability(.default) success")
+        } catch {
+            PopinLogger.shared.log("AudioSessionGuard: media reset — setEngineAvailability(.default) FAILED: \(error)")
+            return
+        }
+
+        logCurrentSessionState(context: "media-reset-after")
+        PopinLogger.shared.log("AudioSessionGuard: media services reset recovery COMPLETE")
     }
 
     /// Fires when another app's audio stops (e.g. Google Meet hangs up).
@@ -223,34 +329,115 @@ final class AudioSessionGuard {
         guard let userInfo = notification.userInfo,
               let typeValue = userInfo[AVAudioSessionSilenceSecondaryAudioHintTypeKey] as? UInt,
               let type = AVAudioSession.SilenceSecondaryAudioHintType(rawValue: typeValue) else {
+            PopinLogger.shared.log("AudioSessionGuard: silenceSecondaryAudioHint with missing/invalid type key")
             return
         }
 
-        if type == .end {
-            PopinLogger.shared.log("AudioSessionGuard: secondary audio ENDED (competing app stopped) — reasserting")
+        switch type {
+        case .begin:
+            PopinLogger.shared.log("AudioSessionGuard: secondary audio BEGAN (another app started playing)")
+
+        case .end:
+            PopinLogger.shared.log("AudioSessionGuard: secondary audio ENDED — another app stopped. Reasserting session to reclaim audio.")
             reassertAudioSession()
+
+        @unknown default:
+            PopinLogger.shared.log("AudioSessionGuard: unknown secondary audio hint type: \(typeValue)")
+        }
+    }
+
+    // MARK: - Conditional Reassertion
+
+    /// Only reasserts if the session is not already in the correct state.
+    /// Used for route changes where we're not sure if it's a hijack.
+    private func reassertIfNeeded() {
+        let session = AVAudioSession.sharedInstance()
+        if session.category != targetCategory || session.mode != targetMode {
+            PopinLogger.shared.log("AudioSessionGuard: reassertIfNeeded — session drifted (category: \(session.category.rawValue), mode: \(session.mode.rawValue)). Reasserting.")
+            reassertAudioSession()
+        } else {
+            // Even if category/mode match, the audio engine may have been disrupted.
+            // Re-poke the engine availability to ensure LiveKit is still connected.
+            PopinLogger.shared.log("AudioSessionGuard: reassertIfNeeded — category/mode OK, re-poking engine availability")
+            do {
+                try AudioManager.shared.setEngineAvailability(.default)
+                PopinLogger.shared.log("AudioSessionGuard: reassertIfNeeded — setEngineAvailability(.default) success")
+            } catch {
+                PopinLogger.shared.log("AudioSessionGuard: reassertIfNeeded — setEngineAvailability FAILED: \(error). Falling back to full reassert.")
+                reassertAudioSession()
+            }
         }
     }
 
     // MARK: - Heartbeat
 
-    /// Polls every 3 seconds to catch cases where no notification fires
-    /// (e.g. a competing app silently releases the session).
+    /// Starts a periodic check that catches session hijacking when no notification fires.
+    /// This handles edge cases like a competing app (Google Meet) exiting without triggering
+    /// interruptionEnded or silenceSecondaryAudioHint.
     private func startHeartbeat() {
         stopHeartbeat()
-        heartbeatTimer = Timer.scheduledTimer(withTimeInterval: 3.0, repeats: true) { [weak self] _ in
-            guard let self, self.isCallKitManagingSession else { return }
-            let session = AVAudioSession.sharedInstance()
-            if session.category != .playAndRecord || session.mode != .videoChat {
-                PopinLogger.shared.log("AudioSessionGuard: heartbeat detected wrong category=\(session.category.rawValue) mode=\(session.mode.rawValue) — reasserting")
-                self.reassertAudioSession()
+        DispatchQueue.main.async { [weak self] in
+            guard let self else { return }
+            self.heartbeatTimer = Timer.scheduledTimer(withTimeInterval: self.heartbeatInterval, repeats: true) { [weak self] _ in
+                self?.heartbeatCheck()
             }
+            PopinLogger.shared.log("AudioSessionGuard: heartbeat started (interval: \(self.heartbeatInterval)s)")
         }
     }
 
     private func stopHeartbeat() {
+        DispatchQueue.main.async { [weak self] in
+            self?.heartbeatTimer?.invalidate()
+            self?.heartbeatTimer = nil
+        }
+    }
+
+    private func heartbeatCheck() {
+        guard isGuarding else { return }
+
+        let session = AVAudioSession.sharedInstance()
+        if session.category != targetCategory || session.mode != targetMode {
+            PopinLogger.shared.log("AudioSessionGuard: HEARTBEAT detected drifted session — category: \(session.category.rawValue) (expected: \(targetCategory.rawValue)), mode: \(session.mode.rawValue) (expected: \(targetMode.rawValue)). Reasserting.")
+            reassertAudioSession()
+        }
+    }
+
+    // MARK: - Diagnostics
+
+    /// Logs a snapshot of the current audio session state for debugging.
+    private func logCurrentSessionState(context: String) {
+        let session = AVAudioSession.sharedInstance()
+        PopinLogger.shared.log("AudioSessionGuard [\(context)]: category=\(session.category.rawValue), mode=\(session.mode.rawValue), options=\(session.categoryOptions.rawValue), sampleRate=\(session.sampleRate), preferredSampleRate=\(session.preferredSampleRate), isOtherAudioPlaying=\(session.isOtherAudioPlaying), outputVolume=\(session.outputVolume)")
+        logCurrentRoute(context: context)
+    }
+
+    /// Logs the current input/output route for debugging.
+    private func logCurrentRoute(context: String) {
+        let session = AVAudioSession.sharedInstance()
+        let route = session.currentRoute
+        let inputs = route.inputs.map { "\($0.portName) (\($0.portType.rawValue))" }.joined(separator: ", ")
+        let outputs = route.outputs.map { "\($0.portName) (\($0.portType.rawValue))" }.joined(separator: ", ")
+        PopinLogger.shared.log("AudioSessionGuard [\(context)]: route inputs: [\(inputs)], outputs: [\(outputs)]")
+    }
+
+    /// Human-readable name for route change reasons (rawValue alone is not helpful in logs).
+    private func routeChangeReasonName(_ reason: AVAudioSession.RouteChangeReason) -> String {
+        switch reason {
+        case .unknown: return "unknown"
+        case .newDeviceAvailable: return "newDeviceAvailable"
+        case .oldDeviceUnavailable: return "oldDeviceUnavailable"
+        case .categoryChange: return "categoryChange"
+        case .override: return "override"
+        case .wakeFromSleep: return "wakeFromSleep"
+        case .noSuitableRouteForCategory: return "noSuitableRouteForCategory"
+        case .routeConfigurationChange: return "routeConfigurationChange"
+        @unknown default: return "unknown(\(reason.rawValue))"
+        }
+    }
+
+    deinit {
         heartbeatTimer?.invalidate()
-        heartbeatTimer = nil
+        NotificationCenter.default.removeObserver(self)
     }
 }
 
