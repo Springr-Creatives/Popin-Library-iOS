@@ -88,13 +88,22 @@ class Utilities: NSObject {
     }
     
     func sendPushToken(token: String) {
-        // Implementation stub or copied from working example if needed
-        // Assuming serverURL is globally available
+        guard !token.isEmpty else { return }
+
+        let userId = getUser()?.user_id ?? 0
+        let syncKey = "\(userId):\(token)"
+        let lastSyncKey = UserDefaults.standard.string(forKey: "push_token_last_sent") ?? ""
+        if syncKey == lastSyncKey {
+            PopinLogger.shared.log("sendPushToken: token unchanged for user \(userId), skipping /fcm/update")
+            return
+        }
+
         let urlString = serverURL + "/user/fcm/update";
         let parameters: [String: Any] = ["mobile_token": token, "type" : 2];
         Task {
             do {
                 let _: String? = try await request(urlString: urlString, method: "POST", parameters: parameters)
+                UserDefaults.standard.set(syncKey, forKey: "push_token_last_sent")
             } catch {
             }
         }
