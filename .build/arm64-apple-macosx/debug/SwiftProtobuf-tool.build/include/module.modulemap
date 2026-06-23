@@ -1,3 +1,0 @@
-module SwiftProtobuf {
-    header "/Users/ashwin/Developer/Popin-Library-iOS/.build/arm64-apple-macosx/debug/SwiftProtobuf-tool.build/include/SwiftProtobuf-Swift.h"
-}
